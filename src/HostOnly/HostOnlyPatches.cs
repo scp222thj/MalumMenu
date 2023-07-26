@@ -2,15 +2,15 @@ using HarmonyLib;
 
 namespace MalumMenu;
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class HostOnly_GodmodePostfix
 {
-    //Postfix patch of PlayerControl.Die to revive LocalPlayer when CheatSettings.godMode enabled
-    public static void Postfix(PlayerControl __instance)
+    //Postfix patch of PlayerPhysics.LateUpdate to revive LocalPlayer when CheatSettings.godMode enabled
+    public static void Postfix(PlayerPhysics __instance)
     {
         if(CheatSettings.godMode){
-            if (__instance.Data.IsDead && __instance.AmOwner){
-                __instance.Revive();
+            if (__instance.myPlayer.Data.IsDead && __instance.AmOwner){
+                __instance.myPlayer.Revive();
             }
         }
     }
