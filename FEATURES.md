@@ -362,9 +362,9 @@ Other relevant features of MalumMenu
 MalumMenu has a simple GUI that is easy to navigate and can be toggled using the **DELETE** key on your keyboard
 
 ### MalumNews
-MalumMenu comes with custom announcements which it automatically fetches online at startup.
+MalumMenu comes with custom announcements that it will automatically fetch online at launch
 
 MalumNews webserver status:
 [![MalumNews](https://img.shields.io/website-up-down-green-red/http/scpzzzthj.tk.svg)](https://scpzzzthj.tk)
 
-![MalumNews](https://cdn.discordapp.com/attachments/1097928762324168744/1131641569397702807/image.png)
+<img width="800" alt="image" src="https://github.com/scp222thj/MalumMenu/assets/82206202/9d494709-b957-4859-b00e-11045b476d5a">
