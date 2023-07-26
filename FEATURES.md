@@ -367,4 +367,4 @@ MalumMenu comes with custom announcements that it will automatically fetch onlin
 MalumNews webserver status:
 [![MalumNews](https://img.shields.io/website-up-down-green-red/http/scpzzzthj.tk.svg)](https://scpzzzthj.tk)
 
-<img width="800" alt="image" src="https://github.com/scp222thj/MalumMenu/assets/82206202/9d494709-b957-4859-b00e-11045b476d5a">
+<img width="800" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133760289326768148/image.png">
