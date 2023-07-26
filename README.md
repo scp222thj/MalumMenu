@@ -1,4 +1,4 @@
-# 👾 MalumMenu
+# 👻 MalumMenu
 
 An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.
 
@@ -6,7 +6,7 @@ An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.
 
 # 😎 Table Of Contents
 
-- [👾 MalumMenu](#-malummenu)
+- [👻 MalumMenu](#-malummenu)
 - [😎 Table Of Contents](#-table-of-contents)
 - [🎁 Releases](#-releases)
 - [⚠️ Disclaimer](#️-disclaimer)
