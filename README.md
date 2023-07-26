@@ -1,11 +1,11 @@
-# 👻 MalumMenu
+# 😈 MalumMenu
 
 An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.
 
 ![Main](https://cdn.discordapp.com/attachments/1097928762324168744/1133434284137517206/ezgif-5-e6de74b599.png)
 # 😎 Table Of Contents
 
-- [👻 MalumMenu](#-malummenu)
+- [😈 MalumMenu](#-malummenu)
 - [😎 Table Of Contents](#-table-of-contents)
 - [🎁 Releases](#-releases)
 - [⚠️ Disclaimer](#️-disclaimer)
