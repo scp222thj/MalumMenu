@@ -17,9 +17,9 @@ An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.
 - [📜 License](#-license)
 
 # 🎁 Releases
-| Among Us - Version| Mod Version | Link |
+| Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
-| 2023.7.12 & 2023.7.11 | v1.0.0 | [Download](https://github.com/scp222thj/MalumMenu/releases/v1.0.0) |
+| v1.0.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.0.0/MalumMenu-1.0.0.zip) |
 
 
 # ⚠️ Disclaimer
