@@ -2,7 +2,8 @@
 
 An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.
 
-![Main](https://cdn.discordapp.com/attachments/1097928762324168744/1133434284137517206/ezgif-5-e6de74b599.png)
+<img width="500" alt="image" src="https://github.com/scp222thj/MalumMenu/assets/82206202/fd1735f8-e6b3-4e3f-a8e7-710e5822cc1e">
+
 # 😎 Table Of Contents
 
 - [😈 MalumMenu](#-malummenu)
