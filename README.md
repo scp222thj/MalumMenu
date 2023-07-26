@@ -2,7 +2,7 @@
 
 An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.
 
-<img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133757371546603560/image.png">
+<img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
 
 # 😎 Table Of Contents
 
