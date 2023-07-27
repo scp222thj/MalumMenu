@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace MalumMenu;
@@ -46,6 +47,14 @@ public static class Utils
 
             return $"<color=#ff0000ff>\nPing: {ping} ms</color>";
         }
+    }
+
+    //Get ShapeshifterMenu prefab to instantiate it
+    //Found here: https://github.com/AlchlcDvl/TownOfUsReworked/blob/9f3cede9d30bab2c11eb7c960007ab3979f09156/TownOfUsReworked/Custom/Menu.cs
+    public static ShapeshifterMinigame GetShapeshifterMenu()
+    {
+        var rolePrefab = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Shapeshifter);
+        return UnityEngine.Object.Instantiate(rolePrefab?.Cast<ShapeshifterRole>(), GameData.Instance.transform).ShapeshifterMenu;
     }
 
     //Show custom popup ingame

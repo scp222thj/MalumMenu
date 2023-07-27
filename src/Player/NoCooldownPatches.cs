@@ -45,21 +45,26 @@ public static class NoCooldowns_ShapeshifterRolePostfix{
 
     //Postfix patch of ShapeshifterRole.FixedUpdate to remove shapeshift duration
     public static void Postfix(ShapeshifterRole __instance){
+        
+        //try-catch to avoid breaking when spectator menu is open
+        try{
 
-        if(__instance.Player.AmOwner){
+            if(__instance.Player.AmOwner){
 
-            if (CheatSettings.noCooldowns){
+                if (CheatSettings.noCooldowns){
 
-                __instance.durationSecondsRemaining = float.MaxValue; //Makes shapeshift duration so incredibly long (float.MaxValue) so that it never ends
-                
-            //Once CheatSettings.noCooldowns is off it checks if the duration is still too long
-            //If so it resets it to the appropriate setting
-            }else if (__instance.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetShapeshifterDuration()){
-                
-                __instance.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetShapeshifterDuration();
+                    __instance.durationSecondsRemaining = float.MaxValue; //Makes shapeshift duration so incredibly long (float.MaxValue) so that it never ends
+                    
+                //Once CheatSettings.noCooldowns is off it checks if the duration is still too long
+                //If so it resets it to the appropriate setting
+                }else if (__instance.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetShapeshifterDuration()){
+                    
+                    __instance.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetShapeshifterDuration();
+                }
+
             }
 
-        }
+        }catch{};
     }
 }
 

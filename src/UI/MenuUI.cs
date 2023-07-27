@@ -25,7 +25,8 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" SeeGhosts", () => CheatSettings.seeGhosts, x => CheatSettings.seeGhosts = x),
             new ToggleInfo(" SeeRoles", () => CheatSettings.seeRoles, x => CheatSettings.seeRoles = x),
             new ToggleInfo(" FullBright", () => CheatSettings.fullBright, x => CheatSettings.fullBright = x),
-            new ToggleInfo(" ZoomOut", () => CheatSettings.zoomOut, x => CheatSettings.zoomOut = x)
+            new ToggleInfo(" ZoomOut", () => CheatSettings.zoomOut, x => CheatSettings.zoomOut = x),
+            new ToggleInfo(" Spectate", () => CheatSettings.spectate, x => CheatSettings.spectate = x)
         }));
 
         groups.Add(new GroupInfo("Tracers", false, new List<ToggleInfo>() {
@@ -100,7 +101,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!isShipCheck.isShip){
-            CheatSettings.blackOut = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = false;
+            CheatSettings.blackOut = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = false;
         }
     }
 

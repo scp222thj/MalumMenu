@@ -8,6 +8,7 @@ namespace MalumMenu
         public static bool noCooldowns;
         public static bool teleport;
         public static bool speedBoost;
+        public static bool spectate;
 
         //ESP
         public static bool zoomOut;
