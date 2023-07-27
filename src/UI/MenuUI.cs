@@ -26,7 +26,8 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" SeeRoles", () => CheatSettings.seeRoles, x => CheatSettings.seeRoles = x),
             new ToggleInfo(" FullBright", () => CheatSettings.fullBright, x => CheatSettings.fullBright = x),
             new ToggleInfo(" ZoomOut", () => CheatSettings.zoomOut, x => CheatSettings.zoomOut = x),
-            new ToggleInfo(" Spectate", () => CheatSettings.spectate, x => CheatSettings.spectate = x)
+            new ToggleInfo(" Spectate", () => CheatSettings.spectate, x => CheatSettings.spectate = x),
+            new ToggleInfo(" Freecam", () => CheatSettings.freeCam, x => CheatSettings.freeCam = x)
         }));
 
         groups.Add(new GroupInfo("Tracers", false, new List<ToggleInfo>() {

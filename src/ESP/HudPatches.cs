@@ -10,8 +10,10 @@ public static class ESP_HudManagerPostfix
 
     //Postfix patch of HudManager.Update for several HUD modules
     public static void Postfix(HudManager __instance){
-        //Remove ShadowQuad if CheatSettings.fullBright or camera is zoomed-out or spectating someone
-        if(CheatSettings.fullBright || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer){
+        //Remove ShadowQuad if CheatSettings.fullBright or camera is zoomed-out or spectating/freecam
+        if(CheatSettings.fullBright 
+        || Camera.main.orthographicSize > 3f 
+        || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer){
             __instance.ShadowQuad.gameObject.SetActive(false);
         }else{
             __instance.ShadowQuad.gameObject.SetActive(true);
