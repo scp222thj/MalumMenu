@@ -16,9 +16,13 @@ public class MenuUI : MonoBehaviour
     {
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
             new ToggleInfo(" NoClip", () => CheatSettings.noClip, x => CheatSettings.noClip = x),
-            new ToggleInfo(" Teleport", () => CheatSettings.teleport, x => CheatSettings.teleport = x),
             new ToggleInfo(" SpeedBoost", () => CheatSettings.speedBoost, x => CheatSettings.speedBoost = x),
             new ToggleInfo(" NoCooldowns", () => CheatSettings.noCooldowns, x => CheatSettings.noCooldowns = x)
+        }));
+
+        groups.Add(new GroupInfo("Teleport", false, new List<ToggleInfo>() {
+            new ToggleInfo(" Cursor", () => CheatSettings.teleportCursor, x => CheatSettings.teleportCursor = x),
+            new ToggleInfo(" Player", () => CheatSettings.teleportPlayer, x => CheatSettings.teleportPlayer = x),
         }));
 
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {

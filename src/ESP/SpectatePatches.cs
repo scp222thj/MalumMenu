@@ -16,8 +16,23 @@ public static class Spectate_MainPostfix
             //Open spectator menu when CheatSettings.spectate is first enabled
             if (!isActive){
 
+                //Close any player pick menus already open & their cheats
+                if (Utils_PlayerPickMenu.playerpickMenu != null){
+                    Utils_PlayerPickMenu.playerpickMenu.Close();
+                    CheatSettings.teleportPlayer = false;
+                }
+
+                List<PlayerControl> playerList = new List<PlayerControl>();
+
+                //All players are saved to playerList apart from LocalPlayer
+                foreach (var player in PlayerControl.AllPlayerControls){
+                    if (!player.AmOwner){
+                        playerList.Add(player);
+                    }
+                }
+
                 //New player pick menu made for spectating
-                Utils_PlayerPickMenu.openPlayerPickMenu(PlayerControl.AllPlayerControls, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
                 {
                     Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(Utils_PlayerPickMenu.targetPlayer);
                 }));
@@ -26,26 +41,21 @@ public static class Spectate_MainPostfix
 
                 PlayerControl.LocalPlayer.moveable = false; //Can't move while spectating
 
-                CheatSettings.freeCam = false; //Disable freecam while spectating
+                CheatSettings.freeCam = false; //Disable incompatible cheats while spectating
 
             }
 
-            //Deactivate spectator mode if menu is closed without spectating anyone
+            //Deactivate cheat if menu is closed without spectating anyone
             if (Utils_PlayerPickMenu.playerpickMenu == null && Camera.main.gameObject.GetComponent<FollowerCamera>().Target == PlayerControl.LocalPlayer){
                 CheatSettings.spectate = false;
                 PlayerControl.LocalPlayer.moveable = true;
             }
         }else{
-            //Deactivate spectator mode when CheatSettings.spectate is disabled
+            //Deactivate cheat when it is disabled from the GUI
             if (isActive){
                 isActive = false;
                 PlayerControl.LocalPlayer.moveable = true;
                 Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
-            }
-
-            //Close spectator menu when CheatSettings.spectate is disabled
-            if (Utils_PlayerPickMenu.playerpickMenu != null){
-                Utils_PlayerPickMenu.playerpickMenu.Close();
             }
         }
     }

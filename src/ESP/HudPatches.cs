@@ -42,5 +42,10 @@ public static class ESP_HudManagerPostfix
                 resolutionchangeNeeded = false;
             }
         }
+
+        //Close player pick menu when it is not being used
+        if (Utils_PlayerPickMenu.playerpickMenu != null && !CheatSettings.teleportPlayer && !CheatSettings.spectate){
+            Utils_PlayerPickMenu.playerpickMenu.Close();
+        }
     }
 }    

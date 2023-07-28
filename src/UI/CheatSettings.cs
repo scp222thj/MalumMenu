@@ -6,8 +6,11 @@ namespace MalumMenu
         public static bool noClip;
         public static bool impostorHack;
         public static bool noCooldowns;
-        public static bool teleport;
         public static bool speedBoost;
+
+        //Teleport
+        public static bool teleportCursor;
+        public static bool teleportPlayer;
 
         //ESP
         public static bool zoomOut;

@@ -1,5 +1,4 @@
 using HarmonyLib;
-using UnityEngine;
 
 namespace MalumMenu;
 
@@ -66,20 +65,6 @@ public static class Player_ImpostorHackPostfix
 
         }catch{};
 
-    }
-}
-
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class Player_TeleportationPostfix
-{
-    //Postfix patch of PlayerPhysics.LateUpdate to teleport players to mouse position on right-click
-    public static void Postfix(PlayerPhysics __instance)
-    {
-        if(Input.GetMouseButtonDown(1) && CheatSettings.teleport){
-
-            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        
-        }
     }
 }
 
