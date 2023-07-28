@@ -17,12 +17,9 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
             new ToggleInfo(" NoClip", () => CheatSettings.noClip, x => CheatSettings.noClip = x),
             new ToggleInfo(" SpeedBoost", () => CheatSettings.speedBoost, x => CheatSettings.speedBoost = x),
-            new ToggleInfo(" NoCooldowns", () => CheatSettings.noCooldowns, x => CheatSettings.noCooldowns = x)
-        }));
-
-        groups.Add(new GroupInfo("Teleport", false, new List<ToggleInfo>() {
-            new ToggleInfo(" Cursor", () => CheatSettings.teleportCursor, x => CheatSettings.teleportCursor = x),
-            new ToggleInfo(" Player", () => CheatSettings.teleportPlayer, x => CheatSettings.teleportPlayer = x),
+            new ToggleInfo(" NoCooldowns", () => CheatSettings.noCooldowns, x => CheatSettings.noCooldowns = x),
+            new ToggleInfo(" Teleport to Cursor", () => CheatSettings.teleportCursor, x => CheatSettings.teleportCursor = x),
+            new ToggleInfo(" Teleport to Player", () => CheatSettings.teleportPlayer, x => CheatSettings.teleportPlayer = x)
         }));
 
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
@@ -106,7 +103,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!isShipCheck.isShip){
-            CheatSettings.blackOut = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = false;
+            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = false;
         }
     }
 
