@@ -31,7 +31,7 @@ namespace MalumMenu;
             __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
             
             __instance.text.text = $"MalumMenu by scp222thj" + //ModInfo
-                                    Utils.GetColoredPingText(AmongUsClient.Instance.Ping); //Colored Ping
+                                    Utils.getColoredPingText(AmongUsClient.Instance.Ping); //Colored Ping
 
             //Position adjustments
             var offset_x = 1.2f;

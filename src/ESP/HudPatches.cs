@@ -25,12 +25,12 @@ public static class ESP_HudManagerPostfix
             if(Input.GetAxis("Mouse ScrollWheel") < 0f ){
                 Camera.main.orthographicSize++; //Uses the orthographicSize of both the main camera and the UI camera
                 __instance.UICamera.orthographicSize++;
-                Utils.AdjustResolution(); //Utils.AdjustResolution() is needed to properly position the game's UI after a change in orthographicSize
+                Utils.adjustResolution(); //Utils.AdjustResolution() is needed to properly position the game's UI after a change in orthographicSize
             } else if(Input.GetAxis("Mouse ScrollWheel") > 0f ){
                 if (Camera.main.orthographicSize > 3f){
                     Camera.main.orthographicSize--;
                     __instance.UICamera.orthographicSize--;
-                    Utils.AdjustResolution();
+                    Utils.adjustResolution();
                 }
             }
         //Reset camera when CheatSettings.zoomOut is disabled
@@ -38,7 +38,7 @@ public static class ESP_HudManagerPostfix
             Camera.main.orthographicSize = 3f;
             __instance.UICamera.orthographicSize = 3f;
             if (resolutionchangeNeeded){ //Only invoked once when CheatSettings.zoomOut is disabled to prevent problems with the UI
-                Utils.AdjustResolution();
+                Utils.adjustResolution();
                 resolutionchangeNeeded = false;
             }
         }

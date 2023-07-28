@@ -9,7 +9,7 @@ public static class Utils
 {
     //Adjusts HUD resolution
     //Used to fix UI problems when zooming out
-    public static void AdjustResolution() {
+    public static void adjustResolution() {
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
@@ -28,12 +28,12 @@ public static class Utils
     }
 
     //Get SystemType of the room the player is currently in
-    public static SystemTypes GetCurrentRoom(){
+    public static SystemTypes getCurrentRoom(){
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
     }
 
     //Fancy colored ping text
-    public static string GetColoredPingText(int ping){
+    public static string getColoredPingText(int ping){
 
         if (ping < 100){ //Green for ping < 100
 
@@ -49,9 +49,25 @@ public static class Utils
         }
     }
 
+    //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
+    public static Color getColorName(bool cheatVar, GameData.PlayerInfo playerInfo){
+        if (cheatVar){
+                
+            return playerInfo.Role.TeamColor; //Cheat vision
+
+        }else if(PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor){
+
+            return playerInfo.Role.NameColor; //Normal Impostor Vision
+
+        }else {
+
+            return Color.white; //Normal Crewmate Vision
+        }
+    }
+
     //Get ShapeshifterMenu prefab to instantiate it
     //Found here: https://github.com/AlchlcDvl/TownOfUsReworked/blob/9f3cede9d30bab2c11eb7c960007ab3979f09156/TownOfUsReworked/Custom/Menu.cs
-    public static ShapeshifterMinigame GetShapeshifterMenu()
+    public static ShapeshifterMinigame getShapeshifterMenu()
     {
         var rolePrefab = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Shapeshifter);
         return UnityEngine.Object.Instantiate(rolePrefab?.Cast<ShapeshifterRole>(), GameData.Instance.transform).ShapeshifterMenu;
@@ -59,7 +75,7 @@ public static class Utils
 
     //Show custom popup ingame
     //Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
-    public static void ShowPopup(string text){
+    public static void showPopup(string text){
         var popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
         
         var background = popup.transform.Find("Background").GetComponent<SpriteRenderer>();

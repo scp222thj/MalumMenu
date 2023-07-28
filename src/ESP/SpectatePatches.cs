@@ -18,11 +18,13 @@ public static class Spectate_MainPostfix
             if (!isActive){
 
                 //Spectator menu based on shapeshifter menu
-                shapeshifterMinigame = UnityEngine.Object.Instantiate<ShapeshifterMinigame>(Utils.GetShapeshifterMenu());
+                shapeshifterMinigame = UnityEngine.Object.Instantiate<ShapeshifterMinigame>(Utils.getShapeshifterMenu());
 			    
                 shapeshifterMinigame.transform.SetParent(Camera.main.transform, false);
 			    shapeshifterMinigame.transform.localPosition = new Vector3(0f, 0f, -50f);
 			    shapeshifterMinigame.Begin(null);
+
+                CheatSettings.freeCam = false; //Disable freecam when spectating
 
                 isActive = true;
 
@@ -38,7 +40,7 @@ public static class Spectate_MainPostfix
             if (isActive){
                 isActive = false;
                 PlayerControl.LocalPlayer.moveable = true;
-                Camera.main.gameObject.GetComponent<FollowerCamera>().Target = PlayerControl.LocalPlayer;
+                Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
             }
 
             //Close spectator menu
@@ -68,21 +70,20 @@ public static class Spectate_BeginPostfix
                 PlayerControl player = list[i];
                 int num = i % 3;
                 int num2 = i / 3;
-                bool flag = PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor;
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
                 shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                 
                 //Custom spectating code when clicking on player
                 shapeshifterPanel.SetPlayer(i, player.Data, (Action) (() =>
                 {
-                    Camera.main.gameObject.GetComponent<FollowerCamera>().Target = player;
+                    Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(player);
 
                     PlayerControl.LocalPlayer.moveable = false; //Can't move while spectating someone else
 
                     __instance.Close();
                 }));
 
-                shapeshifterPanel.NameText.color = (flag ? player.Data.Role.NameColor : Color.white);
+                shapeshifterPanel.NameText.color = Utils.getColorName(CheatSettings.seeRoles, player.Data);
                 __instance.potentialVictims.Add(shapeshifterPanel);
                 list2.Add(shapeshifterPanel.Button);
             }
