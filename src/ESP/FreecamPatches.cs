@@ -16,10 +16,12 @@ public static class ESP_FreecamPostfix
 
                 Camera.main.gameObject.GetComponent<FollowerCamera>().enabled = false;
                 Camera.main.gameObject.GetComponent<FollowerCamera>().Target = null;
-                PlayerControl.LocalPlayer.moveable = false;
+
                 isActive = true;
 
             }
+
+            PlayerControl.LocalPlayer.moveable = false;
 
             //Get keyboard input & turn it into movement for the camera
             Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);

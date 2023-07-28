@@ -1,6 +1,8 @@
 using UnityEngine;
-using System.Collections.Generic;
+using System;
+using Il2CppSystem.Collections.Generic;
 using System.IO;
+using HarmonyLib;
 using System.Linq;
 using System.Reflection;
 
@@ -127,3 +129,69 @@ public static class Utils
         return null;
     }
 }
+
+[HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
+public static class Utils_PlayerPickMenu
+{
+    public static ShapeshifterMinigame playerpickMenu;
+    public static bool IsActive;
+    public static PlayerControl targetPlayer;
+    public static Action customAction;
+    public static List<PlayerControl> customPlayerList;
+    public static void openPlayerPickMenu(List<PlayerControl> playerList, Action action)
+    {
+        IsActive = true;
+        customPlayerList = playerList;
+        customAction = action;
+
+        playerpickMenu = UnityEngine.Object.Instantiate<ShapeshifterMinigame>(Utils.getShapeshifterMenu());
+			    
+        playerpickMenu.transform.SetParent(Camera.main.transform, false);
+		playerpickMenu.transform.localPosition = new Vector3(0f, 0f, -50f);
+		playerpickMenu.Begin(null);
+    }
+    
+    //Prefix patch of ShapeshifterMinigame.Begin to implement spectator menu logic
+    public static bool Prefix(PlayerTask task, ShapeshifterMinigame __instance)
+    {
+        if (IsActive){ //Spectator menu logic
+
+            //All players are considered including ghosts & LocalPlayer
+            List<PlayerControl> list = customPlayerList;
+            __instance.potentialVictims = new List<ShapeshifterPanel>();
+            List<UiElement> list2 = new List<UiElement>();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                PlayerControl player = list[i];
+                int num = i % 3;
+                int num2 = i / 3;
+                ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
+                shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
+                
+                //Custom spectating code when clicking on player
+                shapeshifterPanel.SetPlayer(i, player.Data, (Action) (() =>
+                {
+                    targetPlayer = player;
+
+                    customAction.Invoke();
+
+                    __instance.Close();
+                }));
+
+                shapeshifterPanel.NameText.color = Utils.getColorName(CheatSettings.seeRoles, player.Data);
+                __instance.potentialVictims.Add(shapeshifterPanel);
+                list2.Add(shapeshifterPanel.Button);
+            }
+
+            ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, list2, false);
+            
+            IsActive = false;
+
+            return false; //Skip original method when spectating
+
+        }
+
+        return true; //Open normal shapeshifter menu if not spectating
+    }
+}   
