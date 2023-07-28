@@ -13,10 +13,10 @@ public static class Spectate_MainPostfix
     public static void Postfix(PlayerPhysics __instance){
         if (CheatSettings.spectate){
 
-            //Open custom spectator menu when spectate is first clicked
+            //Open spectator menu when CheatSettings.spectate is first enabled
             if (!isActive){
 
-                //Spectator menu based on shapeshifter menu
+                //New player pick menu made for spectating
                 Utils_PlayerPickMenu.openPlayerPickMenu(PlayerControl.AllPlayerControls, (Action) (() =>
                 {
                     Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(Utils_PlayerPickMenu.targetPlayer);
@@ -24,13 +24,13 @@ public static class Spectate_MainPostfix
 
                 isActive = true;
 
-                PlayerControl.LocalPlayer.moveable = false;
+                PlayerControl.LocalPlayer.moveable = false; //Can't move while spectating
 
-                CheatSettings.freeCam = false;
+                CheatSettings.freeCam = false; //Disable freecam while spectating
 
             }
 
-            //Stop spectate if "X" button is clicked on spectator menu
+            //Deactivate spectator mode if menu is closed without spectating anyone
             if (Utils_PlayerPickMenu.playerpickMenu == null && Camera.main.gameObject.GetComponent<FollowerCamera>().Target == PlayerControl.LocalPlayer){
                 CheatSettings.spectate = false;
                 PlayerControl.LocalPlayer.moveable = true;
@@ -43,7 +43,7 @@ public static class Spectate_MainPostfix
                 Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
             }
 
-            //Close spectator menu
+            //Close spectator menu when CheatSettings.spectate is disabled
             if (Utils_PlayerPickMenu.playerpickMenu != null){
                 Utils_PlayerPickMenu.playerpickMenu.Close();
             }

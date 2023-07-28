@@ -138,12 +138,15 @@ public static class Utils_PlayerPickMenu
     public static PlayerControl targetPlayer;
     public static Action customAction;
     public static List<PlayerControl> customPlayerList;
+
+    //Open a custom menu to pick a player as a target
     public static void openPlayerPickMenu(List<PlayerControl> playerList, Action action)
     {
         IsActive = true;
         customPlayerList = playerList;
         customAction = action;
 
+        //The menu is based off the shapeshifting menu
         playerpickMenu = UnityEngine.Object.Instantiate<ShapeshifterMinigame>(Utils.getShapeshifterMenu());
 			    
         playerpickMenu.transform.SetParent(Camera.main.transform, false);
@@ -151,13 +154,14 @@ public static class Utils_PlayerPickMenu
 		playerpickMenu.Begin(null);
     }
     
-    //Prefix patch of ShapeshifterMinigame.Begin to implement spectator menu logic
+    //Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
     public static bool Prefix(PlayerTask task, ShapeshifterMinigame __instance)
     {
-        if (IsActive){ //Spectator menu logic
+        if (IsActive){ //Player pick menu logic
 
-            //All players are considered including ghosts & LocalPlayer
+            //Custom player list set by openPlayerPickMenu
             List<PlayerControl> list = customPlayerList;
+
             __instance.potentialVictims = new List<ShapeshifterPanel>();
             List<UiElement> list2 = new List<UiElement>();
 
@@ -169,12 +173,11 @@ public static class Utils_PlayerPickMenu
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
                 shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                 
-                //Custom spectating code when clicking on player
                 shapeshifterPanel.SetPlayer(i, player.Data, (Action) (() =>
                 {
-                    targetPlayer = player;
+                    targetPlayer = player; //Save targeted player
 
-                    customAction.Invoke();
+                    customAction.Invoke(); //Custom action set by openPlayerPickMenu
 
                     __instance.Close();
                 }));
@@ -188,10 +191,10 @@ public static class Utils_PlayerPickMenu
             
             IsActive = false;
 
-            return false; //Skip original method when spectating
+            return false; //Skip original method when active
 
         }
 
-        return true; //Open normal shapeshifter menu if not spectating
+        return true; //Open normal shapeshifter menu if not active
     }
 }   
