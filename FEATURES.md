@@ -2,14 +2,17 @@
 - [📋 Features](#-features)
   - [Player](#player)
     - [NoClip](#noclip)
-    - [Teleport](#teleport)
     - [SpeedBoost](#speedboost)
     - [NoCooldowns](#nocooldowns)
+    - [Teleport to Cursor](#teleport-to-cursor)
+    - [Teleport to Player](#teleport-to-player)
   - [ESP](#esp)
     - [SeeGhosts](#seeghosts)
     - [SeeRoles](#seeroles)
     - [FullBright](#fullbright)
     - [ZoomOut](#zoomout)
+    - [Spectate](#spectate)
+    - [Freecam](#freecam)
   - [Tracers](#tracers)
     - [Crewmates](#crewmates)
     - [Impostors](#impostors)
@@ -58,12 +61,6 @@ Allows you to walk through walls like a ghost
 Type: **Toggle**
 - Default: **OFF**
 
-### Teleport
-Allows you to teleport by right-clicking. Works best when used along with [ZoomOut](#zoomout)
-
-Type: **Toggle**
-- Default: **OFF**
-
 ### SpeedBoost
 Doubles your player's speed 
 
@@ -81,6 +78,17 @@ Removes many of the game's cooldowns:
 
 Type: **Toggle**
 - Default: **OFF**
+
+### Teleport to Cursor
+Allows you to teleport by right-clicking. Works best when used along with [ZoomOut](#zoomout)
+
+Type: **Toggle**
+- Default: **OFF**
+
+### Teleport to Player
+Allows you to pick a player to teleport to.
+
+Type: **Menu**
 
 ## ESP
 MalumMenu's ESP cheats are completely client-side, and thus undetectable by anticheat
@@ -114,6 +122,17 @@ Type: **Toggle**
 - Default: **OFF**
 
 ![ZoomOut](https://cdn.discordapp.com/attachments/1097928762324168744/1131620619562270830/image.png)
+
+### Spectate
+Allows you to pick a player to spectate with your camera.
+
+Type: **Menu**
+
+### Freecam
+Allows you to freely move your camera around without also moving your player.
+
+Type: **Toggle**
+- Default: **OFF**
 
 ## Tracers
 ![Tracers](https://cdn.discordapp.com/attachments/1097928762324168744/1132745972271808582/image_2023-07-23_204751179.jpg)
