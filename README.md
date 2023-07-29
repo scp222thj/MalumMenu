@@ -39,8 +39,8 @@ Usage of this mod can violate the terms of service of Among Us, which may lead t
 # 📋 Features
 
 - A ton of [features](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md) with no significant lag
-- Popular hacking modules such as [NoClip](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#noclip) and [Teleport](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#teleport)
-- Reveal [ghosts](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeghosts) and [impostors](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeimps) easily
+- Popular hacking modules such as [NoClip](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#noclip) and [Godmode](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#godmode)
+- Reveal [ghosts](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeghosts) and [impostors](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeroles) easily
 - Access [vents](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#usevents) without being impostor or engineer
 - Advanced [ESP](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#esp) & [Tracers](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#tracers) that work completly client-side
 - [Minimap](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#minimap) to track every player on the ship
