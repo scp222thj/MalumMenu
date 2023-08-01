@@ -25,7 +25,11 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
             new ToggleInfo(" SeeGhosts", () => CheatSettings.seeGhosts, x => CheatSettings.seeGhosts = x),
             new ToggleInfo(" SeeRoles", () => CheatSettings.seeRoles, x => CheatSettings.seeRoles = x),
-            new ToggleInfo(" FullBright", () => CheatSettings.fullBright, x => CheatSettings.fullBright = x),
+            new ToggleInfo(" AlwaysChat", () => CheatSettings.alwaysChat, x => CheatSettings.alwaysChat = x),
+            new ToggleInfo(" FullBright", () => CheatSettings.fullBright, x => CheatSettings.fullBright = x)
+        }));
+
+        groups.Add(new GroupInfo("Camera", false, new List<ToggleInfo>() {
             new ToggleInfo(" ZoomOut", () => CheatSettings.zoomOut, x => CheatSettings.zoomOut = x),
             new ToggleInfo(" Spectate", () => CheatSettings.spectate, x => CheatSettings.spectate = x),
             new ToggleInfo(" Freecam", () => CheatSettings.freeCam, x => CheatSettings.freeCam = x)
@@ -75,7 +79,6 @@ public class MenuUI : MonoBehaviour
         }));
 
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
-            new ToggleInfo(" AlwaysChat", () => CheatSettings.alwaysChat, x => CheatSettings.alwaysChat = x),
             new ToggleInfo(" FreeCosmetics", () => CheatSettings.freeCosmetics, x => CheatSettings.freeCosmetics = x),
             new ToggleInfo(" AvoidPenalties", () => CheatSettings.avoidBans, x => CheatSettings.avoidBans = x),
             new ToggleInfo(" UnlockFeatures", () => CheatSettings.unlockFeatures, x => CheatSettings.unlockFeatures = x)
@@ -94,7 +97,7 @@ public class MenuUI : MonoBehaviour
         }
 
         //Passive cheats are always on to avoid problems
-        CheatSettings.alwaysChat = CheatSettings.unlockFeatures = CheatSettings.freeCosmetics = CheatSettings.avoidBans = true;
+        CheatSettings.unlockFeatures = CheatSettings.freeCosmetics = CheatSettings.avoidBans = true;
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
         if(!isHostCheck.isHost){

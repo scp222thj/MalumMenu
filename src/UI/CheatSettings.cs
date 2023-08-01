@@ -13,11 +13,14 @@ namespace MalumMenu
         public static bool teleportPlayer;
 
         //ESP
-        public static bool zoomOut;
+        public static bool alwaysChat;
         public static bool fullBright;
         public static bool seeGhosts;
         public static bool seeRoles;
+
+        //Camera
         public static bool spectate;
+        public static bool zoomOut;
         public static bool freeCam;
 
         //Minimap
@@ -60,7 +63,6 @@ namespace MalumMenu
         public static bool voteImmune;
 
         //Passive
-        public static bool alwaysChat = true;
         public static bool unlockFeatures = true;
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;

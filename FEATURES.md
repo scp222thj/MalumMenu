@@ -9,7 +9,9 @@
   - [ESP](#esp)
     - [SeeGhosts](#seeghosts)
     - [SeeRoles](#seeroles)
+    - [AlwaysChat](#alwayschat)
     - [FullBright](#fullbright)
+  - [Camera](#camera)
     - [ZoomOut](#zoomout)
     - [Spectate](#spectate)
     - [Freecam](#freecam)
@@ -45,7 +47,6 @@
     - [EvilVote](#evilvote)
     - [VoteImmune](#voteimmune)
   - [Passive](#passive)
-    - [AlwaysChat](#alwayschat)
     - [FreeCosmetics](#freecosmetics)
     - [AvoidPenalties](#avoidpenalties)
     - [UnlockFeatures](#unlockfeatures)
@@ -109,11 +110,19 @@ Type: **Toggle**
 
 ![SeeRoles](https://cdn.discordapp.com/attachments/1097928762324168744/1133144778272419840/image.png)
 
+### AlwaysChat
+Keeps the chat icon always enabled, even while you're not in a meeting or the lobby
+
+Type: **Toggle**
+- Default: **OFF**
+
 ### FullBright
 Removes all shadows, allowing you to see during blackouts and even through walls
 
 Type: **Toggle**
 - Default: **OFF**
+
+## Camera
 
 ### ZoomOut
 Allows you to zoom-out the player's camera using your mouse's scrollwheel
@@ -328,13 +337,6 @@ Type: **Toggle**
 
 ## Passive
 These cheats are constantly running in the background and cannot be disabled to avoid problems
-
-### AlwaysChat
-Keeps the chat icon always enabled, even while you're not in a meeting or the lobby
-
-Type: **Toggle**
-- Default: **ON**
-- **CANNOT BE DISABLED**
 
 ### FreeCosmetics
 Gives you access to all of the game's cosmetics for free, including:

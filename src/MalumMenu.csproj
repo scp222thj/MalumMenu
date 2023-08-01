@@ -4,14 +4,14 @@
         <LangVersion>latest</LangVersion>
         <DebugType>embedded</DebugType>
 
-        <VersionPrefix>1.1.0</VersionPrefix>
+        <VersionPrefix>1.1.1</VersionPrefix>
         <Description>all play and no cheats makes among us a dull game</Description>
         <!-- <Authors>scp222thj</Authors> -->
     </PropertyGroup>
 
-    <ItemGroup>
+    <!--<ItemGroup>
         <EmbeddedResource Include=".\Assets\**" />
-    </ItemGroup>
+    </ItemGroup>-->
 
     <ItemGroup>
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.662" Private="false" ExcludeAssets="runtime;native" />

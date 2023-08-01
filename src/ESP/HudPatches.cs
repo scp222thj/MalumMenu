@@ -7,17 +7,18 @@ namespace MalumMenu;
 public static class ESP_HudManagerPostfix
 {
     public static bool resolutionchangeNeeded;
+    public static bool chatActive;
+    public static bool fullBrightActive;
 
     //Postfix patch of HudManager.Update for several HUD modules
     public static void Postfix(HudManager __instance){
-        //Remove ShadowQuad if CheatSettings.fullBright or camera is zoomed-out or spectating/freecam
-        if(CheatSettings.fullBright 
-        || Camera.main.orthographicSize > 3f 
-        || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer){
-            __instance.ShadowQuad.gameObject.SetActive(false);
-        }else{
-            __instance.ShadowQuad.gameObject.SetActive(true);
-        }
+        //Remove all shadows if CheatSettings.fullBright or camera is zoomed-out or spectating/freecam
+        fullBrightActive = CheatSettings.fullBright || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
+        __instance.ShadowQuad.gameObject.SetActive(!fullBrightActive);
+
+        //Allow seeing chat icon in-game even while you're not supposed to
+        chatActive =  CheatSettings.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
+        __instance.Chat.gameObject.SetActive(chatActive);
 
         //Allow zooming-out through mouse wheel if CheatSettings.zoomOut is enabled
         if(CheatSettings.zoomOut){
