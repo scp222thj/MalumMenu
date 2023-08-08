@@ -5,12 +5,12 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class Player_NoClipPostfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate that disables player collider when NoClipping
+    //Postfix patch of PlayerPhysics.LateUpdate that disables player collider when NoClipping or climbing a ladder
     public static void Postfix(PlayerPhysics __instance)
     {
         try{
 
-        PlayerControl.LocalPlayer.Collider.enabled = !CheatSettings.noClip;
+        PlayerControl.LocalPlayer.Collider.enabled = !(CheatSettings.noClip || PlayerControl.LocalPlayer.onLadder);
 
         }catch{}
 

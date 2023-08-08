@@ -17,7 +17,9 @@ public static class ESP_HudManagerPostfix
         __instance.ShadowQuad.gameObject.SetActive(!fullBrightActive);
 
         //Allow seeing chat icon in-game even while you're not supposed to
-        chatActive =  CheatSettings.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
+        try{
+            chatActive =  CheatSettings.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
+        }catch{chatActive = false;}
         __instance.Chat.gameObject.SetActive(chatActive);
 
         //Allow zooming-out through mouse wheel if CheatSettings.zoomOut is enabled
