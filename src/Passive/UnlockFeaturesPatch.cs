@@ -12,7 +12,6 @@ public static class Passive_FreechatPrefix
             return true; //Only works if CheatSettings.unlockFeatures is enabled
         }
 
-        AmongUs.Data.DataManager.Settings.Multiplayer.ChatMode = InnerNet.QuickChatModes.FreeChatOrQuickChat;
         __result = true;
         return false;
     }
