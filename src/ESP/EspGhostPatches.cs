@@ -29,7 +29,7 @@ public static class ESP_ProtectPlayerPrefix
 			__instance.Data.Role.SetCooldown();
 		}
 
-		target.TurnOnProtection(CheatSettings.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead, colorId); //Render protection animation if LocalPlayer dead or CheatSettings.seeGhosts
+		target.TurnOnProtection(CheatSettings.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead, colorId, 0); //Render protection animation if LocalPlayer dead or CheatSettings.seeGhosts
     
         return false; //Skips the original method completly
     }

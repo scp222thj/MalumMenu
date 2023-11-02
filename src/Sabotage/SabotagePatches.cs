@@ -19,11 +19,11 @@ public static class Ship_SabotagePostfix
                 
                 if (labSystem.IsActive){
 
-                    __instance.RpcRepairSystem(SystemTypes.Laboratory, 16); //Repair reactor
+                    __instance.RpcUpdateSystem(SystemTypes.Laboratory, 16); //Repair reactor
                 
                 }else{
                     
-                    __instance.RpcRepairSystem(SystemTypes.Laboratory, 128); //Sabotage reactor
+                    __instance.RpcUpdateSystem(SystemTypes.Laboratory, 128); //Sabotage reactor
                 
                 }
 
@@ -34,23 +34,23 @@ public static class Ship_SabotagePostfix
                 if (reactSystem.IsActive){
                     
                     //Repair reactor
-                    __instance.RpcRepairSystem(SystemTypes.Reactor, 16 | 0);
-                    __instance.RpcRepairSystem(SystemTypes.Reactor, 16 | 1);
+                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 16 | 0);
+                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 16 | 1);
 
                 }else{
 
                     //Sabotage reactor
-                    __instance.RpcRepairSystem(SystemTypes.Reactor, 128 | 0);
-                    __instance.RpcRepairSystem(SystemTypes.Reactor, 128 | 1);
+                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 128 | 0);
+                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 128 | 1);
 
                 }
 
             }else{ //Skeld & MiraHQ behave normally 
                 var reactSystem = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
                 if (reactSystem.IsActive){
-                    __instance.RpcRepairSystem(SystemTypes.Reactor, 16);
+                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 16);
                 }else{
-                    __instance.RpcRepairSystem(SystemTypes.Reactor, 128);
+                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 128);
                 }
             }
 
@@ -63,9 +63,9 @@ public static class Ship_SabotagePostfix
                 var oxygenSystem = __instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
                 
                 if (oxygenSystem.IsActive){
-                    __instance.RpcRepairSystem(SystemTypes.LifeSupp, 16); //Repair oxygen
+                    __instance.RpcUpdateSystem(SystemTypes.LifeSupp, 16); //Repair oxygen
                 }else{
-                    __instance.RpcRepairSystem(SystemTypes.LifeSupp, 128); //Sabotage oxygen
+                    __instance.RpcUpdateSystem(SystemTypes.LifeSupp, 128); //Sabotage oxygen
                 }
 
             }else{
@@ -79,16 +79,16 @@ public static class Ship_SabotagePostfix
             if (currentMapID == 1){ //MiraHQ uses HqHudSystemType to sabotage communications
                 var hqcommsSystem = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
                 if (hqcommsSystem.IsActive){
-                    __instance.RpcRepairSystem(SystemTypes.Comms, 16); //Repair communications
+                    __instance.RpcUpdateSystem(SystemTypes.Comms, 16); //Repair communications
                 }else{
-                    __instance.RpcRepairSystem(SystemTypes.Comms, 128); //Sabotage communications
+                    __instance.RpcUpdateSystem(SystemTypes.Comms, 128); //Sabotage communications
                 }
             }else{//Polus, Skeld and Airship have normal behaviour
                 var commsSystem = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
                 if (commsSystem.IsActive){
-                    __instance.RpcRepairSystem(SystemTypes.Comms, 16); //Repair communications
+                    __instance.RpcUpdateSystem(SystemTypes.Comms, 16); //Repair communications
                 }else{
-                    __instance.RpcRepairSystem(SystemTypes.Comms, 128); //Sabotage communications
+                    __instance.RpcUpdateSystem(SystemTypes.Comms, 128); //Sabotage communications
                 }
             }
 
@@ -103,7 +103,7 @@ public static class Ship_SabotagePostfix
                     var switchMask = 1 << (i & 0x1F);
 
                     if ((elecSystem.ActualSwitches & switchMask) != (elecSystem.ExpectedSwitches & switchMask)){
-                        __instance.RpcRepairSystem(SystemTypes.Electrical, i); //Repair electrical
+                        __instance.RpcUpdateSystem(SystemTypes.Electrical, (byte)i); //Repair electrical
                     }
                 }    
 
@@ -118,7 +118,7 @@ public static class Ship_SabotagePostfix
                     }
                 }
 
-                __instance.RpcRepairSystem(SystemTypes.Electrical, (int)(b | 128)); //Sabotage electrical
+                __instance.RpcUpdateSystem(SystemTypes.Electrical, (byte)(b | 128)); //Sabotage electrical
 
             }
 
@@ -161,7 +161,7 @@ public static class Ship_BlackoutPostfix
             //They are unfixable through regular means (toggling switches)
             //They can only be repaired by repeating RpcRepairSystem with the same amount
             
-            __instance.RpcRepairSystem(SystemTypes.Electrical, 69);
+            __instance.RpcUpdateSystem(SystemTypes.Electrical, 69);
             CheatSettings.blackOut = false;
         } 
     }

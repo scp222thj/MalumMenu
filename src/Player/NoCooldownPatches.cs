@@ -21,7 +21,7 @@ public static class NoCooldowns_ShapeshiftPrefix
     }
 }
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcRevertShapeshift))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckRevertShapeshift))]
 public static class NoCooldowns_RevertShapeshiftPrefix
 {
     //Prefix patch of PlayerControl.RpcRevertShapeshift to remove shapeshift animation
@@ -31,7 +31,7 @@ public static class NoCooldowns_RevertShapeshiftPrefix
         //Invokes it again with animation disabled
         //Only works for LocalPlayer
         if (__instance.AmOwner && shouldAnimate && CheatSettings.noCooldowns){
-            __instance.RpcRevertShapeshift(false);
+            __instance.CmdCheckRevertShapeshift(false);
             return false;
         }
         
