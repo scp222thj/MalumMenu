@@ -5,7 +5,7 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckShapeshift))]
 public static class NoCooldowns_ShapeshiftPrefix
 {
-    //Prefix patch of PlayerControl.RpcShapeshift to remove shapeshift animation
+    //Prefix patch of PlayerControl.CmdCheckShapeshift to remove shapeshift animation
     public static bool Prefix(PlayerControl target, bool shouldAnimate, PlayerControl __instance)
     {
         //Skips the original method if animation is enabled & 
@@ -24,7 +24,7 @@ public static class NoCooldowns_ShapeshiftPrefix
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckRevertShapeshift))]
 public static class NoCooldowns_RevertShapeshiftPrefix
 {
-    //Prefix patch of PlayerControl.RpcShapeshift to remove shapeshift animation
+    //Prefix patch of PlayerControl.CmdCheckRevertShapeshift to remove reverse shapeshift animation
     public static bool Prefix(bool shouldAnimate, PlayerControl __instance)
     {
         //Skips the original method if animation is enabled & 

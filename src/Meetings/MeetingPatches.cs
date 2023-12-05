@@ -53,12 +53,14 @@ public static class Meetings_VoteIconPrefix
 	//Basically does what the original method did with the required modifications
     public static bool Prefix(GameData.PlayerInfo voterPlayer, int index, Transform parent, MeetingHud __instance){
         if (!CheatSettings.revealVotes){
-            return true; // Run original method instead if CheatSettings.seeAnon is turned off
+            return true; //Run original method if CheatSettings.seeAnon is turned off
         }
 
         SpriteRenderer spriteRenderer = Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
-		PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
-		spriteRenderer.transform.SetParent(parent);
+
+		PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer); // Skip check for GameManager.Instance.LogicOptions.GetAnonymousVotes()
+		
+        spriteRenderer.transform.SetParent(parent);
 		spriteRenderer.transform.localScale = Vector3.zero;
 		PlayerVoteArea component = parent.GetComponent<PlayerVoteArea>();
 		if (component != null)
@@ -67,6 +69,7 @@ public static class Meetings_VoteIconPrefix
 		}
 		__instance.StartCoroutine(Effects.Bloop((float)index * 0.3f, spriteRenderer.transform, 1f, 0.5f));
 		parent.GetComponent<VoteSpreader>().AddVote(spriteRenderer);
-        return false; // Skip original method
+        
+        return false; //Skip original method
     }
 }    

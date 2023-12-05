@@ -4,7 +4,7 @@
         <LangVersion>latest</LangVersion>
         <DebugType>embedded</DebugType>
 
-        <VersionPrefix>1.1.1</VersionPrefix>
+        <VersionPrefix>1.2.0</VersionPrefix>
         <Description>all play and no cheats makes among us a dull game</Description>
         <!-- <Authors>scp222thj</Authors> -->
     </PropertyGroup>

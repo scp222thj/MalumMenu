@@ -33,6 +33,7 @@
     - [Oxygen](#oxygen)
     - [Eletrical](#eletrical)
     - [Comms](#comms)
+    - [Mushroom Mixup](#mushroom-mixup)
   - [Vents](#vents)
     - [UseVents](#usevents)
     - [KickVents](#kickvents)
@@ -254,6 +255,11 @@ Type: **Button**
 
 ### Comms
 Enables/Disables Communications sabotage
+
+Type: **Button**
+
+### Mushroom Mixup
+Induces a Mushroom Mixup on Fungle ship
 
 Type: **Button**
 
