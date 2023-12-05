@@ -56,10 +56,15 @@ public static class Meetings_VoteIconPrefix
             return true; // Run original method instead if CheatSettings.seeAnon is turned off
         }
 
-        SpriteRenderer spriteRenderer = UnityEngine.Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
-		PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer); // Skips check for GameManager.Instance.LogicOptions.GetAnonymousVotes()
+        SpriteRenderer spriteRenderer = Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
+		PlayerMaterial.SetColors(voterPlayer.DefaultOutfit.ColorId, spriteRenderer);
 		spriteRenderer.transform.SetParent(parent);
 		spriteRenderer.transform.localScale = Vector3.zero;
+		PlayerVoteArea component = parent.GetComponent<PlayerVoteArea>();
+		if (component != null)
+		{
+			spriteRenderer.material.SetInt(PlayerMaterial.MaskLayer, component.MaskLayer);
+		}
 		__instance.StartCoroutine(Effects.Bloop((float)index * 0.3f, spriteRenderer.transform, 1f, 0.5f));
 		parent.GetComponent<VoteSpreader>().AddVote(spriteRenderer);
         return false; // Skip original method

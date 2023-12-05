@@ -2,7 +2,7 @@ using HarmonyLib;
 
 namespace MalumMenu;
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcShapeshift))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckShapeshift))]
 public static class NoCooldowns_ShapeshiftPrefix
 {
     //Prefix patch of PlayerControl.RpcShapeshift to remove shapeshift animation
@@ -12,7 +12,7 @@ public static class NoCooldowns_ShapeshiftPrefix
         //Invokes it again with animation disabled
         //Only works for LocalPlayer
         if (__instance.AmOwner && shouldAnimate && CheatSettings.noCooldowns){
-            __instance.RpcShapeshift(target, false);
+            __instance.CmdCheckShapeshift(target, false);
             return false;
         }
 
@@ -21,20 +21,20 @@ public static class NoCooldowns_ShapeshiftPrefix
     }
 }
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcRevertShapeshift))]
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckRevertShapeshift))]
 public static class NoCooldowns_RevertShapeshiftPrefix
 {
-    //Prefix patch of PlayerControl.RpcRevertShapeshift to remove shapeshift animation
+    //Prefix patch of PlayerControl.RpcShapeshift to remove shapeshift animation
     public static bool Prefix(bool shouldAnimate, PlayerControl __instance)
     {
         //Skips the original method if animation is enabled & 
         //Invokes it again with animation disabled
         //Only works for LocalPlayer
         if (__instance.AmOwner && shouldAnimate && CheatSettings.noCooldowns){
-            __instance.RpcRevertShapeshift(false);
+            __instance.CmdCheckRevertShapeshift(false);
             return false;
         }
-        
+
         //Once animation has been disabled the original method runs normally
         return true;
     }

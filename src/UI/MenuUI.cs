@@ -57,6 +57,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Oxygen", () => CheatSettings.oxygenSab, x => CheatSettings.oxygenSab = x),
             new ToggleInfo(" Electrical", () => CheatSettings.elecSab, x => CheatSettings.elecSab = x),
             new ToggleInfo(" Comms", () => CheatSettings.commsSab, x => CheatSettings.commsSab = x),
+            new ToggleInfo(" Mushroom Mixup", () => CheatSettings.mushSab, x => CheatSettings.mushSab = x),
         }));
         
         groups.Add(new GroupInfo("Vents", false, new List<ToggleInfo>() {
@@ -106,7 +107,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!isShipCheck.isShip){
-            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = false;
+            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = CheatSettings.mushSab = false;
         }
     }
 

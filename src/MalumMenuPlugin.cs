@@ -13,8 +13,8 @@ namespace MalumMenu;
 public partial class MalumPlugin : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
-    public static string malumVersion = "1.1.2";
-    public static List<string> supportedAU = new List<string> { "2023.7.12", "2023.7.11" };
+    public static string malumVersion = "1.2.0";
+    public static List<string> supportedAU = new List<string> { "2023.11.28" };
     private static MenuUI menuUI;
 
     public override void Load()

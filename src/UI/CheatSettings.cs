@@ -43,6 +43,7 @@ namespace MalumMenu
         public static bool elecSab;
         public static bool reactorSab;
         public static bool oxygenSab;
+        public static bool mushSab;
 
 
         //Meetings
