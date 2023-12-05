@@ -1,6 +1,8 @@
 # 👻 MalumMenu
 
-An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.
+An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules. 
+
+Join the new Discord server : [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 
 <img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
 
