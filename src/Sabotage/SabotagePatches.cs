@@ -196,3 +196,33 @@ public static class Ship_BlackoutPostfix
         } 
     }
 }
+
+
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
+public static class MushroomSporePostfix
+{
+    public static void Postfix(ShipStatus __instance)
+    {
+        if (CheatSettings.mushSpore)
+        {
+            byte currentMapID = Utils.getCurrentMapID();
+            if (currentMapID == 5)
+            {
+                FungleShipStatus fungle = (FungleShipStatus)__instance;
+                for (int i = 0; i < 8; i++)
+                {
+                    Mushroom mushroom = fungle.GetMushroomFromId(i);
+                    mushroom.StartSporeTrigger(PlayerControl.LocalPlayer);
+                }
+            }
+            else
+            {
+
+                HudManager.Instance.Notifier.AddItem("It only works on The Fungle.");
+
+            }
+
+            CheatSettings.mushSpore = false;
+        }
+    }
+}

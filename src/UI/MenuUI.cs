@@ -58,6 +58,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Electrical", () => CheatSettings.elecSab, x => CheatSettings.elecSab = x),
             new ToggleInfo(" Comms", () => CheatSettings.commsSab, x => CheatSettings.commsSab = x),
             new ToggleInfo(" MushroomMixup", () => CheatSettings.mushSab, x => CheatSettings.mushSab = x),
+            new ToggleInfo(" SporesTrigger", () => CheatSettings.mushSpore, x => CheatSettings.mushSpore = x)
         }));
         
         groups.Add(new GroupInfo("Vents", false, new List<ToggleInfo>() {
