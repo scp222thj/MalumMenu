@@ -17,6 +17,7 @@ namespace MalumMenu
         public static bool fullBright;
         public static bool seeGhosts;
         public static bool seeRoles;
+        public static bool seeInSpore;
 
         //Camera
         public static bool spectate;
@@ -45,7 +46,7 @@ namespace MalumMenu
         public static bool oxygenSab;
         public static bool mushSab;
         public static bool mushSpore;
-
+        public static bool seeMixup;
 
         //Meetings
         public static bool closeMeeting;

@@ -25,6 +25,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
             new ToggleInfo(" SeeGhosts", () => CheatSettings.seeGhosts, x => CheatSettings.seeGhosts = x),
             new ToggleInfo(" SeeRoles", () => CheatSettings.seeRoles, x => CheatSettings.seeRoles = x),
+            new ToggleInfo(" SeeInsideSpores", () => CheatSettings.seeInSpore, x => CheatSettings.seeInSpore = x),
             new ToggleInfo(" AlwaysChat", () => CheatSettings.alwaysChat, x => CheatSettings.alwaysChat = x),
             new ToggleInfo(" FullBright", () => CheatSettings.fullBright, x => CheatSettings.fullBright = x)
         }));
@@ -58,6 +59,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Electrical", () => CheatSettings.elecSab, x => CheatSettings.elecSab = x),
             new ToggleInfo(" Comms", () => CheatSettings.commsSab, x => CheatSettings.commsSab = x),
             new ToggleInfo(" MushroomMixup", () => CheatSettings.mushSab, x => CheatSettings.mushSab = x),
+            new ToggleInfo(" MixupOff", () => CheatSettings.seeMixup, x => CheatSettings.seeMixup = x),
             new ToggleInfo(" SporesTrigger", () => CheatSettings.mushSpore, x => CheatSettings.mushSpore = x)
         }));
         
@@ -108,7 +110,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!isShipCheck.isShip){
-            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = CheatSettings.mushSab = false;
+            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = CheatSettings.mushSab = CheatSettings.fullLockdown = CheatSettings.mushSpore = CheatSettings.seeMixup = false;
         }
     }
 
