@@ -29,19 +29,18 @@ public static class Ship_SabotagePostfix
 
             }else if (currentMapID == 4){ //Airship uses HeliSabotageSystem to sabotage reactor
 
-                var reactSystem = __instance.Systems[SystemTypes.Reactor].Cast<HeliSabotageSystem>();
+                var HeliSystem = __instance.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
                 
-                if (reactSystem.IsActive){
+                if (HeliSystem.IsActive){
                     
                     //Repair reactor
-                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 16 | 0);
-                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 16 | 1);
+                    __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 0);
+                    __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 1);
 
                 }else{
 
                     //Sabotage reactor
-                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 128 | 0);
-                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 128 | 1);
+                    __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 128);
 
                 }
 
@@ -75,10 +74,18 @@ public static class Ship_SabotagePostfix
             CheatSettings.oxygenSab = false; //Button behaviour
         
         }else if (CheatSettings.mushSab){
-
-            if (currentMapID == 5){ //MushroomMixup only works on Fungle
-                __instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); //Sabotage MushroomMixup
-            }else{
+            if (currentMapID == 5)
+            { //MushroomMixup only works on Fungle
+                var mushroomSystem = __instance.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
+                if (mushroomSystem.IsActive)
+                {
+                    HudManager.Instance.Notifier.AddItem("MushroomMixup Already active!");
+                }
+                else
+                    __instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); //Sabotage MushroomMixup
+            }
+            else
+            {
                 HudManager.Instance.Notifier.AddItem("MushroomMixup not possible on this map");
             }
 
