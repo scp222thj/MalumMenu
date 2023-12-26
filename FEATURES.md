@@ -392,6 +392,6 @@ MalumMenu has a simple GUI that is easy to navigate and can be toggled using the
 MalumMenu comes with custom announcements that it will automatically fetch online at launch
 
 MalumNews webserver status:
-[![MalumNews](https://img.shields.io/website-up-down-green-red/http/scpzzzthj.tk.svg)](https://scpzzzthj.tk)
+[![MalumNews](https://img.shields.io/website-up-down-green-red/http/scp222thj.dev.svg)](https://scp222thj.dev)
 
 <img width="800" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133760289326768148/image.png">
