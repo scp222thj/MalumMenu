@@ -48,7 +48,7 @@ namespace MalumMenu;
         //Prefix patch of Getter method for BackendEndpoints.Announcements for custom announcements
 		public static bool Prefix(StatsManager __instance, ref string __result)
         {
-            __result = "https://scpzzzthj.tk/malumnews"; //MalumNews webserver
+            __result = "https://scp222thj.dev/malumnews"; //MalumNews webserver
             return false;
         }
     }
