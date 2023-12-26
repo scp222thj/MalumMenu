@@ -74,18 +74,9 @@ public static class Ship_SabotagePostfix
             CheatSettings.oxygenSab = false; //Button behaviour
         
         }else if (CheatSettings.mushSab){
-            if (currentMapID == 5)
-            { //MushroomMixup only works on Fungle
-                var mushroomSystem = __instance.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
-                if (mushroomSystem.IsActive)
-                {
-                    HudManager.Instance.Notifier.AddItem("MushroomMixup Already active!");
-                }
-                else
-                    __instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); //Sabotage MushroomMixup
-            }
-            else
-            {
+            if (currentMapID == 5){ //MushroomMixup only works on Fungle
+                __instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); //Sabotage MushroomMixup
+            }else{
                 HudManager.Instance.Notifier.AddItem("MushroomMixup not possible on this map");
             }
 
