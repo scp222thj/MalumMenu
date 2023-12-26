@@ -44,7 +44,7 @@ namespace MalumMenu
         public static bool reactorSab;
         public static bool oxygenSab;
         public static bool mushSab;
-
+        public static bool mushSpore;
 
         //Meetings
         public static bool closeMeeting;
