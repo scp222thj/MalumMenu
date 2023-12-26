@@ -210,12 +210,12 @@ public static class MushroomSporePostfix
             {
                 foreach (Mushroom mushroom in __instance.sporeMushrooms.Values)
                 {
-                    mushroom.StartSporeTrigger(PlayerControl.LocalPlayer);
+                    PlayerControl.LocalPlayer.CmdCheckSporeTrigger(mushroom);
                 }
             }
             else
             {
-                HudManager.Instance.Notifier.AddItem("It only works on The Fungle.");
+                HudManager.Instance.Notifier.AddItem("Mushrooms not present on this map");
             }
 
             CheatSettings.mushSpore = false;
