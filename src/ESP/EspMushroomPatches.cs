@@ -7,7 +7,7 @@ public static class ESP_SeePlayersInSporesPostfix
 {
     public static void Postfix(Mushroom __instance)
     {
-        if (CheatSettings.fullBright)
+        if (ESP_HudManagerPostfix.fullBrightActive)
         {
             __instance.sporeMask.transform.position = new UnityEngine.Vector3(__instance.sporeMask.transform.position.x, __instance.sporeMask.transform.position.y, -1);
             return;

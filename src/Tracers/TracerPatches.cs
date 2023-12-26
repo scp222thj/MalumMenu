@@ -85,7 +85,7 @@ public static class Tracers_BodiesPatches
             DeadBody deadBody = bodyObject.GetComponent<DeadBody>();
 
             if (deadBody){
-                if (!deadBody.Reported){ //Only "fresh" dead bodies have tracers
+                if (!deadBody.Reported){ //Only unreported dead bodies have tracers
 
                     //Tracers are just LineRenderers for each dead body
                     lineRenderer = bodyObject.GetComponent<LineRenderer>();

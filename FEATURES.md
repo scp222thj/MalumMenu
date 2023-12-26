@@ -33,7 +33,8 @@
     - [Oxygen](#oxygen)
     - [Eletrical](#eletrical)
     - [Comms](#comms)
-    - [Mushroom Mixup](#mushroom-mixup)
+    - [MushroomMixup](#mushroommixup)
+    - [SporesTrigger](#sporestrigger)
   - [Vents](#vents)
     - [UseVents](#usevents)
     - [KickVents](#kickvents)
@@ -119,6 +120,8 @@ Type: **Toggle**
 
 ### FullBright
 Removes all shadows, allowing you to see during blackouts and even through walls
+
+It also allows you to see players through spore clouds on the Fungle map
 
 Type: **Toggle**
 - Default: **OFF**
@@ -258,8 +261,13 @@ Enables/Disables Communications sabotage
 
 Type: **Button**
 
-### Mushroom Mixup
-Induces a Mushroom Mixup on Fungle ship
+### MushroomMixup
+Induces a Mushroom Mixup on Fungle map
+
+Type: **Button**
+
+### SporesTrigger
+Shoots spore clouds out of all the mushrooms in the Fungle jungle
 
 Type: **Button**
 
