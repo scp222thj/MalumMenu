@@ -59,7 +59,7 @@ Usage of this mod can violate the terms of service of Among Us, which may lead t
 For a complete list of all of MalumMenu's features, click [here](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md)
 # 🧑‍💻 Authors
 
-- [@scp222thj](https://scpzzzthj.tk)
+- [@scp222thj](https://scp222thj.dev)
 # 🫂 Contributing
 
 - If you find a bug or would like to suggest a new feature, feel free to open a new issue [here](https://github.com/scp222thj/MalumMenu/issues/new)
