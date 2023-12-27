@@ -56,9 +56,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Reactor", () => CheatSettings.reactorSab, x => CheatSettings.reactorSab = x),
             new ToggleInfo(" Oxygen", () => CheatSettings.oxygenSab, x => CheatSettings.oxygenSab = x),
             new ToggleInfo(" Electrical", () => CheatSettings.elecSab, x => CheatSettings.elecSab = x),
-            new ToggleInfo(" Comms", () => CheatSettings.commsSab, x => CheatSettings.commsSab = x),
-            new ToggleInfo(" MushroomMixup", () => CheatSettings.mushSab, x => CheatSettings.mushSab = x),
-            new ToggleInfo(" SporesTrigger", () => CheatSettings.mushSpore, x => CheatSettings.mushSpore = x)
+            new ToggleInfo(" Comms", () => CheatSettings.commsSab, x => CheatSettings.commsSab = x)
         }));
         
         groups.Add(new GroupInfo("Vents", false, new List<ToggleInfo>() {
@@ -72,6 +70,12 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" RevealVotes", () => CheatSettings.revealVotes, x => CheatSettings.revealVotes = x),
             new ToggleInfo(" CloseMeeting", () => CheatSettings.closeMeeting, x => CheatSettings.closeMeeting = x),
             new ToggleInfo(" CallMeeting", () => CheatSettings.callMeeting, x => CheatSettings.callMeeting = x)
+        }));
+
+        groups.Add(new GroupInfo("Mushrooms", false, new List<ToggleInfo>() {
+            new ToggleInfo(" MushroomMixup", () => CheatSettings.mushSab, x => CheatSettings.mushSab = x),
+            new ToggleInfo(" SporesTrigger", () => CheatSettings.mushSpore, x => CheatSettings.mushSpore = x),
+            new ToggleInfo(" SporeCloudVision", () => CheatSettings.sporeVision, x => CheatSettings.sporeVision = x),
         }));
 
         groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {

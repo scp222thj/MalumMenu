@@ -43,8 +43,6 @@ namespace MalumMenu
         public static bool elecSab;
         public static bool reactorSab;
         public static bool oxygenSab;
-        public static bool mushSab;
-        public static bool mushSpore;
 
         //Meetings
         public static bool closeMeeting;
@@ -58,10 +56,15 @@ namespace MalumMenu
         public static bool ventVision;
 
 
-        //Host-Only
+        //Mushrooms
         public static bool godMode;
         public static bool evilVote;
         public static bool voteImmune;
+
+        //Host-Only
+        public static bool mushSab;
+        public static bool mushSpore;
+        public static bool sporeVision;
 
         //Passive
         public static bool unlockFeatures = true;

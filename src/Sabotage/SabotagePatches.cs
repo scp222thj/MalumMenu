@@ -73,16 +73,6 @@ public static class Ship_SabotagePostfix
 
             CheatSettings.oxygenSab = false; //Button behaviour
         
-        }else if (CheatSettings.mushSab){
-            if (currentMapID == 5){ //MushroomMixup only works on Fungle
-                __instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); //Sabotage MushroomMixup
-            }else{
-                HudManager.Instance.Notifier.AddItem("MushroomMixup not possible on this map");
-            }
-
-            CheatSettings.mushSab = false; //Button behaviour
-    
-        
         }else if (CheatSettings.commsSab){ //Communications sabotages
             
             if (currentMapID == 1 || currentMapID == 5){ //MiraHQ and Fungle use HqHudSystemType to sabotage communications
@@ -192,31 +182,5 @@ public static class Ship_BlackoutPostfix
 
             CheatSettings.blackOut = false;
         } 
-    }
-}
-
-
-[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
-public static class MushroomSporePostfix
-{
-    public static void Postfix(FungleShipStatus __instance)
-    {
-        if (CheatSettings.mushSpore)
-        {
-            byte currentMapID = Utils.getCurrentMapID();
-            if (currentMapID == 5)
-            {
-                foreach (Mushroom mushroom in __instance.sporeMushrooms.Values)
-                {
-                    PlayerControl.LocalPlayer.CmdCheckSporeTrigger(mushroom);
-                }
-            }
-            else
-            {
-                HudManager.Instance.Notifier.AddItem("Mushrooms not present on this map");
-            }
-
-            CheatSettings.mushSpore = false;
-        }
     }
 }
