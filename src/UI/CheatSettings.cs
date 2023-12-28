@@ -12,6 +12,9 @@ namespace MalumMenu
         public static bool teleportCursor;
         public static bool teleportPlayer;
 
+        //Network
+        public static bool kickPlayer;
+
         //ESP
         public static bool alwaysChat;
         public static bool fullBright;

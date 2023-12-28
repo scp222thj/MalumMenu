@@ -22,6 +22,10 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Teleport to Player", () => CheatSettings.teleportPlayer, x => CheatSettings.teleportPlayer = x)
         }));
 
+        groups.Add(new GroupInfo("Network", false, new List<ToggleInfo>() {
+            new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x)
+        }));
+
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
             new ToggleInfo(" SeeGhosts", () => CheatSettings.seeGhosts, x => CheatSettings.seeGhosts = x),
             new ToggleInfo(" SeeRoles", () => CheatSettings.seeRoles, x => CheatSettings.seeRoles = x),
@@ -113,7 +117,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!isShipCheck.isShip){
-            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = CheatSettings.mushSab = CheatSettings.fullLockdown = CheatSettings.mushSpore = false;
+            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.kickPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = CheatSettings.mushSab = CheatSettings.fullLockdown = CheatSettings.mushSpore = false;
         }
     }
 
