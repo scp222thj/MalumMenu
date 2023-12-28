@@ -22,11 +22,11 @@ public static class Network_KickPlayerPostfix
                     CheatSettings.spectate = CheatSettings.teleportPlayer = false;
                 }
 
-                List<GameData.PlayerInfo> playerList = new List<GameData.PlayerInfo>();
+                List<PlayerControl> playerList = new List<PlayerControl>();
 
                 //All players are saved to playerList apart from LocalPlayer
-                foreach (var player in GameData.Instance.AllPlayers){
-                    if (!player.Object.AmOwner){
+                foreach (var player in PlayerControl.AllPlayerControls){
+                    if (!player.AmOwner){
                         playerList.Add(player);
                     }
                 }

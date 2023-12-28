@@ -22,11 +22,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Teleport to Player", () => CheatSettings.teleportPlayer, x => CheatSettings.teleportPlayer = x)
         }));
 
-        groups.Add(new GroupInfo("Network", false, new List<ToggleInfo>() {
-            new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
-            new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x)
-        }));
-
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
             new ToggleInfo(" SeeGhosts", () => CheatSettings.seeGhosts, x => CheatSettings.seeGhosts = x),
             new ToggleInfo(" SeeRoles", () => CheatSettings.seeRoles, x => CheatSettings.seeRoles = x),
@@ -53,6 +48,11 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Impostors", () => CheatSettings.mapImps, x => CheatSettings.mapImps = x),
             new ToggleInfo(" Ghosts", () => CheatSettings.mapGhosts, x => CheatSettings.mapGhosts = x),
             new ToggleInfo(" Color-based", () => CheatSettings.colorBasedMap, x => CheatSettings.colorBasedMap = x)
+        }));
+
+        groups.Add(new GroupInfo("Network", false, new List<ToggleInfo>() {
+            new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
+            new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x)
         }));
 
         groups.Add(new GroupInfo("Sabotage", false, new List<ToggleInfo>() {
