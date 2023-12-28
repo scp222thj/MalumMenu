@@ -22,11 +22,11 @@ public static class Network_KickPlayerPostfix
                     CheatSettings.spectate = CheatSettings.teleportPlayer = false;
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
-                foreach (var player in PlayerControl.AllPlayerControls){
-                    if (!player.AmOwner){
+                foreach (var player in GameData.Instance.AllPlayers){
+                    if (!player.Object.AmOwner){
                         playerList.Add(player);
                     }
                 }
@@ -36,12 +36,11 @@ public static class Network_KickPlayerPostfix
                 {
                     //Votekick any player from the game by faking votes from all players
                     //Found here: https://github.com/NikoCat233/MalumMenu/blob/main/src/Passive/VoteBanSystemPatch.cs
-                    int targetClientId = -1;
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected){
                         foreach (var item in PlayerControl.AllPlayerControls.ToArray().Where(x => x != null && !x.AmOwner))
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(VoteBanSystem.Instance.NetId, (byte)RpcCalls.AddVote, SendOption.None, targetClientId);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(VoteBanSystem.Instance.NetId, (byte)RpcCalls.AddVote, SendOption.None, HostData.Id);
                             writer.Write(AmongUsClient.Instance.GetClientIdFromCharacter(item.Data.Object));
                             writer.Write(AmongUsClient.Instance.GetClientIdFromCharacter(Utils_PlayerPickMenu.targetPlayer.Data.Object));
                             AmongUsClient.Instance.FinishRpcImmediately(writer);

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using AmongUs.Data;
 using Il2CppSystem.Collections.Generic;
 using System.IO;
 using HarmonyLib;
@@ -137,10 +138,10 @@ public static class Utils_PlayerPickMenu
     public static bool IsActive;
     public static PlayerControl targetPlayer;
     public static Action customAction;
-    public static List<PlayerControl> customPlayerList;
+    public static List<GameData.PlayerInfo> customPlayerList;
 
     //Open a custom menu to pick a player as a target
-    public static void openPlayerPickMenu(List<PlayerControl> playerList, Action action)
+    public static void openPlayerPickMenu(List<GameData.PlayerInfo> playerList, Action action)
     {
         IsActive = true;
         customPlayerList = playerList;
@@ -160,29 +161,29 @@ public static class Utils_PlayerPickMenu
         if (IsActive){ //Player pick menu logic
 
             //Custom player list set by openPlayerPickMenu
-            List<PlayerControl> list = customPlayerList;
+            List<GameData.PlayerInfo> list = customPlayerList;
 
             __instance.potentialVictims = new List<ShapeshifterPanel>();
             List<UiElement> list2 = new List<UiElement>();
 
             for (int i = 0; i < list.Count; i++)
             {
-                PlayerControl player = list[i];
+                GameData.PlayerInfo player = list[i];
                 int num = i % 3;
                 int num2 = i / 3;
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
                 shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                 
-                shapeshifterPanel.SetPlayer(i, player.Data, (Action) (() =>
+                shapeshifterPanel.SetPlayer(i, player, (Action) (() =>
                 {
-                    targetPlayer = player; //Save targeted player
+                    targetPlayer = player.Object; //Save targeted player
 
                     customAction.Invoke(); //Custom action set by openPlayerPickMenu
 
                     __instance.Close();
                 }));
 
-                shapeshifterPanel.NameText.color = Utils.getColorName(CheatSettings.seeRoles, player.Data);
+                shapeshifterPanel.NameText.color = Utils.getColorName(CheatSettings.seeRoles, player);
                 __instance.potentialVictims.Add(shapeshifterPanel);
                 list2.Add(shapeshifterPanel.Button);
             }
@@ -198,3 +199,34 @@ public static class Utils_PlayerPickMenu
         return true; //Open normal shapeshifter menu if not active
     }
 }   
+
+[HarmonyPatch(typeof(ShapeshifterPanel), nameof(ShapeshifterPanel.SetPlayer))]
+public static class Utils_PlayerPickMenuSetPlayer
+{
+    //Prefix patch of EOSManager.IsMinorOrWaiting to remove minor status
+    public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Action onShift)
+    {
+        if (Utils_PlayerPickMenu.IsActive){ //Player pick menu logic
+
+            __instance.shapeshift = onShift;
+            __instance.PlayerIcon.SetFlipX(false);
+            __instance.PlayerIcon.ToggleName(false);
+            SpriteRenderer[] componentsInChildren = __instance.GetComponentsInChildren<SpriteRenderer>();
+            for (int i = 0; i < componentsInChildren.Length; i++)
+            {
+                componentsInChildren[i].material.SetInt(PlayerMaterial.MaskLayer, index + 2);
+            }
+            __instance.PlayerIcon.SetMaskLayer(index + 2);
+            __instance.PlayerIcon.UpdateFromEitherPlayerDataOrCache(playerInfo, PlayerOutfitType.Default, PlayerMaterial.MaskType.ComplexUI, false, null);
+            __instance.LevelNumberText.text = ProgressionManager.FormatVisualLevel(playerInfo.PlayerLevel);
+            __instance.NameText.text = playerInfo.PlayerName;
+            DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Action)__instance.SetColorblindText;
+            __instance.SetColorblindText();
+
+            return false; //Skip original method when active
+
+        }
+
+        return true; //Open normal shapeshifter menu if not active
+    }
+}

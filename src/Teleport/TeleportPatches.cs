@@ -35,11 +35,11 @@ public static class Teleport_PlayerPostfix
                     CheatSettings.spectate = CheatSettings.kickPlayer = false;
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
-                foreach (var player in PlayerControl.AllPlayerControls){
-                    if (!player.AmOwner){
+                foreach (var player in GameData.Instance.AllPlayers){
+                    if (!player.Object.AmOwner){
                         playerList.Add(player);
                     }
                 }

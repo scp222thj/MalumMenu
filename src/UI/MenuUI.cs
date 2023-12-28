@@ -118,7 +118,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!isShipCheck.isShip){
-            CheatSettings.blackOut = CheatSettings.teleportPlayer = CheatSettings.kickPlayer = CheatSettings.spectate = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = CheatSettings.mushSab = CheatSettings.fullLockdown = CheatSettings.mushSpore = false;
+            CheatSettings.blackOut = CheatSettings.kickVents = CheatSettings.callMeeting = CheatSettings.closeMeeting = CheatSettings.reactorSab = CheatSettings.oxygenSab = CheatSettings.commsSab = CheatSettings.mushSab = CheatSettings.fullLockdown = CheatSettings.mushSpore = false;
         }
     }
 
