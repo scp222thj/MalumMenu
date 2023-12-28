@@ -23,7 +23,8 @@ public class MenuUI : MonoBehaviour
         }));
 
         groups.Add(new GroupInfo("Network", false, new List<ToggleInfo>() {
-            new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x)
+            new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
+            new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x)
         }));
 
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {

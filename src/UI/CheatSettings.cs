@@ -14,6 +14,7 @@ namespace MalumMenu
 
         //Network
         public static bool kickPlayer;
+        public static bool spamChat;
 
         //ESP
         public static bool alwaysChat;
