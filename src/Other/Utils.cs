@@ -201,9 +201,9 @@ public static class Utils_PlayerPickMenu
 }   
 
 [HarmonyPatch(typeof(ShapeshifterPanel), nameof(ShapeshifterPanel.SetPlayer))]
-public static class Utils_PlayerPickMenuSetPlayer
+public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
 {
-    //Prefix patch of EOSManager.IsMinorOrWaiting to remove minor status
+    //Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
     public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Action onShift)
     {
         if (Utils_PlayerPickMenu.IsActive){ //Player pick menu logic
@@ -219,6 +219,9 @@ public static class Utils_PlayerPickMenuSetPlayer
             __instance.PlayerIcon.SetMaskLayer(index + 2);
             __instance.PlayerIcon.UpdateFromEitherPlayerDataOrCache(playerInfo, PlayerOutfitType.Default, PlayerMaterial.MaskType.ComplexUI, false, null);
             __instance.LevelNumberText.text = ProgressionManager.FormatVisualLevel(playerInfo.PlayerLevel);
+            
+            //Skips using custom nameplates because they break the PlayerPickMenu in lobbies
+
             __instance.NameText.text = playerInfo.PlayerName;
             DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Action)__instance.SetColorblindText;
             __instance.SetColorblindText();
