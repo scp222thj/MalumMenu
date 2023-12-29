@@ -31,11 +31,6 @@ Join the new Discord server : [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88
 | v1.0.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.0.0/MalumMenu-1.0.0.zip) |
 
 
-# ⚠️ Disclaimer
-
-This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. 
-
-Usage of this mod can violate the terms of service of Among Us, which may lead to punitive action including temporary or permanent bans from the game. The creator is not responsible for any consequences you may face due to usage. Use at your own risk.
 # ⬇️ Installation
 
 1. Download `MalumMenu-*.zip` from [here](https://github.com/scp222thj/MalumMenu/releases/latest)
@@ -61,8 +56,9 @@ Usage of this mod can violate the terms of service of Among Us, which may lead t
 
 For a complete list of all of MalumMenu's features, click [here](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md)
 # ❓ FAQ
-
-## I'm having issues installing MalumMenu
+Click to expand each topic
+<details>
+  <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
 First of all, make sure you are running the most recent version of Among Us (`2023.11.28`) with the most recent version of MalumMenu (`v1.2.1`)
 
@@ -83,15 +79,19 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 After installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while.
 
 If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
+</details>
 
-## I have found a bug OR I would like to suggest a new feature
+<details>
+  <summary><h2>👾 I found a bug OR I would like to suggest a new feature</h2></summary>
 
 To let me know, you can open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can discuss it on our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 
 If you want, you can also contribute to the project and implement the change yourself by making a pull request. All contributions are welcome!
+</details>
 
-## I want to contribute to this project
-
+<details>
+  <summary><h2>👨‍💻 I want to contribute to this project</h2></summary>
+  
 To get started, I suggest you first learn about the basics of C# and Unity, since that's what Among Us is written in. There are plenty of tutorials out there to help you with that.
 
 You should also learn about Github forking and pull requests, since you will need to use those to make any contributions to the project. [Here](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project) is the official documentation on the topic.
@@ -103,6 +103,14 @@ Here are some other useful resources:
 - The Reactor discord server: [here](https://reactor.gg/discord)
     - A great community of Among Us modders where you can ask questions and get help
     - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](github.com/dnSpy/dnSpy/releases/latest) to go through these.
+</details>
+
 # 📜 License
 
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://choosealicense.com/licenses/gpl-3.0/)
+
+# ⚠️ Disclaimer
+
+This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. 
+
+Usage of this mod can violate the terms of service of Among Us, which may lead to punitive action including temporary or permanent bans from the game. The creator is not responsible for any consequences you may face due to usage. Use at your own risk.
