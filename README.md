@@ -1,24 +1,24 @@
-# 👻 MalumMenu
 
-An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules. 
+<p align="center">
+  <img src="./logo.png">
+</p>
 
-Join the new Discord server : [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 
-<img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
+<p align="center">
+  <img src="https://img.shields.io/badge/Made%20with-C%23-1f425f.svg?style=plastic&logo=csharp&color=000000&labelColor=A200FF">
+  <img src="https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=plastic&logo=GNU">
+</p>
+
+<p align="center">
+<b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules. </b>
+
 
 # 😎 Table Of Contents
-
-- [👻 MalumMenu](#-malummenu)
-- [😎 Table Of Contents](#-table-of-contents)
 - [🎁 Releases](#-releases)
-- [⚠️ Disclaimer](#️-disclaimer)
 - [⬇️ Installation](#️-installation)
 - [📋 Features](#-features)
 - [❓ FAQ](#-faq)
-  - [I'm having issues installing MalumMenu](#im-having-issues-installing-malummenu)
-  - [I have found a bug OR I would like to suggest a new feature](#i-have-found-a-bug-or-i-would-like-to-suggest-a-new-feature)
-  - [I want to contribute to this project](#i-want-to-contribute-to-this-project)
-- [📜 License](#-license)
+- [⚠️ Disclaimer](#️-disclaimer)
 
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
@@ -40,9 +40,11 @@ Join the new Discord server : [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88
     - The first launch will take a **MUCH** longer time than usual, so don't be alarmed if you have to wait a while
 4. Toggle the cheat menu on by pressing **DELETE** on your keyboard
 5. If the installation doesn't work, check out our [FAQ](#im-having-issues-installing-malummenu)
+
 # 📋 Features
 
-- A ton of [features](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md) with no significant lag
+<img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
+
 - Popular hacking modules such as [NoClip](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#noclip) and [Godmode](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#godmode)
 - Reveal [ghosts](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeghosts) and [impostors](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeroles) easily
 - Access [vents](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#usevents) without being impostor or engineer
@@ -55,6 +57,7 @@ Join the new Discord server : [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88
 - [Custom announcements](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#malumnews) fetched online
 
 For a complete list of all of MalumMenu's features, click [here](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md)
+
 # ❓ FAQ
 Click to expand each topic
 <details>
@@ -105,9 +108,6 @@ Here are some other useful resources:
     - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](github.com/dnSpy/dnSpy/releases/latest) to go through these.
 </details>
 
-# 📜 License
-
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://choosealicense.com/licenses/gpl-3.0/)
 
 # ⚠️ Disclaimer
 
