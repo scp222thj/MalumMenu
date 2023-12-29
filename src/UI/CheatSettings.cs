@@ -69,10 +69,13 @@ namespace MalumMenu
         public static bool mushSab;
         public static bool mushSpore;
         public static bool sporeVision;
+        public static bool forceStartGame;
+        public static bool noGameEnd;
 
         //Passive
         public static bool unlockFeatures = true;
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;
+        public static bool noBlackOut = true;
     }
 }

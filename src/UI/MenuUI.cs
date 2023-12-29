@@ -87,13 +87,16 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
             new ToggleInfo(" Godmode", () => CheatSettings.godMode, x => CheatSettings.godMode = x),
             new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
-            new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
+            new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x),
+            new ToggleInfo(" ForceStartGame", () => CheatSettings.forceStartGame, x => CheatSettings.forceStartGame = x),
+            new ToggleInfo(" NoGameEnd", () => CheatSettings.noGameEnd, x => CheatSettings.noGameEnd = x)
         }));
 
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" FreeCosmetics", () => CheatSettings.freeCosmetics, x => CheatSettings.freeCosmetics = x),
             new ToggleInfo(" AvoidPenalties", () => CheatSettings.avoidBans, x => CheatSettings.avoidBans = x),
-            new ToggleInfo(" UnlockFeatures", () => CheatSettings.unlockFeatures, x => CheatSettings.unlockFeatures = x)
+            new ToggleInfo(" UnlockFeatures", () => CheatSettings.unlockFeatures, x => CheatSettings.unlockFeatures = x),
+            new ToggleInfo(" NoBlackOut", () => CheatSettings.noBlackOut, x => CheatSettings.noBlackOut = x)
         }));
     }
 
@@ -109,11 +112,11 @@ public class MenuUI : MonoBehaviour
         }
 
         //Passive cheats are always on to avoid problems
-        CheatSettings.unlockFeatures = CheatSettings.freeCosmetics = CheatSettings.avoidBans = true;
+        CheatSettings.unlockFeatures = CheatSettings.freeCosmetics = CheatSettings.avoidBans = CheatSettings.noBlackOut = true;
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
         if(!isHostCheck.isHost){
-            CheatSettings.voteImmune = CheatSettings.godMode = CheatSettings.impostorHack = CheatSettings.evilVote = false;
+            CheatSettings.voteImmune = CheatSettings.godMode = CheatSettings.impostorHack = CheatSettings.evilVote = CheatSettings.forceStartGame = false;
         }
 
         //Some cheats only work if the ship is present, so they are turned off if it is not

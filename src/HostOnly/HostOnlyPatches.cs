@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Steamworks;
 
 namespace MalumMenu;
 
@@ -100,5 +101,58 @@ public static class HostOnly_ImpostorHackPostfix
 
         }catch{};
 
+    }
+}
+
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
+class HostOnly_ForceStartGamePatch
+{
+    public static void Postfix(PlayerPhysics __instance)
+    {
+        if (CheatSettings.forceStartGame)
+        {
+            if (AmongUsClient.Instance.AmHost)
+            {
+                if (GameStates.IsLobby)
+                    AmongUsClient.Instance.SendStartGame();
+                else
+                    HudManager.Instance.Notifier.AddItem("Already in game!"); //Change text to what you like
+            }
+            else
+            {
+                HudManager.Instance.Notifier.AddItem("You are not Host!"); //Change text to what you like
+            }
+
+            CheatSettings.forceStartGame = false;
+        }
+    }
+}
+
+[HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
+class HostOnly_NoGameEndPatch_CheckEndCriteria
+{
+    public static bool Prefix(LogicGameFlow __instance)
+    {
+        if (!AmongUsClient.Instance.AmHost) return true;
+
+        if (CheatSettings.noGameEnd)
+            return false;
+        //Pls Help add a notifier which only send once in a round
+        //Probably put a bool and change it in amongusclient.ongamejoined
+        return true;
+    }
+}
+
+[HarmonyPatch(typeof(GameManager), nameof(GameManager.CheckTaskCompletion))]
+class HostOnly_NoGameEndPatch_CheckTaskCompletion
+{
+    public static bool Prefix(ref bool __result)
+    {
+        if (CheatSettings.noGameEnd)
+        {
+            __result = false;
+            return false;
+        }
+        return true;
     }
 }

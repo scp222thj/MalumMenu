@@ -6,6 +6,8 @@ using System.IO;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
+using AmongUs.GameOptions;
+using InnerNet;
 
 namespace MalumMenu;
 public static class Utils
@@ -130,6 +132,30 @@ public static class Utils
         return null;
     }
 }
+public static class GameStates
+{
+    public static bool InGame = false;
+    public static bool IsLobby => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined;
+    public static bool IsInGame => InGame;
+    public static bool IsEnded => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Ended;
+    public static bool IsNotJoined => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.NotJoined;
+    public static bool IsOnlineGame => AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
+    public static bool IsLocalGame => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
+    public static bool IsFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
+    public static bool IsHideNSeek =>
+        GameManager.Instance.LogicOptions.currentGameOptions.GameMode == GameModes.HideNSeek;
+    public static bool IsInTask => InGame && !MeetingHud.Instance;
+    public static bool IsMeeting => InGame && MeetingHud.Instance;
+    public static bool IsVoting => IsMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
+    public static bool IsProceeding => IsMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
+    public static bool IsExilling => ExileController.Instance != null; //When voting is ended and playing eject animation
+    public static bool IsCountDown => GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown;
+    public static bool IsShip => ShipStatus.Instance != null;
+    public static bool IsCanMove => PlayerControl.LocalPlayer?.CanMove is true;
+    public static bool IsDead => PlayerControl.LocalPlayer?.Data?.IsDead is true;
+
+    //Source from https://github.com/0xDrMoe/TownofHost-Enhanced/blob/main/Modules/GameState.cs
+}
 
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
 public static class Utils_PlayerPickMenu
@@ -231,5 +257,26 @@ public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
         }
 
         return true; //Open normal shapeshifter menu if not active
+    }
+}
+
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameJoined))]
+class Utils_AmongUsClient_OnGameJoined
+{
+    public static void Prefix(IntroCutscene __instance)
+    {
+        GameStates.InGame = true;
+        CheatSettings.forceStartGame = false;
+        //Probably you can disable some cheat settings here
+    }
+}
+
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameEnd))]
+class Utils_AmongUsClient_OnGameEndPatch
+{
+    public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] EndGameResult gameResult)
+    {
+        GameStates.InGame = false;
+        //Disable some gui here?
     }
 }
