@@ -44,4 +44,29 @@ public static class ESP_ChatBubblePostfix
         __instance.NameText.color = Utils.getColorName(CheatSettings.seeRoles, __instance.playerInfo);
     
     }
-}    
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RawSetOutfit))]
+public static class ESP_PlayerControlRawSetOutfitPostfix
+{
+    public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] GameData.PlayerOutfit newOutfit,
+        PlayerOutfitType type)
+    {
+        if (CheatSettings.seeDisguise)
+        {
+            if (type == PlayerOutfitType.Shapeshifted)
+            {
+                if (__instance.AmOwner) return;
+                __instance.Shapeshift(__instance, false);
+                HudManager.Instance.Notifier.AddItem($"{__instance.Data.PlayerName} =Shapeshift=> {newOutfit.PlayerName}, Reverted");
+            }
+
+            if (type == PlayerOutfitType.MushroomMixup)
+            {
+                __instance.FixMixedUpOutfit();
+                //This will cause player name not showing, pls help.
+                //Help me add a correct notifier
+            }
+        }
+    }
+}

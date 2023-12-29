@@ -21,6 +21,7 @@ namespace MalumMenu
         public static bool fullBright;
         public static bool seeGhosts;
         public static bool seeRoles;
+        public static bool seeDisguise;
 
         //Camera
         public static bool spectate;

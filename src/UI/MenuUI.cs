@@ -26,7 +26,8 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" SeeGhosts", () => CheatSettings.seeGhosts, x => CheatSettings.seeGhosts = x),
             new ToggleInfo(" SeeRoles", () => CheatSettings.seeRoles, x => CheatSettings.seeRoles = x),
             new ToggleInfo(" AlwaysChat", () => CheatSettings.alwaysChat, x => CheatSettings.alwaysChat = x),
-            new ToggleInfo(" FullBright", () => CheatSettings.fullBright, x => CheatSettings.fullBright = x)
+            new ToggleInfo(" FullBright", () => CheatSettings.fullBright, x => CheatSettings.fullBright = x),
+            new ToggleInfo(" seeDisguise", () => CheatSettings.seeDisguise, x => CheatSettings.seeDisguise = x),
         }));
 
         groups.Add(new GroupInfo("Camera", false, new List<ToggleInfo>() {
