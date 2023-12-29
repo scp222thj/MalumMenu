@@ -52,7 +52,8 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Network", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
-            new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x)
+            new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x),
+            new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x)
         }));
 
         groups.Add(new GroupInfo("Sabotage", false, new List<ToggleInfo>() {
