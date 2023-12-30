@@ -21,25 +21,26 @@
 - [⚠️ Disclaimer](#️-disclaimer)
 
 # 🎁 Releases
-| Mod Version| Among Us - Version | Link |
-|----------|-------------|-----------------|
-| v1.2.1 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip) |
-| v1.2.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.0/MalumMenu-1.2.0.zip) |
-| v1.1.2 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.2/MalumMenu-1.1.2.zip) |
-| v1.1.1 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.1/MalumMenu-1.1.1.zip) |
-| v1.1.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.0/MalumMenu-1.1.0.zip) |
-| v1.0.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.0.0/MalumMenu-1.0.0.zip) |
+| Among Us Version | Malum Menu Version |
+|:-:|:-:|
+| `2023.11.28` | v1.2.1 ([Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip)) |
+| `2023.11.28` | v1.2.0 ([Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.0/MalumMenu-1.2.0.zip)) |
+| `2023.7.12` + `2023.7.11` | v1.1.2 ([Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.2/MalumMenu-1.1.2.zip)) |
+| `2023.7.12` + `2023.7.11` | v1.1.1 ([Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.1/MalumMenu-1.1.1.zip)) |
+| `2023.7.12` + `2023.7.11` | v1.1.0 ([Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.0/MalumMenu-1.1.0.zip)) |
+| `2023.7.12` + `2023.7.11` | v1.0.0 ([Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.0.0/MalumMenu-1.0.0.zip)) |
 
 
 # ⬇️ Installation
 
+*If you already have BepInEx installed on your Among Us, download `MalumMenu-*.dll` and put it into the `BepInEx/plugins` folder*
+
 1. Download `MalumMenu-*.zip` from [here](https://github.com/scp222thj/MalumMenu/releases/latest)
-2. Extract the contents of the zip file and place them into your Among Us folder
-    - For Steam users, the Among Us folder can be found by right-clicking the game in their Library, clicking on `Manage`, and then clicking on `Browse local files`
-3. Start the game normally
-    - The first launch will take a **MUCH** longer time than usual, so don't be alarmed if you have to wait a while
+2. Extract the contents of the zip file into your Among Us folder \
+(Steam Users: Right-click Among Us in your library, click on `manage` and then on `browse local files`)
+3. Start Among Us \
+(The first launch will take **MUCH** longer, so don't worry)
 4. Toggle the cheat menu on by pressing **DELETE** on your keyboard
-5. If the installation doesn't work, check out our [FAQ](#im-having-issues-installing-malummenu)
 
 # 📋 Features
 
