@@ -50,9 +50,10 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Color-based", () => CheatSettings.colorBasedMap, x => CheatSettings.colorBasedMap = x)
         }));
 
-        groups.Add(new GroupInfo("Network", false, new List<ToggleInfo>() {
+        groups.Add(new GroupInfo("RPC Exploit", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
-            new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x)
+            new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x),
+            new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x)
         }));
 
         groups.Add(new GroupInfo("Sabotage", false, new List<ToggleInfo>() {

@@ -12,9 +12,10 @@ namespace MalumMenu
         public static bool teleportCursor;
         public static bool teleportPlayer;
 
-        //Network
+        //RPC Exploit
         public static bool kickPlayer;
         public static bool spamChat;
+        public static bool murderPlayer;
 
         //ESP
         public static bool alwaysChat;
