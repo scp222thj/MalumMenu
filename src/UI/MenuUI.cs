@@ -53,7 +53,6 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("RPC Exploit", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
             new ToggleInfo(" ShapeshiftRPC", () => CheatSettings.shapeshiftRPC, x => CheatSettings.shapeshiftRPC = x),
-            new ToggleInfo(" KillProtection", () => CheatSettings.killProtection, x => CheatSettings.killProtection = x),
             new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x),
             new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x)
         }));
