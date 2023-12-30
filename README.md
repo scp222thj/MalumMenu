@@ -18,6 +18,7 @@
 - [⬇️ Installation](#️-installation)
 - [📋 Features](#-features)
 - [❓ FAQ](#-faq)
+- [👷‍♂️ Building](#-building)
 - [⚠️ Disclaimer](#️-disclaimer)
 
 # 🎁 Releases
@@ -107,8 +108,24 @@ Here are some other useful resources:
 - The Reactor discord server: [here](https://reactor.gg/discord)
     - A great community of Among Us modders where you can ask questions and get help
     - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](github.com/dnSpy/dnSpy/releases/latest) to go through these.
+- [AUWiki](https://auwiki.duikbo.at/) by Duikboot, documenting the internal workings of Among Us
+- [BepInEx](https://builds.bepinex.dev/projects/bepinex_be), a modding framework for Unity games that is required for Among Us Mods.
 </details>
 
+
+# 👷‍♂️ Building
+You can build Malum Menu yourself by following these steps:
+- Run the command "dotnet build" from the folder `MalumMenu/src` where the `csproj.` and the `MalumMenuPlugin.cs` files are located
+- The compiled mod dll will be located here: `MalumMenu/src/bin/Debug/net6.0/AUnlocker.dll`
+
+If you want to use MalumMenu with an older Among Us version, make sure to change this: 
+```
+<PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.10.24" PrivateAssets="all" />
+``` 
+in `AUnlocker.csproj` (before building) to this: 
+```
+<PackageReference Include="AmongUs.GameLibs.Steam" Version="YOUR_DESIRED_VERSION_HERE" PrivateAssets="all" />
+```
 
 # ⚠️ Disclaimer
 
