@@ -20,6 +20,7 @@ namespace MalumMenu
         public static bool massShapeshift;
         public static bool massMurder;
         public static bool resetShapeshift;
+        public static bool chatJailbreak;
 
         //ESP
         public static bool alwaysChat;
