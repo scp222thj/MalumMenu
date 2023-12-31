@@ -54,7 +54,9 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
             new ToggleInfo(" ShapeshiftRPC", () => CheatSettings.shapeshiftRPC, x => CheatSettings.shapeshiftRPC = x),
             new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x),
-            new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x)
+            new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x),
+            new ToggleInfo(" MassShapeshift", () => CheatSettings.massShapeshift, x => CheatSettings.massShapeshift = x),
+            new ToggleInfo(" MassMurder", () => CheatSettings.massMurder, x => CheatSettings.massMurder = x),
         }));
 
         groups.Add(new GroupInfo("Sabotage", false, new List<ToggleInfo>() {

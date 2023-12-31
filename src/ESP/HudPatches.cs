@@ -47,7 +47,7 @@ public static class ESP_HudManagerPostfix
         }
 
         //Close player pick menu when it is not being used
-        if (Utils_PlayerPickMenu.playerpickMenu != null && !CheatSettings.teleportPlayer && !CheatSettings.shapeshiftRPC  && !CheatSettings.murderPlayer && !CheatSettings.kickPlayer && !CheatSettings.spectate){
+        if (Utils_PlayerPickMenu.playerpickMenu != null && !CheatSettings.massShapeshift && !CheatSettings.massMurder && !CheatSettings.teleportPlayer && !CheatSettings.shapeshiftRPC  && !CheatSettings.murderPlayer && !CheatSettings.kickPlayer && !CheatSettings.spectate){
             Utils_PlayerPickMenu.playerpickMenu.Close();
         }
     }
