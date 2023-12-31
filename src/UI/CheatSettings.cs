@@ -16,9 +16,10 @@ namespace MalumMenu
         public static bool kickPlayer;
         public static bool spamChat;
         public static bool murderPlayer;
-        public static bool shapeshiftRPC;
+        public static bool shapeshiftCheat;
         public static bool massShapeshift;
         public static bool massMurder;
+        public static bool resetShapeshift;
 
         //ESP
         public static bool alwaysChat;

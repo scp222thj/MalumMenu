@@ -50,12 +50,19 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Color-based", () => CheatSettings.colorBasedMap, x => CheatSettings.colorBasedMap = x)
         }));
 
-        groups.Add(new GroupInfo("RPC Exploit", false, new List<ToggleInfo>() {
+        groups.Add(new GroupInfo("Chat", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
-            new ToggleInfo(" ShapeshiftRPC", () => CheatSettings.shapeshiftRPC, x => CheatSettings.shapeshiftRPC = x),
             new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x),
-            new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x),
+        }));
+
+        groups.Add(new GroupInfo("Shapeshift", false, new List<ToggleInfo>() {
+            new ToggleInfo(" ShapeshiftCheat", () => CheatSettings.shapeshiftCheat, x => CheatSettings.shapeshiftCheat = x),
             new ToggleInfo(" MassShapeshift", () => CheatSettings.massShapeshift, x => CheatSettings.massShapeshift = x),
+            new ToggleInfo(" ResetShapeshift", () => CheatSettings.resetShapeshift, x => CheatSettings.resetShapeshift = x),
+        }));
+
+        groups.Add(new GroupInfo("Murder", false, new List<ToggleInfo>() {
+            new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x),
             new ToggleInfo(" MassMurder", () => CheatSettings.massMurder, x => CheatSettings.massMurder = x),
         }));
 

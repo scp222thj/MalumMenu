@@ -32,7 +32,7 @@ public static class Teleport_PlayerPostfix
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatSettings.spectate = CheatSettings.massMurder = CheatSettings.massShapeshift = CheatSettings.shapeshiftRPC = CheatSettings.kickPlayer = CheatSettings.murderPlayer = false;
+                    CheatSettings.spectate = CheatSettings.massMurder = CheatSettings.massShapeshift = CheatSettings.shapeshiftCheat = CheatSettings.kickPlayer = CheatSettings.murderPlayer = false;
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();
