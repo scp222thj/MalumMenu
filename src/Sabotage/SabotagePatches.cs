@@ -1,7 +1,41 @@
 using HarmonyLib;
 using System;
+using Hazel;
+using InnerNet;
 
 namespace MalumMenu;
+
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RpcUpdateSystem), new Type[] { typeof(SystemTypes), typeof(byte) })]
+public static class Sabotage_RpcUpdateSystemPrefix
+{
+    //Prefix patch of ShipStatus.RpcUpdateSystem to prevent anticheat mods from detecting hacked sabotages
+    public static bool Prefix(ShipStatus __instance, SystemTypes systemType, byte amount)
+    {
+        if (!CheatSettings.reactorSab && !CheatSettings.blackOut && !CheatSettings.elecSab &&
+            !CheatSettings.commsSab && !CheatSettings.mushSab && !CheatSettings.oxygenSab){
+                return true; //Only works for hacked Sabotage RPC calls
+        }
+        
+        if (AmongUsClient.Instance.AmHost)
+		{
+			__instance.UpdateSystem(systemType, PlayerControl.LocalPlayer, amount);
+			return false;
+		}
+
+		var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected){
+
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.UpdateSystem, SendOption.None, AmongUsClient.Instance.HostId);
+            writer.Write((byte)systemType);
+            writer.WriteNetObject(HostData.Character); //Send hacked Sabotage RPC calls as the Host, so that the anticheat is not triggered
+            writer.Write(amount);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+        }
+
+		return false;
+    }
+}
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class Ship_SabotagePostfix
