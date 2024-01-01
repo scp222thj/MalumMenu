@@ -2,24 +2,23 @@ using HarmonyLib;
 using Hazel;
 using Il2CppSystem.Collections.Generic;
 using System;
-using InnerNet;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class RPC_MurderPlayerPostfix
+public static class Meetings_CallMeetingPostfix
 {
     //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to murder any player
     public static bool isActive;
     public static void Postfix(PlayerPhysics __instance){
-        if (CheatSettings.murderPlayer){
+        if (CheatSettings.callMeeting){
 
             if (!isActive){
 
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatSettings.spectate = CheatSettings.callMeeting = CheatSettings.massShapeshift = CheatSettings.shapeshiftCheat = CheatSettings.teleportPlayer = CheatSettings.kickPlayer = false;
+                    CheatSettings.spectate = CheatSettings.murderPlayer = CheatSettings.massShapeshift = CheatSettings.shapeshiftCheat = CheatSettings.teleportPlayer = CheatSettings.kickPlayer = false;
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();
@@ -35,17 +34,16 @@ public static class RPC_MurderPlayerPostfix
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected){
 
-                        //Kill any player by sending a (fake) successful MurderPlayer RPC call to all clients
+                        //Report the dead body by sending a (fake) ReportDeadBody RPC call to all clients
                         foreach (var item in PlayerControl.AllPlayerControls)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(Utils_PlayerPickMenu.targetPlayer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                            writer.WriteNetObject(Utils_PlayerPickMenu.targetPlayer);
-                            writer.Write((int)MurderResultFlags.Succeeded);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(Utils_PlayerPickMenu.targetPlayer.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                            writer.Write(Utils_PlayerPickMenu.targetPlayer.Data.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                         }
 
                     }
-                
+            
                 }));
 
                 isActive = true;
@@ -53,7 +51,7 @@ public static class RPC_MurderPlayerPostfix
 
             //Deactivate cheat if menu is closed
             if (Utils_PlayerPickMenu.playerpickMenu == null){
-                CheatSettings.murderPlayer = false;
+                CheatSettings.callMeeting = false;
             }
 
         }else{
