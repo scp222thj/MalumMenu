@@ -56,15 +56,21 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" ChatJailbreak", () => CheatSettings.chatJailbreak, x => CheatSettings.chatJailbreak = x)
         }));
 
+        groups.Add(new GroupInfo("Outfits", false, new List<ToggleInfo>() {
+            new ToggleInfo(" ShuffleOutfit", () => CheatSettings.shuffleOutfit, x => CheatSettings.shuffleOutfit = x),
+            new ToggleInfo(" ShuffleAllOutfits", () => CheatSettings.shuffleAllOutfits, x => CheatSettings.shuffleAllOutfits = x),
+            new ToggleInfo(" CopyOutfit", () => CheatSettings.copyOutfit, x => CheatSettings.copyOutfit = x),
+            new ToggleInfo(" ResetMyOutfit", () => CheatSettings.resetOutfit, x => CheatSettings.resetOutfit = x),
+        }));
+
         groups.Add(new GroupInfo("Shapeshift", false, new List<ToggleInfo>() {
-            new ToggleInfo(" ShapeshiftCheat", () => CheatSettings.shapeshiftCheat, x => CheatSettings.shapeshiftCheat = x),
-            new ToggleInfo(" MassShapeshift", () => CheatSettings.massShapeshift, x => CheatSettings.massShapeshift = x),
-            new ToggleInfo(" ResetShapeshift", () => CheatSettings.resetShapeshift, x => CheatSettings.resetShapeshift = x),
+            new ToggleInfo(" ShapeshiftAll", () => CheatSettings.shapeshiftAll, x => CheatSettings.shapeshiftAll = x),
+            new ToggleInfo(" ResetShapeshifters", () => CheatSettings.resetShapeshift, x => CheatSettings.resetShapeshift = x),
         }));
 
         groups.Add(new GroupInfo("Murder", false, new List<ToggleInfo>() {
             new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x),
-            new ToggleInfo(" MassMurder", () => CheatSettings.massMurder, x => CheatSettings.massMurder = x),
+            new ToggleInfo(" MurderAll", () => CheatSettings.murderAll, x => CheatSettings.murderAll = x),
         }));
 
         groups.Add(new GroupInfo("Sabotage", false, new List<ToggleInfo>() {

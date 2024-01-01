@@ -3,6 +3,7 @@ using System;
 using AmongUs.Data;
 using Il2CppSystem.Collections.Generic;
 using System.IO;
+using Hazel;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
@@ -14,6 +15,36 @@ public static class Utils
     //Used to fix UI problems when zooming out
     public static void adjustResolution() {
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+    }
+
+    public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
+
+    public static void RandomizeOutfit(PlayerControl sender, PlayerControl recipient)
+    {
+        // Randomize each aspect of the outfit
+        MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+        colorWriter.Write((byte)new System.Random().Next(18));
+        AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+
+        MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+        nameWriter.Write(DestroyableSingleton<AccountManager>.Instance.GetRandomName());
+        AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+
+        MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+        hatWriter.Write(referenceDataManager.Refdata.hats[new System.Random().Next(referenceDataManager.Refdata.hats.Count)].ProdId);
+        AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+
+        MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+        petWriter.Write(referenceDataManager.Refdata.pets[new System.Random().Next(referenceDataManager.Refdata.pets.Count)].ProdId);
+        AmongUsClient.Instance.FinishRpcImmediately(petWriter);
+
+        MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+        visorWriter.Write(referenceDataManager.Refdata.visors[new System.Random().Next(referenceDataManager.Refdata.visors.Count)].ProdId);
+        AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
+
+        MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+        skinWriter.Write(referenceDataManager.Refdata.skins[new System.Random().Next(referenceDataManager.Refdata.skins.Count)].ProdId);
+        AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
     }
 
     //Gets current map ID

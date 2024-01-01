@@ -18,7 +18,7 @@ public static class RPC_ResetShapeshiftPostfix
                 {
                     foreach (var recipient in PlayerControl.AllPlayerControls)
                     {
-                        if (sender.CurrentOutfitType == PlayerOutfitType.Shapeshifted){
+                        if (sender.CurrentOutfitType != PlayerOutfitType.Default){
                             MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.Shapeshift, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
                             messageWriter.WriteNetObject(sender);
                             if (sender.AmOwner){

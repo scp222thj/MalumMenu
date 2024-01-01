@@ -16,11 +16,14 @@ namespace MalumMenu
         public static bool kickPlayer;
         public static bool spamChat;
         public static bool murderPlayer;
-        public static bool shapeshiftCheat;
-        public static bool massShapeshift;
-        public static bool massMurder;
+        public static bool copyOutfit;
+        public static bool shapeshiftAll;
+        public static bool murderAll;
         public static bool resetShapeshift;
+        public static bool resetOutfit;
         public static bool chatJailbreak;
+        public static bool shuffleAllOutfits;
+        public static bool shuffleOutfit;
 
         //ESP
         public static bool alwaysChat;
