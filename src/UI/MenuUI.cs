@@ -58,6 +58,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" ShuffleAllOutfits", () => CheatSettings.shuffleAllOutfits, x => CheatSettings.shuffleAllOutfits = x),
                 new ToggleInfo(" CopyOutfit", () => CheatSettings.copyOutfit, x => CheatSettings.copyOutfit = x),
                 new ToggleInfo(" ResetMyOutfit", () => CheatSettings.resetOutfit, x => CheatSettings.resetOutfit = x),
+                new ToggleInfo(" UnlockAllColors", () => CheatSettings.unlockColors, x => CheatSettings.unlockColors = x),
             }),
             new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ShapeshiftAll", () => CheatSettings.shapeshiftAll, x => CheatSettings.shapeshiftAll = x),
@@ -174,7 +175,7 @@ public class MenuUI : MonoBehaviour
     {
         int groupSpacing = 50;
         int toggleSpacing = 40;
-        int submenuSpacing = 50;
+        int submenuSpacing = 40;
         int currentYPosition = 20;
 
         for (int groupId = 0; groupId < groups.Count; groupId++)
@@ -255,11 +256,10 @@ public class MenuUI : MonoBehaviour
     //The number of toggles & group expansion
     private int CalculateWindowHeight()
     {
-        int baseHeight = 70; // Base height for the window
+        int totalHeight = 70; // Base height for the window
         int groupHeight = 50; // Height for each group title
         int toggleHeight = 30; // Height for each toggle
         int submenuHeight = 40; // Height for each submenu title
-        int totalHeight = baseHeight;
 
         foreach (GroupInfo group in groups)
         {

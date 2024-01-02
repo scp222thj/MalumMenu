@@ -24,6 +24,7 @@ namespace MalumMenu
         public static bool chatJailbreak;
         public static bool shuffleAllOutfits;
         public static bool shuffleOutfit;
+        public static bool unlockColors;
 
         //ESP
         public static bool alwaysChat;
