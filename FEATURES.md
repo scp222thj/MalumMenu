@@ -1,405 +1,223 @@
 # 📋 Features
-- [📋 Features](#-features)
-  - [Player](#player)
-    - [NoClip](#noclip)
-    - [SpeedBoost](#speedboost)
-    - [NoCooldowns](#nocooldowns)
-    - [Teleport to Cursor](#teleport-to-cursor)
-    - [Teleport to Player](#teleport-to-player)
-  - [ESP](#esp)
-    - [SeeGhosts](#seeghosts)
-    - [SeeRoles](#seeroles)
-    - [AlwaysChat](#alwayschat)
-    - [FullBright](#fullbright)
-  - [Camera](#camera)
-    - [ZoomOut](#zoomout)
-    - [Spectate](#spectate)
-    - [Freecam](#freecam)
-  - [Tracers](#tracers)
-    - [Crewmates](#crewmates)
-    - [Impostors](#impostors)
-    - [Ghosts](#ghosts)
-    - [Dead Bodies](#dead-bodies)
-    - [Color-based](#color-based)
-  - [Minimap](#minimap)
-    - [Crewmates](#crewmates-1)
-    - [Impostors](#impostors-1)
-    - [Ghosts](#ghosts-1)
-    - [Color-based](#color-based-1)
-  - [Sabotage](#sabotage)
-    - [Blackout](#blackout)
-    - [Doors](#doors)
-    - [Reactor](#reactor)
-    - [Oxygen](#oxygen)
-    - [Eletrical](#eletrical)
-    - [Comms](#comms)
-    - [MushroomMixup](#mushroommixup)
-    - [SporesTrigger](#sporestrigger)
-  - [Vents](#vents)
-    - [UseVents](#usevents)
-    - [KickVents](#kickvents)
-    - [VentVision](#ventvision)
-    - [WalkInVents](#walkinvents)
-  - [Meetings](#meetings)
-    - [RevealVotes](#revealvotes)
-    - [CloseMeeting](#closemeeting)
-    - [CallMeeting](#callmeeting)
-  - [Host-Only](#host-only)
-    - [Godmode](#godmode)
-    - [EvilVote](#evilvote)
-    - [VoteImmune](#voteimmune)
-  - [Passive](#passive)
-    - [FreeCosmetics](#freecosmetics)
-    - [AvoidPenalties](#avoidpenalties)
-    - [UnlockFeatures](#unlockfeatures)
-  - [Other](#other)
-    - [GUI](#gui)
-    - [MalumNews](#malumnews)
+Click to expand each category!
 
-## Player
+<details>
+  <summary><h1>🎮 Player</h1></summary>
 
-### NoClip
-Allows you to walk through walls like a ghost 
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| NoClip     | Allows you to walk through walls like a ghost | Toggle | Off
+| SpeedBoost | Doubles your player's speed | Toggle | Off
+| NoCooldowns| Removes many of the game's cooldowns:<br>- Engineer vent cooldown<br>- Engineer vent duration<br>- Scientist battery<br>- Scientist cooldown<br>- Shapeshift Animation<br>- Shapeshift Duration | Toggle | Off |
 
-Type: **Toggle**
-- Default: **OFF**
+  <details>
+    <summary><h2>Teleport</h2></summary>
 
-### SpeedBoost
-Doubles your player's speed 
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+|   to cursor | Allows you to teleport by right-clicking. Works best when used along with ZoomOut | Toggle | Off
+|   to player | Allows you to pick a player to teleport to. | Menu |
 
-Type: **Toggle**
-- Default: **OFF**
+  </details>
+</details>
 
-### NoCooldowns
-Removes many of the game's cooldowns:
-- Engineer vent cooldown
-- Engineer vent duration
-- Scientist battery
-- Scientist cooldown
-- Shapeshift Animation
-- Shapeshifter duration
 
-Type: **Toggle**
-- Default: **OFF**
+<details>
+  <summary><h1>👨‍💻 ESP</h1></summary>
 
-### Teleport to Cursor
-Allows you to teleport by right-clicking. Works best when used along with [ZoomOut](#zoomout)
-
-Type: **Toggle**
-- Default: **OFF**
-
-### Teleport to Player
-Allows you to pick a player to teleport to.
-
-Type: **Menu**
-
-## ESP
 MalumMenu's ESP cheats are completely client-side, and thus undetectable by anticheat
 
-### SeeGhosts
-Allows you to see ghosts, protections, and ghost chat even if you are alive
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| SeeGhosts | Allows you to see ghosts, protections, and ghost chat even if you are alive ![SeeGhosts](https://cdn.discordapp.com/attachments/1097928762324168744/1131688847420424283/image.png) | Toggle | Off
+| SeeRoles | Reveals the roles of all players through the color of their names ![SeeRoles](https://cdn.discordapp.com/attachments/1097928762324168744/1133144778272419840/image.png) | Toggle | Off
+| FullBright | Removes all shadows, allowing you to see during blackouts and even through walls | Toggle | Off |
 
-Type: **Toggle**
-- Default: **OFF**
+  <details>
+    <summary><h2>Camera</h2></summary>
+    
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| ZoomOut | Allows you to zoom-out the player's camera using your mouse's scrollwheel ![ZoomOut](https://cdn.discordapp.com/attachments/1097928762324168744/1131620619562270830/image.png) | Toggle | Off
+| Spectate | Allows you to pick a player to spectate with your camera. | Menu |
+| FreeCam | Allows you to freely move your camera around without also moving your player. | Toggle | Off |
 
-![SeeGhosts](https://cdn.discordapp.com/attachments/1097928762324168744/1131688847420424283/image.png)
+  </details>
+  <details>
+    <summary><h2>Tracers</h2></summary>
 
-### SeeRoles
-Reveals the roles of all players through the color of their names
-
-Type: **Toggle**
-- Default: **OFF**
-
-![SeeRoles](https://cdn.discordapp.com/attachments/1097928762324168744/1133144778272419840/image.png)
-
-### AlwaysChat
-Keeps the chat icon always enabled, even while you're not in a meeting or the lobby
-
-Type: **Toggle**
-- Default: **OFF**
-
-### FullBright
-Removes all shadows, allowing you to see during blackouts and even through walls
-
-It also allows you to see players through spore clouds on the Fungle map
-
-Type: **Toggle**
-- Default: **OFF**
-
-## Camera
-
-### ZoomOut
-Allows you to zoom-out the player's camera using your mouse's scrollwheel
-
-Type: **Toggle**
-- Default: **OFF**
-
-![ZoomOut](https://cdn.discordapp.com/attachments/1097928762324168744/1131620619562270830/image.png)
-
-### Spectate
-Allows you to pick a player to spectate with your camera.
-
-Type: **Menu**
-
-### Freecam
-Allows you to freely move your camera around without also moving your player.
-
-Type: **Toggle**
-- Default: **OFF**
-
-## Tracers
 ![Tracers](https://cdn.discordapp.com/attachments/1097928762324168744/1132745972271808582/image_2023-07-23_204751179.jpg)
 
-### Crewmates
-Shows tracer lines for alive crewmates
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| Crewmates | Shows tracer lines for alive crewmates (color: cyan) | Toggle | Off |
+| Impostors | Shows tracer lines for alive impostors (color: red) | Toggle | Off
+| Ghosts | Shows tracer lines for ghosts (color: white) | Toggle | Off |
+| Dead Bodies | Shows tracer lines for dead bodies on the ground (color: yellow) | Toggle | Off |
+| Color-based | Changes the color of tracer lines to the color of their players ![Colorbased](https://cdn.discordapp.com/attachments/1097928762324168744/1132745673532506233/image_2023-07-23_204633349.jpg) | Toggle | Off |
 
-Type: **Toggle**
-- Default: **OFF**
-
-Default Color: Cyan
-
-### Impostors
-Shows tracer lines for alive impostors
-
-Type: **Toggle**
-- Default: **OFF**
-
-Default Color: Red
-
-### Ghosts
-Shows tracer lines for ghosts
-
-Type: **Toggle**
-- Default: **OFF**
-
-Default Color: White
-
-### Dead Bodies
-Shows tracer lines for dead bodies on the ground
-
-Type: **Toggle**
-- Default: **OFF**
-
-Default Color: Yellow
-
-### Color-based
-Changes the color of tracer lines to the color of their players
-
-Type: **Toggle**
-- Default: **OFF**
-
-![Colorbased](https://cdn.discordapp.com/attachments/1097928762324168744/1132745673532506233/image_2023-07-23_204633349.jpg)
-
-## Minimap
+  </details>
+  <details>
+    <summary><h2>Minimap</h2></summary>
 
 ![Minimap](https://cdn.discordapp.com/attachments/1097928762324168744/1133435198407704636/image.png)
 
-### Crewmates
-Changes the map so that it shows the position of every alive crewmate
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| Crewmates | Changes the map so that it shows the position of every alive crewmate (color: cyan) | Toggle | Off |
+| Impostors | Changes the map so that it shows the position of every alive impostor (color: red) | Toggle | Off
+| Ghosts | Changes the map so that it shows the position of every ghost (color: white) | Toggle | Off |
+| Color-based | Changes the color of map icons to the color of their players ![Colorbased](https://cdn.discordapp.com/attachments/1097928762324168744/1133435314485067816/image.png) | Toggle | Off |
 
-Type: **Toggle**
-- Default: **OFF**
+  </details>
+</details>
 
-Default Color: Cyan
 
-### Impostors
-Changes the map so that it shows the position of every alive impostor
+<details>
+  <summary><h1>☎️ RPC Exploit</h1></summary>
 
-Type: **Toggle**
-- Default: **OFF**
+| Cheat | Description | Type |
+|------------|-------------|------|
+| KickPlayer | Allows you to pick a player to kick from the lobby. | Menu |
 
-Default Color: Red
+  <details>
+    <summary><h2>Outfits</h2></summary>
 
-### Ghosts
-Changes the map so that it shows the position of every ghost
+Your outfit consists of: Name, Hat, Visor, Skin, Pet, Nameplate.
 
-Type: **Toggle**
-- Default: **OFF**
+| Cheat | Description | Type |
+|------------|-------------|------|
+| ShuffleOutfit | Randomize your outfit | Button |
+| ShuffleAllOutfits | Randomize the outfit of every player in your lobby | Button |
+| CopyOutfit | Copy another player's outfit and apply it to yourself | Menu |
+| ResetMyOutfit | Reset your outfit back to the one you set for your account | Button |
 
-Default Color: White
+  </details>
+  <details>
+    <summary><h2>Shapeshift</h2></summary>
 
-### Color-based
-Changes the color of map icons to the color of their players
+| Cheat | Description | Type | 
+|------------|-------------|------|
+| ShapeshiftAll | Force shapeshift all players to one player | Menu |
+| ResetShapeshifters | Allows you to force unshift all currently shapeshifted players | Button |
 
-Type: **Toggle**
-- Default: **OFF**
+  </details>
+  <details>
+    <summary><h2>Murder</h2></summary>
 
-![Colorbased](https://cdn.discordapp.com/attachments/1097928762324168744/1133435314485067816/image.png)
+| Cheat | Description | Type | 
+|------------|-------------|------|
+| MurderPlayer | Allows you to pick a player to kill | Menu |
+| MurderAll | Murders all players in your lobby (Game will end immediately) | Button |
 
-## Sabotage
+  </details>
+</details>
+
+
+<details>
+  <summary><h1>🚢 Ship</h1></summary>
+
+  <details>
+    <summary><h2>Sabotage</h2></summary>
+
 MalumMenu's Sabotage cheats work even if you aren't impostor and are subject to no cooldown.
 
 Moreover, different sabotages can be enabled at the same time, and they even work during meetings.
 
-### Blackout
-Disables lights completely (they cannot be fixed manually by players). You can enable them again by clicking the button. 
+| Cheat | Description | Type | 
+|------------|-------------|------|
+| Blackout | Disables lights completely (they cannot be fixed manually by players).<br>You can enable them again by clicking the button. | Button |
+| Doors | Locks all doors on the ship. | Button |
+| Reactor | Enables/Disables Reactor sabotage. | Button |
+| Oxygen | Enables/Disables Oxygen sabotage. | Button |
+| Electrical | Enables/Disables Eletrical sabotage. | Button |
+| Comms | Enables/Disables Communications sabotage. | Button |
 
-Type: **Button**
+  </details>
+  <details>
+    <summary><h2>Mushrooms</h2></summary>
 
-### Doors
-Locks all doors on the ship
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| MushroomMixup | Enables Mushroom Mixup sabotage on Fungle map | Button |
+| SporesTrigger | Shoots spore clouds out of all the mushrooms in the Fungle jungle | Button |
+| SporeCloudVision | Allows you to see other players in spores. | Toggle | Off |
 
-Type: **Button**
+  </details>
+  <details>
+    <summary><h2>Vents</h2></summary>
 
-### Reactor
-Enables/Disables Reactor sabotage
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| UseVents | Allows you to use vents even if you are not an impostor or an engineer | Toggle | Off
+| KickVents | Forcefully kicks all players from vents | Button |
+| VentVision | Allows you to see the names of players inside vents ![VentVision](https://cdn.discordapp.com/attachments/1097928762324168744/1131628712647999518/image.png) | Toggle | Off |
+| WalkInVents | Allows you to move and interact with the game even though you are inside of a vent.<br>This gives you a sort of invisibility until you disable the setting and leave the vent.<br>Moreover, some activites such as killing will forcefully make you visible again. | Toggle | Off
 
-Type: **Button**
+  </details>
+  <details>
+    <summary><h2>Meetings</h2></summary>
+    
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| RevealVotes | Lets you see colored votes even if votes are set to anonymous ![AnonVotes](https://cdn.discordapp.com/attachments/1097928762324168744/1131643587520626688/image.png) | Toggle | Off |
+| CloseMeeting | Forcefully closes the meeting window (only for you), allowing you to move and interact with the game during meetings | Button |
+| CallMeeting | Reports latest dead body to start a meeting. If there are no dead players, you are reported as a dead body instead even if you are alive.<br>This is better than simply calling an emergency meeting because it can be used during special situations too like sabotages | Button
 
-### Oxygen
-Enables/Disables Oxygen sabotage
+  </details>
+</details>
 
-Type: **Button**
 
-### Eletrical
-Enables/Disables Eletrical sabotage
+<details>
+  <summary><h1>📝 Chat</h1></summary>
 
-Type: **Button**
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| AlwaysChat | Keeps the chat icon always enabled, allowing you to chat at any time, even while you're not in a meeting or the lobby | Toggle | Off |
+| SpamChat | When you send a message, every player in the lobby will resend it. | Toggle | Off |
+| ChatJailbreak | Allows you to send special characters, URLs and Email addresses into the chat. | Toggle | Off |
 
-### Comms
-Enables/Disables Communications sabotage
+</details>
 
-Type: **Button**
 
-### MushroomMixup
-Induces a Mushroom Mixup on Fungle map
+<details>
+  <summary><h1>👑 Host-Only</h1></summary>
 
-Type: **Button**
-
-### SporesTrigger
-Shoots spore clouds out of all the mushrooms in the Fungle jungle
-
-Type: **Button**
-
-## Vents
-
-### UseVents
-Allows you to use vents even if you are not an impostor or an engineer
-
-Type: **Toggle**
-- Default: **OFF**
-
-### KickVents
-Forcefully kicks all players from vents
-
-Type: **Button**
-
-### VentVision
-Allows you to see the names of players inside vents
-
-Type: **Toggle**
-- Default: **OFF**
-
-![VentVision](https://cdn.discordapp.com/attachments/1097928762324168744/1131628712647999518/image.png)
-
-### WalkInVents
-Allows you to move and interact with the game even though you are inside of a vent. 
-
-This gives you a sort of invisibility until you disable the setting and leave the vent.
-
-Moreover, some activites such as killing will forcefully make you visible again.
-
-Type: **Toggle**
-- Default: **OFF**
-
-## Meetings
-
-### RevealVotes
-Lets you see colored votes even if votes are set to anonymous
-
-Type: **Toggle**
-- Default: **OFF**
-
-![AnonVotes](https://cdn.discordapp.com/attachments/1097928762324168744/1131643587520626688/image.png)
-
-### CloseMeeting
-Forcefully closes the meeting window, allowing you to move and interact with the game during meetings
-
-Type: **Button**
-
-### CallMeeting
-Reports latest dead body to start a meeting. If there are no dead players, you are reported as a dead body instead even if you are alive.
-
-This is better than simply calling an emergency meeting because it can be used during special situations too like sabotages
-
-Type: **Button**
-
-## Host-Only
 While the other cheats work even though you aren't the game's host, these cheats will only be accessible to you if you are hosting a game
 
 This is because the Among Us anticheat system doesn't detect most cheats if you are a host, so you have more hacking freedom.
 
-### Godmode
-Makes you immortal. If you are killed or voted out, you are instantly revived.
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| ImpostorHack | Makes you always Impostor | Toggle | Off |
+| GodMode | Makes you immortal. If you are killed or voted out, you are instantly revived. ![Godmode](https://cdn.discordapp.com/attachments/1097928762324168744/1131643030504476683/image.png) | Toggle | Off |
+| EvilVote | Forces every player to vote the player you voted for | Toggle | Off |
+| VoteImmune | When a player tries to vote for you, they are forced to skip instead | Toggle | Off |
 
-Type: **Toggle**
-- Default: **OFF**
+</details>
 
-![Godmode](https://cdn.discordapp.com/attachments/1097928762324168744/1131643030504476683/image.png)
 
-### EvilVote
-Forces every player to vote the player you voted for
+<details>
+  <summary><h1>💤 Passive</h1></summary>
 
-Type: **Toggle**
-- Default: **OFF**
+These cheats are constantly running in the background and **cannot be disabled to avoid problems.**
 
-### VoteImmune
-When a player tries to vote for you, they are forced to skip instead
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| FreeCosmetics | Gives you access to all of the game's cosmetics for free, including:<br>- Hats<br>- Visors<br>- Skins<br>- Pets<br>- Nameplates<br>- Bundles<br>- Cosmicubes ![FreeCosmetics](https://cdn.discordapp.com/attachments/1097928762324168744/1131642050996084796/image.png) | Toggle | On |
+| AvoidPenalties | Removes the penalty you receive when disconnecting from games early ![AvoidPenalties](https://cdn.discordapp.com/attachments/1097928762324168744/1131846186115018782/image.png) | Toggle | On |
+| UnlockFeatures | Unlocks many of the game's special features automatically, including:<br>- Freechat<br>- Friend list<br>- Custom name<br>- Online gameplay | Toggle | On |
 
-Type: **Toggle**
-- Default: **OFF**
+</details>
 
-## Passive
-These cheats are constantly running in the background and cannot be disabled to avoid problems
 
-### FreeCosmetics
-Gives you access to all of the game's cosmetics for free, including:
+## Other relevant features of MalumMenu:
 
-- Hats
-- Visors
-- Skins
-- Pets
-- NamePlates
-- Bundles
-- Cosmicubes
-
-Type: **Toggle**
-- Default: **ON**
-- **CANNOT BE DISABLED**
-
-![FreeCosmetics](https://cdn.discordapp.com/attachments/1097928762324168744/1131642050996084796/image.png)
-
-### AvoidPenalties
-Removes the penalty you receive when disconnecting from games early
-
-Type: **Toggle**
-- Default: **ON**
-- **CANNOT BE DISABLED**
-
-![AvoidPenalties](https://cdn.discordapp.com/attachments/1097928762324168744/1131846186115018782/image.png)
-
-### UnlockFeatures
-Unlocks many of the game's special features automatically, including:
-
-- Freechat
-- Friend list
-- Custom name
-- Online games
-
-Type: **Toggle**
-- Default: **ON**
-- **CANNOT BE DISABLED**
-
-## Other
-Other relevant features of MalumMenu
-
-### GUI
-MalumMenu has a simple GUI that is easy to navigate and can be toggled using the **DELETE** key on your keyboard
-
-### MalumNews
-MalumMenu comes with custom announcements that it will automatically fetch online at launch
+- MalumMenu has a simple **GUI** that is easy to navigate and can be toggled using the **DELETE** key on your keyboard
+- MalumMenu comes with **custom announcements** that it will automatically fetch online at launch
 
 MalumNews webserver status:
 [![MalumNews](https://img.shields.io/website-up-down-green-red/http/scp222thj.dev.svg)](https://scp222thj.dev)
 
 <img width="800" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133760289326768148/image.png">
+
