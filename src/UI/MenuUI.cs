@@ -114,7 +114,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" FreeCosmetics", () => CheatSettings.freeCosmetics, x => CheatSettings.freeCosmetics = x),
             new ToggleInfo(" AvoidPenalties", () => CheatSettings.avoidBans, x => CheatSettings.avoidBans = x),
             new ToggleInfo(" UnlockFeatures", () => CheatSettings.unlockFeatures, x => CheatSettings.unlockFeatures = x),
-            new ToggleInfo(" CustomFriendCode", () => CheatSettings.customFriendCode, x => CheatSettings.customFriendCode = x)
+            new ToggleInfo(" CustomUserData", () => CheatSettings.customUserData, x => CheatSettings.customUserData = x)
         }, new List<SubmenuInfo>()));
     }
 
@@ -130,7 +130,7 @@ public class MenuUI : MonoBehaviour
         }
 
         //Passive cheats are always on to avoid problems
-        CheatSettings.unlockFeatures = CheatSettings.customFriendCode = CheatSettings.freeCosmetics = CheatSettings.avoidBans = true;
+        CheatSettings.unlockFeatures = CheatSettings.customUserData = CheatSettings.freeCosmetics = CheatSettings.avoidBans = true;
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
         if(!isHostCheck.isHost){

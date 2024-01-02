@@ -32,7 +32,12 @@ public partial class MalumPlugin : BasePlugin
         customFriendCode = Config.Bind("MalumMenu.Cheats",
                                 "CustomFriendCode",
                                 "",
-                                "The custom friend code that will be used in online games");
+                                "Your custom friend code that will be used in online games");
+
+        customPuid = Config.Bind("MalumMenu.Cheats",
+                                "CustomPuid",
+                                "",
+                                "Your custom PUID that will be used in online games. IMPORTANT: Only valid PUIDs will work");
 
         Harmony.PatchAll();
         menuUI = AddComponent<MenuUI>();
