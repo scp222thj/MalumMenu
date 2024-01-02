@@ -3,17 +3,33 @@ using System.Collections.Generic;
 
 namespace MalumMenu
 {
-    public struct GroupInfo
+    public struct SubmenuInfo
     {
         public string name;
         public bool isExpanded;
         public List<ToggleInfo> toggles;
 
-        public GroupInfo(string name, bool isExpanded, List<ToggleInfo> toggles)
+        public SubmenuInfo(string name, bool isExpanded, List<ToggleInfo> toggles)
         {
             this.name = name;
             this.isExpanded = isExpanded;
             this.toggles = toggles;
+        }
+    }
+
+    public struct GroupInfo
+    {
+        public string name;
+        public bool isExpanded;
+        public List<ToggleInfo> toggles; // Direct toggles for the group
+        public List<SubmenuInfo> submenus;
+
+        public GroupInfo(string name, bool isExpanded, List<ToggleInfo> toggles, List<SubmenuInfo> submenus)
+        {
+            this.name = name;
+            this.isExpanded = isExpanded;
+            this.toggles = toggles;
+            this.submenus = submenus;
         }
     }
 
