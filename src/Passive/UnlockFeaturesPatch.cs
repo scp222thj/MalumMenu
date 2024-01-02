@@ -1,4 +1,5 @@
 using HarmonyLib;
+using UnityEngine;
 
 namespace MalumMenu;
 
@@ -66,21 +67,31 @@ public static class Passive_CustomNamePrefix
     }
 }
 
-[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsAllowedOnline))]
-public static class Passive_OnlineGamePlayPrefix
+[HarmonyPatch(typeof(AccountManager), nameof(AccountManager.CanPlayOnline))]
+public static class Passive_CanPlayOnlinePrefix
 {
-    //Prefix patch of EOSManager.IsAllowedOnline to unlock online gameplay
-    public static bool Prefix(bool canOnline, EOSManager __instance)
+    public static void Postfix(ref bool __result)
     {
-        if (!CheatSettings.unlockFeatures){
-            return true; //Only works if CheatSettings.unlockFeatures is enabled
+        if (CheatSettings.unlockFeatures){
+            __result = true;
         }
+    }
+}
 
-        if (!canOnline){
-            __instance.IsAllowedOnline(true);
-            return false;
-        }
+[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsAllowedOnline))]
+public static class Passive_IsAllowedOnlinePrefix
+{
+    public static void Prefix(ref bool canOnline)
+    {
+        canOnline = true;
+    }
+}
 
-        return true;
+[HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.JoinGame))]
+public static class Passive_JoinGamePrefix
+{
+    public static void Prefix()
+    {
+        AmongUs.Data.DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
     }
 }

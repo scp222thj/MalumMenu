@@ -84,5 +84,6 @@ namespace MalumMenu
         public static bool unlockFeatures = true;
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;
+        public static bool customFriendCode = true;
     }
 }
