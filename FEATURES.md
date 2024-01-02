@@ -29,8 +29,8 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| SeeGhosts | Allows you to see ghosts, protections, and ghost chat even if you are alive ![SeeGhosts](https://cdn.discordapp.com/attachments/1097928762324168744/1131688847420424283/image.png) | Toggle | Off
-| SeeRoles | Reveals the roles of all players through the color of their names ![SeeRoles](https://cdn.discordapp.com/attachments/1097928762324168744/1133144778272419840/image.png) | Toggle | Off
+| SeeGhosts | Allows you to see ghosts, protections, and ghost chat even if you are alive <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131688847420424283/image.png" width=285 height=282> | Toggle | Off
+| SeeRoles | Reveals the roles of all players through the color of their names <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1133144778272419840/image.png" width=285 height=258> | Toggle | Off
 | FullBright | Removes all shadows, allowing you to see during blackouts and even through walls | Toggle | Off |
 
   <details>
@@ -38,7 +38,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
     
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| ZoomOut | Allows you to zoom-out the player's camera using your mouse's scrollwheel ![ZoomOut](https://cdn.discordapp.com/attachments/1097928762324168744/1131620619562270830/image.png) | Toggle | Off
+| ZoomOut | Allows you to zoom-out the player's camera using your mouse's scrollwheel <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131620619562270830/image.png" width=285 height=210> | Toggle | Off
 | Spectate | Allows you to pick a player to spectate with your camera. | Menu |
 | FreeCam | Allows you to freely move your camera around without also moving your player. | Toggle | Off |
 
@@ -46,7 +46,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
   <details>
     <summary><h2>Tracers</h2></summary>
 
-![Tracers](https://cdn.discordapp.com/attachments/1097928762324168744/1132745972271808582/image_2023-07-23_204751179.jpg)
+<img src="https://cdn.discordapp.com/attachments/1097928762324168744/1132745972271808582/image_2023-07-23_204751179.jpg" width=285 height=185>
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
@@ -54,20 +54,20 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Impostors | Shows tracer lines for alive impostors (color: red) | Toggle | Off
 | Ghosts | Shows tracer lines for ghosts (color: white) | Toggle | Off |
 | Dead Bodies | Shows tracer lines for dead bodies on the ground (color: yellow) | Toggle | Off |
-| Color-based | Changes the color of tracer lines to the color of their players ![Colorbased](https://cdn.discordapp.com/attachments/1097928762324168744/1132745673532506233/image_2023-07-23_204633349.jpg) | Toggle | Off |
+| Color-based | Changes the color of tracer lines to the color of their players<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1132745673532506233/image_2023-07-23_204633349.jpg" width=285 height=174> | Toggle | Off |
 
   </details>
   <details>
     <summary><h2>Minimap</h2></summary>
 
-![Minimap](https://cdn.discordapp.com/attachments/1097928762324168744/1133435198407704636/image.png)
+<img src="https://cdn.discordapp.com/attachments/1097928762324168744/1133435198407704636/image.png" width=285 height=199>
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
 | Crewmates | Changes the map so that it shows the position of every alive crewmate (color: cyan) | Toggle | Off |
 | Impostors | Changes the map so that it shows the position of every alive impostor (color: red) | Toggle | Off
 | Ghosts | Changes the map so that it shows the position of every ghost (color: white) | Toggle | Off |
-| Color-based | Changes the color of map icons to the color of their players ![Colorbased](https://cdn.discordapp.com/attachments/1097928762324168744/1133435314485067816/image.png) | Toggle | Off |
+| Color-based | Changes the color of map icons to the color of their players<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1133435314485067816/image.png" width=285 height=205> | Toggle | Off |
 
   </details>
 </details>
@@ -151,7 +151,7 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 |------------|-------------|------|--------|
 | UseVents | Allows you to use vents even if you are not an impostor or an engineer | Toggle | Off
 | KickVents | Forcefully kicks all players from vents | Button |
-| VentVision | Allows you to see the names of players inside vents ![VentVision](https://cdn.discordapp.com/attachments/1097928762324168744/1131628712647999518/image.png) | Toggle | Off |
+| VentVision | Allows you to see the names of players inside vents<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131628712647999518/image.png" width=285 height=263> | Toggle | Off |
 | WalkInVents | Allows you to move and interact with the game even though you are inside of a vent.<br>This gives you a sort of invisibility until you disable the setting and leave the vent.<br>Moreover, some activites such as killing will forcefully make you visible again. | Toggle | Off
 
   </details>
@@ -160,7 +160,7 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
     
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| RevealVotes | Lets you see colored votes even if votes are set to anonymous ![AnonVotes](https://cdn.discordapp.com/attachments/1097928762324168744/1131643587520626688/image.png) | Toggle | Off |
+| RevealVotes | Lets you see colored votes even if votes are set to anonymous<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131643587520626688/image.png" width=285 height=174> | Toggle | Off |
 | CloseMeeting | Forcefully closes the meeting window (only for you), allowing you to move and interact with the game during meetings | Button |
 | CallMeeting | Reports latest dead body to start a meeting. If there are no dead players, you are reported as a dead body instead even if you are alive.<br>This is better than simply calling an emergency meeting because it can be used during special situations too like sabotages | Button
 
@@ -190,7 +190,7 @@ This is because the Among Us anticheat system doesn't detect most cheats if you 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
 | ImpostorHack | Makes you always Impostor | Toggle | Off |
-| GodMode | Makes you immortal. If you are killed or voted out, you are instantly revived. ![Godmode](https://cdn.discordapp.com/attachments/1097928762324168744/1131643030504476683/image.png) | Toggle | Off |
+| GodMode | Makes you immortal. If you are killed or voted out, you are instantly revived.<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131643030504476683/image.png" width=285 height=216> | Toggle | Off |
 | EvilVote | Forces every player to vote the player you voted for | Toggle | Off |
 | VoteImmune | When a player tries to vote for you, they are forced to skip instead | Toggle | Off |
 
@@ -204,7 +204,7 @@ These cheats are constantly running in the background and **cannot be disabled t
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| FreeCosmetics | Gives you access to all of the game's cosmetics for free, including:<br>- Hats<br>- Visors<br>- Skins<br>- Pets<br>- Nameplates<br>- Bundles<br>- Cosmicubes ![FreeCosmetics](https://cdn.discordapp.com/attachments/1097928762324168744/1131642050996084796/image.png) | Toggle | On |
+| FreeCosmetics | Gives you access to all of the game's cosmetics for free, including:<br>- Hats<br>- Visors<br>- Skins<br>- Pets<br>- Nameplates<br>- Bundles<br>- Cosmicubes<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131642050996084796/image.png" width=285 height=255> | Toggle | On |
 | AvoidPenalties | Removes the penalty you receive when disconnecting from games early ![AvoidPenalties](https://cdn.discordapp.com/attachments/1097928762324168744/1131846186115018782/image.png) | Toggle | On |
 | UnlockFeatures | Unlocks many of the game's special features automatically, including:<br>- Freechat<br>- Friend list<br>- Custom name<br>- Online gameplay | Toggle | On |
 
