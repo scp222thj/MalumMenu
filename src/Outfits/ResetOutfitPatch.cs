@@ -27,16 +27,7 @@ public static class RPC_ResetOutfitPostfix
                     colorWriter.Write(AmongUs.Data.DataManager.Player.Customization.Color);
                     AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
 
-                    if(sender.CurrentOutfit.PlayerName == AmongUs.Data.DataManager.Player.Customization.Name){
-                        foreach (var recipient in PlayerControl.AllPlayerControls)
-                        {
-                            MessageWriter senderColorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
-                            senderColorWriter.Write(PlayerControl.LocalPlayer.Data.DefaultOutfit.PlayerName);
-                            AmongUsClient.Instance.FinishRpcImmediately(senderColorWriter);
-                        }
-                    }
-
-                    MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(sender));
+                    MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(sender));
                     nameWriter.Write(AmongUs.Data.DataManager.Player.Customization.Name);
                     AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
 
