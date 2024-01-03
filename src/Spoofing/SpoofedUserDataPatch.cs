@@ -7,10 +7,8 @@ public static class Passive_SpoofedPUIDPostfix
 {
     public static void Postfix(ref string __result)
     {
-        if (CheatSettings.customUserData){
-            if (MalumPlugin.spoofPuid.Value != ""){
-                __result = MalumPlugin.spoofPuid.Value;
-            }
+        if (MalumPlugin.spoofPuid.Value != ""){
+            __result = MalumPlugin.spoofPuid.Value;
         }
     }
 }
@@ -20,10 +18,8 @@ public static class Passive_SpoofedFriendCodePostfix
 {
     public static void Postfix(EOSManager __instance)
     {
-        if (CheatSettings.customUserData){
-            if (MalumPlugin.spoofPuid.Value != "" && MalumPlugin.spoofPuid.Value != __instance.FriendCode){
-                __instance.FriendCode = MalumPlugin.spoofPuid.Value;
-            }
+        if (MalumPlugin.spoofPuid.Value != "" && MalumPlugin.spoofPuid.Value != __instance.FriendCode){
+            __instance.FriendCode = MalumPlugin.spoofPuid.Value;
         }
     }
 }

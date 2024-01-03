@@ -45,6 +45,8 @@ public static class RPC_SaveSpoofDataPostfix
                                     "ProductUserID",
                                     "");
                     puid.Value = AmongUsClient.Instance.GetClientFromCharacter(Utils_PlayerPickMenu.targetPlayer).ProductUserId;
+                
+                    Utils.showPopup($"\nSpoofing data for {Utils_PlayerPickMenu.targetPlayer.Data.PlayerName} has been saved in\n\nBepInEx/config/MM_SavedSpoofData.cfg");
                 }));
 
                 isActive = true;
