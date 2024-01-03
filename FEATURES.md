@@ -85,12 +85,13 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 
 Your outfit consists of: Name, Hat, Visor, Skin, Pet, Nameplate.
 
-| Cheat | Description | Type |
-|------------|-------------|------|
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
 | ShuffleOutfit | Randomize your outfit | Button |
 | ShuffleAllOutfits | Randomize the outfit of every player in your lobby | Button |
 | CopyOutfit | Copy another player's outfit and apply it to yourself | Menu |
 | ResetMyOutfit | Reset your outfit back to the one you set for your account | Button |
+| UnlockAllColors | Allows you to pick any color, regardless if any other player already has it | Toggle | Off |
 
   </details>
   <details>
@@ -196,6 +197,21 @@ This is because the Among Us anticheat system doesn't detect most cheats if you 
 
 </details>
 
+<details>
+  <summary><h1>💨 Spoofing</h1></summary>
+
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| SaveSpoofData | Saves a player's friend code and PUID to `BepInEx/config/MM_SavedSpoofData.cfg` | Menu |
+
+  <details>
+    <summary><h2>Spoof Status</h2></summary>
+
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| FriendCode Spoof | Spoof a friend code that will be used in online games.<br>IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests.<br>Set the friend code here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
+| PUID Spoof | Spoof a PUID that will be used in online games.<br>IMPORTANT: Only valid, active PUIDs will let you connect to lobbies.<br>Set the PUID here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
+
 
 <details>
   <summary><h1>💤 Passive</h1></summary>
@@ -215,6 +231,7 @@ These cheats are constantly running in the background and **cannot be disabled t
 
 - MalumMenu has a simple **GUI** that is easy to navigate and can be toggled using the **DELETE** key on your keyboard
 - MalumMenu comes with **custom announcements** that it will automatically fetch online at launch
+- MalumMenu can be configured via a config file. You can set a custom key to toggle the menu, and a few other things
 
 MalumNews webserver status:
 [![MalumNews](https://img.shields.io/website-up-down-green-red/http/scp222thj.dev.svg)](https://scp222thj.dev)
