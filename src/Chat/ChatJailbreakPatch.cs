@@ -11,7 +11,7 @@ public static class ChatJailbreak_RpcSendChatPostfix
     //Prefix patch of PlayerControl.RpcSendChat to unlock extra chat capabilities
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatSettings.chatJailbreak){
+        if (!CheatSettings.chatJailbreak || CheatSettings.chatMimic){
             return true; //Only works if CheatSettings.chatJailbreak is enabled
         }
 
@@ -23,6 +23,13 @@ public static class ChatJailbreak_RpcSendChatPostfix
 		}
 
         //Removal of UnityTelemetry.SendWho()
+        
+        if(CheatSettings.spamChat){
+
+            RPC_SpamTextPostfix.spamText = chatText;
+            return true;
+
+        }
 
         //Modded version of the original RPC call that lets users bypass the character limit and the message ratelimit
 		MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None, -1);

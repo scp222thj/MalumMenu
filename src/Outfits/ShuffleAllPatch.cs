@@ -14,10 +14,7 @@ public static class Outfits_ShuffleAllPostfix
             {
                 foreach (var sender in PlayerControl.AllPlayerControls)
                 {
-                    foreach (var recipient in PlayerControl.AllPlayerControls)
-                    {
-                        Utils.RandomizeOutfit(sender, recipient);
-                    }
+                    Utils.ShuffleOutfit(sender);
                 }
             }
 

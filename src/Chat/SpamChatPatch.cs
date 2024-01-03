@@ -27,10 +27,16 @@ public static class RPC_SpamTextPostfix
     //A short delay (chatDelay) is used to avoid being kicked for sending too many RPC calls too quickly
     public static void Update()
     {
-        if (CheatSettings.spamChat && spamText != null && Time.time - lastChatTime >= chatDelay)
-        {
-            lastChatTime = Time.time;
-            SendSpamChat();
+        if (CheatSettings.spamChat){
+
+            if(CheatSettings.chatMimic){CheatSettings.chatMimic = false;}
+
+            if (spamText != null && Time.time - lastChatTime >= chatDelay)
+            {
+                lastChatTime = Time.time;
+                SendSpamChat();
+            }
+        
         }
     }
 

@@ -12,10 +12,7 @@ public static class Outfits_ShufflePostfix
             var HostData = AmongUsClient.Instance.GetHost();
             if (HostData != null && !HostData.Character.Data.Disconnected)
             {
-                foreach (var item in PlayerControl.AllPlayerControls)
-                {
-                    Utils.RandomizeOutfit(PlayerControl.LocalPlayer, item);
-                }
+                Utils.ShuffleOutfit(PlayerControl.LocalPlayer);
             }
 
             CheatSettings.shuffleOutfit = false;

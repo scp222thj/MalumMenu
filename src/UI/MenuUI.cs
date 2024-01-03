@@ -54,16 +54,13 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("RPC Exploit", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatSettings.kickPlayer, x => CheatSettings.kickPlayer = x),
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("Outfits", false, new List<ToggleInfo>() {
+            new SubmenuInfo("Outfit", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ShuffleOutfit", () => CheatSettings.shuffleOutfit, x => CheatSettings.shuffleOutfit = x),
-                new ToggleInfo(" ShuffleAllOutfits", () => CheatSettings.shuffleAllOutfits, x => CheatSettings.shuffleAllOutfits = x),
-                new ToggleInfo(" CopyOutfit", () => CheatSettings.copyOutfit, x => CheatSettings.copyOutfit = x),
-                new ToggleInfo(" ResetMyOutfit", () => CheatSettings.resetOutfit, x => CheatSettings.resetOutfit = x),
+                new ToggleInfo(" MimicOutfit", () => CheatSettings.copyOutfit, x => CheatSettings.copyOutfit = x),
+                new ToggleInfo(" All ShuffleOutfit", () => CheatSettings.shuffleAllOutfits, x => CheatSettings.shuffleAllOutfits = x),
+                new ToggleInfo(" All MimicOutfit", () => CheatSettings.copyAllOutfits, x => CheatSettings.copyAllOutfits = x),
                 new ToggleInfo(" UnlockAllColors", () => CheatSettings.unlockColors, x => CheatSettings.unlockColors = x),
-            }),
-            new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
-                new ToggleInfo(" ShapeshiftAll", () => CheatSettings.shapeshiftAll, x => CheatSettings.shapeshiftAll = x),
-                new ToggleInfo(" ResetShapeshifters", () => CheatSettings.resetShapeshift, x => CheatSettings.resetShapeshift = x),
+                new ToggleInfo(" ResetMyOutfit", () => CheatSettings.resetOutfit, x => CheatSettings.resetOutfit = x),
             }),
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
                 new ToggleInfo(" MurderPlayer", () => CheatSettings.murderPlayer, x => CheatSettings.murderPlayer = x),
@@ -100,6 +97,7 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Chat", false, new List<ToggleInfo>() {
             new ToggleInfo(" AlwaysChat", () => CheatSettings.alwaysChat, x => CheatSettings.alwaysChat = x),
+            new ToggleInfo(" ChatMimic", () => CheatSettings.chatMimic, x => CheatSettings.chatMimic = x),
             new ToggleInfo(" SpamChat", () => CheatSettings.spamChat, x => CheatSettings.spamChat = x),
             new ToggleInfo(" ChatJailbreak", () => CheatSettings.chatJailbreak, x => CheatSettings.chatJailbreak = x)
         }, new List<SubmenuInfo>()));
@@ -111,12 +109,13 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
         }, new List<SubmenuInfo>()));
 
-        groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>() {
+        groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>(){
             new ToggleInfo(" SaveSpoofData", () => CheatSettings.saveSpoofData, x => CheatSettings.saveSpoofData = x),
+            new ToggleInfo(" IncognitoMode", () => CheatSettings.incognitoMode, x => CheatSettings.incognitoMode = x),
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("Spoof Status", false, new List<ToggleInfo>() {
-                new ToggleInfo(" FriendCode Spoof", () => MalumPlugin.spoofFriendCode.Value != "", (bool n) => { }),
-                new ToggleInfo(" PUID Spoof", () => MalumPlugin.spoofPuid.Value != "",  (bool n) => { }),
+            new SubmenuInfo("SpoofConfig", false, new List<ToggleInfo>() {
+                new ToggleInfo(" FriendCode Config", () => MalumPlugin.spoofFriendCode.Value != "", (bool n) => { }),
+                new ToggleInfo(" PUID Config", () => MalumPlugin.spoofPuid.Value != "",  (bool n) => { }),
             }),
         }));
 
