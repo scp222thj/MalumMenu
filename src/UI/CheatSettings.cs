@@ -14,6 +14,7 @@ namespace MalumMenu
 
         //RPC Exploit
         public static bool kickPlayer;
+        public static bool saveSpoofData;
         public static bool spamChat;
         public static bool murderPlayer;
         public static bool copyOutfit;

@@ -18,27 +18,28 @@ public partial class MalumPlugin : BasePlugin
     public static List<string> supportedAU = new List<string> { "2023.11.28" };
     private static MenuUI menuUI;
     public static ConfigEntry<string> menuKeybind;
-    public static ConfigEntry<string> customFriendCode;
-    public static ConfigEntry<string> customPuid;
+    public static ConfigEntry<string> spoofFriendCode;
+    public static ConfigEntry<string> spoofPuid;
 
     public override void Load()
     {
 
-        menuKeybind = Config.Bind("MalumMenu",   // The section under which the option is shown
-                                "GUIKeybind",  // The key of the configuration option in the configuration file
-                                "Delete", // The default value
-                                "The keyboard key used to toggle the GUI on and off"); // Description of the option to show in the config file
+        menuKeybind = Config.Bind("MalumMenu",
+                                "GUIKeybind",
+                                "Delete",
+                                "The keyboard key used to toggle the GUI on and off");
 
-        customFriendCode = Config.Bind("MalumMenu.Cheats",
-                                "CustomFriendCode",
+        spoofFriendCode = Config.Bind("MalumMenu.SpoofedUserData",
+                                "SpoofedFriendCode",
                                 "",
-                                "Your custom friend code that will be used in online games");
+                                "Your spoofed friend code that will be used in online games. IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests");
 
-        customPuid = Config.Bind("MalumMenu.Cheats",
-                                "CustomPuid",
+        spoofPuid = Config.Bind("MalumMenu.SpoofedUserData",
+                                "SpoofedPuid",
                                 "",
-                                "Your custom PUID that will be used in online games. IMPORTANT: Only valid PUIDs will work");
+                                "Your spoofed PUID that will be used in online games. IMPORTANT: Only valid, active PUIDs will let you connect to lobbies");
 
+        
         Harmony.PatchAll();
         menuUI = AddComponent<MenuUI>();
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Cpp2IL.Core.Analysis.Actions.x86.Important;
 
 namespace MalumMenu;
 public class MenuUI : MonoBehaviour
@@ -109,6 +110,15 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
             new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
         }, new List<SubmenuInfo>()));
+
+        groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>() {
+            new ToggleInfo(" SaveSpoofData", () => CheatSettings.saveSpoofData, x => CheatSettings.saveSpoofData = x),
+        }, new List<SubmenuInfo> {
+            new SubmenuInfo("Spoof Status", false, new List<ToggleInfo>() {
+                new ToggleInfo(" FriendCode Spoof", () => MalumPlugin.spoofFriendCode.Value != "", (bool n) => { }),
+                new ToggleInfo(" PUID Spoof", () => MalumPlugin.spoofPuid.Value != "",  (bool n) => { }),
+            }),
+        }));
 
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" FreeCosmetics", () => CheatSettings.freeCosmetics, x => CheatSettings.freeCosmetics = x),

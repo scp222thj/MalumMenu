@@ -19,7 +19,7 @@ public static class RPC_CopyOutfitCheatPostfix
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatSettings.spectate = CheatSettings.callMeeting = CheatSettings.shapeshiftAll = CheatSettings.murderPlayer = CheatSettings.teleportPlayer = CheatSettings.kickPlayer = false;
+                    CheatSettings.spectate = CheatSettings.saveSpoofData = CheatSettings.callMeeting = CheatSettings.shapeshiftAll = CheatSettings.murderPlayer = CheatSettings.teleportPlayer = CheatSettings.kickPlayer = false;
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();

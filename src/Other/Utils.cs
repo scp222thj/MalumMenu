@@ -47,6 +47,42 @@ public static class Utils
         AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
     }
 
+    public static void CopyOutfit(PlayerControl source, PlayerControl target)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected){
+
+            //Shapeshift into any player by sending a fake Shapeshift RPC call to all clients
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                colorWriter.Write(target.Data.DefaultOutfit.ColorId);
+                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+
+                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                nameWriter.Write(target.Data.DefaultOutfit.PlayerName);
+                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+
+                MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                hatWriter.Write(target.Data.DefaultOutfit.HatId);
+                AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+
+                MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                petWriter.Write(target.Data.DefaultOutfit.PetId);
+                AmongUsClient.Instance.FinishRpcImmediately(petWriter);
+
+                MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                visorWriter.Write(target.Data.DefaultOutfit.VisorId);
+                AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
+
+                MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                skinWriter.Write(target.Data.DefaultOutfit.SkinId);
+                AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+            }
+        }    
+
+    }
+
     //Gets current map ID
     public static byte getCurrentMapID()
     {

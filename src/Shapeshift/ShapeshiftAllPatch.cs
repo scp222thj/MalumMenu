@@ -19,7 +19,7 @@ public static class Shapeshift_ShapeshiftAllPostfix
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatSettings.spectate = CheatSettings.callMeeting = CheatSettings.murderPlayer = CheatSettings.copyOutfit = CheatSettings.teleportPlayer = CheatSettings.kickPlayer = false;
+                    CheatSettings.spectate = CheatSettings.callMeeting = CheatSettings.murderPlayer = CheatSettings.copyOutfit = CheatSettings.teleportPlayer = CheatSettings.saveSpoofData = CheatSettings.kickPlayer = false;
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();
