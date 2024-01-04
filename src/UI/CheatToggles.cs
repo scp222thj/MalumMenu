@@ -87,5 +87,22 @@ namespace MalumMenu
         public static bool unlockFeatures = true;
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;
+
+        public static void DisablePPMCheats(){
+            mimicAllOutfits = false;
+            copyPlayerFC = false;
+            chatMimic = false;
+            copyPlayerPUID = false;
+            reportBody = false;
+            teleportPlayer = false;
+            mimicOutfit = false;
+            murderPlayer = false;
+            kickPlayer = false;
+            spectate = false;
+        }
+
+        public static bool shouldPPMClose(){
+            return !mimicAllOutfits && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+        }
     }
 }

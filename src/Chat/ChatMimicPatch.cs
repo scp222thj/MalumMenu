@@ -45,7 +45,7 @@ public static class ChatMimic_PlayerPhysics_LateUpdate_Postfix
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.copyPlayerPUID = CheatToggles.reportBody = CheatToggles.mimicAllOutfits = CheatToggles.mimicOutfit = CheatToggles.kickPlayer = CheatToggles.copyPlayerFC = CheatToggles.murderPlayer = false;
+                    CheatToggles.DisablePPMCheats();
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();

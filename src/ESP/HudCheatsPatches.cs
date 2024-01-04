@@ -47,7 +47,7 @@ public static class HudCheats_HudManager_Update_Postfix
         }
 
         //Close player pick menu when it is not being used
-        if (Utils_PlayerPickMenu.playerpickMenu != null && !CheatToggles.mimicAllOutfits && !CheatToggles.copyPlayerFC && !CheatToggles.chatMimic && !CheatToggles.copyPlayerPUID && !CheatToggles.reportBody && !CheatToggles.teleportPlayer && !CheatToggles.mimicOutfit && !CheatToggles.murderPlayer && !CheatToggles.kickPlayer && !CheatToggles.spectate){
+        if (Utils_PlayerPickMenu.playerpickMenu != null && CheatToggles.shouldPPMClose()){
             Utils_PlayerPickMenu.playerpickMenu.Close();
         }
     }

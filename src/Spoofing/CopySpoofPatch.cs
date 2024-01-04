@@ -21,7 +21,7 @@ public static class CopyPUID_PlayerPhysics_LateUpdate_Postfix
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.spectate = CheatToggles.kickPlayer = CheatToggles.chatMimic = CheatToggles.reportBody = CheatToggles.mimicAllOutfits = CheatToggles.mimicOutfit = CheatToggles.teleportPlayer = CheatToggles.murderPlayer = false;
+                    CheatToggles.DisablePPMCheats();
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();
@@ -70,7 +70,7 @@ public static class CopyFriendCode_PlayerPhysics_LateUpdate_Postfix
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.spectate = CheatToggles.kickPlayer = CheatToggles.chatMimic = CheatToggles.reportBody = CheatToggles.mimicAllOutfits = CheatToggles.mimicOutfit = CheatToggles.teleportPlayer = CheatToggles.murderPlayer = false;
+                    CheatToggles.DisablePPMCheats();
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();
