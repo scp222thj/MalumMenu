@@ -22,6 +22,7 @@ namespace MalumMenu
         public static bool kickPlayer;
         public static bool reportBody;
         public static bool murderPlayer;
+        public static bool murderIRL;
         public static bool murderAll;
 
         //Appearance
