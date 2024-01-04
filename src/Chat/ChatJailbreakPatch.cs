@@ -147,3 +147,24 @@ public static class ChatJailbreak_IsCharAllowedPostfix
         return false;
     }
 }
+
+
+// Edit Color indicators for chatbox (only visual)
+[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.UpdateCharCount))]
+public static class ChatJailbreak_UpdateCharCountPostfix
+{
+    public static void Postfix(FreeChatInputField __instance)
+    {
+        int length = __instance.textArea.text.Length;
+        __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
+        if (length < 1825361100)
+            // Black if not close to limit
+            __instance.charCountText.color = Color.black;
+        else if (length < 2147483647)
+            // Yellow if close to limit
+            __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
+        else
+            // Red if limit reached
+            __instance.charCountText.color = Color.red;
+    }
+}
