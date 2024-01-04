@@ -64,6 +64,7 @@ public class MenuUI : MonoBehaviour
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
                 new ToggleInfo(" MurderPlayer", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
+                new ToggleInfo(" MurderIRL", () => CheatToggles.murderIRL, x => CheatToggles.murderIRL = x),
                 new ToggleInfo(" MurderAll", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
             }),
         }));
