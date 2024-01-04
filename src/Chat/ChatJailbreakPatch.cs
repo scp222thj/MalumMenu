@@ -156,7 +156,7 @@ public static class ChatJailbreak_UpdateCharCountPostfix
     public static void Postfix(FreeChatInputField __instance)
     {
 	if (!CheatSettings.chatJailbreak){
-            return true; //Only works if CheatSettings.chatJailbreak is enabled
+            return; //Only works if CheatSettings.chatJailbreak is enabled
         }
         int length = __instance.textArea.text.Length;
         __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
