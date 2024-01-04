@@ -10,13 +10,13 @@ namespace MalumMenu;
         //Postfix patch of VersionShower.Start to show MalumMenu version
 		public static void Postfix(VersionShower __instance)
 		{
-            if (MalumPlugin.supportedAU.Contains(Application.version)){ // Checks if Among Us version is supported
+            if (MalumMenu.supportedAU.Contains(Application.version)){ // Checks if Among Us version is supported
 
-                __instance.text.text =  $"MalumMenu v{MalumPlugin.malumVersion} (v{Application.version})"; // Supported
+                __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
             
             }else{
 
-                __instance.text.text =  $"MalumMenu v{MalumPlugin.malumVersion} (<color=red>v{Application.version}</color>)"; //Unsupported
+                __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; //Unsupported
             
             }
         }

@@ -17,13 +17,14 @@ public static class Utils
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
+    //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
-
+    
+    //Completly randomize a player outfit using fake RPC calls
     public static void ShuffleOutfit(PlayerControl sender)
     {
         foreach (var item in PlayerControl.AllPlayerControls)
         {
-            // Shuffle each aspect of the outfit
             MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
             colorWriter.Write((byte)new System.Random().Next(18));
             AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
@@ -50,6 +51,7 @@ public static class Utils
         }
     }
 
+    //Make any player copy any other player's outfit using fake RPC calls
     public static void CopyOutfit(PlayerControl source, PlayerControl target)
     {
         foreach (var item in PlayerControl.AllPlayerControls)
@@ -248,7 +250,7 @@ public static class Utils_PlayerPickMenu
                     __instance.Close();
                 }));
 
-                shapeshifterPanel.NameText.color = Utils.getColorName(CheatSettings.seeRoles, player.Data);
+                shapeshifterPanel.NameText.color = Utils.getColorName(CheatToggles.seeRoles, player.Data);
                 __instance.potentialVictims.Add(shapeshifterPanel);
                 list2.Add(shapeshifterPanel.Button);
             }
@@ -296,5 +298,21 @@ public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
         }
 
         return true; //Open normal shapeshifter menu if not active
+    }
+}
+
+//Some useful cheat checks that I use in MenuUI.cs
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
+public static class CheatChecks
+{
+    public static bool isShip;
+    public static bool isPlayer;
+    public static bool isHost;
+
+    public static void Postfix(PlayerPhysics __instance)
+    {
+        isShip = ShipStatus.Instance != null;
+        isPlayer = PlayerControl.LocalPlayer != null;
+        isHost = AmongUsClient.Instance.AmHost;
     }
 }

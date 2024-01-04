@@ -4,13 +4,13 @@ using UnityEngine;
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-public static class ESP_FreecamPostfix
+public static class FreeCam_HudManager_Update_Postfix
 {
     public static bool isActive;
 
     //Postifx patch of HudManager.Update to implement a freecam
     public static void Postfix(HudManager __instance){
-        if(CheatSettings.freeCam){
+        if(CheatToggles.freeCam){
             //Disable FollowerCamera & prevent the player from moving while in freecam
             if (!isActive){
 

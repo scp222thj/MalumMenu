@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-public static class RPC_SpamTextPostfix
+public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
 {
     public static string spamText;
     private static float lastChatTime = 0f;
@@ -14,7 +14,7 @@ public static class RPC_SpamTextPostfix
     // Prefix patch of PlayerControl.RpcSendChat to set spamText based on the user's chat messages
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (CheatSettings.spamChat)
+        if (CheatToggles.spamChat)
         {
             spamText = chatText;
             return false; // Skip the original method when the cheat is active
@@ -27,9 +27,9 @@ public static class RPC_SpamTextPostfix
     //A short delay (chatDelay) is used to avoid being kicked for sending too many RPC calls too quickly
     public static void Update()
     {
-        if (CheatSettings.spamChat){
+        if (CheatToggles.spamChat){
 
-            if(CheatSettings.chatMimic){CheatSettings.chatMimic = false;}
+            if(CheatToggles.chatMimic){CheatToggles.chatMimic = false;}
 
             if (spamText != null && Time.time - lastChatTime >= chatDelay)
             {
@@ -65,10 +65,10 @@ public static class RPC_SpamChatPostfix
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        RPC_SpamTextPostfix.Update();
-        if (!CheatSettings.spamChat)
+        SpamChat_PlayerPhysics_RpcSendChat_Prefix.Update();
+        if (!CheatToggles.spamChat)
         {
-            RPC_SpamTextPostfix.spamText = null;
+            SpamChat_PlayerPhysics_RpcSendChat_Prefix.spamText = null;
         }
     }
 }

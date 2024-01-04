@@ -4,12 +4,12 @@ using UnityEngine;
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFreechatAllowed))]
-public static class Passive_FreechatPrefix
+public static class UnlockFeatures_EOSManager_IsFreechatAllowed_Prefix
 {
     //Prefix patch of EOSManager.IsFreechatAllowed to unlock freechat
     public static bool Prefix(EOSManager __instance, ref bool __result)
     {
-        if (!CheatSettings.unlockFeatures){
+        if (!CheatToggles.unlockFeatures){
             return true; //Only works if CheatSettings.unlockFeatures is enabled
         }
 
@@ -19,12 +19,12 @@ public static class Passive_FreechatPrefix
 }
 
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFriendsListAllowed))]
-public static class Passive_FriendListPrefix
+public static class UnlockFeatures_EOSManager_IsFriendsListAllowed_Prefix
 {
     //Prefix patch of EOSManager.IsFriendsListAllowed to unlock friend list
     public static bool Prefix(EOSManager __instance, ref bool __result)
     {
-        if (!CheatSettings.unlockFeatures){
+        if (!CheatToggles.unlockFeatures){
             return true; //Only works if CheatSettings.unlockFeatures is enabled
         }
         
@@ -34,12 +34,12 @@ public static class Passive_FriendListPrefix
 }
 
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsMinorOrWaiting))]
-public static class Passive_MinorPrefix
+public static class UnlockFeatures_EOSManager_IsMinorOrWaiting_Prefix
 {
     //Prefix patch of EOSManager.IsMinorOrWaiting to remove minor status
     public static bool Prefix(EOSManager __instance, ref bool __result)
     {
-        if (!CheatSettings.unlockFeatures){
+        if (!CheatToggles.unlockFeatures){
             return true; //Only works if CheatSettings.unlockFeatures is enabled
         }
         
@@ -49,49 +49,49 @@ public static class Passive_MinorPrefix
 }
 
 [HarmonyPatch(typeof(FullAccount), nameof(FullAccount.CanSetCustomName))]
-public static class Passive_CustomNamePrefix
+public static class UnlockFeatures_EOSManager_CanSetCustomName_Prefix
 {
-    //Prefix patch of FullAccount.CanSetCustomName to unlock custom names
-    public static bool Prefix(bool canSetName, FullAccount __instance)
+    //Prefix patch of FullAccount.CanSetCustomName to allow the usage of custom names
+    public static void Prefix(ref bool canSetName)
     {
-        if (!CheatSettings.unlockFeatures){
-            return true; //Only works if CheatSettings.unlockFeatures is enabled
+        if (CheatToggles.unlockFeatures){ //Only works if CheatSettings.unlockFeatures is enabled
+            canSetName = true;
         }
-
-        if (!canSetName){
-            __instance.CanSetCustomName(true);
-            return false;
-        }
-
-        return true;
     }
 }
 
 [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.CanPlayOnline))]
-public static class Passive_CanPlayOnlinePrefix
+public static class UnlockFeatures_AccountManager_CanPlayOnline_Postfix
 {
+    //Prefix patch of AccountManager.CanPlayOnline to allow online games
     public static void Postfix(ref bool __result)
     {
-        if (CheatSettings.unlockFeatures){
+        if (CheatToggles.unlockFeatures){ //Only works if CheatSettings.unlockFeatures is enabled
             __result = true;
         }
     }
 }
 
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsAllowedOnline))]
-public static class Passive_IsAllowedOnlinePrefix
+public static class UnlockFeatures_EOSManager_IsAllowedOnline_Prefix
 {
+    //Prefix patch of AccountManager.CanPlayOnline to allow online games
     public static void Prefix(ref bool canOnline)
     {
-        canOnline = true;
+        if (CheatToggles.unlockFeatures){ //Only works if CheatSettings.unlockFeatures is enabled
+            canOnline = true; 
+        }
     }
 }
 
 [HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.JoinGame))]
-public static class Passive_JoinGamePrefix
+public static class UnlockFeatures_InnerNetClient_JoinGame_Prefix
 {
+    //Prefix patch of InnerNet.InnerNetClient.JoinGame to allow online games
     public static void Prefix()
     {
-        AmongUs.Data.DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
+        if (CheatToggles.unlockFeatures){ //Only works if CheatSettings.unlockFeatures is enabled
+            AmongUs.Data.DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
+        }
     }
 }

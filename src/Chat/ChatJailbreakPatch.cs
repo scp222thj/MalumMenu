@@ -1,18 +1,17 @@
 using HarmonyLib;
 using Hazel;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-public static class ChatJailbreak_RpcSendChatPostfix
+public static class ChatJailBreak_PlayerControl_RpcSendChat_Prefix
 {
     //Prefix patch of PlayerControl.RpcSendChat to unlock extra chat capabilities
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatSettings.chatJailbreak || CheatSettings.chatMimic){
-            return true; //Only works if CheatSettings.chatJailbreak is enabled
+        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic){
+            return true; //Only works if CheatSettings.chatJailbreak is enabled & CheatSettings.chatMimic is disabled
         }
 
         //Removal of some checks for special characters and whitespaces
@@ -24,9 +23,9 @@ public static class ChatJailbreak_RpcSendChatPostfix
 
         //Removal of UnityTelemetry.SendWho()
         
-        if(CheatSettings.spamChat){
+        if(CheatToggles.spamChat){
 
-            RPC_SpamTextPostfix.spamText = chatText;
+            SpamChat_PlayerPhysics_RpcSendChat_Prefix.spamText = chatText;
             return true;
 
         }
@@ -41,12 +40,12 @@ public static class ChatJailbreak_RpcSendChatPostfix
 }
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
-public static class ChatJailbreak_SendChatPostfix
+public static class ChatJailBreak_ChatController_SendChat_Prefix
 {
     //Prefix patch of ChatController.SendChat to unlock extra chat capabilities
     public static bool Prefix(ChatController __instance)
     {
-        if (!CheatSettings.chatJailbreak){
+        if (!CheatToggles.chatJailbreak){
             return true; //Only works if CheatSettings.chatJailbreak is enabled
         }
 
@@ -75,12 +74,12 @@ public static class ChatJailbreak_SendChatPostfix
 }
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendFreeChat))]
-public static class ChatJailbreak_SendFreeChatPostfix
+public static class ChatJailBreak_ChatController_SendFreeChat_Prefix
 {
     //Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
     public static bool Prefix(ChatController __instance)
     {
-        if (!CheatSettings.chatJailbreak){
+        if (!CheatToggles.chatJailbreak){
             return true; // Only works if CheatSettings.chatJailbreak is enabled
         }
 
@@ -113,17 +112,17 @@ public static class ChatJailbreak_SendFreeChatPostfix
 
 
 [HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.OnFieldChanged))]
-public static class ChatJailbreak_FreeChatInputField_UpdateStatePostfix
+public static class ChatJailBreak_FreeChatInputField_OnFieldChanged_Prefix
 {
-    //Postfix patch of FreeChatInputField.UpdateState to unlock extra chat capabilities
+    //Postfix patch of FreeChatInputField.OnFieldChanged to unlock extra chat capabilities
     public static void Postfix(FreeChatInputField __instance)
     {
-        __instance.textArea.allowAllCharacters = CheatSettings.chatJailbreak; //Not really used by the game's code, but I include it anyway
-        __instance.textArea.AllowPaste = CheatSettings.chatJailbreak; //Allow pasting from clipboard in chat when chatJailbreak is enabled
+        __instance.textArea.allowAllCharacters = CheatToggles.chatJailbreak; //Not really used by the game's code, but I include it anyway
+        __instance.textArea.AllowPaste = CheatToggles.chatJailbreak; //Allow pasting from clipboard in chat when chatJailbreak is enabled
         __instance.textArea.AllowSymbols = true; //Allow sending certain symbols
-        __instance.textArea.AllowEmail = CheatSettings.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
+        __instance.textArea.AllowEmail = CheatToggles.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
         
-        if (CheatSettings.chatJailbreak){
+        if (CheatToggles.chatJailbreak){
             __instance.textArea.characterLimit = int.MaxValue; //Unlimited message length when chatJailbreak is enabled
         }else{
             __instance.textArea.characterLimit = 100;
@@ -134,12 +133,12 @@ public static class ChatJailbreak_FreeChatInputField_UpdateStatePostfix
 
 
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.IsCharAllowed))]
-public static class ChatJailbreak_IsCharAllowedPostfix
+public static class ChatJailBreak_TextBoxTMP_IsCharAllowed_Prefix
 {
     //Postfix patch of TextBoxTMP.IsCharAllowed to allow all characters
     public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
     {
-        if (!CheatSettings.chatJailbreak){
+        if (!CheatToggles.chatJailbreak){
             return true;
         }
         
