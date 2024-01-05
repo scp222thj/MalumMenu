@@ -212,6 +212,8 @@ This is because the Among Us anticheat system doesn't detect most cheats if you 
 | FriendCode Spoof | Spoof a friend code that will be used in online games.<br>IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests.<br>Set the friend code here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
 | PUID Spoof | Spoof a PUID that will be used in online games.<br>IMPORTANT: Only valid, active PUIDs will let you connect to lobbies.<br>Set the PUID here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
 
+  </details>
+</details>
 
 <details>
   <summary><h1>💤 Passive</h1></summary>
