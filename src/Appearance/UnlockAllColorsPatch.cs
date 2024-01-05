@@ -37,22 +37,26 @@ public static class UnlockAllColors_PlayerTab_ClickEquip_Prefix
 
         if (__instance.HasLocalPlayer())
         {
-            foreach (var sender in PlayerControl.AllPlayerControls)
+            var HostData = AmongUsClient.Instance.GetHost();
+            if (HostData != null && !HostData.Character.Data.Disconnected)
             {
-                //Change the color of any other player using your chosen color, to avoid color duplicates
-                if(sender.CurrentOutfit.ColorId == (byte)__instance.currentColor){
-                    foreach (var recipient in PlayerControl.AllPlayerControls)
-                    {
-                        MessageWriter senderColorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
-                        senderColorWriter.Write(PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
-                        AmongUsClient.Instance.FinishRpcImmediately(senderColorWriter);
+                foreach (var sender in PlayerControl.AllPlayerControls)
+                {
+                    //Change the color of any other player using your chosen color, to avoid color duplicates
+                    if(sender.CurrentOutfit.ColorId == (byte)__instance.currentColor){
+                        foreach (var recipient in PlayerControl.AllPlayerControls)
+                        {
+                            MessageWriter senderColorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+                            senderColorWriter.Write(PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
+                            AmongUsClient.Instance.FinishRpcImmediately(senderColorWriter);
+                        }
                     }
-                }
 
-                //Set the color in-game using RPC calls
-                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(sender));
-                colorWriter.Write((byte)__instance.currentColor);
-                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+                    //Set the color in-game using RPC calls
+                    MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(sender));
+                    colorWriter.Write((byte)__instance.currentColor);
+                    AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+                }
             }
         }
 

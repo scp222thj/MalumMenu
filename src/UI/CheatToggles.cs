@@ -23,6 +23,9 @@ namespace MalumMenu
         public static bool reportBody;
         public static bool murderPlayer;
         public static bool murderAll;
+        public static bool shapeshiftAll;
+        public static bool revertShapeshifters;
+        public static bool shapeshiftCheat;
 
         //Appearance
         public static bool resetOutfit;
@@ -88,21 +91,24 @@ namespace MalumMenu
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;
 
-        public static void DisablePPMCheats(){
-            mimicAllOutfits = false;
-            copyPlayerFC = false;
-            chatMimic = false;
-            copyPlayerPUID = false;
-            reportBody = false;
-            teleportPlayer = false;
-            mimicOutfit = false;
-            murderPlayer = false;
-            kickPlayer = false;
-            spectate = false;
+        public static void DisablePPMCheats(string variableToKeep)
+        {
+            mimicAllOutfits = variableToKeep != "mimicAllOutfits" ? false : mimicAllOutfits;
+            copyPlayerFC = variableToKeep != "copyPlayerFC" ? false : copyPlayerFC;
+            chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
+            copyPlayerPUID = variableToKeep != "copyPlayerPUID" ? false : copyPlayerPUID;
+            reportBody = variableToKeep != "reportBody" ? false : reportBody;
+            teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
+            mimicOutfit = variableToKeep != "mimicOutfit" ? false : mimicOutfit;
+            murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
+            kickPlayer = variableToKeep != "kickPlayer" ? false : kickPlayer;
+            spectate = variableToKeep != "spectate" ? false : spectate;
+            shapeshiftAll = variableToKeep != "shapeshiftAll" ? false : shapeshiftAll;
+            shapeshiftCheat = variableToKeep != "shapeshiftCheat" ? false : shapeshiftCheat;
         }
 
         public static bool shouldPPMClose(){
-            return !mimicAllOutfits && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }

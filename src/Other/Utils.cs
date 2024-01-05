@@ -24,68 +24,96 @@ public static class Utils
     //Completly randomize a player outfit using fake RPC calls
     public static void ShuffleOutfit(PlayerControl sender)
     {
-        foreach (var item in PlayerControl.AllPlayerControls)
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
         {
-            MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
 
-            colorWriter.Write((byte)new System.Random().Next(18));
-            nameWriter.Write(DestroyableSingleton<AccountManager>.Instance.GetRandomName());
-            hatWriter.Write(referenceDataManager.Refdata.hats[new System.Random().Next(referenceDataManager.Refdata.hats.Count)].ProdId);
-            petWriter.Write(referenceDataManager.Refdata.pets[new System.Random().Next(referenceDataManager.Refdata.pets.Count)].ProdId);
-            visorWriter.Write(referenceDataManager.Refdata.visors[new System.Random().Next(referenceDataManager.Refdata.visors.Count)].ProdId);
-            skinWriter.Write(referenceDataManager.Refdata.skins[new System.Random().Next(referenceDataManager.Refdata.skins.Count)].ProdId);
+                colorWriter.Write((byte)new System.Random().Next(18));
+                nameWriter.Write(DestroyableSingleton<AccountManager>.Instance.GetRandomName());
+                hatWriter.Write(referenceDataManager.Refdata.hats[new System.Random().Next(referenceDataManager.Refdata.hats.Count)].ProdId);
+                petWriter.Write(referenceDataManager.Refdata.pets[new System.Random().Next(referenceDataManager.Refdata.pets.Count)].ProdId);
+                visorWriter.Write(referenceDataManager.Refdata.visors[new System.Random().Next(referenceDataManager.Refdata.visors.Count)].ProdId);
+                skinWriter.Write(referenceDataManager.Refdata.skins[new System.Random().Next(referenceDataManager.Refdata.skins.Count)].ProdId);
 
-            AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(petWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(petWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+            }
         }
     }
 
     //Kill any player using fake RPC calls
     public static void MurderPlayer(PlayerControl source, PlayerControl target)
     {
-        foreach (var item in PlayerControl.AllPlayerControls)
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            writer.WriteNetObject(target);
-            writer.Write((int)MurderResultFlags.Succeeded);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                writer.WriteNetObject(target);
+                writer.Write((int)MurderResultFlags.Succeeded);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+            }
+        }
+    }
+
+    //Make any player shapeshift into any other player using fake RPC calls
+    public static void ShapeshiftPlayer(PlayerControl source, PlayerControl target, bool shouldAnimate)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.Shapeshift, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                messageWriter.WriteNetObject(target);
+                messageWriter.Write(shouldAnimate);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
         }
     }
 
     //Make any player copy any other player's outfit using fake RPC calls
     public static void CopyOutfit(PlayerControl source, PlayerControl target)
     {
-        foreach (var item in PlayerControl.AllPlayerControls)
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
         {
-            MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
 
-            colorWriter.Write(target.Data.DefaultOutfit.ColorId);
-            nameWriter.Write(target.Data.DefaultOutfit.PlayerName);
-            hatWriter.Write(target.Data.DefaultOutfit.HatId);
-            petWriter.Write(target.Data.DefaultOutfit.PetId);
-            visorWriter.Write(target.Data.DefaultOutfit.VisorId);
-            skinWriter.Write(target.Data.DefaultOutfit.SkinId);
+                colorWriter.Write(target.Data.DefaultOutfit.ColorId);
+                nameWriter.Write(target.Data.DefaultOutfit.PlayerName);
+                hatWriter.Write(target.Data.DefaultOutfit.HatId);
+                petWriter.Write(target.Data.DefaultOutfit.PetId);
+                visorWriter.Write(target.Data.DefaultOutfit.VisorId);
+                skinWriter.Write(target.Data.DefaultOutfit.SkinId);
 
-            AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(petWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
-            AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(petWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+            }
         }
 
     }

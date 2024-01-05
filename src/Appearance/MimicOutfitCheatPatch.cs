@@ -1,54 +1,40 @@
 using HarmonyLib;
-using UnityEngine;
+using Hazel;
 using Il2CppSystem.Collections.Generic;
 using System;
+using InnerNet;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class TeleportCursor_PlayerPhysics_LateUpdate_Postfix
+public static class MimicOutfit_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to teleport to cursor position on right-click
-    public static void Postfix(PlayerPhysics __instance)
-    {
-        if(Input.GetMouseButtonDown(1) && CheatToggles.teleportCursor){
-
-            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        
-        }
-    }
-}
-
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class TeleportPlayer_PlayerPhysics_LateUpdate_Postfix
-{
-    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to teleport to player
+    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to pick a player outfit to mimic
     public static bool isActive;
     public static void Postfix(PlayerPhysics __instance){
-        if (CheatToggles.teleportPlayer){
+        if (CheatToggles.mimicOutfit){
 
             if (!isActive){
 
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("teleportPlayer");
+                    CheatToggles.DisablePPMCheats("mimicOutfit");
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    if (!player.AmOwner){
+                    if(!player.AmOwner){
                         playerList.Add(player);
                     }
                 }
 
-                //New player pick menu made for teleporting
+                //New player pick menu made for mimicking outfits
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
                 {
-                    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Utils_PlayerPickMenu.targetPlayer.transform.position);
-                
+                    Utils.CopyOutfit(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayer);
                 }));
 
                 isActive = true;
@@ -56,7 +42,7 @@ public static class TeleportPlayer_PlayerPhysics_LateUpdate_Postfix
 
             //Deactivate cheat if menu is closed
             if (Utils_PlayerPickMenu.playerpickMenu == null){
-                CheatToggles.teleportPlayer = false;
+                CheatToggles.mimicOutfit = false;
             }
 
         }else{

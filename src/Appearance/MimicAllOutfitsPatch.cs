@@ -7,32 +7,39 @@ using InnerNet;
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class MurderPlayer_PlayerPhysics_LateUpdate_Postfix
+public static class MimicAllOutfits_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to murder any player
+    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to pick the player outfit that all other players will mimic 
     public static bool isActive;
     public static void Postfix(PlayerPhysics __instance){
-        if (CheatToggles.murderPlayer){
+        if (CheatToggles.mimicAllOutfits){
 
             if (!isActive){
 
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("murderPlayer");
+                    CheatToggles.DisablePPMCheats("mimicAllOutfits");
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();
 
-                //All players are saved to playerList apart from LocalPlayer
+                //All players are saved to playerList
                 foreach (var player in PlayerControl.AllPlayerControls){
                     playerList.Add(player);
                 }
 
-                //New player pick menu made for killing players
+                //New player pick menu made for targeting a player outfit
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
                 {
-                    Utils.MurderPlayer(Utils_PlayerPickMenu.targetPlayer, Utils_PlayerPickMenu.targetPlayer);
+                    //Each player will copy the targetPlayer's outfit
+                    foreach (var sender in PlayerControl.AllPlayerControls)
+                    {
+                        //The target player should not be affected unless they are not currently in their default outfit
+                        if(sender.PlayerId != Utils_PlayerPickMenu.targetPlayer.PlayerId || sender.CurrentOutfitType != PlayerOutfitType.Default){
+                            Utils.CopyOutfit(sender, Utils_PlayerPickMenu.targetPlayer);
+                        }
+                    }
                 
                 }));
 
@@ -41,7 +48,7 @@ public static class MurderPlayer_PlayerPhysics_LateUpdate_Postfix
 
             //Deactivate cheat if menu is closed
             if (Utils_PlayerPickMenu.playerpickMenu == null){
-                CheatToggles.murderPlayer = false;
+                CheatToggles.mimicAllOutfits = false;
             }
 
         }else{
