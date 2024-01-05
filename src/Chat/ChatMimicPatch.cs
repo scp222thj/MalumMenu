@@ -65,7 +65,7 @@ public static class ChatMimic_PlayerPhysics_LateUpdate_Postfix
 
                 isActive = true;
 
-                CheatToggles.spamChat = false; //SpamChat & ChatMimic do not work well with each other
+                CheatToggles.spamChat = CheatToggles.setNameAll = CheatToggles.setName = false; //SpamChat, ChatMimic & ChangeName do not work well with each other
 
             }
 

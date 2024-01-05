@@ -51,16 +51,3 @@ public static class SpoofFriendCode_EOSManager_Update_Postfix
         }catch{}
     }
 }
-
-[HarmonyPatch(typeof(PlayerCustomizationData), nameof(PlayerCustomizationData.Name), MethodType.Getter)]
-public static class SpoofRandomName_PlayerCustomizationData_Name_Getter_Postfix
-{
-    //Postfix patch of PlayerCustomizationData.Name (Getter) to return a random name
-    public static void Postfix(PlayerCustomizationData __instance, ref string __result)
-    {        
-        if (CheatToggles.spoofRandomName){ //Return the default, normal name if the cheat is disabled
-            __result = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
-            return;
-        }
-    }
-}

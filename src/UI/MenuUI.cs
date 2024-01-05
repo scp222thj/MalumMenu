@@ -62,14 +62,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" KickPlayer", () => CheatToggles.kickPlayer, x => CheatToggles.kickPlayer = x),
             new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x)
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("Outfit", false, new List<ToggleInfo>() {
-                new ToggleInfo(" UnlockAllColors", () => CheatToggles.unlockColors, x => CheatToggles.unlockColors = x),
-                new ToggleInfo(" MimicOutfit", () => CheatToggles.mimicOutfit, x => CheatToggles.mimicOutfit = x),
-                new ToggleInfo(" ShuffleOutfit", () => CheatToggles.shuffleOutfit, x => CheatToggles.shuffleOutfit = x),
-                new ToggleInfo(" All MimicOutfit", () => CheatToggles.mimicAllOutfits, x => CheatToggles.mimicAllOutfits = x),
-                new ToggleInfo(" All ShuffleOutfit", () => CheatToggles.shuffleAllOutfits, x => CheatToggles.shuffleAllOutfits = x),
-                new ToggleInfo(" Reset Outfit", () => CheatToggles.resetOutfit, x => CheatToggles.resetOutfit = x),
-            }),
             new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ShapeshiftCheat", () => CheatToggles.shapeshiftCheat, x => CheatToggles.shapeshiftCheat = x),
                 new ToggleInfo(" ShapeshiftAll", () => CheatToggles.shapeshiftAll, x => CheatToggles.shapeshiftAll = x),
@@ -78,6 +70,20 @@ public class MenuUI : MonoBehaviour
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
                 new ToggleInfo(" MurderPlayer", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
                 new ToggleInfo(" MurderAll", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
+            }),
+        }));
+
+        groups.Add(new GroupInfo("Appearance", false, new List<ToggleInfo>(){
+            new ToggleInfo(" Reset Appearance", () => CheatToggles.resetAppearance, x => CheatToggles.resetAppearance = x),
+        }, new List<SubmenuInfo> {
+            new SubmenuInfo("Outfit", false, new List<ToggleInfo>() {
+                new ToggleInfo(" UnlockAllColors", () => CheatToggles.unlockColors, x => CheatToggles.unlockColors = x),
+                new ToggleInfo(" MimicOutfit", () => CheatToggles.mimicOutfit, x => CheatToggles.mimicOutfit = x),
+                new ToggleInfo(" All MimicOutfit", () => CheatToggles.mimicAllOutfits, x => CheatToggles.mimicAllOutfits = x),
+            }),
+            new SubmenuInfo("Name", false, new List<ToggleInfo>() {
+                new ToggleInfo(" SetName", () => CheatToggles.setName, x => CheatToggles.setName = x),
+                new ToggleInfo(" All SetName", () => CheatToggles.setNameAll, x => CheatToggles.setNameAll = x),
             }),
         }));
 
@@ -117,7 +123,6 @@ public class MenuUI : MonoBehaviour
         //}, new List<SubmenuInfo>()));
 
         groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>(){
-            new ToggleInfo(" RandomName", () => CheatToggles.spoofRandomName, x => CheatToggles.spoofRandomName = x),
             new ToggleInfo(" RandomFriendCode", () => CheatToggles.spoofRandomFC, x => CheatToggles.spoofRandomFC = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Other", false, new List<ToggleInfo>() {

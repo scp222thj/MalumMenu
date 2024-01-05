@@ -118,6 +118,24 @@ public static class Utils
 
     }
 
+    //Change any player's name using fake RPC calls
+    public static void SetName(PlayerControl target, string name)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(target.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                
+                nameWriter.Write(name);
+                
+                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+            }
+        }
+
+    }
+
     //Gets current map ID
     public static byte getCurrentMapID()
     {

@@ -8,7 +8,7 @@ public static class ResetOutfit_PlayerPhysics_LateUpdate_Postfix
 {
     //Postfix patch of PlayerPhysics.LateUpdate to reset the user's outfit to default
     public static void Postfix(PlayerPhysics __instance){
-        if (CheatToggles.resetOutfit){
+        if (CheatToggles.resetAppearance){
 
             var HostData = AmongUsClient.Instance.GetHost();
             if (HostData != null && !HostData.Character.Data.Disconnected)
@@ -57,7 +57,7 @@ public static class ResetOutfit_PlayerPhysics_LateUpdate_Postfix
                 }
             }
 
-            CheatToggles.resetOutfit = false;
+            CheatToggles.resetAppearance = false;
 
         }
     }

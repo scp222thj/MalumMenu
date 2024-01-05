@@ -30,6 +30,8 @@ public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
         if (CheatToggles.spamChat){
 
             if(CheatToggles.chatMimic){CheatToggles.chatMimic = false;}
+            if(CheatToggles.setName){CheatToggles.setName = false;}
+            if(CheatToggles.setNameAll){CheatToggles.setNameAll = false;}
 
             if (spamText != null && Time.time - lastChatTime >= chatDelay)
             {

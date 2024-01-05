@@ -8,9 +8,10 @@ namespace MalumMenu;
 public static class ChatJailBreak_PlayerControl_RpcSendChat_Prefix
 {
     //Prefix patch of PlayerControl.RpcSendChat to unlock extra chat capabilities
+    [HarmonyPriority(Priority.VeryHigh)]
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic){
+        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic || CheatToggles.setNameAll || CheatToggles.spamChat || CheatToggles.setName){
             return true; //Only works if CheatSettings.chatJailbreak is enabled & CheatSettings.chatMimic is disabled
         }
 
@@ -22,13 +23,6 @@ public static class ChatJailBreak_PlayerControl_RpcSendChat_Prefix
 		}
 
         //Removal of UnityTelemetry.SendWho()
-        
-        if(CheatToggles.spamChat){
-
-            SpamChat_PlayerPhysics_RpcSendChat_Prefix.spamText = chatText;
-            return true;
-
-        }
 
         //Modded version of the original RPC call that lets users bypass the character limit and the message ratelimit
 		MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None, -1);

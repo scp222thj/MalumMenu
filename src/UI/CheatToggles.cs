@@ -28,16 +28,15 @@ namespace MalumMenu
         public static bool shapeshiftCheat;
 
         //Appearance
-        public static bool resetOutfit;
-        public static bool shuffleAllOutfits;
-        public static bool shuffleOutfit;
+        public static bool resetAppearance;
+        public static bool setName;
+        public static bool setNameAll;
         public static bool unlockColors;
         public static bool mimicOutfit;
         public static bool mimicAllOutfits;
 
         //Spoofing
         public static bool copyPlayerPUID;
-        public static bool spoofRandomName;
         public static bool spoofRandomFC;
         public static bool copyPlayerFC;
 
