@@ -5,12 +5,15 @@
 
 
 <p align="center">
+  
   <a href="https://discord.gg/YYcYf88jAb">
     <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
   </a>
+  
   <a href="https://ko-fi.com/scp222thj">
     <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
   </a>
+  
 </p>
 
 <p align="center">
