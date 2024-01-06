@@ -5,8 +5,12 @@
 
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Made%20with-C%23-1f425f.svg?style=plastic&logo=csharp&color=000000&labelColor=A200FF">
-  <img src="https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=plastic&logo=GNU">
+  <a href="https://discord.gg/YYcYf88jAb">
+    <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
+  </a>
+  <a href="https://ko-fi.com/scp222thj">
+    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
+  </a>
 </p>
 
 <p align="center">
