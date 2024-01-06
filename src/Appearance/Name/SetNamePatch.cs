@@ -30,10 +30,20 @@ public static class SetName_PlayerControl_LateUpdate_Postfix
         if (CheatToggles.setName){
             if (!isActive){
                 CheatToggles.chatMimic = CheatToggles.spamChat = CheatToggles.setNameAll = false;
+
+                Utils.OpenChat();
+
                 isActive = true;
             }
         }else{
-            isActive = false;
+            if (isActive){
+                if (!CheatToggles.chatMimic && !CheatToggles.spamChat && !CheatToggles.setNameAll){
+                    Utils.CloseChat();
+                }
+
+                isActive = false;
+            }
+            
         }
     }
 }

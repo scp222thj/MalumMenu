@@ -8,6 +8,7 @@ namespace MalumMenu;
 public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
 {
     public static string spamText;
+    public static bool isActive;
     private static float lastChatTime = 0f;
     private static float chatDelay = 0.5f; // Delay between messages in seconds
 
@@ -29,9 +30,15 @@ public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
     {
         if (CheatToggles.spamChat){
 
-            if(CheatToggles.chatMimic){CheatToggles.chatMimic = false;}
-            if(CheatToggles.setName){CheatToggles.setName = false;}
-            if(CheatToggles.setNameAll){CheatToggles.setNameAll = false;}
+            if (!isActive){
+
+                CheatToggles.chatMimic = CheatToggles.setName = CheatToggles.setNameAll = false;
+
+                Utils.OpenChat();
+
+                isActive = true;
+
+            }
 
             if (spamText != null && Time.time - lastChatTime >= chatDelay)
             {
@@ -39,6 +46,11 @@ public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
                 SendSpamChat();
             }
         
+        }else{
+            if (isActive){
+                
+                isActive = false;
+            }
         }
     }
 

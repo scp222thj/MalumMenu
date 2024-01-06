@@ -61,11 +61,13 @@ public static class ChatMimic_PlayerPhysics_LateUpdate_Postfix
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
                 {
                     ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget = Utils_PlayerPickMenu.targetPlayer;
+
+                    Utils.OpenChat();
                 }));
 
-                isActive = true;
-
                 CheatToggles.spamChat = CheatToggles.setNameAll = CheatToggles.setName = false; //SpamChat, ChatMimic & ChangeName do not work well with each other
+
+                isActive = true;
 
             }
 
@@ -77,6 +79,7 @@ public static class ChatMimic_PlayerPhysics_LateUpdate_Postfix
             //Deactivate cheat when it is disabled from the GUI
             if (isActive){
                 isActive = false;
+
                 ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget = null;
             }
         }

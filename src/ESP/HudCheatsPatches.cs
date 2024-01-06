@@ -18,7 +18,7 @@ public static class HudCheats_HudManager_Update_Postfix
 
         //Allow seeing chat icon in-game even while you're not supposed to
         try{
-            chatActive =  CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
+            chatActive = Utils.utilsOpenChat || CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
         }catch{chatActive = false;}
         __instance.Chat.gameObject.SetActive(chatActive);
 

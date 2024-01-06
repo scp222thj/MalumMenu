@@ -21,6 +21,8 @@ public static class Utils
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
     
+    public static bool utilsOpenChat;
+    
     //Completly randomize a player outfit using fake RPC calls
     public static void ShuffleOutfit(PlayerControl sender)
     {
@@ -132,6 +134,32 @@ public static class Utils
                 
                 AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
             }
+        }
+
+    }
+
+    //Open Chat UI
+    public static void OpenChat()
+    {
+        if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+            utilsOpenChat = true;
+            DestroyableSingleton<HudManager>.Instance.Chat.chatScreen.SetActive(true);
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+            DestroyableSingleton<HudManager>.Instance.Chat.StartCoroutine(DestroyableSingleton<HudManager>.Instance.Chat.CoOpen());
+            if (DestroyableSingleton<FriendsListManager>.InstanceExists)
+            {
+                DestroyableSingleton<FriendsListManager>.Instance.SetFriendButtonColor(true);
+            }
+        }
+
+    }
+
+    //Close Chat UI
+    public static void CloseChat()
+    {
+        utilsOpenChat = false;
+        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+            DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
         }
 
     }
