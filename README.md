@@ -30,6 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v2.0.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.0.0/MalumMenu-2.0.0.zip) |
 | v1.2.1 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip) |
 | v1.2.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.0/MalumMenu-1.2.0.zip) |
 | v1.1.2 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.2/MalumMenu-1.1.2.zip) |
@@ -46,7 +47,7 @@
 3. Start the game normally
     - The first launch will take a **MUCH** longer time than usual, so don't be alarmed if you have to wait a while
 4. Toggle the cheat menu on by pressing **DELETE** on your keyboard
-5. If the installation doesn't work, check out our [FAQ](-im-having-issues-installing-malummenu)
+5. If the installation doesn't work, check out our [FAQ](#-im-having-issues-installing-malummenu)
 
 # 📋 Features
 
