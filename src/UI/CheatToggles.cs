@@ -18,7 +18,7 @@ namespace MalumMenu
 
         //RPC Exploit
         public static bool kickPlayer;
-        public static bool massMedScan;
+        public static bool allMedScan;
         public static bool reportBody;
         public static bool murderPlayer;
         public static bool murderAll;
