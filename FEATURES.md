@@ -7,16 +7,16 @@ Click to expand each category!
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
 | NoClip     | Allows you to walk through walls like a ghost | Toggle | Off
-| SpeedBoost | Doubles your player's speed | Toggle | Off
-| NoCooldowns| Removes many of the game's cooldowns:<br>- Engineer vent cooldown<br>- Engineer vent duration<br>- Scientist battery<br>- Scientist cooldown<br>- Shapeshift Animation<br>- Shapeshift Duration | Toggle | Off |
+| SpeedBoost | Doubles your player's speed | Toggle | Off |
 
   <details>
-    <summary><h2>Teleport</h2></summary>
+    <summary><h2>NoCooldowns</h2></summary>
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-|   to cursor | Allows you to teleport by right-clicking. Works best when used along with ZoomOut | Toggle | Off
-|   to player | Allows you to pick a player to teleport to. | Menu |
+| Shapeshifter | Removes the Shapeshifter animation and duration | Toggle | Off |
+| Engineer | Removes the Engineer vent duration and cooldown | Toggle | Off |
+| Scientist | Removes the Scientist cooldown and battery | Toggle | Off |
 
   </details>
 </details>
@@ -32,6 +32,8 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | SeeGhosts | Allows you to see ghosts, protections, and ghost chat even if you are alive <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131688847420424283/image.png" width=285 height=282> | Toggle | Off
 | SeeRoles | Reveals the roles of all players through the color of their names <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1133144778272419840/image.png" width=285 height=258> | Toggle | Off
 | FullBright | Removes all shadows, allowing you to see during blackouts and even through walls | Toggle | Off |
+| VentVision | Allows you to see the names of players inside vents<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131628712647999518/image.png" width=285 height=263> | Toggle | Off |
+| RevealVotes | Lets you see colored votes even if votes are set to anonymous<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131643587520626688/image.png" width=285 height=174> | Toggle | Off |
 
   <details>
     <summary><h2>Camera</h2></summary>
@@ -76,32 +78,33 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 <details>
   <summary><h1>☎️ RPC Exploit</h1></summary>
 
-| Cheat | Description | Type |
-|------------|-------------|------|
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
 | KickPlayer | Allows you to pick a player to kick from the lobby. | Menu |
+| ReportBody | Allows you to make a player report their own dead body and start a meeting | Menu |
+| MassMedScan | Play the MedBay scan animation on all players | Toggle | Off |
 
   <details>
-    <summary><h2>Outfits</h2></summary>
-
-Your outfit consists of: Name, Hat, Visor, Skin, Pet, Nameplate.
+    <summary><h2>Teleport</h2></summary>
 
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
-| ShuffleOutfit | Randomize your outfit | Button |
-| ShuffleAllOutfits | Randomize the outfit of every player in your lobby | Button |
-| CopyOutfit | Copy another player's outfit and apply it to yourself | Menu |
-| ResetMyOutfit | Reset your outfit back to the one you set for your account | Button |
-| UnlockAllColors | Allows you to pick any color, regardless if any other player already has it | Toggle | Off |
-
+| Me to Cursor | Allows you to teleport by right-clicking. Works best when used along with ZoomOut. | Toggle | Off |
+| Me to Player | Allows you to pick a player to teleport to. | Menu |
+| All to Cursor | Allows you to teleport **all players** by right-clicking. Works best when used along with ZoomOut. | Toggle | Off |
+| All to Player | Allows you to pick a player to teleport **all players** to. | Menu |
+    
   </details>
   <details>
     <summary><h2>Shapeshift</h2></summary>
 
 | Cheat | Description | Type | 
 |------------|-------------|------|
-| ShapeshiftAll | Force shapeshift all players to one player | Menu |
-| ResetShapeshifters | Allows you to force unshift all currently shapeshifted players | Button |
+| ShapeshiftCheat | Allows you to shapeshift into any player without needing to be Impostor. | Menu |
+| ShapeshiftAll | Allows you to shapeshift **all players** into the target. | Menu |
+| RevertShapeshifters | Allows you to revert all shapeshifters to their normal outfit. | Button |
 
+  
   </details>
   <details>
     <summary><h2>Murder</h2></summary>
@@ -116,7 +119,42 @@ Your outfit consists of: Name, Hat, Visor, Skin, Pet, Nameplate.
 
 
 <details>
+  <summary><h1>👔 Appearance</h1></summary>
+
+Your outfit consists of: Color, Name, Hat, Pet, Visor and Skin.
+
+| Cheat | Description | Type |
+|------------|-------------|------|
+| ResetAppearance | Reset your outfit to default | Button |
+
+  <details>
+    <summary><h2>Outfit</summary>
+
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
+| UnlockAllColors | Allows you to choose any color, regardless if it's already taken by another player. | Toggle | Off |
+| MimicOutfit | Allows you to pick a player to apply his outfit to yourself. | Menu |
+| All MimicOutfit | Allows you to pick a player to apply his outfit to **all players.** | Menu |
+
+  </details>
+  <details>
+    <summary><h2>Name</h2></summary>
+
+| Cheat | Description | Type |
+|------------|-------------|------|
+| SetName | Change your name (your last chat message will be used) | Button |
+| All SetName | Change all player's names (your last chat message will be used) | Button |
+    
+  </details>
+</details>
+
+<details>
   <summary><h1>🚢 Ship</h1></summary>
+
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
+| UnfixableLights | Disables lights completely (they cannot be fixed manually by players).<br>You can enable them again by clicking the button. | Button |
+| CloseMeeting | Forcefully closes the meeting window (only for you), allowing you to move and interact with the game during meetings | Button |
 
   <details>
     <summary><h2>Sabotage</h2></summary>
@@ -127,22 +165,12 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 
 | Cheat | Description | Type | 
 |------------|-------------|------|
-| Blackout | Disables lights completely (they cannot be fixed manually by players).<br>You can enable them again by clicking the button. | Button |
-| Doors | Locks all doors on the ship. | Button |
 | Reactor | Enables/Disables Reactor sabotage. | Button |
 | Oxygen | Enables/Disables Oxygen sabotage. | Button |
-| Electrical | Enables/Disables Eletrical sabotage. | Button |
+| Lights | Enables/Disables Lights sabotage. | Button |
 | Comms | Enables/Disables Communications sabotage. | Button |
-
-  </details>
-  <details>
-    <summary><h2>Mushrooms</h2></summary>
-
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| MushroomMixup | Enables Mushroom Mixup sabotage on Fungle map | Button |
-| SporesTrigger | Shoots spore clouds out of all the mushrooms in the Fungle jungle | Button |
-| SporeCloudVision | Allows you to see other players in spores. | Toggle | Off |
+| Doors | Locks all doors on the ship. | Button |
+| MushroomMixup | Enables Mushroom Mixup sabotage on Fungle map. | Button |
 
   </details>
   <details>
@@ -152,18 +180,7 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 |------------|-------------|------|--------|
 | UseVents | Allows you to use vents even if you are not an impostor or an engineer | Toggle | Off
 | KickVents | Forcefully kicks all players from vents | Button |
-| VentVision | Allows you to see the names of players inside vents<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131628712647999518/image.png" width=285 height=263> | Toggle | Off |
 | WalkInVents | Allows you to move and interact with the game even though you are inside of a vent.<br>This gives you a sort of invisibility until you disable the setting and leave the vent.<br>Moreover, some activites such as killing will forcefully make you visible again. | Toggle | Off
-
-  </details>
-  <details>
-    <summary><h2>Meetings</h2></summary>
-    
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| RevealVotes | Lets you see colored votes even if votes are set to anonymous<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131643587520626688/image.png" width=285 height=174> | Toggle | Off |
-| CloseMeeting | Forcefully closes the meeting window (only for you), allowing you to move and interact with the game during meetings | Button |
-| CallMeeting | Reports latest dead body to start a meeting. If there are no dead players, you are reported as a dead body instead even if you are alive.<br>This is better than simply calling an emergency meeting because it can be used during special situations too like sabotages | Button
 
   </details>
 </details>
@@ -175,6 +192,7 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
 | AlwaysChat | Keeps the chat icon always enabled, allowing you to chat at any time, even while you're not in a meeting or the lobby | Toggle | Off |
+| ChatMimic | Allows you to pick any player to send chat messages as them. | Menu |
 | SpamChat | When you send a message, every player in the lobby will resend it. | Toggle | Off |
 | ChatJailbreak | Allows you to send special characters, URLs and Email addresses into the chat. | Toggle | Off |
 
@@ -182,37 +200,31 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 
 
 <details>
-  <summary><h1>👑 Host-Only</h1></summary>
-
-While the other cheats work even though you aren't the game's host, these cheats will only be accessible to you if you are hosting a game
-
-This is because the Among Us anticheat system doesn't detect most cheats if you are a host, so you have more hacking freedom.
-
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| ImpostorHack | Makes you always Impostor | Toggle | Off |
-| GodMode | Makes you immortal. If you are killed or voted out, you are instantly revived.<br><img src="https://cdn.discordapp.com/attachments/1097928762324168744/1131643030504476683/image.png" width=285 height=216> | Toggle | Off |
-| EvilVote | Forces every player to vote the player you voted for | Toggle | Off |
-| VoteImmune | When a player tries to vote for you, they are forced to skip instead | Toggle | Off |
-
-</details>
-
-<details>
   <summary><h1>💨 Spoofing</h1></summary>
 
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| SaveSpoofData | Saves a player's friend code and PUID to `BepInEx/config/MM_SavedSpoofData.cfg` | Menu |
+| Cheat | Description | Type |
+|------------|-------------|------|
+| RandomFriendCode | Gives you a random friend code like you get when you create a new account. | Button |
 
   <details>
-    <summary><h2>Spoof Status</h2></summary>
+    <summary><h2>Other</h2></summary>
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| FriendCode Spoof | Spoof a friend code that will be used in online games.<br>IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests.<br>Set the friend code here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
-| PUID Spoof | Spoof a PUID that will be used in online games.<br>IMPORTANT: Only valid, active PUIDs will let you connect to lobbies.<br>Set the PUID here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
+| Copy PlayerFriendCode | Saves a player's friend code to `BepInEx/config/MM_SavedSpoofData.cfg` | Menu |
+| Copy PlayerPUID | Saves a player's PUID to `BepInEx/config/MM_SavedSpoofData.cfg` | Menu |
 
   </details>
+
+  <details>
+    <summary><h2>Config</h2></summary>
+
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| Spoofed FriendCode | Spoof a friend code that will be used in online games.<br>IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests.<br>Set the friend code here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
+| Spoofed PUID | Spoof a PUID that will be used in online games.<br>IMPORTANT: Only valid, active PUIDs will let you connect to lobbies.<br>Set the PUID here: `BepInEx/config/MalumMenu.cfg` | Toggle | Off |
+
+</details>
 </details>
 
 <details>
