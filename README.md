@@ -52,16 +52,16 @@
 
 <img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
 
-- Popular hacking modules such as [NoClip](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#noclip) and [Godmode](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#godmode)
-- Reveal [ghosts](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeghosts) and [impostors](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeroles) easily
-- Access [vents](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#usevents) without being impostor or engineer
-- Advanced [ESP](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#esp) & [Tracers](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#tracers) that work completly client-side
-- [Minimap](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#minimap) to track every player on the ship
-- Special, powerful hacks for game [hosts](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#host-only)
-- All Among Us [cosmetics](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#freecosmetics) unlocked for free
-- No more disconnect [penalties](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#avoidpenalties)
-- Many Among Us special [features](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#unlockfeatures) unlocked automatically
-- [Custom announcements](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#malumnews) fetched online
+- An intuitive GUI with our latest, greatest Among Us cheats
+- See ghosts & reveal the impostors
+- Track every player's position using the minimap
+- Teleport anywhere you want
+- Kick any player without being the host
+- Murder any player with the push of a button
+- Spam a lobby's chat with custom messages
+- Unlock all of the game's cosmetics for FREE
+- No more annoying disconnect penalties
+- Custom announcements fetched from our webserver
 
 For a complete list of all of MalumMenu's features, click [here](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md)
 
