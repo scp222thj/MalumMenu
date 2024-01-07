@@ -155,17 +155,16 @@ public static class ChatJailbreak_UpdateCharCountPostfix
 {
     public static void Postfix(FreeChatInputField __instance)
     {
-        if (!CheatToggles.chatJailbreak)
+        if (CheatToggles.chatJailbreak)
         {
-            return; //Only works if CheatSettings.chatJailbreak is enabled
+            int length = __instance.textArea.text.Length;
+            __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
+            if (length < (int)(__instance.textArea.characterLimit * 0.75)) // Black if not close to limit
+                __instance.charCountText.color = Color.black;
+            else if (length < __instance.textArea.characterLimit) // Yellow if close to limit
+                __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
+            else // Red if limit reached
+                __instance.charCountText.color = Color.red;
         }
-        int length = __instance.textArea.text.Length;
-        __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
-        if (length < (int)(__instance.textArea.characterLimit * 0.75)) // Black if not close to limit
-            __instance.charCountText.color = Color.black;
-        else if (length < __instance.textArea.characterLimit) // Yellow if close to limit
-            __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
-        else // Red if limit reached
-            __instance.charCountText.color = Color.red;
     }
 }
