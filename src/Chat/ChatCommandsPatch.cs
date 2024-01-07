@@ -30,21 +30,30 @@ public static class ChatCommands_RpcSendChatPrefix
                     HudManager.Instance.Notifier.AddItem("<#fff000>Player doesn't exist</color>");
                     return false;
                 }
-                if (player == __instance)
+                PlayerControl whisperSender = __instance;
+                if (ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget != null)
+                    whisperSender = ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget;
+                if (player == whisperSender)
                 {
                     HudManager.Instance.Notifier.AddItem("<#fff000>Can't send a whisper to yourself</color>");
                     return false;
                 }
                 string whisperText = chatText.Substring(command.Length + playerName.Length + 5);
-                string originalName = __instance.Data.DefaultOutfit.PlayerName;
-                Utils.SetName(__instance, "<#ccc>" + originalName + " > " + playerName + "</color>");
-                MessageWriter writer1 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(player));
-                MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(__instance));
+                string originalName = whisperSender.Data.DefaultOutfit.PlayerName;
+                Utils.SetName(whisperSender, "<#ccc>" + originalName + " > " + playerName + "</color>");
+                MessageWriter writer1 = AmongUsClient.Instance.StartRpcImmediately(whisperSender.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(player));
+                MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(whisperSender.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(whisperSender));
                 writer1.Write(whisperText);
                 writer2.Write(whisperText);
                 AmongUsClient.Instance.FinishRpcImmediately(writer1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer2);
-                Utils.SetName(__instance, originalName);
+                if (whisperSender != __instance)
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(whisperSender.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(__instance));
+                    writer.Write(whisperText);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                }
+                Utils.SetName(whisperSender, originalName);
                 return false;
             default:
                 HudManager.Instance.Notifier.AddItem("<#fff000>Command doesn't exist</color>");
