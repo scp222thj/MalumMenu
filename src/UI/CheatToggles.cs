@@ -57,7 +57,7 @@ namespace MalumMenu
         public static bool tracersGhosts;
         public static bool tracersBodies;
         public static bool colorBasedTracers;
-        
+
         //Ship
         public static bool closeMeeting;
         public static bool doorsSab;
@@ -78,6 +78,7 @@ namespace MalumMenu
         public static bool chatJailbreak;
         public static bool spamChat;
         public static bool chatMimic;
+        public static bool enableCommands;
 
         //Host-Only
         public static bool impostorHack;
@@ -106,7 +107,8 @@ namespace MalumMenu
             shapeshiftCheat = variableToKeep != "shapeshiftCheat" ? false : shapeshiftCheat;
         }
 
-        public static bool shouldPPMClose(){
+        public static bool shouldPPMClose()
+        {
             return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }

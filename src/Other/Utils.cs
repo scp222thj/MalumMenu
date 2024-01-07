@@ -14,15 +14,26 @@ public static class Utils
 {
     //Adjusts HUD resolution
     //Used to fix UI problems when zooming out
-    public static void adjustResolution() {
+    public static void adjustResolution()
+    {
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
-    
+
     public static bool utilsOpenChat;
-    
+
+    //Get PlayerControl by player's nickname
+    public static PlayerControl GetPlayerByName(string name)
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player.Data.DefaultOutfit.PlayerName == name) return player;
+        }
+        return null;
+    }
+
     //Completly randomize a player outfit using fake RPC calls
     public static void ShuffleOutfit(PlayerControl sender)
     {
@@ -129,9 +140,9 @@ public static class Utils
             foreach (var item in PlayerControl.AllPlayerControls)
             {
                 MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(target.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                
+
                 nameWriter.Write(name);
-                
+
                 AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
             }
         }
@@ -141,7 +152,8 @@ public static class Utils
     //Open Chat UI
     public static void OpenChat()
     {
-        if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+        if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        {
             utilsOpenChat = true;
             DestroyableSingleton<HudManager>.Instance.Chat.chatScreen.SetActive(true);
             PlayerControl.LocalPlayer.NetTransform.Halt();
@@ -158,7 +170,8 @@ public static class Utils
     public static void CloseChat()
     {
         utilsOpenChat = false;
-        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        {
             DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
         }
 
@@ -169,48 +182,63 @@ public static class Utils
     {
         //If playing the tutorial
         if (DestroyableSingleton<TutorialManager>.InstanceExists)
-	    {
+        {
             return (byte)AmongUsClient.Instance.TutorialMapId;
 
-	    }else{
+        }
+        else
+        {
             //Works for all other games
             return GameOptionsManager.Instance.currentGameOptions.MapId;
         }
     }
 
     //Get SystemType of the room the player is currently in
-    public static SystemTypes getCurrentRoom(){
+    public static SystemTypes getCurrentRoom()
+    {
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
     }
 
     //Fancy colored ping text
-    public static string getColoredPingText(int ping){
+    public static string getColoredPingText(int ping)
+    {
 
-        if (ping < 100){ //Green for ping < 100
+        if (ping < 100)
+        { //Green for ping < 100
 
             return $"<color=#00ff00ff>\nPing: {ping} ms</color>";
 
-        } else if (ping < 400){ //Yellow for 100 < ping < 400
+        }
+        else if (ping < 400)
+        { //Yellow for 100 < ping < 400
 
             return $"<color=#ffff00ff>\nPing: {ping} ms</color>";
 
-        } else{ //Red for ping > 400
+        }
+        else
+        { //Red for ping > 400
 
             return $"<color=#ff0000ff>\nPing: {ping} ms</color>";
         }
     }
 
     //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
-    public static Color getColorName(bool cheatVar, GameData.PlayerInfo playerInfo){
-        if (cheatVar){
-                
+    public static Color getColorName(bool cheatVar, GameData.PlayerInfo playerInfo)
+    {
+        if (cheatVar)
+        {
+
             return playerInfo.Role.TeamColor; //Cheat vision
 
-        }else if(PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor){
+        }
+        else if (PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor)
+        {
 
             return playerInfo.Role.NameColor; //Normal Impostor Vision
 
-        }else {
+        }
+        else
+        {
 
             return Color.white; //Normal Crewmate Vision
         }
@@ -226,9 +254,10 @@ public static class Utils
 
     //Show custom popup ingame
     //Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
-    public static void showPopup(string text){
+    public static void showPopup(string text)
+    {
         var popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
-        
+
         var background = popup.transform.Find("Background").GetComponent<SpriteRenderer>();
         var size = background.size;
         size.x *= 2.5f;
@@ -266,7 +295,7 @@ public static class Utils
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
             var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
             using MemoryStream ms = new();
-            
+
             stream.CopyTo(ms);
             ImageConversion.LoadImage(texture, ms.ToArray(), false);
             return texture;
@@ -297,16 +326,17 @@ public static class Utils_PlayerPickMenu
 
         //The menu is based off the shapeshifting menu
         playerpickMenu = UnityEngine.Object.Instantiate<ShapeshifterMinigame>(Utils.getShapeshifterMenu());
-			    
+
         playerpickMenu.transform.SetParent(Camera.main.transform, false);
-		playerpickMenu.transform.localPosition = new Vector3(0f, 0f, -50f);
-		playerpickMenu.Begin(null);
+        playerpickMenu.transform.localPosition = new Vector3(0f, 0f, -50f);
+        playerpickMenu.Begin(null);
     }
-    
+
     //Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
     public static bool Prefix(PlayerTask task, ShapeshifterMinigame __instance)
     {
-        if (IsActive){ //Player pick menu logic
+        if (IsActive)
+        { //Player pick menu logic
 
             //Custom player list set by openPlayerPickMenu
             List<PlayerControl> list = customPlayerList;
@@ -321,8 +351,8 @@ public static class Utils_PlayerPickMenu
                 int num2 = i / 3;
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
                 shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
-                
-                shapeshifterPanel.SetPlayer(i, player.Data, (Action) (() =>
+
+                shapeshifterPanel.SetPlayer(i, player.Data, (Action)(() =>
                 {
                     targetPlayer = player; //Save targeted player
 
@@ -337,7 +367,7 @@ public static class Utils_PlayerPickMenu
             }
 
             ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, list2, false);
-            
+
             IsActive = false;
 
             return false; //Skip original method when active
@@ -346,7 +376,7 @@ public static class Utils_PlayerPickMenu
 
         return true; //Open normal shapeshifter menu if not active
     }
-}   
+}
 
 [HarmonyPatch(typeof(ShapeshifterPanel), nameof(ShapeshifterPanel.SetPlayer))]
 public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
@@ -354,7 +384,8 @@ public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
     //Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
     public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Action onShift)
     {
-        if (Utils_PlayerPickMenu.IsActive){ //Player pick menu logic
+        if (Utils_PlayerPickMenu.IsActive)
+        { //Player pick menu logic
 
             __instance.shapeshift = onShift;
             __instance.PlayerIcon.SetFlipX(false);
@@ -367,7 +398,7 @@ public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
             __instance.PlayerIcon.SetMaskLayer(index + 2);
             __instance.PlayerIcon.UpdateFromEitherPlayerDataOrCache(playerInfo, PlayerOutfitType.Default, PlayerMaterial.MaskType.ComplexUI, false, null);
             __instance.LevelNumberText.text = ProgressionManager.FormatVisualLevel(playerInfo.PlayerLevel);
-            
+
             //Skips using custom nameplates because they break the PlayerPickMenu in lobbies
 
             __instance.NameText.text = playerInfo.PlayerName;
