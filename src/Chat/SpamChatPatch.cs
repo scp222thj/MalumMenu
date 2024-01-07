@@ -28,7 +28,7 @@ public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
     //A short delay (chatDelay) is used to avoid being kicked for sending too many RPC calls too quickly
     public static void Update()
     {
-        if (CheatToggles.spamChat){
+        if (CheatToggles.spamChat && !CheatToggles.enableCommands){
 
             if (!isActive){
 

@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Hazel;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace MalumMenu;
 
@@ -8,28 +9,29 @@ namespace MalumMenu;
 public static class ChatJailBreak_PlayerControl_RpcSendChat_Prefix
 {
     //Prefix patch of PlayerControl.RpcSendChat to unlock extra chat capabilities
-    [HarmonyPriority(Priority.VeryHigh)]
+    [HarmonyPriority(Priority.High)]
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic || CheatToggles.setNameAll || CheatToggles.spamChat || CheatToggles.setName){
+        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic || CheatToggles.setNameAll || CheatToggles.spamChat || CheatToggles.setName || CheatToggles.enableCommands)
+        {
             return true; //Only works if CheatSettings.chatJailbreak is enabled & CheatSettings.chatMimic is disabled
         }
 
         //Removal of some checks for special characters and whitespaces
 
-		if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
-		{
-			DestroyableSingleton<HudManager>.Instance.Chat.AddChat(__instance, chatText, true);
-		}
+        if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
+        {
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(__instance, chatText, true);
+        }
 
         //Removal of UnityTelemetry.SendWho()
 
         //Modded version of the original RPC call that lets users bypass the character limit and the message ratelimit
-		MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None, -1);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None, -1);
         writer.Write(chatText);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-		return false;
+        return false;
     }
 }
 
@@ -39,7 +41,8 @@ public static class ChatJailBreak_ChatController_SendChat_Prefix
     //Prefix patch of ChatController.SendChat to unlock extra chat capabilities
     public static bool Prefix(ChatController __instance)
     {
-        if (!CheatToggles.chatJailbreak){
+        if (!CheatToggles.chatJailbreak)
+        {
             return true; //Only works if CheatSettings.chatJailbreak is enabled
         }
 
@@ -63,7 +66,7 @@ public static class ChatJailBreak_ChatController_SendChat_Prefix
         __instance.quickChatField.Clear();
         __instance.UpdateChatMode();
 
-		return false;
+        return false;
     }
 }
 
@@ -73,7 +76,8 @@ public static class ChatJailBreak_ChatController_SendFreeChat_Prefix
     //Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
     public static bool Prefix(ChatController __instance)
     {
-        if (!CheatToggles.chatJailbreak){
+        if (!CheatToggles.chatJailbreak)
+        {
             return true; // Only works if CheatSettings.chatJailbreak is enabled
         }
 
@@ -115,13 +119,16 @@ public static class ChatJailBreak_FreeChatInputField_OnFieldChanged_Prefix
         __instance.textArea.AllowPaste = CheatToggles.chatJailbreak; //Allow pasting from clipboard in chat when chatJailbreak is enabled
         __instance.textArea.AllowSymbols = true; //Allow sending certain symbols
         __instance.textArea.AllowEmail = CheatToggles.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
-        
-        if (CheatToggles.chatJailbreak){
+
+        if (CheatToggles.chatJailbreak)
+        {
             __instance.textArea.characterLimit = int.MaxValue; //Unlimited message length when chatJailbreak is enabled
-        }else{
+        }
+        else
+        {
             __instance.textArea.characterLimit = 100;
         }
-        
+
     }
 }
 
@@ -132,11 +139,32 @@ public static class ChatJailBreak_TextBoxTMP_IsCharAllowed_Prefix
     //Postfix patch of TextBoxTMP.IsCharAllowed to allow all characters
     public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
     {
-        if (!CheatToggles.chatJailbreak){
+        if (!CheatToggles.chatJailbreak)
+        {
             return true;
         }
-        
+
         __result = !(i == '\b'); //Bugfix: '\b' messing with chat message
         return false;
+    }
+}
+
+// Edit Color indicators for chatbox (only visual)
+[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.UpdateCharCount))]
+public static class ChatJailbreak_UpdateCharCountPostfix
+{
+    public static void Postfix(FreeChatInputField __instance)
+    {
+        if (CheatToggles.chatJailbreak)
+        {
+            int length = __instance.textArea.text.Length;
+            __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
+            if (length < (int)(__instance.textArea.characterLimit * 0.75)) // Black if not close to limit
+                __instance.charCountText.color = Color.black;
+            else if (length < __instance.textArea.characterLimit) // Yellow if close to limit
+                __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
+            else // Red if limit reached
+                __instance.charCountText.color = Color.red;
+        }
     }
 }

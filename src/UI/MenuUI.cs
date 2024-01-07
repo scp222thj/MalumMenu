@@ -110,7 +110,9 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" AlwaysChat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x),
             new ToggleInfo(" ChatMimic", () => CheatToggles.chatMimic, x => CheatToggles.chatMimic = x),
             new ToggleInfo(" SpamChat", () => CheatToggles.spamChat, x => CheatToggles.spamChat = x),
-            new ToggleInfo(" ChatJailbreak", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
+            new ToggleInfo(" ChatJailbreak", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x),
+            new ToggleInfo(" Whisper", () => CheatToggles.whisper, x => CheatToggles.whisper = x),
+            new ToggleInfo(" EnableCommands", () => CheatToggles.enableCommands, x => CheatToggles.enableCommands = x)
         }, new List<SubmenuInfo>()));
 
         //Host-Only Cheats are temporarly disabled because of some bugs
@@ -142,7 +144,8 @@ public class MenuUI : MonoBehaviour
         }, new List<SubmenuInfo>()));
     }
 
-    private void Update(){
+    private void Update()
+    {
         if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), MalumMenu.menuKeybind.Value)))
         {
             //Enable-disable GUI with DELETE key
@@ -157,16 +160,19 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
-        if(!CheatChecks.isHost){
+        if (!CheatChecks.isHost)
+        {
             CheatToggles.voteImmune = CheatToggles.godMode = CheatToggles.impostorHack = CheatToggles.evilVote = false;
         }
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
-        if(!CheatChecks.isShip){
+        if (!CheatChecks.isShip)
+        {
             CheatToggles.unfixableLights = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
         }
 
-        if(!CheatChecks.isPlayer){
+        if (!CheatChecks.isPlayer)
+        {
             CheatToggles.copyPlayerFC = CheatToggles.copyPlayerPUID = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
         }
     }

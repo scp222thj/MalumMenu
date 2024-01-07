@@ -13,7 +13,7 @@ public static class ChatMimic_PlayerControl_RpcSendChat_Prefix
     // Prefix patch of PlayerControl.RpcSendChat to send chat messages as another player
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (chatMimicTarget == null)
+        if (chatMimicTarget == null || CheatToggles.enableCommands)
         {
             return true; //Only works if the target has been specified
         }
