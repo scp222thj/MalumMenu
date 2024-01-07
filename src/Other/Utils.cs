@@ -97,10 +97,9 @@ public static class Utils
         if (HostData != null && !HostData.Character.Data.Disconnected)
         {
             foreach (PlayerControl item in PlayerControl.AllPlayerControls){
-                ushort num = (ushort)(player.NetTransform.lastSequenceId + 2);
                 MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
                 NetHelpers.WriteVector2(position, messageWriter);
-                messageWriter.Write(num);
+                messageWriter.Write(player.NetTransform.lastSequenceId + 100U);
                 AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             }
         }
