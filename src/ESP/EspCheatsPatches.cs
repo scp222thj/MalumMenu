@@ -23,15 +23,17 @@ public static class SeeRoles_MeetingHud_Update_Postfix
 {
     //Postfix patch of MeetingHud.Update to get colored names in meetings
     public static void Postfix(MeetingHud __instance){
-        foreach (PlayerVoteArea playerState in __instance.playerStates)
-        {
-            //Fetching the GameData.PlayerInfo of each playerState to get the player's role
-            GameData.PlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
+        try{
+            foreach (PlayerVoteArea playerState in __instance.playerStates)
+            {
+                //Fetching the GameData.PlayerInfo of each playerState to get the player's role
+                GameData.PlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
-            //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-            playerState.NameText.color = Utils.getColorName(CheatToggles.seeRoles, data);
+                //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
+                playerState.NameText.color = Utils.getColorName(CheatToggles.seeRoles, data);
 
-        }
+            }
+        }catch{}
     }
 }    
 
