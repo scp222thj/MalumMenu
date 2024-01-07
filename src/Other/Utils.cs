@@ -87,6 +87,25 @@ public static class Utils
         }
     }
 
+    //Make any player teleport anywhere using fake RPC calls
+    public static void TeleportPlayer(PlayerControl player, Vector2 position)
+    {
+        //if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId){
+        //    player.NetTransform.RpcSnapTo(position);
+        //}
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (PlayerControl item in PlayerControl.AllPlayerControls){
+                ushort num = (ushort)(player.NetTransform.lastSequenceId + 2);
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                NetHelpers.WriteVector2(position, messageWriter);
+                messageWriter.Write(num);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
+        }
+    }
+
     //Make any player copy any other player's outfit using fake RPC calls
     public static void CopyOutfit(PlayerControl source, PlayerControl target)
     {

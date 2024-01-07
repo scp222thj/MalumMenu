@@ -23,10 +23,6 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Engineer", () => CheatToggles.noCooldowns_engineer, x => CheatToggles.noCooldowns_engineer = x),
                 new ToggleInfo(" Scientist", () => CheatToggles.noCooldowns_scientist, x => CheatToggles.noCooldowns_scientist = x)
 
-            }),
-            new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
-                new ToggleInfo(" to Cursor", () => CheatToggles.teleportCursor, x => CheatToggles.teleportCursor = x),
-                new ToggleInfo(" to Player", () => CheatToggles.teleportPlayer, x => CheatToggles.teleportPlayer = x)
             })
         }));
 
@@ -63,6 +59,12 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             new ToggleInfo(" MassMedScan", () => CheatToggles.massMedScan, x => CheatToggles.massMedScan = x),
         }, new List<SubmenuInfo> {
+            new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
+                new ToggleInfo(" Me to Cursor", () => CheatToggles.teleportMeCursor, x => CheatToggles.teleportMeCursor = x),
+                new ToggleInfo(" Me to Player", () => CheatToggles.teleportMePlayer, x => CheatToggles.teleportMePlayer = x),
+                new ToggleInfo(" All to Cursor", () => CheatToggles.teleportAllCursor, x => CheatToggles.teleportAllCursor = x),
+                new ToggleInfo(" All to Player", () => CheatToggles.teleportAllPlayer, x => CheatToggles.teleportAllPlayer = x)
+            }),
             new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ShapeshiftCheat", () => CheatToggles.shapeshiftCheat, x => CheatToggles.shapeshiftCheat = x),
                 new ToggleInfo(" ShapeshiftAll", () => CheatToggles.shapeshiftAll, x => CheatToggles.shapeshiftAll = x),

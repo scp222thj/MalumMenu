@@ -8,8 +8,6 @@ namespace MalumMenu
         public static bool noCooldowns_scientist;
         public static bool noCooldowns_engineer;
         public static bool noCooldowns_shapeshifter;
-        public static bool teleportCursor;
-        public static bool teleportPlayer;
 
         //ESP
         public static bool fullBright;
@@ -27,6 +25,12 @@ namespace MalumMenu
         public static bool shapeshiftAll;
         public static bool revertShapeshifters;
         public static bool shapeshiftCheat;
+
+        //Teleport
+        public static bool teleportMeCursor;
+        public static bool teleportMePlayer;
+        public static bool teleportAllPlayer;
+        public static bool teleportAllCursor;
 
         //Appearance
         public static bool resetAppearance;
@@ -98,7 +102,8 @@ namespace MalumMenu
             chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
             copyPlayerPUID = variableToKeep != "copyPlayerPUID" ? false : copyPlayerPUID;
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
-            teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
+            teleportMePlayer = variableToKeep != "teleportMePlayer" ? false : teleportMePlayer;
+            teleportAllPlayer = variableToKeep != "teleportAllPlayer" ? false : teleportAllPlayer;
             mimicOutfit = variableToKeep != "mimicOutfit" ? false : mimicOutfit;
             murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
             kickPlayer = variableToKeep != "kickPlayer" ? false : kickPlayer;
@@ -108,7 +113,7 @@ namespace MalumMenu
         }
 
         public static bool shouldPPMClose(){
-            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }
