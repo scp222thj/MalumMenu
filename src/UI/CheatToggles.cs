@@ -79,6 +79,7 @@ namespace MalumMenu
         public static bool spamChat;
         public static bool chatMimic;
         public static bool enableCommands;
+        public static bool whisper;
 
         //Host-Only
         public static bool impostorHack;
@@ -105,11 +106,12 @@ namespace MalumMenu
             spectate = variableToKeep != "spectate" ? false : spectate;
             shapeshiftAll = variableToKeep != "shapeshiftAll" ? false : shapeshiftAll;
             shapeshiftCheat = variableToKeep != "shapeshiftCheat" ? false : shapeshiftCheat;
+            whisper = variableToKeep != "whisper" ? false : whisper;
         }
 
         public static bool shouldPPMClose()
         {
-            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate && !whisper;
         }
     }
 }

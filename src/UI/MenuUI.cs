@@ -111,6 +111,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" ChatMimic", () => CheatToggles.chatMimic, x => CheatToggles.chatMimic = x),
             new ToggleInfo(" SpamChat", () => CheatToggles.spamChat, x => CheatToggles.spamChat = x),
             new ToggleInfo(" ChatJailbreak", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x),
+            new ToggleInfo(" Whisper", () => CheatToggles.whisper, x => CheatToggles.whisper = x),
             new ToggleInfo(" EnableCommands", () => CheatToggles.enableCommands, x => CheatToggles.enableCommands = x)
         }, new List<SubmenuInfo>()));
 
