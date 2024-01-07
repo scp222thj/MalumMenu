@@ -46,7 +46,7 @@
 3. Start the game normally
     - The first launch will take a **MUCH** longer time than usual, so don't be alarmed if you have to wait a while
 4. Toggle the cheat menu on by pressing **DELETE** on your keyboard
-5. If the installation doesn't work, check out our [FAQ](#-faq)
+5. If the installation doesn't work, check out our [FAQ](-im-having-issues-installing-malummenu)
 
 # 📋 Features
 
