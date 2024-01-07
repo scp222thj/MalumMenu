@@ -5,8 +5,15 @@
 
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Made%20with-C%23-1f425f.svg?style=plastic&logo=csharp&color=000000&labelColor=A200FF">
-  <img src="https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=plastic&logo=GNU">
+  
+  <a href="https://discord.gg/YYcYf88jAb">
+    <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
+  </a>
+  
+  <a href="https://ko-fi.com/scp222thj">
+    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
+  </a>
+  
 </p>
 
 <p align="center">
@@ -79,7 +86,9 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 
 <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1189514291993387098/image.png" alt="drawing" width="550"/>
 
-After installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while.
+Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
+
+After successfully installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while.
 
 If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 </details>
