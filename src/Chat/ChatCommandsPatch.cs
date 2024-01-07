@@ -11,7 +11,6 @@ public static class ChatCommands_RpcSendChatPrefix
         "whisper"
     };
     //Prefix patch of PlayerControl.RpcSendChat to add custom commands
-    [HarmonyPriority(Priority.VeryHigh)]
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
         if (!chatText.StartsWith("/") || !CheatToggles.enableCommands)
@@ -47,7 +46,7 @@ public static class ChatCommands_RpcSendChatPrefix
                 writer2.Write(whisperText);
                 AmongUsClient.Instance.FinishRpcImmediately(writer1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer2);
-                if (whisperSender != __instance)
+                if (whisperSender != __instance && player != __instance)
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(whisperSender.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(__instance));
                     writer.Write(whisperText);
