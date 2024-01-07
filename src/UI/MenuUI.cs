@@ -60,7 +60,8 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("RPC Exploit", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatToggles.kickPlayer, x => CheatToggles.kickPlayer = x),
-            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x)
+            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
+            new ToggleInfo(" MassMedScan", () => CheatToggles.massMedScan, x => CheatToggles.massMedScan = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ShapeshiftCheat", () => CheatToggles.shapeshiftCheat, x => CheatToggles.shapeshiftCheat = x),
@@ -167,7 +168,7 @@ public class MenuUI : MonoBehaviour
         }
 
         if(!CheatChecks.isPlayer){
-            CheatToggles.copyPlayerFC = CheatToggles.copyPlayerPUID = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
+            CheatToggles.copyPlayerFC = CheatToggles.massMedScan = CheatToggles.copyPlayerPUID = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
         }
     }
 
