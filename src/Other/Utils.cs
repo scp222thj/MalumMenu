@@ -71,7 +71,6 @@ public static class Utils
         }
     }
 
-    //Kill any player using fake RPC calls
 /*  public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
     {
         var HostData = AmongUsClient.Instance.GetHost();
@@ -104,9 +103,6 @@ public static class Utils
     //Make any player teleport anywhere using fake RPC calls
     public static void TeleportPlayer(PlayerControl player, Vector2 position)
     {
-        //if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId){
-        //    player.NetTransform.RpcSnapTo(position);
-        //}
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
         {
@@ -420,12 +416,14 @@ public static class CheatChecks
 {
     public static bool isShip;
     public static bool isPlayer;
+
     //public static bool isHost;
 
     public static void Postfix(PlayerPhysics __instance)
     {
         isShip = ShipStatus.Instance != null;
         isPlayer = PlayerControl.LocalPlayer != null;
+
         //isHost = AmongUsClient.Instance.AmHost;
     }
 }

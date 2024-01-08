@@ -159,6 +159,10 @@ public class MenuUI : MonoBehaviour
         //Passive cheats are always on to avoid problems
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
+        if(!CheatChecks.isPlayer){
+            CheatToggles.copyPlayerFC = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftCheat = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.copyPlayerPUID = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
+        }
+
         //Host-only cheats are turned off if LocalPlayer is not the game's host
         //if(!CheatChecks.isHost){
         //    CheatToggles.voteImmune = CheatToggles.godMode = CheatToggles.impostorHack = CheatToggles.evilVote = false;
@@ -167,10 +171,6 @@ public class MenuUI : MonoBehaviour
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!CheatChecks.isShip){
             CheatToggles.unfixableLights = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
-        }
-
-        if(!CheatChecks.isPlayer){
-            CheatToggles.copyPlayerFC = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftCheat = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.copyPlayerPUID = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
         }
     }
 
