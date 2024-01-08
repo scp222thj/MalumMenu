@@ -71,6 +71,20 @@ public static class Utils
         }
     }
 
+    //Kill any player using fake RPC calls
+    public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected){
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                messageWriter.Write((ushort)role);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
+        }
+    }
+
     //Make any player shapeshift into any other player using fake RPC calls
     public static void ShapeshiftPlayer(PlayerControl source, PlayerControl target, bool shouldAnimate)
     {
