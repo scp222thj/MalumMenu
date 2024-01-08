@@ -160,9 +160,9 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
-        if(!CheatChecks.isHost){
-            CheatToggles.voteImmune = CheatToggles.godMode = CheatToggles.impostorHack = CheatToggles.evilVote = false;
-        }
+        //if(!CheatChecks.isHost){
+        //    CheatToggles.voteImmune = CheatToggles.godMode = CheatToggles.impostorHack = CheatToggles.evilVote = false;
+        //}
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!CheatChecks.isShip){

@@ -24,7 +24,7 @@ public static class Utils
     public static bool utilsOpenChat;
     
     //Completly randomize a player outfit using fake RPC calls
-    public static void ShuffleOutfit(PlayerControl sender)
+/*  public static void ShuffleOutfit(PlayerControl sender)
     {
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
@@ -53,7 +53,7 @@ public static class Utils
                 AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
             }
         }
-    }
+    } */
 
     //Kill any player using fake RPC calls
     public static void MurderPlayer(PlayerControl source, PlayerControl target)
@@ -72,7 +72,7 @@ public static class Utils
     }
 
     //Kill any player using fake RPC calls
-    public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
+/*  public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
     {
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected){
@@ -83,7 +83,7 @@ public static class Utils
                 AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             }
         }
-    }
+    } */
 
     //Make any player shapeshift into any other player using fake RPC calls
     public static void ShapeshiftPlayer(PlayerControl source, PlayerControl target, bool shouldAnimate)
@@ -420,12 +420,12 @@ public static class CheatChecks
 {
     public static bool isShip;
     public static bool isPlayer;
-    public static bool isHost;
+    //public static bool isHost;
 
     public static void Postfix(PlayerPhysics __instance)
     {
         isShip = ShipStatus.Instance != null;
         isPlayer = PlayerControl.LocalPlayer != null;
-        isHost = AmongUsClient.Instance.AmHost;
+        //isHost = AmongUsClient.Instance.AmHost;
     }
 }

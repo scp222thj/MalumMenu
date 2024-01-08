@@ -85,10 +85,10 @@ namespace MalumMenu
         public static bool chatMimic;
 
         //Host-Only
-        public static bool impostorHack;
-        public static bool godMode;
-        public static bool evilVote;
-        public static bool voteImmune;
+        //public static bool impostorHack;
+        //public static bool godMode;
+        //public static bool evilVote;
+        //public static bool voteImmune;
 
         //Passive
         public static bool unlockFeatures = true;
