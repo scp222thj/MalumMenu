@@ -116,7 +116,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" ChatJailbreak", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
         }, new List<SubmenuInfo>()));
 
-        //Host-Only Cheats are temporarly disabled because of some bugs
+        //Host-Only cheats are temporarly disabled because of some bugs
 
         //groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
         //    new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
@@ -128,13 +128,11 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>(){
             new ToggleInfo(" RandomFriendCode", () => CheatToggles.spoofRandomFC, x => CheatToggles.spoofRandomFC = x),
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("Other", false, new List<ToggleInfo>() {
-                new ToggleInfo(" Copy PlayerFriendCode", () => CheatToggles.copyPlayerFC, x => CheatToggles.copyPlayerFC = x),
-                new ToggleInfo(" Copy PlayerPUID", () => CheatToggles.copyPlayerPUID, x => CheatToggles.copyPlayerPUID = x),
+            new SubmenuInfo("Advanced", false, new List<ToggleInfo>() {
+                new ToggleInfo(" Copy FriendCode", () => CheatToggles.copyPlayerFC, x => CheatToggles.copyPlayerFC = x),
             }),
             new SubmenuInfo("Config", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Spoofed FriendCode", () => MalumMenu.spoofFriendCode.Value != "", (bool n) => { }),
-                new ToggleInfo(" Spoofed PUID", () => MalumMenu.spoofPuid.Value != "",  (bool n) => { }),
             }),
         }));
 
@@ -160,7 +158,7 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         if(!CheatChecks.isPlayer){
-            CheatToggles.copyPlayerFC = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftCheat = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.copyPlayerPUID = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
+            CheatToggles.copyPlayerFC = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftCheat = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host

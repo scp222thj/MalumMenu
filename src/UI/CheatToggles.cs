@@ -41,7 +41,6 @@ namespace MalumMenu
         public static bool mimicAllOutfits;
 
         //Spoofing
-        public static bool copyPlayerPUID;
         public static bool spoofRandomFC;
         public static bool copyPlayerFC;
 
@@ -100,7 +99,6 @@ namespace MalumMenu
             mimicAllOutfits = variableToKeep != "mimicAllOutfits" ? false : mimicAllOutfits;
             copyPlayerFC = variableToKeep != "copyPlayerFC" ? false : copyPlayerFC;
             chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
-            copyPlayerPUID = variableToKeep != "copyPlayerPUID" ? false : copyPlayerPUID;
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
             teleportMePlayer = variableToKeep != "teleportMePlayer" ? false : teleportMePlayer;
             teleportAllPlayer = variableToKeep != "teleportAllPlayer" ? false : teleportAllPlayer;
@@ -113,7 +111,7 @@ namespace MalumMenu
         }
 
         public static bool shouldPPMClose(){
-            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !copyPlayerPUID && !reportBody && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }

@@ -19,7 +19,6 @@ public partial class MalumMenu : BasePlugin
     private static MenuUI menuUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> spoofFriendCode;
-    public static ConfigEntry<string> spoofPuid;
 
     public override void Load()
     {
@@ -30,16 +29,10 @@ public partial class MalumMenu : BasePlugin
                                 "Delete",
                                 "The keyboard key used to toggle the GUI on and off");
 
-        spoofFriendCode = Config.Bind("MalumMenu.SpoofedUserData",
-                                "SpoofedFriendCode",
+        spoofFriendCode = Config.Bind("MalumMenu.Spoofing",
+                                "FriendCode",
                                 "",
                                 "Your spoofed friend code that will be used in online games. IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests");
-
-        spoofPuid = Config.Bind("MalumMenu.SpoofedUserData",
-                                "SpoofedPuid",
-                                "",
-                                "Your spoofed PUID that will be used in online games. IMPORTANT: Only valid, active PUIDs will let you connect to lobbies");
-
         
         Harmony.PatchAll();
         menuUI = AddComponent<MenuUI>();

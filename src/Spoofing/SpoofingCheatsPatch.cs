@@ -1,19 +1,6 @@
-using AmongUs.Data.Player;
 using HarmonyLib;
 
 namespace MalumMenu;
-
-[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.ProductUserId), MethodType.Getter)]
-public static class SpoofPUID_EOSManager_ProductUserId_Getter_Postfix
-{
-    //Postfix patch of EOSManager.ProductUserId to spoof PUIDs
-    public static void Postfix(ref string __result)
-    {
-        if (MalumMenu.spoofPuid.Value != ""){
-            __result = MalumMenu.spoofPuid.Value; //Set custom PUID from config file
-        }
-    }
-}
 
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.Update))]
 public static class SpoofFriendCode_EOSManager_Update_Postfix
