@@ -117,7 +117,7 @@ public static class ChatJailBreak_FreeChatInputField_OnFieldChanged_Prefix
         __instance.textArea.AllowEmail = CheatToggles.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
         
         if (CheatToggles.chatJailbreak){
-            __instance.textArea.characterLimit = int.MaxValue; //Unlimited message length when chatJailbreak is enabled
+            __instance.textArea.characterLimit = int.MaxValue; //Longer message length when chatJailbreak is enabled
         }else{
             __instance.textArea.characterLimit = 100;
         }
@@ -142,22 +142,26 @@ public static class ChatJailBreak_TextBoxTMP_IsCharAllowed_Prefix
 }
 
 
-// Edit Color indicators for chatbox (only visual)
+// Updated charCount when using cheat
 [HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.UpdateCharCount))]
-public static class ChatJailbreak_UpdateCharCountPostfix
+public static class ChatJailBreak_FreeChatInputField_UpdateCharCount_Postfix
 {
     public static void Postfix(FreeChatInputField __instance)
     {
-	if (!CheatSettings.chatJailbreak){
-            return; //Only works if CheatSettings.chatJailbreak is enabled
+        if (!CheatToggles.chatJailbreak){
+            return; //Only works if CheatToggles.chatJailbreak is enabled
         }
+
+        //Update charCountText to account for longer characterLimit
         int length = __instance.textArea.text.Length;
         __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
-        if (length < 1610612735) // Black if not close to limit
-            __instance.charCountText.color = Color.black;
-        else if (length < 2147483647) // Yellow if close to limit
-            __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
-        else // Red if limit reached
-            __instance.charCountText.color = Color.red;
+
+        //Update charCountText.color to account for longer characterLimit
+        if (length < 1610612735) //Under 75%
+            __instance.charCountText.color = UnityEngine.Color.black;
+        else if (length < 2147483647) //Under 100%
+            __instance.charCountText.color = new UnityEngine.Color(1f, 1f, 0f, 1f);
+        else //Over or equal to 100%
+            __instance.charCountText.color = UnityEngine.Color.red;
     }
 }
