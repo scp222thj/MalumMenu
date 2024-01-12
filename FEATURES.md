@@ -158,19 +158,17 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 |------------|-------------|------|
 | RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, players won't be able to send you friend requests*) | Toggle | Off |
 
-#### Other
+#### Advanced
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| Copy PlayerFriendCode | Copies a player's friend code to your clipboard | Menu |
-| Copy PlayerPUID | Copies a player's PUID to your clipboard | Menu |
+| Copy FriendCode | Copies a player's friend code to your clipboard | Menu |
 
 #### Config
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
 | Spoofed FriendCode | A custom friend code that will be used in online games.<br>(*While using a spoofed friend code, players won't be able to send you friend requests*)<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
-| Spoofed PUID | A custom PUID that will be used in online games.<br>(*Only valid, active PUIDs will let you connect to lobbies*)<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
 
 ## 💤 Passive
 
