@@ -48,7 +48,9 @@ public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
         
         }else{
             if (isActive){
-                
+
+                spamText = null;
+
                 isActive = false;
             }
         }
@@ -80,9 +82,5 @@ public static class RPC_SpamChatPostfix
     public static void Postfix(PlayerPhysics __instance)
     {
         SpamChat_PlayerPhysics_RpcSendChat_Prefix.Update();
-        if (!CheatToggles.spamChat)
-        {
-            SpamChat_PlayerPhysics_RpcSendChat_Prefix.spamText = null;
-        }
     }
 }
