@@ -15,16 +15,10 @@ public class MenuUI : MonoBehaviour
     private void Start()
     {
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
-        new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
-        new ToggleInfo(" SpeedBoost", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
-        }, new List<SubmenuInfo> {
-            new SubmenuInfo("NoCooldowns", false, new List<ToggleInfo>() {
-                new ToggleInfo(" Shapeshifter", () => CheatToggles.noCooldowns_shapeshifter, x => CheatToggles.noCooldowns_shapeshifter = x),
-                new ToggleInfo(" Engineer", () => CheatToggles.noCooldowns_engineer, x => CheatToggles.noCooldowns_engineer = x),
-                new ToggleInfo(" Scientist", () => CheatToggles.noCooldowns_scientist, x => CheatToggles.noCooldowns_scientist = x)
-
-            })
-        }));
+            new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
+            new ToggleInfo(" SpeedBoost", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
+            }, new List<SubmenuInfo>()
+            ));
 
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
             new ToggleInfo(" SeeGhosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
@@ -54,7 +48,7 @@ public class MenuUI : MonoBehaviour
             }),
         }));
 
-        groups.Add(new GroupInfo("RPC Exploit", false, new List<ToggleInfo>() {
+        groups.Add(new GroupInfo("Trolling", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatToggles.kickPlayer, x => CheatToggles.kickPlayer = x),
             new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             new ToggleInfo(" All MedScan", () => CheatToggles.allMedScan, x => CheatToggles.allMedScan = x),
@@ -75,6 +69,28 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" MurderAll", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
             }),
         }));
+
+        groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {}, 
+            new List<SubmenuInfo> {
+                new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
+                    new ToggleInfo(" NoKillCd", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
+                    new ToggleInfo(" KillReach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
+                }),
+                new SubmenuInfo("Shapeshifter", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" NoSsAnimation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
+                    new ToggleInfo(" EndlessSsDuration", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x),
+                    new ToggleInfo(" NoSsCooldown", () => CheatToggles.noSsCooldown, x => CheatToggles.noSsCooldown = x),
+                }),
+                new SubmenuInfo("Engineer", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" EndlessVentTime", () => CheatToggles.endlessVentTime, x => CheatToggles.endlessVentTime = x),
+                    new ToggleInfo(" NoVentCooldown", () => CheatToggles.noVentCooldown, x => CheatToggles.noVentCooldown = x),
+                }),
+                new SubmenuInfo("Scientist", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" EndlessBattery", () => CheatToggles.endlessBattery, x => CheatToggles.endlessBattery = x),
+                    new ToggleInfo(" NoVitalsCooldown", () => CheatToggles.noVitalsCooldown, x => CheatToggles.noVitalsCooldown = x),
+                }),
+            }));
 
         groups.Add(new GroupInfo("Appearance", false, new List<ToggleInfo>(){
             new ToggleInfo(" Reset Appearance", () => CheatToggles.resetAppearance, x => CheatToggles.resetAppearance = x),

@@ -71,7 +71,7 @@ public static class Utils
         }
     }
 
-/*  public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
+    public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
     {
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected){
@@ -82,7 +82,7 @@ public static class Utils
                 AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             }
         }
-    } */
+    }
 
     //Make any player shapeshift into any other player using fake RPC calls
     public static void ShapeshiftPlayer(PlayerControl source, PlayerControl target, bool shouldAnimate)

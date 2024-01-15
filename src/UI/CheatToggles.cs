@@ -5,9 +5,18 @@ namespace MalumMenu
         //Player
         public static bool noClip;
         public static bool speedBoost;
-        public static bool noCooldowns_scientist;
-        public static bool noCooldowns_engineer;
-        public static bool noCooldowns_shapeshifter;
+
+        //Roles
+        public static bool zeroKillCd;
+        public static bool killReach;
+        public static bool killAnyone;
+        public static bool endlessSsDuration;
+        public static bool endlessBattery;
+        public static bool noSsCooldown;
+        public static bool noVitalsCooldown;
+        public static bool noVentCooldown;
+        public static bool endlessVentTime;
+        public static bool noShapeshiftAnim;
 
         //ESP
         public static bool fullBright;
