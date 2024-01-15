@@ -7,13 +7,6 @@
 | NoClip     | Allows you to walk through walls like a ghost | Toggle | Off
 | SpeedBoost | Doubles your player's speed | Toggle | Off |
 
-#### NoCooldowns
-
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| Shapeshifter | Removes the Shapeshifter animation and duration | Toggle | Off |
-| Engineer | Removes the Engineer vent duration and cooldown | Toggle | Off |
-| Scientist | Removes the Scientist cooldown and battery | Toggle | Off |
 
 ## 👁️ ESP
 
@@ -54,7 +47,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Ghosts | Changes the map so that it shows the position of every ghost (color: white) | Toggle | Off |
 | Color-based | Changes the color of map icons to the color of their players | Toggle | Off |
 
-## 😈 RPC Exploit
+## 🤡 Trolling
 
 MalumMenu's newest and most powerful cheats. 
 
@@ -90,6 +83,37 @@ They take advantage of a severe vulnerability within the game, **and because of 
 | MurderPlayer | Murders the targeted player | Menu |
 | MurderAll | Murders all the players | Button |
 
+## 🎭 Roles
+
+#### Impostor
+
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
+| KillAnyone | Allows you to kill anyone, including ghosts, impostors, players in vents, etc. | Toggle | Off |
+| NoKillCd | Removes the cooldown between kills | Toggle | Off |
+| KillReach | Allows you to kill the nearest player, regardless of obstacles in between | Toggle | Off |
+
+#### Shapeshifter
+
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
+| NoSsAnimation | Removes the animation when shapeshifting | Toggle | Off |
+| EndlessSsDuration | Allows you to stay shifted forever | Toggle | Off |
+| NoSsCooldown | Allows you to shapeshift as often as you want with no cooldown in between | Toggle | Off |
+
+#### Engineer
+
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
+| EndlessVentTime | Allows you to stay in vents forever | Toggle | Off |
+| NoVentCooldown | Allows you to vent like an impostor without cooldown | Toggle | Off |
+
+#### Scientist
+
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
+| EndlessBattery | Allows you to watch the vitals forever | Toggle | Off |
+| NoVitalsCooldown | Allows you to watch the vitals without cooldown | Toggle | Off |
 
 ## 👔 Appearance
 
