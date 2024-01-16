@@ -85,6 +85,13 @@ They take advantage of a severe vulnerability within the game, **and because of 
 
 ## 🎭 Roles
 
+#### Crewmate
+
+| Cheat | Description | Type |
+|------------|-------------|------|
+| CompleteMyTasks | Marks all your tasks as completed | Button |
+| CompleteAllTasks | Marks the tasks of all players as completed | Button | 
+
 #### Impostor
 
 | Cheat | Description | Type | Default |
