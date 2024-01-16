@@ -71,6 +71,25 @@ public static class Utils
         }
     }
 
+
+    //Complete all of the player's tasks
+    public static void CompleteAllTasks(PlayerControl player)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (PlayerTask task in player.myTasks)
+            {
+                foreach (var recipient in PlayerControl.AllPlayerControls)
+                {
+                    MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
+                    messageWriter.WritePacked(task.Id);
+                    AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+                }
+            }
+        }
+    }
+
     public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
     {
         var HostData = AmongUsClient.Instance.GetHost();
