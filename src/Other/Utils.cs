@@ -72,7 +72,7 @@ public static class Utils
     }
 
 
-    //Complete all of the player's tasks
+    //Complete any player's tasks using fake RPC calls
     public static void CompleteAllTasks(PlayerControl player)
     {
         var HostData = AmongUsClient.Instance.GetHost();
@@ -80,11 +80,15 @@ public static class Utils
         {
             foreach (PlayerTask task in player.myTasks)
             {
-                foreach (var recipient in PlayerControl.AllPlayerControls)
-                {
-                    MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
-                    messageWriter.WritePacked(task.Id);
-                    AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+                if (!task.IsComplete){
+
+                    foreach (var item in PlayerControl.AllPlayerControls)
+                    {
+                        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                        messageWriter.WritePacked(task.Id);
+                        AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+                    }
+
                 }
             }
         }

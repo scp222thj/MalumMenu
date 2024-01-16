@@ -8,6 +8,8 @@ namespace MalumMenu
 
         //Roles
         public static bool zeroKillCd;
+        public static bool completeMyTasks;
+        public static bool completeAllTasks;
         public static bool killReach;
         public static bool killAnyone;
         public static bool endlessSsDuration;
@@ -34,7 +36,6 @@ namespace MalumMenu
         public static bool shapeshiftAll;
         public static bool revertShapeshifters;
         public static bool shapeshiftCheat;
-        public static bool completeAllTasks;
 
         //Teleport
         public static bool teleportMeCursor;
@@ -118,11 +119,10 @@ namespace MalumMenu
             spectate = variableToKeep != "spectate" ? false : spectate;
             shapeshiftAll = variableToKeep != "shapeshiftAll" ? false : shapeshiftAll;
             shapeshiftCheat = variableToKeep != "shapeshiftCheat" ? false : shapeshiftCheat;
-            completeAllTasks = variableToKeep != "completeAllTasks" ? false : completeAllTasks;
         }
 
         public static bool shouldPPMClose(){
-            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate && !completeAllTasks;
+            return !mimicAllOutfits && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }

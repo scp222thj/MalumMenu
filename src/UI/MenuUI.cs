@@ -52,7 +52,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" KickPlayer", () => CheatToggles.kickPlayer, x => CheatToggles.kickPlayer = x),
             new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             new ToggleInfo(" All MedScan", () => CheatToggles.allMedScan, x => CheatToggles.allMedScan = x),
-            new ToggleInfo(" CompleteAllTasks", () => CheatToggles.completeAllTasks, x => CheatToggles.completeAllTasks = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Me to Cursor", () => CheatToggles.teleportMeCursor, x => CheatToggles.teleportMeCursor = x),
@@ -73,6 +72,10 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {}, 
             new List<SubmenuInfo> {
+                new SubmenuInfo("Crewmate", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" CompleteMyTasks", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x),
+                    new ToggleInfo(" CompleteAllTasks", () => CheatToggles.completeAllTasks, x => CheatToggles.completeAllTasks = x),
+                }),
                 new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
                     new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
                     new ToggleInfo(" NoKillCd", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
