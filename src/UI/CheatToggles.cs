@@ -8,6 +8,8 @@ namespace MalumMenu
 
         //Roles
         public static bool zeroKillCd;
+        public static bool completeMyTasks;
+        public static bool completeAllTasks;
         public static bool killReach;
         public static bool killAnyone;
         public static bool endlessSsDuration;

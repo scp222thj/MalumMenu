@@ -72,6 +72,10 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {}, 
             new List<SubmenuInfo> {
+                new SubmenuInfo("Crewmate", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" CompleteMyTasks", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x),
+                    new ToggleInfo(" CompleteAllTasks", () => CheatToggles.completeAllTasks, x => CheatToggles.completeAllTasks = x),
+                }),
                 new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
                     new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
                     new ToggleInfo(" NoKillCd", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
