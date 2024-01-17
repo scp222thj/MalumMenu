@@ -25,3 +25,15 @@ public static class CrewmateCheats_PlayerPhysics_LateUpdate_Postfix
         }
     }
 }
+
+[HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
+public static class doTasksAsGhost_CrewmateRole_CanUse_Prefix
+{
+    //Prefix patch of Console.CanUse to do tasks as a ghost
+    //Can fix sabotage as a ghost
+    public static bool Prefix(Console __instance)
+    {
+        __instance.GhostsIgnored = !CheatToggles.doTasksAsGhost;
+        return true;
+    }
+}

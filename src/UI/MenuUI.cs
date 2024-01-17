@@ -75,11 +75,13 @@ public class MenuUI : MonoBehaviour
                 new SubmenuInfo("Crewmate", false, new List<ToggleInfo>() {
                     new ToggleInfo(" CompleteMyTasks", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x),
                     new ToggleInfo(" CompleteAllTasks", () => CheatToggles.completeAllTasks, x => CheatToggles.completeAllTasks = x),
+                    new ToggleInfo(" DoTasksAsGhost", () => CheatToggles.doTasksAsGhost, x => CheatToggles.doTasksAsGhost = x),
                 }),
                 new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
                     new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
                     new ToggleInfo(" NoKillCd", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                     new ToggleInfo(" KillReach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
+                    new ToggleInfo(" DoTasksAsImpostor", () => CheatToggles.doTasksAsImpostor, x => CheatToggles.doTasksAsImpostor = x),
                 }),
                 new SubmenuInfo("Shapeshifter", false, new List<ToggleInfo>() {
                     new ToggleInfo(" NoSsAnimation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
