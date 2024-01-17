@@ -103,6 +103,7 @@ They take advantage of a severe vulnerability within the game, **and because of 
 | KillAnyone | Allows you to kill anyone, including ghosts, impostors, players in vents, etc. | Toggle | Off |
 | NoKillCd | Removes the cooldown between kills | Toggle | Off |
 | KillReach | Allows you to kill the nearest player, regardless of obstacles in between | Toggle | Off |
+| ImpostorTasks | Allows you to do tasks as impostor | Toggle | Off |
 
 #### Shapeshifter
 
