@@ -85,6 +85,10 @@ They take advantage of a severe vulnerability within the game, **and because of 
 
 ## 🎭 Roles
 
+| Cheat | Description | Type | 
+|------------|-------------|------|
+| ChangeRole | Allows you to change the role of any player | Menu |
+
 #### Crewmate
 
 | Cheat | Description | Type |
