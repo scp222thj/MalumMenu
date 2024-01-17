@@ -21,15 +21,15 @@ public static class ReportBody_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("reportBody");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    playerList.Add(player);
+                    playerDataList.Add(player.Data);
                 }
 
                 //New player pick menu
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected)
@@ -38,8 +38,8 @@ public static class ReportBody_PlayerPhysics_LateUpdate_Postfix
                         //by sending a (fake) ReportDeadBody RPC as the player to all clients
                         foreach (var item in PlayerControl.AllPlayerControls)
                         {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(Utils_PlayerPickMenu.targetPlayer.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                            writer.Write(Utils_PlayerPickMenu.targetPlayer.Data.PlayerId);
+                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(Utils_PlayerPickMenu.targetPlayerData.Object.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                            writer.Write(Utils_PlayerPickMenu.targetPlayerData.PlayerId);
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                         }
                     }

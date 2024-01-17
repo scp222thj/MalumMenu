@@ -22,17 +22,17 @@ public static class MurderPlayer_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("murderPlayer");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    playerList.Add(player);
+                    playerDataList.Add(player.Data);
                 }
 
                 //New player pick menu made for killing players
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    Utils.MurderPlayer(Utils_PlayerPickMenu.targetPlayer, Utils_PlayerPickMenu.targetPlayer);
+                    Utils.MurderPlayer(Utils_PlayerPickMenu.targetPlayerData.Object, Utils_PlayerPickMenu.targetPlayerData.Object);
                 
                 }));
 

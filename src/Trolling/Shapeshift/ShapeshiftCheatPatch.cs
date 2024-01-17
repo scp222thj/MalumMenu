@@ -22,23 +22,23 @@ public static class ShapeshiftCheat_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("shapeshiftCheat");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
                     if (!player.AmOwner){
-                        playerList.Add(player);
+                        playerDataList.Add(player.Data);
                     }
                 }
 
                 //New player pick menu made for shapeshifting into any player
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
 
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected){
 
-                        Utils.ShapeshiftPlayer(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayer, !CheatToggles.noShapeshiftAnim); //Compatible with noShapeshiftAnim
+                        Utils.ShapeshiftPlayer(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayerData.Object, !CheatToggles.noShapeshiftAnim); //Compatible with noShapeshiftAnim
 
                     }
                 

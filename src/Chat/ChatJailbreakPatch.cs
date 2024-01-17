@@ -105,21 +105,21 @@ public static class ChatJailBreak_ChatController_SendFreeChat_Prefix
 }
 
 
-[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.OnFieldChanged))]
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
 public static class ChatJailBreak_FreeChatInputField_OnFieldChanged_Prefix
 {
     //Postfix patch of FreeChatInputField.OnFieldChanged to unlock extra chat capabilities
-    public static void Postfix(FreeChatInputField __instance)
+    public static void Postfix(ChatController __instance)
     {
-        __instance.textArea.allowAllCharacters = CheatToggles.chatJailbreak; //Not really used by the game's code, but I include it anyway
-        __instance.textArea.AllowPaste = CheatToggles.chatJailbreak; //Allow pasting from clipboard in chat when chatJailbreak is enabled
-        __instance.textArea.AllowSymbols = true; //Allow sending certain symbols
-        __instance.textArea.AllowEmail = CheatToggles.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
+        __instance.freeChatField.textArea.allowAllCharacters = CheatToggles.chatJailbreak; //Not really used by the game's code, but I include it anyway
+        __instance.freeChatField.textArea.AllowPaste = CheatToggles.chatJailbreak; //Allow pasting from clipboard in chat when chatJailbreak is enabled
+        __instance.freeChatField.textArea.AllowSymbols = true; //Allow sending certain symbols
+        __instance.freeChatField.textArea.AllowEmail = CheatToggles.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
         
         if (CheatToggles.chatJailbreak){
-            __instance.textArea.characterLimit = int.MaxValue; //Longer message length when chatJailbreak is enabled
+            __instance.freeChatField.textArea.characterLimit = int.MaxValue; //Longer message length when chatJailbreak is enabled
         }else{
-            __instance.textArea.characterLimit = 100;
+            __instance.freeChatField.textArea.characterLimit = 100;
         }
         
     }

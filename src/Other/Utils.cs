@@ -335,12 +335,12 @@ public static class Utils_PlayerPickMenu
 {
     public static ShapeshifterMinigame playerpickMenu;
     public static bool IsActive;
-    public static PlayerControl targetPlayer;
+    public static GameData.PlayerInfo targetPlayerData;
     public static Action customAction;
-    public static List<PlayerControl> customPlayerList;
+    public static List<GameData.PlayerInfo> customPlayerList;
 
     //Open a custom menu to pick a player as a target
-    public static void openPlayerPickMenu(List<PlayerControl> playerList, Action action)
+    public static void openPlayerPickMenu(List<GameData.PlayerInfo> playerList, Action action)
     {
         IsActive = true;
         customPlayerList = playerList;
@@ -360,29 +360,29 @@ public static class Utils_PlayerPickMenu
         if (IsActive){ //Player pick menu logic
 
             //Custom player list set by openPlayerPickMenu
-            List<PlayerControl> list = customPlayerList;
+            List<GameData.PlayerInfo> list = customPlayerList;
 
             __instance.potentialVictims = new List<ShapeshifterPanel>();
             List<UiElement> list2 = new List<UiElement>();
 
             for (int i = 0; i < list.Count; i++)
             {
-                PlayerControl player = list[i];
+                GameData.PlayerInfo playerData = list[i];
                 int num = i % 3;
                 int num2 = i / 3;
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
                 shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                 
-                shapeshifterPanel.SetPlayer(i, player.Data, (Action) (() =>
+                shapeshifterPanel.SetPlayer(i, playerData, (Action) (() =>
                 {
-                    targetPlayer = player; //Save targeted player
+                    targetPlayerData = playerData; //Save targeted player
 
                     customAction.Invoke(); //Custom action set by openPlayerPickMenu
 
                     __instance.Close();
                 }));
 
-                shapeshifterPanel.NameText.color = Utils.getColorName(CheatToggles.seeRoles, player.Data);
+                shapeshifterPanel.NameText.color = Utils.getColorName(CheatToggles.seeRoles, playerData);
                 __instance.potentialVictims.Add(shapeshifterPanel);
                 list2.Add(shapeshifterPanel.Button);
             }

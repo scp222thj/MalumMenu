@@ -21,15 +21,15 @@ public static class KickPlayer_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("kickPlayer");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    playerList.Add(player);
+                    playerDataList.Add(player.Data);
                 }
 
                 //New player pick menu made for kicking players
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
                     //Votekick any player from the game by faking votes from all players
                     //Original concept by @NikoCat233 on Github
@@ -39,7 +39,7 @@ public static class KickPlayer_PlayerPhysics_LateUpdate_Postfix
                         {
                             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(VoteBanSystem.Instance.NetId, (byte)RpcCalls.AddVote, SendOption.None, HostData.Id);
                             writer.Write(AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                            writer.Write(AmongUsClient.Instance.GetClientIdFromCharacter(Utils_PlayerPickMenu.targetPlayer));
+                            writer.Write(AmongUsClient.Instance.GetClientIdFromCharacter(Utils_PlayerPickMenu.targetPlayerData.Object));
                             AmongUsClient.Instance.FinishRpcImmediately(writer);
                         }
                     }

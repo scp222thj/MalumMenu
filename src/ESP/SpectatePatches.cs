@@ -22,19 +22,19 @@ public static class Spectate_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("spectate");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
                     if (!player.AmOwner){
-                        playerList.Add(player);
+                        playerDataList.Add(player.Data);
                     }
                 }
 
                 //New player pick menu made for spectating
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(Utils_PlayerPickMenu.targetPlayer);
+                    Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(Utils_PlayerPickMenu.targetPlayerData.Object);
                 }));
 
                 isActive = true;

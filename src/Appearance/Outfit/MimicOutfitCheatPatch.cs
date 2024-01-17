@@ -22,19 +22,19 @@ public static class MimicOutfit_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("mimicOutfit");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
                     if(!player.AmOwner){
-                        playerList.Add(player);
+                        playerDataList.Add(player.Data);
                     }
                 }
 
                 //New player pick menu made for mimicking outfits
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    Utils.CopyOutfit(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayer);
+                    Utils.CopyOutfit(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayerData.Object);
                 }));
 
                 isActive = true;

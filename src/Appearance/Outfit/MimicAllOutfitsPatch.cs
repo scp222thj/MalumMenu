@@ -22,22 +22,22 @@ public static class MimicAllOutfits_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("mimicAllOutfits");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    playerList.Add(player);
+                    playerDataList.Add(player.Data);
                 }
 
                 //New player pick menu made for targeting a player outfit
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
                     //Each player will copy the targetPlayer's outfit
                     foreach (var sender in PlayerControl.AllPlayerControls)
                     {
                         //The target player should not be affected unless they are not currently in their default outfit
-                        if(sender.PlayerId != Utils_PlayerPickMenu.targetPlayer.PlayerId || sender.CurrentOutfitType != PlayerOutfitType.Default){
-                            Utils.CopyOutfit(sender, Utils_PlayerPickMenu.targetPlayer);
+                        if(sender.PlayerId != Utils_PlayerPickMenu.targetPlayerData.PlayerId || sender.CurrentOutfitType != PlayerOutfitType.Default){
+                            Utils.CopyOutfit(sender, Utils_PlayerPickMenu.targetPlayerData.Object);
                         }
                     }
                 

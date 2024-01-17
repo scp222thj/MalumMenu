@@ -62,19 +62,19 @@ public static class TeleportMePlayer_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("teleportMePlayer");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
                     if (!player.AmOwner){
-                        playerList.Add(player);
+                        playerDataList.Add(player.Data);
                     }
                 }
 
                 //New player pick menu made for teleporting
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    Utils.TeleportPlayer(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayer.transform.position);
+                    Utils.TeleportPlayer(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayerData.Object.transform.position);
                 
                 }));
 
@@ -110,19 +110,19 @@ public static class TeleportAllPlayer_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("teleportAllPlayer");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    playerList.Add(player);
+                    playerDataList.Add(player.Data);
                 }
 
                 //New player pick menu made for teleporting
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
                     foreach (var item in PlayerControl.AllPlayerControls){
-                        if (item.PlayerId != Utils_PlayerPickMenu.targetPlayer.PlayerId){
-                            Utils.TeleportPlayer(item, Utils_PlayerPickMenu.targetPlayer.transform.position);
+                        if (item.PlayerId != Utils_PlayerPickMenu.targetPlayerData.PlayerId){
+                            Utils.TeleportPlayer(item, Utils_PlayerPickMenu.targetPlayerData.Object.transform.position);
                         }
                     }
                 

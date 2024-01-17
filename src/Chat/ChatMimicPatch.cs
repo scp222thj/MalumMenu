@@ -48,19 +48,19 @@ public static class ChatMimic_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("chatMimic");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
                     if (!player.AmOwner){
-                        playerList.Add(player);
+                        playerDataList.Add(player.Data);
                     }
                 }
 
                 //New player pick menu made for picking a ChatMimic target
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget = Utils_PlayerPickMenu.targetPlayer;
+                    ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget = Utils_PlayerPickMenu.targetPlayerData.Object;
 
                     Utils.OpenChat();
                 }));

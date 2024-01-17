@@ -22,15 +22,15 @@ public static class AllShapeshift_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("shapeshiftAll");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    playerList.Add(player);
+                    playerDataList.Add(player.Data);
                 }
 
                 //New player pick menu made for targeting a player for shapeshifting
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected){
@@ -39,8 +39,8 @@ public static class AllShapeshift_PlayerPhysics_LateUpdate_Postfix
                         foreach (var sender in PlayerControl.AllPlayerControls)
                         {
                             //The target player should not be affected unless they are currently not in their default outfit
-                            if(sender.PlayerId != Utils_PlayerPickMenu.targetPlayer.PlayerId || sender.CurrentOutfitType != PlayerOutfitType.Default){
-                                Utils.ShapeshiftPlayer(sender, Utils_PlayerPickMenu.targetPlayer, true);
+                            if(sender.PlayerId != Utils_PlayerPickMenu.targetPlayerData.PlayerId || sender.CurrentOutfitType != PlayerOutfitType.Default){
+                                Utils.ShapeshiftPlayer(sender, Utils_PlayerPickMenu.targetPlayerData.Object, true);
                             }
                         }
 

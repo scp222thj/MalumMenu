@@ -22,21 +22,21 @@ public static class CopyFriendCode_PlayerPhysics_LateUpdate_Postfix
                     CheatToggles.DisablePPMCheats("copyPlayerFC");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
                     if (!player.AmOwner){
-                        playerList.Add(player);
+                        playerDataList.Add(player.Data);
                     }
                 }
 
                 //New player pick menu made for copying a player's friend code to clipboard
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    GUIUtility.systemCopyBuffer = AmongUsClient.Instance.GetClientFromCharacter(Utils_PlayerPickMenu.targetPlayer).FriendCode;
+                    GUIUtility.systemCopyBuffer = AmongUsClient.Instance.GetClientFromCharacter(Utils_PlayerPickMenu.targetPlayerData.Object).FriendCode;
                 
-                    Utils.showPopup($"\n{Utils_PlayerPickMenu.targetPlayer.Data.PlayerName}'s friend code\nhas been copied to your clipboard");
+                    Utils.showPopup($"\n{Utils_PlayerPickMenu.targetPlayerData.PlayerName}'s friend code\nhas been copied to your clipboard");
                 }));
 
                 isActive = true;
