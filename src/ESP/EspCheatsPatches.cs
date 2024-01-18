@@ -12,7 +12,7 @@ public static class SeeRoles_PlayerPhysics_LateUpdate_Postfix
         try{
 
             //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-            __instance.myPlayer.cosmetics.SetNameColor(Utils.getColorName(CheatToggles.seeRoles, __instance.myPlayer.Data));
+            __instance.myPlayer.cosmetics.SetName(Utils.getNameTag(__instance.myPlayer, __instance.myPlayer.CurrentOutfit.PlayerName));
             
         }catch{}
     }
@@ -30,7 +30,7 @@ public static class SeeRoles_MeetingHud_Update_Postfix
                 GameData.PlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
                 //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-                playerState.NameText.color = Utils.getColorName(CheatToggles.seeRoles, data);
+                playerState.NameText.text = Utils.getNameTag(data.Object, data.DefaultOutfit.PlayerName);
 
             }
         }catch{}
@@ -44,7 +44,7 @@ public static class SeeRoles_ChatBubble_SetName_Postfix
     public static void Postfix(ChatBubble __instance){
 
         //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-        __instance.NameText.color = Utils.getColorName(CheatToggles.seeRoles, __instance.playerInfo);
+        __instance.NameText.text = Utils.getNameTag(__instance.playerInfo.Object, __instance.playerInfo.PlayerName, true);
     
     }
 }    

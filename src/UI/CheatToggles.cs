@@ -24,6 +24,9 @@ namespace MalumMenu
 
         //ESP
         public static bool fullBright;
+        public static bool seeTaskCount;
+        public static bool seeKillCd;
+        public static bool seeDisguises;
         public static bool seeGhosts;
         public static bool seeRoles;
         public static bool ventVision;

@@ -252,8 +252,29 @@ public static class Utils
     }
 
     //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
-    public static Color getColorName(bool cheatVar, GameData.PlayerInfo playerInfo){
-        if (cheatVar){
+    public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
+        string nameTag = playerName;
+
+        if (CheatToggles.seeRoles){
+
+            if (isChat){
+                
+                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}>{nameTag} <size=80%>({player.Data.Role.Role})</size></color>";
+
+                return nameTag;
+            }
+
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{player.Data.Role.Role}</size>\r\n{nameTag}</color>";
+        
+        }else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
+
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.NameColor)}>{nameTag}</color>";
+
+        }
+
+        return nameTag;
+
+/*      if (cheatVar){
                 
             return playerInfo.Role.TeamColor; //Cheat vision
 
@@ -264,7 +285,7 @@ public static class Utils
         }else {
 
             return Color.white; //Normal Crewmate Vision
-        }
+        } */
     }
 
     //Get ShapeshifterMenu prefab to instantiate it
@@ -382,7 +403,9 @@ public static class Utils_PlayerPickMenu
                     __instance.Close();
                 }));
 
-                shapeshifterPanel.NameText.color = Utils.getColorName(CheatToggles.seeRoles, playerData);
+                if (playerData.Object != null){
+                    shapeshifterPanel.NameText.text = Utils.getNameTag(playerData.Object, playerData.DefaultOutfit.PlayerName);
+                }
                 __instance.potentialVictims.Add(shapeshifterPanel);
                 list2.Add(shapeshifterPanel.Button);
             }

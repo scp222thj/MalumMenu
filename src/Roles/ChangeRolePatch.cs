@@ -73,16 +73,14 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 //New player pick menu made for killing players
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    RoleBehaviour role = RoleManager.Instance.AllRoles.First((RoleBehaviour r) => r.Role == (AmongUs.GameOptions.RoleTypes)Enum.Parse(typeof(AmongUs.GameOptions.RoleTypes), Utils_PlayerPickMenu.targetPlayerData.PlayerName));
-
                     if (PlayerControl.LocalPlayer.Data.IsDead){
-                        if (role.TeamType == RoleTeamTypes.Impostor){
+                        if (Utils_PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor){
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
                         }else{
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.CrewmateGhost);
                         }
                     }else{
-                        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, role.Role);
+                        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayerData.Role.Role);
                     }
 
                     
