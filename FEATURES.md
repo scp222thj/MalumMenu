@@ -156,7 +156,7 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 
 | Cheat | Description | Type |
 |------------|-------------|------|
-| RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, players won't be able to send you friend requests*) | Toggle | Off |
+| RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, you won't be able to recieve friend requests*) | Toggle | Off |
 
 #### Other
 
