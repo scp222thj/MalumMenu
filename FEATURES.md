@@ -149,14 +149,14 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 | AlwaysChat | Keeps the chat icon always enabled, allowing you to chat at any time, even while you're not in a meeting or the lobby | Toggle | Off |
 | ChatMimic | Allows you to pick any player and send chat messages as them | Menu |
 | SpamChat | Every message you send will keep getting repeated by all other players, flooding the chat with your message | Toggle | Off |
-| ChatJailbreak | Unlocks special chat features that normally wouldn't be possible in-game<br><br>- Messages won't be rate-limited<br>- Messages can be longer than 100 characters<br>- Lets you use special characters & URLs in messages<br>- You can use [Unity Rich Text Tags](https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/RichText.html) in your messages<br>- You can send empty messages | Toggle | Off |
+| ChatJailbreak | Unlocks special chat features that normally wouldn't be possible in-game<br><br>- Messages won't be rate-limited<br>- Messages can be longer than 100 characters<br>- You can use special characters & URLs in messages<br>- You can use [Unity Rich Text Tags](https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/RichText.html) in your messages<br>- You can send empty messages<br>- You can paste text from your clipboard into the textbox | Toggle | Off |
 
 
 ## 🕵️ Spoofing
 
 | Cheat | Description | Type |
 |------------|-------------|------|
-| RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, players won't be able to send you friend requests*) | Toggle | Off |
+| RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, you won't be able to recieve friend requests*) | Toggle | Off |
 
 #### Other
 
