@@ -12,13 +12,17 @@
 
 MalumMenu's ESP cheats are completely client-side, and thus undetectable by anticheat
 
-| Cheat | Description | Type | Default|
+| Cheat | Description | Type | Default |
 |------------|-------------|------|--------|
 | SeeGhosts | Allows you to see ghosts, protections, and ghost chat even if you are alive | Toggle | Off
-| SeeRoles | Reveals the roles of all players through the color of their names | Toggle | Off
 | FullBright | Removes all shadows, allowing you to see during blackouts and even through walls<br>Also, lets you see through spore clouds in the Fungle Jungle | Toggle | Off |
-| VentVision | Allows you to see the names of players inside vents | Toggle | Off |
 | RevealVotes | Lets you see colored votes even if votes are set to anonymous | Toggle | Off |
+
+#### NameTags
+| Cheat | Description | Type | Default |
+|------------|-------------|------|--------|
+| SeeRoles | Reveals the roles of all players through the color of their names | Toggle | Off
+| VentVision | Allows you to see the names of players inside vents | Toggle | Off |
 
 #### Camera
     
