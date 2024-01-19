@@ -105,7 +105,7 @@ They take advantage of a severe vulnerability within the game, **and because of 
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
 | KillAnyone | Allows you to kill anyone, including ghosts, impostors, players in vents, etc. | Toggle | Off |
-| NoKillCd | Removes the cooldown between kills | Toggle | Off |
+| NoKillCooldown | Removes the cooldown between kills | Toggle | Off |
 | KillReach | Allows you to kill the nearest player, regardless of obstacles in between | Toggle | Off |
 | ImpostorTasks | Allows you to do tasks as impostor | Toggle | Off |
 
@@ -200,15 +200,16 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 
 #### Advanced
 
-| Cheat | Description | Type | Default|
+| Cheat | Description | Type | Default |
 |------------|-------------|------|--------|
 | Copy FriendCode | Copies a player's friend code to your clipboard | Menu |
 
 #### Config
 
-| Cheat | Description | Type | Default|
+| Cheat | Description | Type | Default |
 |------------|-------------|------|--------|
 | Spoofed FriendCode | A custom friend code that will be used in online games.<br>(*While using a spoofed friend code, players won't be able to send you friend requests*)<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
+| Spoofed Level | A custom level that will be displayed to other players in meetings | Config | Empty |
 
 ## 💤 Passive
 
