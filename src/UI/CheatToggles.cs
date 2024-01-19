@@ -60,6 +60,7 @@ namespace MalumMenu
         //Spoofing
         public static bool spoofRandomFC;
         public static bool copyPlayerFC;
+        public static bool spoofLevel;
 
         //Camera
         public static bool spectate;

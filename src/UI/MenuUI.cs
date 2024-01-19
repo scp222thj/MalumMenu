@@ -161,6 +161,7 @@ public class MenuUI : MonoBehaviour
             }),
             new SubmenuInfo("Config", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Spoofed FriendCode", () => MalumMenu.spoofFriendCode.Value != "", (bool n) => { }),
+                new ToggleInfo($" Spoof Level: {MalumMenu.spoofLevel.Value}", () => CheatToggles.spoofLevel, x => CheatToggles.spoofLevel = x),
             }),
         }));
 

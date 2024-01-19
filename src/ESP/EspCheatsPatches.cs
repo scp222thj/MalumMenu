@@ -247,7 +247,7 @@ public static class SeeUserInfo_PlayerPhysics_LateUpdate_Postfix
                     break;
             }
             var playerName = __instance.myPlayer.cosmetics.nameText.text;
-            playerName = "<size=50%>Level: <#0f0>" + __instance.myPlayer.Data.PlayerLevel + "</color>\r\nPlatform: <#0f0>" + platform + "</color></size>\r\n" + playerName;
+            playerName = "<size=50%>Level: <#0f0>" + (__instance.myPlayer.Data.PlayerLevel + 1) + "</color>\r\nPlatform: <#0f0>" + platform + "</color></size>\r\n" + playerName;
             __instance.myPlayer.cosmetics.SetName(playerName);
         }
     }
