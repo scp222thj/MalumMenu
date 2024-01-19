@@ -1,5 +1,6 @@
 using AmongUs.Data.Player;
 using HarmonyLib;
+using Sentry.Internal.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,12 +12,14 @@ public static class SeeRoles_PlayerPhysics_LateUpdate_Postfix
     //Postfix patch of PlayerPhysics.LateUpdate to get colored names in-game 
     public static void Postfix(PlayerPhysics __instance){
         //try-catch to prevent errors when role is null
-        try{
+        try
+        {
 
             //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
             __instance.myPlayer.cosmetics.SetName(Utils.getNameTag(__instance.myPlayer, __instance.myPlayer.CurrentOutfit.PlayerName));
-            
-        }catch{}
+
+        }
+        catch { }
     }
 }    
 
@@ -31,8 +34,11 @@ public static class SeeRoles_MeetingHud_Update_Postfix
                 //Fetching the GameData.PlayerInfo of each playerState to get the player's role
                 GameData.PlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
-                //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-                playerState.NameText.text = Utils.getNameTag(data.Object, data.DefaultOutfit.PlayerName);
+                if (!data.IsNull() && !data.Disconnected && !data.Outfits[PlayerOutfitType.Default].IsNull())
+                {
+                    //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
+                    playerState.NameText.text = Utils.getNameTag(data.Object, data.DefaultOutfit.PlayerName);
+                }
 
             }
         }catch{}
@@ -44,10 +50,14 @@ public static class SeeRoles_ChatBubble_SetName_Postfix
 {
     //Postfix patch of ChatBubble.SetName to get colored names in chat messages
     public static void Postfix(ChatBubble __instance){
-
-        //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-        __instance.NameText.text = Utils.getNameTag(__instance.playerInfo.Object, __instance.playerInfo.PlayerName, true);
-    
+        if (CheatToggles.seeRoles)
+        {
+            var player = __instance.playerInfo.Object;
+            __instance.NameText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleName(player.Data)}</size></color> " + __instance.NameText.text;
+            __instance.NameText.ForceMeshUpdate(true, true);
+            __instance.Background.size = new Vector2(5.52f, 0.2f + __instance.NameText.GetNotDumbRenderedHeight() + __instance.TextArea.GetNotDumbRenderedHeight());
+            __instance.MaskArea.size = __instance.Background.size - new Vector2(0f, 0.03f);
+        }
     }
 }    
 

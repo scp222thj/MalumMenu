@@ -24,7 +24,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" SeeGhosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
             new ToggleInfo(" FullBright", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
             new ToggleInfo(" RevealVotes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
-
         }, new List<SubmenuInfo> {
             new SubmenuInfo("NameTags", false, new List<ToggleInfo>() {
                 new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
@@ -85,7 +84,7 @@ public class MenuUI : MonoBehaviour
                 }),
                 new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
                     new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
-                    new ToggleInfo(" NoKillCd", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
+                    new ToggleInfo(" NoKillCooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                     new ToggleInfo(" KillReach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
                     new ToggleInfo(" ImpostorTasks", () => CheatToggles.impostorTasks, x => CheatToggles.impostorTasks = x),
                 }),
@@ -161,6 +160,7 @@ public class MenuUI : MonoBehaviour
             }),
             new SubmenuInfo("Config", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Spoofed FriendCode", () => MalumMenu.spoofFriendCode.Value != "", (bool n) => { }),
+                new ToggleInfo(" Spoofed Level", () => MalumMenu.spoofLevel.Value != "", (bool n) => { }),
             }),
         }));
 
@@ -196,7 +196,8 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!CheatChecks.isShip){
-            CheatToggles.unfixableLights = CheatToggles.completeAllTasks = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
+            CheatToggles.unfixableLights = CheatToggles.completeAllTasks = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
+            Sabotages_ShipStatus_FixedUpdate_Postfix.reactorSab = Sabotages_ShipStatus_FixedUpdate_Postfix.commsSab = Sabotages_ShipStatus_FixedUpdate_Postfix.elecSab = Sabotages_ShipStatus_FixedUpdate_Postfix.oxygenSab = UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive = false;
         }
     }
 

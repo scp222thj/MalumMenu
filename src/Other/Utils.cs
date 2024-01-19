@@ -8,6 +8,9 @@ using Hazel;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
+using Il2CppSystem;
+using Sentry.Internal.Extensions;
+using AmongUs.GameOptions;
 
 namespace MalumMenu;
 public static class Utils
@@ -251,22 +254,52 @@ public static class Utils
         }
     }
 
+    public static string getRoleName(GameData.PlayerInfo playerData)
+    {
+        var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+        if (translatedRole == "STRMISS")
+        {
+            StringNames @string;
+            if (playerData.RoleWhenAlive.HasValue)
+            {
+                switch (playerData.RoleWhenAlive.Value)
+                {
+                    case RoleTypes.Crewmate:
+                        @string = DestroyableSingleton<CrewmateRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Engineer:
+                        @string = DestroyableSingleton<EngineerRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Scientist:
+                        @string = DestroyableSingleton<ScientistRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Impostor:
+                        @string = DestroyableSingleton<ImpostorRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Shapeshifter:
+                        @string = DestroyableSingleton<ShapeshifterRole>.Instance.StringName;
+                        break;
+                    default:
+                        @string = DestroyableSingleton<GuardianAngelRole>.Instance.StringName;
+                        break;
+                }
+                translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(@string, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+            } else {
+                translatedRole = "Ghost";
+            }
+        }
+        return translatedRole;
+    }
+
     //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
     public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
         string nameTag = playerName;
 
         if (CheatToggles.seeRoles){
 
-            if (isChat){
-                
-                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}>{nameTag} <size=80%>({player.Data.Role.Role})</size></color>";
-
-                return nameTag;
-            }
-
-            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{player.Data.Role.Role}</size>\r\n{nameTag}</color>";
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{getRoleName(player.Data)}</size>\r\n{nameTag}</color>";
         
-        }else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
+        } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
 
             nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.NameColor)}>{nameTag}</color>";
 
@@ -286,6 +319,14 @@ public static class Utils
 
             return Color.white; //Normal Crewmate Vision
         } */
+    }
+
+    public static bool IsInLobby()
+    {
+        if (AmongUsClient.Instance.IsNull()) return false;
+        if (GameManager.Instance.IsNull()) return false;
+        if (PlayerControl.LocalPlayer.IsNull()) return false;
+        return AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined;
     }
 
     //Get ShapeshifterMenu prefab to instantiate it
@@ -357,11 +398,11 @@ public static class Utils_PlayerPickMenu
     public static ShapeshifterMinigame playerpickMenu;
     public static bool IsActive;
     public static GameData.PlayerInfo targetPlayerData;
-    public static Action customAction;
+    public static Il2CppSystem.Action customAction;
     public static List<GameData.PlayerInfo> customPlayerList;
 
     //Open a custom menu to pick a player as a target
-    public static void openPlayerPickMenu(List<GameData.PlayerInfo> playerList, Action action)
+    public static void openPlayerPickMenu(List<GameData.PlayerInfo> playerList, Il2CppSystem.Action action)
     {
         IsActive = true;
         customPlayerList = playerList;
@@ -394,7 +435,7 @@ public static class Utils_PlayerPickMenu
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
                 shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                 
-                shapeshifterPanel.SetPlayer(i, playerData, (Action) (() =>
+                shapeshifterPanel.SetPlayer(i, playerData, (Il2CppSystem.Action) (() =>
                 {
                     targetPlayerData = playerData; //Save targeted player
 
@@ -426,7 +467,7 @@ public static class Utils_PlayerPickMenu
 public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
 {
     //Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
-    public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Action onShift)
+    public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Il2CppSystem.Action onShift)
     {
         if (Utils_PlayerPickMenu.IsActive){ //Player pick menu logic
 
@@ -445,7 +486,7 @@ public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
             //Skips using custom nameplates because they break the PlayerPickMenu in lobbies
 
             __instance.NameText.text = playerInfo.PlayerName;
-            DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Action)__instance.SetColorblindText;
+            DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Il2CppSystem.Action)__instance.SetColorblindText;
             __instance.SetColorblindText();
 
             return false; //Skip original method when active
@@ -462,6 +503,7 @@ public static class CheatChecks
 {
     public static bool isShip;
     public static bool isPlayer;
+    public static bool isLobby;
 
     //public static bool isHost;
 
@@ -469,6 +511,7 @@ public static class CheatChecks
     {
         isShip = ShipStatus.Instance != null;
         isPlayer = PlayerControl.LocalPlayer != null;
+        isLobby = Utils.IsInLobby();
 
         //isHost = AmongUsClient.Instance.AmHost;
     }

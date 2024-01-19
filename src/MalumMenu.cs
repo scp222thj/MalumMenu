@@ -19,6 +19,7 @@ public partial class MalumMenu : BasePlugin
     private static MenuUI menuUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> spoofFriendCode;
+    public static ConfigEntry<string> spoofLevel;
 
     public override void Load()
     {
@@ -33,7 +34,12 @@ public partial class MalumMenu : BasePlugin
                                 "FriendCode",
                                 "",
                                 "Your spoofed friend code that will be used in online games. IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests");
-        
+
+        spoofLevel = Config.Bind("MalumMenu.Spoofing",
+                                "Level",
+                                "",
+                                "Your spoofed level that will be used in online games.");
+
         Harmony.PatchAll();
         menuUI = AddComponent<MenuUI>();
 

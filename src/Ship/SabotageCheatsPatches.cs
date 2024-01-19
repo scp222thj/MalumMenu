@@ -1,150 +1,90 @@
 using HarmonyLib;
+using Hazel;
 using System;
+using System.Runtime.CompilerServices;
+using Il2CppSystem;
+using System.Numerics;
+using System.Collections.Generic;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 {
+    public static bool reactorSab;
+    public static bool oxygenSab;
+    public static bool commsSab;
+    public static bool elecSab;
     //Postfix patch of ShipStatus.FixedUpdate to sabotage different systems
     public static void Postfix(ShipStatus __instance)
     {
         byte currentMapID = Utils.getCurrentMapID();
 
-        if (CheatToggles.reactorSab){ //Reactor sabotages
+        if (CheatToggles.reactorSab && !reactorSab) { //Reactor sabotages
 
-            if (currentMapID == 2){ //Polus uses has SystemTypes.Laboratory instead of SystemTypes.Reactor
+            if (currentMapID == 2) { //Polus uses has SystemTypes.Laboratory instead of SystemTypes.Reactor
                 
-                var labSystem = __instance.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
-                
-                if (labSystem.IsActive){
+                __instance.RpcUpdateSystem(SystemTypes.Laboratory, 128);
 
-                    __instance.RpcUpdateSystem(SystemTypes.Laboratory, 16); //Repair reactor
-                
-                }else{
-                    
-                    __instance.RpcUpdateSystem(SystemTypes.Laboratory, 128); //Sabotage reactor
-                
-                }
+            } else if (currentMapID == 4) { //Airship uses HeliSabotageSystem to sabotage reactor
 
-            }else if (currentMapID == 4){ //Airship uses HeliSabotageSystem to sabotage reactor
+                __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 128);
 
-                var HeliSystem = __instance.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
-                
-                if (HeliSystem.IsActive){
-                    
-                    //Repair reactor
-                    __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 0);
-                    __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 1);
-
-                }else{
-
-                    //Sabotage reactor
-                    __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 128);
-
-                }
-
-            }else{ //Other maps behave normally 
-                var reactSystem = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
-                if (reactSystem.IsActive){
-                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 16);
-                }else{
-                    __instance.RpcUpdateSystem(SystemTypes.Reactor, 128);
-                }
+            } else { //Other maps behave normally 
+                __instance.RpcUpdateSystem(SystemTypes.Reactor, 128);
             }
+            reactorSab = true;
 
-            CheatToggles.reactorSab = false; //Button behaviour
+        } else if (CheatToggles.oxygenSab && !oxygenSab) { //Oxygen sabotages
 
-        }else if (CheatToggles.oxygenSab){ //Oxygen sabotages
+            if (currentMapID != 4 && currentMapID != 2 && currentMapID != 5) { //Polus, Airship & Fungle have NO oxygen system
 
-            if (currentMapID != 4 && currentMapID != 2 && currentMapID != 5){ //Polus, Airship & Fungle have NO oxygen system
+                __instance.RpcUpdateSystem(SystemTypes.LifeSupp, 128);
+                oxygenSab = true;
 
-                var oxygenSystem = __instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
-                
-                if (oxygenSystem.IsActive){
-                    __instance.RpcUpdateSystem(SystemTypes.LifeSupp, 16); //Repair oxygen
-                }else{
-                    __instance.RpcUpdateSystem(SystemTypes.LifeSupp, 128); //Sabotage oxygen
-                }
-
-            }else{
+            } else {
                 HudManager.Instance.Notifier.AddItem("Oxygen system not present on this map");
             }
-
-            CheatToggles.oxygenSab = false; //Button behaviour
         
-        }else if (CheatToggles.commsSab){ //Communications sabotages
-            
-            if (currentMapID == 1 || currentMapID == 5){ //MiraHQ and Fungle use HqHudSystemType to sabotage communications
-                var hqcommsSystem = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
-                if (hqcommsSystem.IsActive){
-                    __instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 0); //Repair communications
-                    __instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
-                }else{
-                    __instance.RpcUpdateSystem(SystemTypes.Comms, 128); //Sabotage communications
-                }
-            }else{//Polus, Skeld and Airship have normal behaviour
-                var commsSystem = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
-                if (commsSystem.IsActive){
-                    __instance.RpcUpdateSystem(SystemTypes.Comms, 16); //Repair communications
-                }else{
-                    __instance.RpcUpdateSystem(SystemTypes.Comms, 128); //Sabotage communications
-                }
-            }
+        } else if (CheatToggles.commsSab && !commsSab) { //Communications sabotages
 
-            CheatToggles.commsSab = false; //Button behaviour
+            __instance.RpcUpdateSystem(SystemTypes.Comms, 128);
+            commsSab = true;
 
-        }else if (CheatToggles.elecSab){ //Eletrical sabotage
+        } else if (CheatToggles.elecSab && !elecSab) { //Eletrical sabotage
 
-            if (currentMapID != 5){ //Fungle has no eletrical sabotage
+            if (currentMapID != 5) { //Fungle has no eletrical sabotage
 
-                var elecSystem = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
-
-                if (elecSystem.ActualSwitches != elecSystem.ExpectedSwitches){
-                    
-                    for (var i = 0; i < 5; i++) {
-                        var switchMask = 1 << (i & 0x1F);
-
-                        if ((elecSystem.ActualSwitches & switchMask) != (elecSystem.ExpectedSwitches & switchMask)){
-                            __instance.RpcUpdateSystem(SystemTypes.Electrical, (byte)i); //Repair electrical
-                        }
-                    }    
-
-                }else{
-
-                    byte b = 4;
-                    for (int i = 0; i < 5; i++)
+                byte b = 4;
+                for (int i = 0; i < 5; i++)
+                {
+                    if (BoolRange.Next(0.5f))
                     {
-                        if (BoolRange.Next(0.5f))
-                        {
-                            b |= (byte)(1 << i);
-                        }
+                        b |= (byte)(1 << i);
                     }
-
-                    __instance.RpcUpdateSystem(SystemTypes.Electrical, (byte)(b | 128)); //Sabotage electrical
-
                 }
 
-            }else{
+                __instance.RpcUpdateSystem(SystemTypes.Electrical, (byte)(b | 128));
+                elecSab = true;
+
+            } else {
                 HudManager.Instance.Notifier.AddItem("Eletrical system not present on this map");
             }
-
-            CheatToggles.elecSab = false; //Button behaviour
             
-        }else if (CheatToggles.mushSab){
+        } else if (CheatToggles.mushSab) {
 
             if (currentMapID == 5){ //MushroomMixup only works on Fungle
                 __instance.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); //Sabotage MushroomMixup
-            }else{
+            } else {
                 HudManager.Instance.Notifier.AddItem("Mushrooms not present on this map");
             }
 
             CheatToggles.mushSab = false; //Button behaviour
 
-        }else if (CheatToggles.doorsSab){
+        } else if (CheatToggles.doorsSab) {
 
             //Loop through all rooms and close their doors
-            foreach (SystemTypes room in (SystemTypes[]) Enum.GetValues(typeof(SystemTypes)))
+            foreach (SystemTypes room in (SystemTypes[]) System.Enum.GetValues(typeof(SystemTypes)))
             {
                 try{__instance.RpcCloseDoorsOfType(room);}catch{} //try-catch for rooms with no doors
             }
@@ -152,17 +92,155 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
             CheatToggles.doorsSab = false; //Button behaviour
 
         }
+
+
+        // repair sabotage
+        if (!CheatToggles.reactorSab && reactorSab)
+        {
+            if (currentMapID == 2)
+            {
+                __instance.RpcUpdateSystem(SystemTypes.Laboratory, 16);
+            }
+            else if (currentMapID == 4)
+            {
+
+                __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 0);
+                __instance.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 1);
+
+            }
+            else
+            {
+                __instance.RpcUpdateSystem(SystemTypes.Reactor, 16);
+            }
+
+            reactorSab = false;
+
+        }
+        else if (!CheatToggles.oxygenSab && oxygenSab)
+        {
+
+            if (currentMapID != 4 && currentMapID != 2 && currentMapID != 5)
+            {
+
+                __instance.RpcUpdateSystem(SystemTypes.LifeSupp, 16);
+
+            }
+
+            oxygenSab = false;
+
+        }
+        else if (!CheatToggles.commsSab && commsSab)
+        {
+
+            if (currentMapID == 1 || currentMapID == 5)
+            {
+                __instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 0);
+                __instance.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
+            }
+            else
+            {
+                __instance.RpcUpdateSystem(SystemTypes.Comms, 16);
+            }
+
+            commsSab = false;
+
+        }
+        else if (!CheatToggles.elecSab && elecSab)
+        {
+
+            if (currentMapID != 5)
+            {
+                var elecSystem = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+
+                for (var i = 0; i < 5; i++)
+                {
+                    var switchMask = 1 << (i & 0x1F);
+
+                    if ((elecSystem.ActualSwitches & switchMask) != (elecSystem.ExpectedSwitches & switchMask))
+                    {
+                        __instance.RpcUpdateSystem(SystemTypes.Electrical, (byte)i);
+                    }
+                }
+
+            }
+
+            elecSab = false;
+
+        }
+
+        ReactorSystemType reactorSys = null;
+        ReactorSystemType labSys = null;
+        HeliSabotageSystem HeliSys = null;
+        LifeSuppSystemType oxygenSys = null;
+        HqHudSystemType hqcommsSys = null;
+        HudOverrideSystemType commsSys = null;
+        SwitchSystem elecSys = null;
+
+        switch (currentMapID)
+        {
+            case 0:
+            case 3:
+                reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                oxygenSys = __instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
+                commsSys = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 1:
+                reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                oxygenSys = __instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
+                hqcommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 2:
+                labSys = __instance.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
+                commsSys = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 4:
+                HeliSys = __instance.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
+                commsSys = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 5:
+                reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                hqcommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
+                break;
+        }
+
+        if (reactorSys != null || labSys != null || HeliSys != null)
+        {
+            var reactorSabctive = reactorSys == null ? labSys == null ? HeliSys.IsActive : labSys.IsActive : reactorSys.IsActive;
+            CheatToggles.reactorSab = reactorSabctive;
+            reactorSab = reactorSabctive;
+        }
+        if ((hqcommsSys != null && hqcommsSys.IsActive) || (commsSys != null && commsSys.IsActive))
+        {
+            var commsSabActive = hqcommsSys == null ? commsSys.IsActive : hqcommsSys.IsActive;
+            CheatToggles.commsSab = commsSabActive;
+            commsSab = commsSabActive;
+        }
+        if (oxygenSys != null)
+        {
+            CheatToggles.oxygenSab = oxygenSys.IsActive;
+            oxygenSab = oxygenSys.IsActive;
+        }
+        if (!elecSab && elecSys != null)
+        {
+            var elecSabActive = (elecSys.ActualSwitches != elecSys.ExpectedSwitches) && !UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive;
+            CheatToggles.elecSab = elecSabActive;
+            elecSab = elecSabActive;
+        }
     }
 }
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class UnfixableLights_ShipStatus_FixedUpdate_Postfix
 {
-
+    public static bool isActive;
     //Postfix patch of ShipStatus.FixedUpdate to break lights completly & make them unable to be fixed normally
     public static void Postfix(ShipStatus __instance)
     {
-        if (CheatToggles.unfixableLights)
+        if (CheatToggles.unfixableLights && !isActive)
         {
             //Apparently most values you put for amount in RpcUpdateSystem will break lights completly
             //They are unfixable through regular means (toggling switches)
@@ -180,7 +258,13 @@ public static class UnfixableLights_ShipStatus_FixedUpdate_Postfix
                 
                 }
 
-            CheatToggles.unfixableLights = false;
-        } 
+            isActive = true;
+        }
+        else if (!CheatToggles.unfixableLights && isActive)
+        {
+            __instance.RpcUpdateSystem(SystemTypes.Electrical, 69);
+
+            isActive = false;
+        }
     }
 }
