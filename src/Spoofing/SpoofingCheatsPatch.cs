@@ -9,7 +9,7 @@ namespace MalumMenu;
 public static class Spoofing_EOSManager_Update_Postfix
 {
     public static string defaultFC = null;
-    public static int defaultLevel = -1;
+    public static string defaultLevel = null;
 
     //Postfix patch of EOSManager.Update to spoof friend codes
     public static void Postfix(EOSManager __instance)
@@ -36,20 +36,20 @@ public static class Spoofing_EOSManager_Update_Postfix
                 defaultFC = null;
             }
 
-            if (CheatToggles.spoofLevel && MalumMenu.spoofLevel.Value.ToString() != "" && MalumMenu.spoofLevel.Value > 0)
-            {
-                if (defaultLevel == -1)
+            if (MalumMenu.spoofLevel.Value != "" && int.Parse(MalumMenu.spoofLevel.Value) > 0 && int.Parse(MalumMenu.spoofLevel.Value) != (int)DataManager.Player.Stats.Level){ //friendCodeSpoofing from config cheat logic
+                if (defaultLevel == null)
                 {
-                    defaultLevel = (int)DataManager.Player.Stats.Level;
+                    defaultLevel = $"{DataManager.Player.Stats.Level}";
                 }
-                DataManager.Player.stats.level = (uint)MalumMenu.spoofLevel.Value - 1;
+
+                DataManager.Player.stats.level = (uint)(int.Parse(MalumMenu.spoofLevel.Value) - 1);
                 DataManager.Player.Save();
             }
-            else if (defaultLevel > 0)
-            {
-                DataManager.Player.stats.level = (uint)defaultLevel;
+
+            else if (defaultLevel != null){
+                DataManager.Player.stats.level = (uint)int.Parse(defaultLevel);
                 DataManager.Player.Save();
-                defaultLevel = -1;
+                defaultLevel = null;
             }
         }
         catch{}

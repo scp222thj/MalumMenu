@@ -32,7 +32,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 shapeshifterChoice.Outfits[PlayerOutfitType.Default].SkinId = "skin_screamghostface";
                 shapeshifterChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_eliksni";
                 shapeshifterChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Shapeshifter);
-                shapeshifterChoice.PlayerName = Utils.getRoleNameTranslated(shapeshifterChoice);
+                shapeshifterChoice.PlayerName = Utils.getRoleName(shapeshifterChoice);
                 playerDataList.Add(shapeshifterChoice);
 
                 GameData.PlayerInfo impostorChoice = new GameData.PlayerInfo(255)
@@ -41,7 +41,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 };
                 impostorChoice.Outfits[PlayerOutfitType.Default].ColorId = 0;
                 impostorChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Impostor);
-                impostorChoice.PlayerName = Utils.getRoleNameTranslated(impostorChoice);
+                impostorChoice.PlayerName = Utils.getRoleName(impostorChoice);
                 playerDataList.Add(impostorChoice);
 
                 GameData.PlayerInfo engineerChoice = new GameData.PlayerInfo(255)
@@ -52,7 +52,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 engineerChoice.Outfits[PlayerOutfitType.Default].SkinId = "skin_Mech";
                 engineerChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_D2CGoggles";
                 engineerChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Engineer);
-                engineerChoice.PlayerName = Utils.getRoleNameTranslated(engineerChoice);
+                engineerChoice.PlayerName = Utils.getRoleName(engineerChoice);
                 playerDataList.Add(engineerChoice);
 
                 GameData.PlayerInfo scientistChoice = new GameData.PlayerInfo(255)
@@ -63,7 +63,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 scientistChoice.Outfits[PlayerOutfitType.Default].SkinId = "skin_Science";
                 scientistChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_pk01_PaperMaskVisor";
                 scientistChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Scientist);
-                scientistChoice.PlayerName = Utils.getRoleNameTranslated(scientistChoice);
+                scientistChoice.PlayerName = Utils.getRoleName(scientistChoice);
                 playerDataList.Add(scientistChoice);
 
                 GameData.PlayerInfo crewmateChoice = new GameData.PlayerInfo(255)
@@ -72,7 +72,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 };
                 crewmateChoice.Outfits[PlayerOutfitType.Default].ColorId = 10;
                 crewmateChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Crewmate);
-                crewmateChoice.PlayerName = Utils.getRoleNameTranslated(crewmateChoice);
+                crewmateChoice.PlayerName = Utils.getRoleName(crewmateChoice);
                 playerDataList.Add(crewmateChoice);
 
                 //New player pick menu made for killing players

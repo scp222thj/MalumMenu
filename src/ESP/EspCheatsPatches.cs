@@ -50,10 +50,10 @@ public static class SeeRoles_ChatBubble_SetName_Postfix
 {
     //Postfix patch of ChatBubble.SetName to get colored names in chat messages
     public static void Postfix(ChatBubble __instance){
-        if (CheatToggles.seeRoles && !CheatChecks.isLobby)
+        if (CheatToggles.seeRoles)
         {
             var player = __instance.playerInfo.Object;
-            __instance.NameText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleNameTranslated(player.Data)}</size></color> " + __instance.NameText.text;
+            __instance.NameText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleName(player.Data)}</size></color> " + __instance.NameText.text;
             __instance.NameText.ForceMeshUpdate(true, true);
             __instance.Background.size = new Vector2(5.52f, 0.2f + __instance.NameText.GetNotDumbRenderedHeight() + __instance.TextArea.GetNotDumbRenderedHeight());
             __instance.MaskArea.size = __instance.Background.size - new Vector2(0f, 0.03f);
@@ -201,54 +201,5 @@ public static class SporeVision_Mushroom_FixedUpdate_Postfix
         } 
 
         __instance.sporeMask.transform.position = new UnityEngine.Vector3(__instance.sporeMask.transform.position.x, __instance.sporeMask.transform.position.y, 5f);
-    }
-}
-
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class SeeUserInfo_PlayerPhysics_LateUpdate_Postfix
-{
-    //Postfix patch of PlayerPhysics.LateUpdate to get user info
-    public static void Postfix(PlayerPhysics __instance)
-    {
-        if (CheatChecks.isLobby && CheatToggles.seeUserInfo)
-        {
-            string platform;
-            switch (AmongUsClient.Instance.GetClientFromCharacter(__instance.myPlayer).PlatformData.Platform)
-            {
-                case Platforms.StandaloneEpicPC:
-                    platform = "Epic Games - PC";
-                    break;
-                case Platforms.StandaloneSteamPC:
-                    platform = "Steam - PC";
-                    break;
-                case Platforms.StandaloneMac:
-                    platform = "Mac";
-                    break;
-                case Platforms.StandaloneWin10:
-                    platform = "Microsoft Store - PC";
-                    break;
-                case Platforms.StandaloneItch:
-                    platform = "itch.io - PC";
-                    break;
-                case Platforms.IPhone:
-                    platform = "iOS - Mobile";
-                    break;
-                case Platforms.Android:
-                    platform = "Android - Mobile";
-                    break;
-                case Platforms.Switch:
-                    platform = "Nintendo Switch - Console";
-                    break;
-                case Platforms.Xbox:
-                    platform = "Xbox - Console";
-                    break;
-                default:
-                    platform = "???";
-                    break;
-            }
-            var playerName = __instance.myPlayer.cosmetics.nameText.text;
-            playerName = "<size=50%>Level: <#0f0>" + (__instance.myPlayer.Data.PlayerLevel + 1) + "</color>\r\nPlatform: <#0f0>" + platform + "</color></size>\r\n" + playerName;
-            __instance.myPlayer.cosmetics.SetName(playerName);
-        }
     }
 }

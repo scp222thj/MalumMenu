@@ -24,7 +24,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" SeeGhosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
             new ToggleInfo(" FullBright", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
             new ToggleInfo(" RevealVotes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
-            new ToggleInfo(" SeeUserInfo", () => CheatToggles.seeUserInfo, x => CheatToggles.seeUserInfo = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("NameTags", false, new List<ToggleInfo>() {
                 new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
@@ -161,7 +160,7 @@ public class MenuUI : MonoBehaviour
             }),
             new SubmenuInfo("Config", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Spoofed FriendCode", () => MalumMenu.spoofFriendCode.Value != "", (bool n) => { }),
-                new ToggleInfo($" Spoof Level: {MalumMenu.spoofLevel.Value}", () => CheatToggles.spoofLevel, x => CheatToggles.spoofLevel = x),
+                new ToggleInfo(" Spoofed Level", () => MalumMenu.spoofLevel.Value != "", (bool n) => { }),
             }),
         }));
 

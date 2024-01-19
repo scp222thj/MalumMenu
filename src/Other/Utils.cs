@@ -254,7 +254,7 @@ public static class Utils
         }
     }
 
-    public static string getRoleNameTranslated(GameData.PlayerInfo playerData)
+    public static string getRoleName(GameData.PlayerInfo playerData)
     {
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         if (translatedRole == "STRMISS")
@@ -295,9 +295,9 @@ public static class Utils
     public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
         string nameTag = playerName;
 
-        if (CheatToggles.seeRoles && !IsInLobby()){
+        if (CheatToggles.seeRoles){
 
-            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%><font=\"VCR SDF\" material=\"VCR Black Outline\">{getRoleNameTranslated(player.Data)}</font></size>\r\n{nameTag}</color>";
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{getRoleName(player.Data)}</size>\r\n{nameTag}</color>";
         
         } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
 
