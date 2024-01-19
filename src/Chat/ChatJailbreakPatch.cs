@@ -165,3 +165,22 @@ public static class ChatJailBreak_FreeChatInputField_UpdateCharCount_Postfix
             __instance.charCountText.color = UnityEngine.Color.red;
     }
 }
+
+// allow pasting into chatbox
+[HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.Update))]
+public static class ChatJailBreak_TextBoxTMP_Update_Postfix
+{
+    public static void Postfix(TextBoxTMP __instance)
+    {
+        if (!CheatToggles.chatJailbreak){
+            return; //Only works if CheatToggles.chatJailbreak is enabled
+        }
+        
+        if (!__instance.hasFocus){return;}
+
+        if((UnityEngine.Input.GetKey(UnityEngine.KeyCode.LeftControl) || UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightControl)) && UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.C))
+        {
+            ClipboardHelper.PutClipboardString(__instance.text);
+        }
+    }
+}
