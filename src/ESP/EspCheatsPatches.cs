@@ -44,10 +44,10 @@ public static class SeeRoles_ChatBubble_SetName_Postfix
 {
     //Postfix patch of ChatBubble.SetName to get colored names in chat messages
     public static void Postfix(ChatBubble __instance){
-
-        //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-        __instance.NameText.text = Utils.getNameTag(__instance.playerInfo.Object, __instance.playerInfo.PlayerName, true);
-    
+        if (CheatToggles.seeRoles)
+        {
+            __instance.NameText.text = Utils.getNameTag(__instance.playerInfo.Object, __instance.playerInfo.PlayerName, true);
+        }
     }
 }    
 

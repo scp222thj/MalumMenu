@@ -85,7 +85,7 @@ public class MenuUI : MonoBehaviour
                 }),
                 new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
                     new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
-                    new ToggleInfo(" NoKillCd", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
+                    new ToggleInfo(" NoKillCooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                     new ToggleInfo(" KillReach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
                     new ToggleInfo(" ImpostorTasks", () => CheatToggles.impostorTasks, x => CheatToggles.impostorTasks = x),
                 }),

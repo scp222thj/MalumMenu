@@ -251,6 +251,11 @@ public static class Utils
         }
     }
 
+    public static string getRoleNameTranslated(RoleBehaviour role)
+    {
+        return DestroyableSingleton<TranslationController>.Instance.GetString(role.StringName, Array.Empty<Il2CppSystem.Object>());
+    }
+
     //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
     public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
         string nameTag = playerName;
@@ -259,12 +264,12 @@ public static class Utils
 
             if (isChat){
                 
-                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}>{nameTag} <size=80%>({player.Data.Role.Role})</size></color>";
+                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}>{nameTag} <size=80%>({getRoleNameTranslated(player.Data.Role)})</size></color>";
 
                 return nameTag;
             }
 
-            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{player.Data.Role.Role}</size>\r\n{nameTag}</color>";
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{getRoleNameTranslated(player.Data.Role)}</size>\r\n{nameTag}</color>";
         
         }else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
 
