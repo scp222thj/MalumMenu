@@ -1,5 +1,6 @@
 using AmongUs.Data.Player;
 using HarmonyLib;
+using Sentry.Internal.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,8 +32,11 @@ public static class SeeRoles_MeetingHud_Update_Postfix
                 //Fetching the GameData.PlayerInfo of each playerState to get the player's role
                 GameData.PlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
-                //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
-                playerState.NameText.text = Utils.getNameTag(data.Object, data.DefaultOutfit.PlayerName);
+                if (!data.IsNull() && !data.Disconnected && !data.Outfits[PlayerOutfitType.Default].IsNull())
+                {
+                    //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
+                    playerState.NameText.text = Utils.getNameTag(data.Object, data.DefaultOutfit.PlayerName);
+                }
 
             }
         }catch{}
@@ -46,7 +50,11 @@ public static class SeeRoles_ChatBubble_SetName_Postfix
     public static void Postfix(ChatBubble __instance){
         if (CheatToggles.seeRoles)
         {
-            __instance.NameText.text = Utils.getNameTag(__instance.playerInfo.Object, __instance.playerInfo.PlayerName, true);
+            var player = __instance.playerInfo.Object;
+            __instance.NameText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleNameTranslated(player.Data.Role)}</size></color> " + __instance.NameText.text;
+            __instance.NameText.ForceMeshUpdate(true, true);
+            __instance.Background.size = new Vector2(5.52f, 0.2f + __instance.NameText.GetNotDumbRenderedHeight() + __instance.TextArea.GetNotDumbRenderedHeight());
+            __instance.MaskArea.size = __instance.Background.size - new Vector2(0f, 0.03f);
         }
     }
 }    
@@ -191,5 +199,54 @@ public static class SporeVision_Mushroom_FixedUpdate_Postfix
         } 
 
         __instance.sporeMask.transform.position = new UnityEngine.Vector3(__instance.sporeMask.transform.position.x, __instance.sporeMask.transform.position.y, 5f);
+    }
+}
+
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
+public static class SeeUserInfo_PlayerPhysics_LateUpdate_Postfix
+{
+    //Postfix patch of PlayerPhysics.LateUpdate to get user info
+    public static void Postfix(PlayerPhysics __instance)
+    {
+        if (CheatChecks.isLobby && CheatToggles.seeUserInfo)
+        {
+            string platform;
+            switch (AmongUsClient.Instance.GetClientFromCharacter(__instance.myPlayer).PlatformData.Platform)
+            {
+                case Platforms.StandaloneEpicPC:
+                    platform = "Epic Games - PC";
+                    break;
+                case Platforms.StandaloneSteamPC:
+                    platform = "Steam - PC";
+                    break;
+                case Platforms.StandaloneMac:
+                    platform = "Mac";
+                    break;
+                case Platforms.StandaloneWin10:
+                    platform = "Microsoft Store - PC";
+                    break;
+                case Platforms.StandaloneItch:
+                    platform = "itch.io - PC";
+                    break;
+                case Platforms.IPhone:
+                    platform = "iOS - Mobile";
+                    break;
+                case Platforms.Android:
+                    platform = "Android - Mobile";
+                    break;
+                case Platforms.Switch:
+                    platform = "Nintendo Switch - Console";
+                    break;
+                case Platforms.Xbox:
+                    platform = "Xbox - Console";
+                    break;
+                default:
+                    platform = "???";
+                    break;
+            }
+            var playerName = __instance.myPlayer.cosmetics.nameText.text;
+            playerName = "<size=50%>Level: <#0f0>" + __instance.myPlayer.Data.PlayerLevel + "</color>\r\nPlatform: <#0f0><u>" + platform + "</u></color></size>\r\n" + playerName;
+            __instance.myPlayer.cosmetics.SetName(playerName);
+        }
     }
 }

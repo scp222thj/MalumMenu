@@ -207,19 +207,19 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
                 break;
         }
 
-        if (!reactorSab && (reactorSys != null || labSys != null || HeliSys != null))
+        if (reactorSys != null || labSys != null || HeliSys != null)
         {
             var reactorSabctive = reactorSys == null ? labSys == null ? HeliSys.IsActive : labSys.IsActive : reactorSys.IsActive;
             CheatToggles.reactorSab = reactorSabctive;
             reactorSab = reactorSabctive;
         }
-        if (!commsSab && ((hqcommsSys != null && hqcommsSys.IsActive) || (commsSys != null && commsSys.IsActive)))
+        if ((hqcommsSys != null && hqcommsSys.IsActive) || (commsSys != null && commsSys.IsActive))
         {
             var commsSabActive = hqcommsSys == null ? commsSys.IsActive : hqcommsSys.IsActive;
             CheatToggles.commsSab = commsSabActive;
             commsSab = commsSabActive;
         }
-        if (!oxygenSab && oxygenSys != null)
+        if (oxygenSys != null)
         {
             CheatToggles.oxygenSab = oxygenSys.IsActive;
             oxygenSab = oxygenSys.IsActive;

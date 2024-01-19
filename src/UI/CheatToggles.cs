@@ -29,6 +29,7 @@ namespace MalumMenu
         public static bool seeDisguises;
         public static bool seeGhosts;
         public static bool seeRoles;
+        public static bool seeUserInfo;
         public static bool ventVision;
         public static bool revealVotes;
 

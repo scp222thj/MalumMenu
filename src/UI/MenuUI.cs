@@ -24,7 +24,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" SeeGhosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
             new ToggleInfo(" FullBright", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
             new ToggleInfo(" RevealVotes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
-
+            new ToggleInfo(" SeeUserInfo", () => CheatToggles.seeUserInfo, x => CheatToggles.seeUserInfo = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("NameTags", false, new List<ToggleInfo>() {
                 new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
