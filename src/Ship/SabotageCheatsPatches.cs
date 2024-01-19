@@ -1,18 +1,26 @@
 using HarmonyLib;
+using Hazel;
 using System;
 using System.Runtime.CompilerServices;
+using Il2CppSystem;
+using System.Numerics;
+using System.Collections.Generic;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 {
+    public static bool reactorSab;
+    public static bool oxygenSab;
+    public static bool commsSab;
+    public static bool elecSab;
     //Postfix patch of ShipStatus.FixedUpdate to sabotage different systems
     public static void Postfix(ShipStatus __instance)
     {
         byte currentMapID = Utils.getCurrentMapID();
 
-        if (CheatToggles.reactorSab && !BetterSabotage_ShipStatus_UpdateSystem_Postfix.reactorSab) { //Reactor sabotages
+        if (CheatToggles.reactorSab && !reactorSab) { //Reactor sabotages
 
             if (currentMapID == 2) { //Polus uses has SystemTypes.Laboratory instead of SystemTypes.Reactor
                 
@@ -25,22 +33,25 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
             } else { //Other maps behave normally 
                 __instance.RpcUpdateSystem(SystemTypes.Reactor, 128);
             }
+            reactorSab = true;
 
-        } else if (CheatToggles.oxygenSab && !BetterSabotage_ShipStatus_UpdateSystem_Postfix.oxygenSab) { //Oxygen sabotages
+        } else if (CheatToggles.oxygenSab && !oxygenSab) { //Oxygen sabotages
 
             if (currentMapID != 4 && currentMapID != 2 && currentMapID != 5) { //Polus, Airship & Fungle have NO oxygen system
 
                 __instance.RpcUpdateSystem(SystemTypes.LifeSupp, 128);
+                oxygenSab = true;
 
             } else {
                 HudManager.Instance.Notifier.AddItem("Oxygen system not present on this map");
             }
         
-        } else if (CheatToggles.commsSab && !BetterSabotage_ShipStatus_UpdateSystem_Postfix.commsSab) { //Communications sabotages
+        } else if (CheatToggles.commsSab && !commsSab) { //Communications sabotages
 
             __instance.RpcUpdateSystem(SystemTypes.Comms, 128);
+            commsSab = true;
 
-        } else if (CheatToggles.elecSab && !BetterSabotage_ShipStatus_UpdateSystem_Postfix.elecSab) { //Eletrical sabotage
+        } else if (CheatToggles.elecSab && !elecSab) { //Eletrical sabotage
 
             if (currentMapID != 5) { //Fungle has no eletrical sabotage
 
@@ -54,6 +65,7 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
                 }
 
                 __instance.RpcUpdateSystem(SystemTypes.Electrical, (byte)(b | 128));
+                elecSab = true;
 
             } else {
                 HudManager.Instance.Notifier.AddItem("Eletrical system not present on this map");
@@ -72,7 +84,7 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
         } else if (CheatToggles.doorsSab) {
 
             //Loop through all rooms and close their doors
-            foreach (SystemTypes room in (SystemTypes[]) Enum.GetValues(typeof(SystemTypes)))
+            foreach (SystemTypes room in (SystemTypes[]) System.Enum.GetValues(typeof(SystemTypes)))
             {
                 try{__instance.RpcCloseDoorsOfType(room);}catch{} //try-catch for rooms with no doors
             }
@@ -83,7 +95,7 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 
 
         // repair sabotage
-        if (!CheatToggles.reactorSab && BetterSabotage_ShipStatus_UpdateSystem_Postfix.reactorSab)
+        if (!CheatToggles.reactorSab && reactorSab)
         {
             if (currentMapID == 2)
             {
@@ -101,10 +113,10 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
                 __instance.RpcUpdateSystem(SystemTypes.Reactor, 16);
             }
 
-            BetterSabotage_ShipStatus_UpdateSystem_Postfix.reactorSab = false;
+            reactorSab = false;
 
         }
-        else if (!CheatToggles.oxygenSab && BetterSabotage_ShipStatus_UpdateSystem_Postfix.oxygenSab)
+        else if (!CheatToggles.oxygenSab && oxygenSab)
         {
 
             if (currentMapID != 4 && currentMapID != 2 && currentMapID != 5)
@@ -114,10 +126,10 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 
             }
 
-            BetterSabotage_ShipStatus_UpdateSystem_Postfix.oxygenSab = false;
+            oxygenSab = false;
 
         }
-        else if (!CheatToggles.commsSab && BetterSabotage_ShipStatus_UpdateSystem_Postfix.commsSab)
+        else if (!CheatToggles.commsSab && commsSab)
         {
 
             if (currentMapID == 1 || currentMapID == 5)
@@ -130,10 +142,10 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
                 __instance.RpcUpdateSystem(SystemTypes.Comms, 16);
             }
 
-            BetterSabotage_ShipStatus_UpdateSystem_Postfix.commsSab = false;
+            commsSab = false;
 
         }
-        else if (!CheatToggles.elecSab && BetterSabotage_ShipStatus_UpdateSystem_Postfix.elecSab)
+        else if (!CheatToggles.elecSab && elecSab)
         {
 
             if (currentMapID != 5)
@@ -152,8 +164,71 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 
             }
 
-            BetterSabotage_ShipStatus_UpdateSystem_Postfix.elecSab = false;
+            elecSab = false;
 
+        }
+
+        ReactorSystemType reactorSys = null;
+        ReactorSystemType labSys = null;
+        HeliSabotageSystem HeliSys = null;
+        LifeSuppSystemType oxygenSys = null;
+        HqHudSystemType hqcommsSys = null;
+        HudOverrideSystemType commsSys = null;
+        SwitchSystem elecSys = null;
+
+        switch (currentMapID)
+        {
+            case 0:
+            case 3:
+                reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                oxygenSys = __instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
+                commsSys = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 1:
+                reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                oxygenSys = __instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
+                hqcommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 2:
+                labSys = __instance.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
+                commsSys = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 4:
+                HeliSys = __instance.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
+                commsSys = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
+                elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
+                break;
+            case 5:
+                reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
+                hqcommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
+                break;
+        }
+
+        if (!reactorSab && (reactorSys != null || labSys != null || HeliSys != null))
+        {
+            var reactorSabctive = reactorSys == null ? labSys == null ? HeliSys.IsActive : labSys.IsActive : reactorSys.IsActive;
+            CheatToggles.reactorSab = reactorSabctive;
+            reactorSab = reactorSabctive;
+        }
+        if (!commsSab && ((hqcommsSys != null && hqcommsSys.IsActive) || (commsSys != null && commsSys.IsActive)))
+        {
+            var commsSabActive = hqcommsSys == null ? commsSys.IsActive : hqcommsSys.IsActive;
+            CheatToggles.commsSab = commsSabActive;
+            commsSab = commsSabActive;
+        }
+        if (!oxygenSab && oxygenSys != null)
+        {
+            CheatToggles.oxygenSab = oxygenSys.IsActive;
+            oxygenSab = oxygenSys.IsActive;
+        }
+        if (!elecSab && elecSys != null)
+        {
+            var elecSabActive = (elecSys.ActualSwitches != elecSys.ExpectedSwitches) && !UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive;
+            CheatToggles.elecSab = elecSabActive;
+            elecSab = elecSabActive;
         }
     }
 }
@@ -161,11 +236,11 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class UnfixableLights_ShipStatus_FixedUpdate_Postfix
 {
-
+    public static bool isActive;
     //Postfix patch of ShipStatus.FixedUpdate to break lights completly & make them unable to be fixed normally
     public static void Postfix(ShipStatus __instance)
     {
-        if (CheatToggles.unfixableLights)
+        if (CheatToggles.unfixableLights && !isActive)
         {
             //Apparently most values you put for amount in RpcUpdateSystem will break lights completly
             //They are unfixable through regular means (toggling switches)
@@ -183,40 +258,13 @@ public static class UnfixableLights_ShipStatus_FixedUpdate_Postfix
                 
                 }
 
-            CheatToggles.unfixableLights = false;
-        } 
-    }
-}
+            isActive = true;
+        }
+        else if (!CheatToggles.unfixableLights && isActive)
+        {
+            __instance.RpcUpdateSystem(SystemTypes.Electrical, 69);
 
-[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem))]
-[HarmonyPatch(new Type[] { typeof(SystemTypes), typeof(PlayerControl), typeof(byte) })]
-public static class BetterSabotage_ShipStatus_UpdateSystem_Postfix
-{
-    public static bool reactorSab;
-    public static bool oxygenSab;
-    public static bool commsSab;
-    public static bool elecSab;
-    public static void Postfix(SystemTypes systemType, PlayerControl player, byte amount, ShipStatus __instance)
-    {
-        if ((systemType == SystemTypes.HeliSabotage || systemType == SystemTypes.Laboratory || systemType == SystemTypes.Reactor) && amount == 128)
-        {
-            CheatToggles.reactorSab = true;
-            reactorSab = true;
-        }
-        else if (systemType == SystemTypes.LifeSupp && amount == 128)
-        {
-            CheatToggles.oxygenSab = true;
-            oxygenSab = true;
-        }
-        else if (systemType == SystemTypes.Comms && amount == 128)
-        {
-            CheatToggles.commsSab = true;
-            commsSab = true;
-        }
-        else if (systemType == SystemTypes.Electrical && amount.HasBit(128))
-        {
-            CheatToggles.elecSab = true;
-            elecSab = true;
+            isActive = false;
         }
     }
 }
