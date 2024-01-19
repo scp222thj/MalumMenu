@@ -12,12 +12,14 @@ public static class SeeRoles_PlayerPhysics_LateUpdate_Postfix
     //Postfix patch of PlayerPhysics.LateUpdate to get colored names in-game 
     public static void Postfix(PlayerPhysics __instance){
         //try-catch to prevent errors when role is null
-        try{
+        try
+        {
 
             //Get appropriate name color depending on if CheatSettings.seeRoles is enabled
             __instance.myPlayer.cosmetics.SetName(Utils.getNameTag(__instance.myPlayer, __instance.myPlayer.CurrentOutfit.PlayerName));
-            
-        }catch{}
+
+        }
+        catch { }
     }
 }    
 
@@ -48,10 +50,10 @@ public static class SeeRoles_ChatBubble_SetName_Postfix
 {
     //Postfix patch of ChatBubble.SetName to get colored names in chat messages
     public static void Postfix(ChatBubble __instance){
-        if (CheatToggles.seeRoles)
+        if (CheatToggles.seeRoles && !CheatChecks.isLobby)
         {
             var player = __instance.playerInfo.Object;
-            __instance.NameText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleNameTranslated(player.Data.Role)}</size></color> " + __instance.NameText.text;
+            __instance.NameText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleNameTranslated(player.Data)}</size></color> " + __instance.NameText.text;
             __instance.NameText.ForceMeshUpdate(true, true);
             __instance.Background.size = new Vector2(5.52f, 0.2f + __instance.NameText.GetNotDumbRenderedHeight() + __instance.TextArea.GetNotDumbRenderedHeight());
             __instance.MaskArea.size = __instance.Background.size - new Vector2(0f, 0.03f);
@@ -245,7 +247,7 @@ public static class SeeUserInfo_PlayerPhysics_LateUpdate_Postfix
                     break;
             }
             var playerName = __instance.myPlayer.cosmetics.nameText.text;
-            playerName = "<size=50%>Level: <#0f0>" + __instance.myPlayer.Data.PlayerLevel + "</color>\r\nPlatform: <#0f0><u>" + platform + "</u></color></size>\r\n" + playerName;
+            playerName = "<size=50%>Level: <#0f0>" + __instance.myPlayer.Data.PlayerLevel + "</color>\r\nPlatform: <#0f0>" + platform + "</color></size>\r\n" + playerName;
             __instance.myPlayer.cosmetics.SetName(playerName);
         }
     }

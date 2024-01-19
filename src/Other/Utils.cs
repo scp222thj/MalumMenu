@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using Il2CppSystem;
 using Sentry.Internal.Extensions;
+using AmongUs.GameOptions;
 
 namespace MalumMenu;
 public static class Utils
@@ -253,18 +254,50 @@ public static class Utils
         }
     }
 
-    public static string getRoleNameTranslated(RoleBehaviour role)
+    public static string getRoleNameTranslated(GameData.PlayerInfo playerData)
     {
-        return DestroyableSingleton<TranslationController>.Instance.GetString(role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+        var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+        if (translatedRole == "STRMISS")
+        {
+            StringNames @string;
+            if (playerData.RoleWhenAlive.HasValue)
+            {
+                switch (playerData.RoleWhenAlive.Value)
+                {
+                    case RoleTypes.Crewmate:
+                        @string = DestroyableSingleton<CrewmateRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Engineer:
+                        @string = DestroyableSingleton<EngineerRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Scientist:
+                        @string = DestroyableSingleton<ScientistRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Impostor:
+                        @string = DestroyableSingleton<ImpostorRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Shapeshifter:
+                        @string = DestroyableSingleton<ShapeshifterRole>.Instance.StringName;
+                        break;
+                    default:
+                        @string = DestroyableSingleton<GuardianAngelRole>.Instance.StringName;
+                        break;
+                }
+                translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(@string, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+            } else {
+                translatedRole = "Ghost";
+            }
+        }
+        return translatedRole;
     }
 
     //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
     public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
         string nameTag = playerName;
 
-        if (CheatToggles.seeRoles){
+        if (CheatToggles.seeRoles && !IsInLobby()){
 
-            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%><font=\"VCR SDF\" material=\"VCR Black Outline\">{getRoleNameTranslated(player.Data.Role)}</font></size>\r\n{nameTag}</color>";
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%><font=\"VCR SDF\" material=\"VCR Black Outline\">{getRoleNameTranslated(player.Data)}</font></size>\r\n{nameTag}</color>";
         
         } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
 
