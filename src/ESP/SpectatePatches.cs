@@ -19,7 +19,7 @@ public static class Spectate_MainPostfix
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatSettings.teleportPlayer = CheatSettings.kickPlayer = false;
+                    CheatSettings.teleportPlayer = CheatSettings.saveSpoofData = CheatSettings.chatMimic = CheatSettings.callMeeting = CheatSettings.copyAllOutfits = CheatSettings.copyOutfit = CheatSettings.kickPlayer = CheatSettings.murderPlayer = false;
                 }
 
                 List<PlayerControl> playerList = new List<PlayerControl>();

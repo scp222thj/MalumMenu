@@ -17,57 +17,6 @@ public static class Player_NoClipPostfix
     }
 }
 
-//This patch is currently inactive, but it used to change a crewmate role to an impostor role
-//when CheatSettings.impostorHack was toggled
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class Player_ImpostorHackPostfix
-{
-    public static int lastRole;
-    public static bool isActive;
-
-    //Postfix patch of PlayerPhysics.LateUpdate that turns player into an impostor
-    //when CheatSettings.impostorHack is enabled
-    public static void Postfix(PlayerPhysics __instance)
-    {
-        //try-catch to prevent errors when role is null
-        try{
-
-        if (!PlayerControl.LocalPlayer.Data.Role.IsImpostor){ //Only works if the player is not already an impostor
-            
-            lastRole = (int)PlayerControl.LocalPlayer.Data.RoleType; //Saves role before the modification
-            
-            if (CheatSettings.impostorHack){
-                isActive = true;
-                
-                //Prevents accidental revival of dead players when turning into impostor
-                if (PlayerControl.LocalPlayer.Data.IsDead){
-                    
-                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
-                
-                } else {
-                    
-                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.Impostor);
-                
-                }
-            }
-
-        }else{
-
-            //If the cheat toggle is disabled but the hack is still active
-            //Disable the hack by resetting to lastRole
-            if(!CheatSettings.impostorHack && isActive){
-
-                isActive = false;
-                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, (AmongUs.GameOptions.RoleTypes)lastRole);
-            
-            }
-        }
-
-        }catch{};
-
-    }
-}
-
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class Player_SpeedBoostPostfix
 {

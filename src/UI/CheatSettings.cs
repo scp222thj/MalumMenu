@@ -12,9 +12,21 @@ namespace MalumMenu
         public static bool teleportCursor;
         public static bool teleportPlayer;
 
-        //Network
+        //RPC Exploit
         public static bool kickPlayer;
+        public static bool saveSpoofData;
+        public static bool incognitoMode;
         public static bool spamChat;
+        public static bool murderPlayer;
+        public static bool copyOutfit;
+        public static bool chatMimic;
+        public static bool copyAllOutfits;
+        public static bool murderAll;
+        public static bool resetOutfit;
+        public static bool chatJailbreak;
+        public static bool shuffleAllOutfits;
+        public static bool shuffleOutfit;
+        public static bool unlockColors;
 
         //ESP
         public static bool alwaysChat;

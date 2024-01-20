@@ -47,7 +47,7 @@ public static class ESP_HudManagerPostfix
         }
 
         //Close player pick menu when it is not being used
-        if (Utils_PlayerPickMenu.playerpickMenu != null && !CheatSettings.teleportPlayer && !CheatSettings.kickPlayer && !CheatSettings.spectate){
+        if (Utils_PlayerPickMenu.playerpickMenu != null && !CheatSettings.copyAllOutfits && !CheatSettings.chatMimic && !CheatSettings.saveSpoofData && !CheatSettings.callMeeting && !CheatSettings.teleportPlayer && !CheatSettings.copyOutfit && !CheatSettings.murderPlayer && !CheatSettings.kickPlayer && !CheatSettings.spectate){
             Utils_PlayerPickMenu.playerpickMenu.Close();
         }
     }

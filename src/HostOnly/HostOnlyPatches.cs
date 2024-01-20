@@ -77,11 +77,17 @@ public static class HostOnly_ImpostorHackPostfix
                 //Prevents accidental revival of dead players when turning into impostor
                 if (PlayerControl.LocalPlayer.Data.IsDead){
                     
-                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
+                    PlayerControl.LocalPlayer.RpcSetRole(AmongUs.GameOptions.RoleTypes.ImpostorGhost);
+                    
+                    //Old system (Fake Role):
+                    //DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
                 
                 } else {
                     
-                    DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.Impostor);
+                    PlayerControl.LocalPlayer.RpcSetRole(AmongUs.GameOptions.RoleTypes.Impostor);
+                    
+                    //Old system (Fake Role):
+                    //DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.Impostor);
                 
                 }
             }
@@ -93,7 +99,10 @@ public static class HostOnly_ImpostorHackPostfix
             if(!CheatSettings.impostorHack && isActive){
 
                 isActive = false;
-                DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, (AmongUs.GameOptions.RoleTypes)lastRole);
+                PlayerControl.LocalPlayer.RpcSetRole((AmongUs.GameOptions.RoleTypes)lastRole);
+                
+                //Old system (Fake Role):
+                //DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, (AmongUs.GameOptions.RoleTypes)lastRole);
             
             }
         }

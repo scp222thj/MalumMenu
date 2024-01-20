@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
+using Hazel;
 
 namespace MalumMenu;
 
@@ -21,28 +22,6 @@ public static class Meetings_MainPostfix
             
             CheatSettings.closeMeeting = false; //Button behaviour
         }
-
-        if(CheatSettings.callMeeting){
-
-            //Report latest dead player
-            //If no dead players, LocalPlayer will be reported as a body instead
-            try{PlayerControl.LocalPlayer.CmdReportDeadBody(Meetings_DiePostfix.deadPlayer.Data);}catch{}
-            
-            CheatSettings.callMeeting = false; //Button behaviour
-        }
-    }
-}
-
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
-public static class Meetings_DiePostfix
-{
-
-    public static PlayerControl deadPlayer = PlayerControl.LocalPlayer;
-    
-    //Postfix patch of PlayerControl.Die to record latest dead player
-    public static void Postfix(PlayerControl __instance)
-    {
-        deadPlayer = __instance;
     }
 }
 

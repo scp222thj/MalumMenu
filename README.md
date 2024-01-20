@@ -103,9 +103,13 @@ Then, I suggest you learn about Among Us modding in general. In this project, I 
 
 Here are some other useful resources:
 
-- The Reactor discord server: [here](https://reactor.gg/discord)
+- The [Reactor](https://reactor.gg/discord) discord server
     - A great community of Among Us modders where you can ask questions and get help
-    - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](github.com/dnSpy/dnSpy/releases/latest) to go through these.
+    - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](https://github.com/dnSpy/dnSpy/releases/latest) to go through these.
+
+- [AUWiki](https://auwiki.duikbo.at) & [sus.wiki](https://github.com/roobscoob/among-us-protocol)
+    - Useful resources to learn more about the Among Us network protocol 
+    - Keep in mind that both these resources are slightly outdated
 </details>
 
 

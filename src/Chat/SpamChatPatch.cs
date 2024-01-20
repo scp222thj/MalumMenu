@@ -1,28 +1,21 @@
 using HarmonyLib;
 using Hazel;
 using UnityEngine;
-using System.Text.RegularExpressions;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-public static class Network_SpamTextPostfix
+public static class RPC_SpamTextPostfix
 {
     public static string spamText;
     private static float lastChatTime = 0f;
     private static float chatDelay = 0.5f; // Delay between messages in seconds
 
-    // Prefix patch of PlayerControl.RpcSendChat
+    // Prefix patch of PlayerControl.RpcSendChat to set spamText based on the user's chat messages
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
         if (CheatSettings.spamChat)
         {
-            chatText = Regex.Replace(chatText, "<.*?>", string.Empty);
-            if (string.IsNullOrWhiteSpace(chatText))
-            {
-                return false;
-            }
-
             spamText = chatText;
             return false; // Skip the original method when the cheat is active
         }
@@ -30,12 +23,20 @@ public static class Network_SpamTextPostfix
         return true; // Send a normal chat message if the cheat is not active
     }
 
+    //Keep flooding the chat with the user's spamText until the cheat is disabled
+    //A short delay (chatDelay) is used to avoid being kicked for sending too many RPC calls too quickly
     public static void Update()
     {
-        if (CheatSettings.spamChat && spamText != null && Time.time - lastChatTime >= chatDelay)
-        {
-            lastChatTime = Time.time;
-            SendSpamChat();
+        if (CheatSettings.spamChat){
+
+            if(CheatSettings.chatMimic){CheatSettings.chatMimic = false;}
+
+            if (spamText != null && Time.time - lastChatTime >= chatDelay)
+            {
+                lastChatTime = Time.time;
+                SendSpamChat();
+            }
+        
         }
     }
 
@@ -44,11 +45,13 @@ public static class Network_SpamTextPostfix
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
         {
+            //Sends a forged SendChat RPC call from each player to all players
+            //This generates identical fake chat messages coming from all player, spamming the chat
             foreach (var sender in PlayerControl.AllPlayerControls)
             {
                 foreach (var recipient in PlayerControl.AllPlayerControls)
                 {
-                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient.Data.Object));
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(recipient));
                     writer.Write(spamText);
                     AmongUsClient.Instance.FinishRpcImmediately(writer);
                 }
@@ -58,14 +61,14 @@ public static class Network_SpamTextPostfix
 }
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class Network_SpamChatPostfix
+public static class RPC_SpamChatPostfix
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        Network_SpamTextPostfix.Update();
+        RPC_SpamTextPostfix.Update();
         if (!CheatSettings.spamChat)
         {
-            Network_SpamTextPostfix.spamText = null;
+            RPC_SpamTextPostfix.spamText = null;
         }
     }
 }
