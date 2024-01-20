@@ -1,14 +1,16 @@
 using UnityEngine;
 using System;
 using AmongUs.Data;
+using InnerNet;
 using Il2CppSystem.Collections.Generic;
 using System.IO;
 using Hazel;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
+using Il2CppSystem;
+using Sentry.Internal.Extensions;
 using AmongUs.GameOptions;
-using InnerNet;
 
 namespace MalumMenu;
 public static class Utils
@@ -19,66 +21,199 @@ public static class Utils
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
+    //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
-
-    public static void ShuffleOutfit(PlayerControl sender)
+    
+    public static bool utilsOpenChat;
+    
+    //Completly randomize a player outfit using fake RPC calls
+/*  public static void ShuffleOutfit(PlayerControl sender)
     {
-        foreach (var item in PlayerControl.AllPlayerControls)
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
         {
-            // Shuffle each aspect of the outfit
-            MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            colorWriter.Write((byte)new System.Random().Next(18));
-            AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
 
-            MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            nameWriter.Write(DestroyableSingleton<AccountManager>.Instance.GetRandomName());
-            AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+                colorWriter.Write((byte)new System.Random().Next(18));
+                nameWriter.Write(DestroyableSingleton<AccountManager>.Instance.GetRandomName());
+                hatWriter.Write(referenceDataManager.Refdata.hats[new System.Random().Next(referenceDataManager.Refdata.hats.Count)].ProdId);
+                petWriter.Write(referenceDataManager.Refdata.pets[new System.Random().Next(referenceDataManager.Refdata.pets.Count)].ProdId);
+                visorWriter.Write(referenceDataManager.Refdata.visors[new System.Random().Next(referenceDataManager.Refdata.visors.Count)].ProdId);
+                skinWriter.Write(referenceDataManager.Refdata.skins[new System.Random().Next(referenceDataManager.Refdata.skins.Count)].ProdId);
 
-            MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            hatWriter.Write(referenceDataManager.Refdata.hats[new System.Random().Next(referenceDataManager.Refdata.hats.Count)].ProdId);
-            AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(petWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+            }
+        }
+    } */
 
-            MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            petWriter.Write(referenceDataManager.Refdata.pets[new System.Random().Next(referenceDataManager.Refdata.pets.Count)].ProdId);
-            AmongUsClient.Instance.FinishRpcImmediately(petWriter);
-
-            MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            visorWriter.Write(referenceDataManager.Refdata.visors[new System.Random().Next(referenceDataManager.Refdata.visors.Count)].ProdId);
-            AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
-
-            MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            skinWriter.Write(referenceDataManager.Refdata.skins[new System.Random().Next(referenceDataManager.Refdata.skins.Count)].ProdId);
-            AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+    //Kill any player using fake RPC calls
+    public static void MurderPlayer(PlayerControl source, PlayerControl target)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                writer.WriteNetObject(target);
+                writer.Write((int)MurderResultFlags.Succeeded);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+            }
         }
     }
 
+
+    //Complete any player's tasks using fake RPC calls
+    public static void CompleteAllTasks(PlayerControl player)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (PlayerTask task in player.myTasks)
+            {
+                if (!task.IsComplete){
+
+                    foreach (var item in PlayerControl.AllPlayerControls)
+                    {
+                        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                        messageWriter.WritePacked(task.Id);
+                        AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+                    }
+
+                }
+            }
+        }
+    }
+
+    public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected){
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                messageWriter.Write((ushort)role);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
+        }
+    }
+
+    //Make any player shapeshift into any other player using fake RPC calls
+    public static void ShapeshiftPlayer(PlayerControl source, PlayerControl target, bool shouldAnimate)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.Shapeshift, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                messageWriter.WriteNetObject(target);
+                messageWriter.Write(shouldAnimate);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
+        }
+    }
+
+    //Make any player teleport anywhere using fake RPC calls
+    public static void TeleportPlayer(PlayerControl player, Vector2 position)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (PlayerControl item in PlayerControl.AllPlayerControls){
+                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                NetHelpers.WriteVector2(position, messageWriter);
+                messageWriter.Write(player.NetTransform.lastSequenceId + 100U);
+                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            }
+        }
+    }
+
+    //Make any player copy any other player's outfit using fake RPC calls
     public static void CopyOutfit(PlayerControl source, PlayerControl target)
     {
-        foreach (var item in PlayerControl.AllPlayerControls)
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
         {
-            MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            colorWriter.Write(target.Data.DefaultOutfit.ColorId);
-            AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
 
-            MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            nameWriter.Write(target.Data.DefaultOutfit.PlayerName);
-            AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+                colorWriter.Write(target.Data.DefaultOutfit.ColorId);
+                nameWriter.Write(target.Data.DefaultOutfit.PlayerName);
+                hatWriter.Write(target.Data.DefaultOutfit.HatId);
+                petWriter.Write(target.Data.DefaultOutfit.PetId);
+                visorWriter.Write(target.Data.DefaultOutfit.VisorId);
+                skinWriter.Write(target.Data.DefaultOutfit.SkinId);
 
-            MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            hatWriter.Write(target.Data.DefaultOutfit.HatId);
-            AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(petWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
+                AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+            }
+        }
 
-            MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            petWriter.Write(target.Data.DefaultOutfit.PetId);
-            AmongUsClient.Instance.FinishRpcImmediately(petWriter);
+    }
 
-            MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            visorWriter.Write(target.Data.DefaultOutfit.VisorId);
-            AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
+    //Change any player's name using fake RPC calls
+    public static void SetName(PlayerControl target, string name)
+    {
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            foreach (var item in PlayerControl.AllPlayerControls)
+            {
+                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(target.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                
+                nameWriter.Write(name);
+                
+                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
+            }
+        }
 
-            MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            skinWriter.Write(target.Data.DefaultOutfit.SkinId);
-            AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
+    }
+
+    //Open Chat UI
+    public static void OpenChat()
+    {
+        if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+            utilsOpenChat = true;
+            DestroyableSingleton<HudManager>.Instance.Chat.chatScreen.SetActive(true);
+            PlayerControl.LocalPlayer.NetTransform.Halt();
+            DestroyableSingleton<HudManager>.Instance.Chat.StartCoroutine(DestroyableSingleton<HudManager>.Instance.Chat.CoOpen());
+            if (DestroyableSingleton<FriendsListManager>.InstanceExists)
+            {
+                DestroyableSingleton<FriendsListManager>.Instance.SetFriendButtonColor(true);
+            }
+        }
+
+    }
+
+    //Close Chat UI
+    public static void CloseChat()
+    {
+        utilsOpenChat = false;
+        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+            DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
         }
 
     }
@@ -119,9 +254,60 @@ public static class Utils
         }
     }
 
+    public static string getRoleName(GameData.PlayerInfo playerData)
+    {
+        var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+        if (translatedRole == "STRMISS")
+        {
+            StringNames @string;
+            if (playerData.RoleWhenAlive.HasValue)
+            {
+                switch (playerData.RoleWhenAlive.Value)
+                {
+                    case RoleTypes.Crewmate:
+                        @string = DestroyableSingleton<CrewmateRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Engineer:
+                        @string = DestroyableSingleton<EngineerRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Scientist:
+                        @string = DestroyableSingleton<ScientistRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Impostor:
+                        @string = DestroyableSingleton<ImpostorRole>.Instance.StringName;
+                        break;
+                    case RoleTypes.Shapeshifter:
+                        @string = DestroyableSingleton<ShapeshifterRole>.Instance.StringName;
+                        break;
+                    default:
+                        @string = DestroyableSingleton<GuardianAngelRole>.Instance.StringName;
+                        break;
+                }
+                translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(@string, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+            } else {
+                translatedRole = "Ghost";
+            }
+        }
+        return translatedRole;
+    }
+
     //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
-    public static Color getColorName(bool cheatVar, GameData.PlayerInfo playerInfo){
-        if (cheatVar){
+    public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
+        string nameTag = playerName;
+
+        if (CheatToggles.seeRoles){
+
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{getRoleName(player.Data)}</size>\r\n{nameTag}</color>";
+        
+        } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
+
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.NameColor)}>{nameTag}</color>";
+
+        }
+
+        return nameTag;
+
+/*      if (cheatVar){
                 
             return playerInfo.Role.TeamColor; //Cheat vision
 
@@ -132,7 +318,15 @@ public static class Utils
         }else {
 
             return Color.white; //Normal Crewmate Vision
-        }
+        } */
+    }
+
+    public static bool IsInLobby()
+    {
+        if (AmongUsClient.Instance.IsNull()) return false;
+        if (GameManager.Instance.IsNull()) return false;
+        if (PlayerControl.LocalPlayer.IsNull()) return false;
+        return AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined;
     }
 
     //Get ShapeshifterMenu prefab to instantiate it
@@ -227,12 +421,12 @@ public static class Utils_PlayerPickMenu
 {
     public static ShapeshifterMinigame playerpickMenu;
     public static bool IsActive;
-    public static PlayerControl targetPlayer;
-    public static Action customAction;
-    public static List<PlayerControl> customPlayerList;
+    public static GameData.PlayerInfo targetPlayerData;
+    public static Il2CppSystem.Action customAction;
+    public static List<GameData.PlayerInfo> customPlayerList;
 
     //Open a custom menu to pick a player as a target
-    public static void openPlayerPickMenu(List<PlayerControl> playerList, Action action)
+    public static void openPlayerPickMenu(List<GameData.PlayerInfo> playerList, Il2CppSystem.Action action)
     {
         IsActive = true;
         customPlayerList = playerList;
@@ -252,29 +446,31 @@ public static class Utils_PlayerPickMenu
         if (IsActive){ //Player pick menu logic
 
             //Custom player list set by openPlayerPickMenu
-            List<PlayerControl> list = customPlayerList;
+            List<GameData.PlayerInfo> list = customPlayerList;
 
             __instance.potentialVictims = new List<ShapeshifterPanel>();
             List<UiElement> list2 = new List<UiElement>();
 
             for (int i = 0; i < list.Count; i++)
             {
-                PlayerControl player = list[i];
+                GameData.PlayerInfo playerData = list[i];
                 int num = i % 3;
                 int num2 = i / 3;
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
                 shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
                 
-                shapeshifterPanel.SetPlayer(i, player.Data, (Action) (() =>
+                shapeshifterPanel.SetPlayer(i, playerData, (Il2CppSystem.Action) (() =>
                 {
-                    targetPlayer = player; //Save targeted player
+                    targetPlayerData = playerData; //Save targeted player
 
                     customAction.Invoke(); //Custom action set by openPlayerPickMenu
 
                     __instance.Close();
                 }));
 
-                shapeshifterPanel.NameText.color = Utils.getColorName(CheatSettings.seeRoles, player.Data);
+                if (playerData.Object != null){
+                    shapeshifterPanel.NameText.text = Utils.getNameTag(playerData.Object, playerData.DefaultOutfit.PlayerName);
+                }
                 __instance.potentialVictims.Add(shapeshifterPanel);
                 list2.Add(shapeshifterPanel.Button);
             }
@@ -295,7 +491,7 @@ public static class Utils_PlayerPickMenu
 public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
 {
     //Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
-    public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Action onShift)
+    public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Il2CppSystem.Action onShift)
     {
         if (Utils_PlayerPickMenu.IsActive){ //Player pick menu logic
 
@@ -314,7 +510,7 @@ public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
             //Skips using custom nameplates because they break the PlayerPickMenu in lobbies
 
             __instance.NameText.text = playerInfo.PlayerName;
-            DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Action)__instance.SetColorblindText;
+            DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Il2CppSystem.Action)__instance.SetColorblindText;
             __instance.SetColorblindText();
 
             return false; //Skip original method when active
@@ -343,5 +539,22 @@ class Utils_AmongUsClient_OnGameEndPatch
     {
         GameStates.InGame = false;
         //Disable some gui here?
+//Some useful cheat checks that I use in MenuUI.cs
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
+public static class CheatChecks
+{
+    public static bool isShip;
+    public static bool isPlayer;
+    public static bool isLobby;
+
+    //public static bool isHost;
+
+    public static void Postfix(PlayerPhysics __instance)
+    {
+        isShip = ShipStatus.Instance != null;
+        isPlayer = PlayerControl.LocalPlayer != null;
+        isLobby = Utils.IsInLobby();
+
+        //isHost = AmongUsClient.Instance.AmHost;
     }
 }

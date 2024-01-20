@@ -5,16 +5,17 @@ using UnityEngine;
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-public static class RPC_SpamTextPostfix
+public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
 {
     public static string spamText;
+    public static bool isActive;
     private static float lastChatTime = 0f;
     private static float chatDelay = 0.5f; // Delay between messages in seconds
 
     // Prefix patch of PlayerControl.RpcSendChat to set spamText based on the user's chat messages
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (CheatSettings.spamChat)
+        if (CheatToggles.spamChat)
         {
             spamText = chatText;
             return false; // Skip the original method when the cheat is active
@@ -27,9 +28,17 @@ public static class RPC_SpamTextPostfix
     //A short delay (chatDelay) is used to avoid being kicked for sending too many RPC calls too quickly
     public static void Update()
     {
-        if (CheatSettings.spamChat){
+        if (CheatToggles.spamChat){
 
-            if(CheatSettings.chatMimic){CheatSettings.chatMimic = false;}
+            if (!isActive){
+
+                CheatToggles.chatMimic = CheatToggles.setName = CheatToggles.setNameAll = false;
+
+                Utils.OpenChat();
+
+                isActive = true;
+
+            }
 
             if (spamText != null && Time.time - lastChatTime >= chatDelay)
             {
@@ -37,6 +46,13 @@ public static class RPC_SpamTextPostfix
                 SendSpamChat();
             }
         
+        }else{
+            if (isActive){
+
+                spamText = null;
+
+                isActive = false;
+            }
         }
     }
 
@@ -65,10 +81,6 @@ public static class RPC_SpamChatPostfix
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        RPC_SpamTextPostfix.Update();
-        if (!CheatSettings.spamChat)
-        {
-            RPC_SpamTextPostfix.spamText = null;
-        }
+        SpamChat_PlayerPhysics_RpcSendChat_Prefix.Update();
     }
 }

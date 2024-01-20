@@ -1,18 +1,18 @@
 using HarmonyLib;
 using Hazel;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-public static class ChatJailbreak_RpcSendChatPostfix
+public static class ChatJailBreak_PlayerControl_RpcSendChat_Prefix
 {
     //Prefix patch of PlayerControl.RpcSendChat to unlock extra chat capabilities
+    [HarmonyPriority(Priority.VeryHigh)]
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatSettings.chatJailbreak || CheatSettings.chatMimic){
-            return true; //Only works if CheatSettings.chatJailbreak is enabled
+        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic || CheatToggles.setNameAll || CheatToggles.spamChat || CheatToggles.setName){
+            return true; //Only works if CheatSettings.chatJailbreak is enabled & CheatSettings.chatMimic is disabled
         }
 
         //Removal of some checks for special characters and whitespaces
@@ -23,13 +23,6 @@ public static class ChatJailbreak_RpcSendChatPostfix
 		}
 
         //Removal of UnityTelemetry.SendWho()
-        
-        if(CheatSettings.spamChat){
-
-            RPC_SpamTextPostfix.spamText = chatText;
-            return true;
-
-        }
 
         //Modded version of the original RPC call that lets users bypass the character limit and the message ratelimit
 		MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None, -1);
@@ -41,12 +34,12 @@ public static class ChatJailbreak_RpcSendChatPostfix
 }
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
-public static class ChatJailbreak_SendChatPostfix
+public static class ChatJailBreak_ChatController_SendChat_Prefix
 {
     //Prefix patch of ChatController.SendChat to unlock extra chat capabilities
     public static bool Prefix(ChatController __instance)
     {
-        if (!CheatSettings.chatJailbreak){
+        if (!CheatToggles.chatJailbreak){
             return true; //Only works if CheatSettings.chatJailbreak is enabled
         }
 
@@ -75,12 +68,12 @@ public static class ChatJailbreak_SendChatPostfix
 }
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendFreeChat))]
-public static class ChatJailbreak_SendFreeChatPostfix
+public static class ChatJailBreak_ChatController_SendFreeChat_Prefix
 {
     //Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
     public static bool Prefix(ChatController __instance)
     {
-        if (!CheatSettings.chatJailbreak){
+        if (!CheatToggles.chatJailbreak){
             return true; // Only works if CheatSettings.chatJailbreak is enabled
         }
 
@@ -112,21 +105,21 @@ public static class ChatJailbreak_SendFreeChatPostfix
 }
 
 
-[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.OnFieldChanged))]
-public static class ChatJailbreak_FreeChatInputField_UpdateStatePostfix
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
+public static class ChatJailBreak_FreeChatInputField_OnFieldChanged_Prefix
 {
-    //Postfix patch of FreeChatInputField.UpdateState to unlock extra chat capabilities
-    public static void Postfix(FreeChatInputField __instance)
+    //Postfix patch of FreeChatInputField.OnFieldChanged to unlock extra chat capabilities
+    public static void Postfix(ChatController __instance)
     {
-        __instance.textArea.allowAllCharacters = CheatSettings.chatJailbreak; //Not really used by the game's code, but I include it anyway
-        __instance.textArea.AllowPaste = CheatSettings.chatJailbreak; //Allow pasting from clipboard in chat when chatJailbreak is enabled
-        __instance.textArea.AllowSymbols = true; //Allow sending certain symbols
-        __instance.textArea.AllowEmail = CheatSettings.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
+        __instance.freeChatField.textArea.allowAllCharacters = CheatToggles.chatJailbreak; //Not really used by the game's code, but I include it anyway
+        __instance.freeChatField.textArea.AllowPaste = CheatToggles.chatJailbreak; //Allow pasting from clipboard in chat when chatJailbreak is enabled
+        __instance.freeChatField.textArea.AllowSymbols = true; //Allow sending certain symbols
+        __instance.freeChatField.textArea.AllowEmail = CheatToggles.chatJailbreak; //Allow sending email addresses when chatJailbreak is enabled
         
-        if (CheatSettings.chatJailbreak){
-            __instance.textArea.characterLimit = int.MaxValue; //Unlimited message length when chatJailbreak is enabled
+        if (CheatToggles.chatJailbreak){
+            __instance.freeChatField.textArea.characterLimit = int.MaxValue; //Longer message length when chatJailbreak is enabled
         }else{
-            __instance.textArea.characterLimit = 100;
+            __instance.freeChatField.textArea.characterLimit = 100;
         }
         
     }
@@ -134,16 +127,60 @@ public static class ChatJailbreak_FreeChatInputField_UpdateStatePostfix
 
 
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.IsCharAllowed))]
-public static class ChatJailbreak_IsCharAllowedPostfix
+public static class ChatJailBreak_TextBoxTMP_IsCharAllowed_Prefix
 {
     //Postfix patch of TextBoxTMP.IsCharAllowed to allow all characters
     public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
     {
-        if (!CheatSettings.chatJailbreak){
+        if (!CheatToggles.chatJailbreak){
             return true;
         }
         
         __result = !(i == '\b'); //Bugfix: '\b' messing with chat message
         return false;
+    }
+}
+
+
+// Updated charCount when using cheat
+[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.UpdateCharCount))]
+public static class ChatJailBreak_FreeChatInputField_UpdateCharCount_Postfix
+{
+    public static void Postfix(FreeChatInputField __instance)
+    {
+        if (!CheatToggles.chatJailbreak){
+            return; //Only works if CheatToggles.chatJailbreak is enabled
+        }
+
+        //Update charCountText to account for longer characterLimit
+        int length = __instance.textArea.text.Length;
+        __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
+
+        //Update charCountText.color to account for longer characterLimit
+        if (length < 1610612735) //Under 75%
+            __instance.charCountText.color = UnityEngine.Color.black;
+        else if (length < 2147483647) //Under 100%
+            __instance.charCountText.color = new UnityEngine.Color(1f, 1f, 0f, 1f);
+        else //Over or equal to 100%
+            __instance.charCountText.color = UnityEngine.Color.red;
+    }
+}
+
+// allow pasting into chatbox
+[HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.Update))]
+public static class ChatJailBreak_TextBoxTMP_Update_Postfix
+{
+    public static void Postfix(TextBoxTMP __instance)
+    {
+        if (!CheatToggles.chatJailbreak){
+            return; //Only works if CheatToggles.chatJailbreak is enabled
+        }
+        
+        if (!__instance.hasFocus){return;}
+
+        if((UnityEngine.Input.GetKey(UnityEngine.KeyCode.LeftControl) || UnityEngine.Input.GetKey(UnityEngine.KeyCode.RightControl)) && UnityEngine.Input.GetKeyDown(UnityEngine.KeyCode.C))
+        {
+            ClipboardHelper.PutClipboardString(__instance.text);
+        }
     }
 }

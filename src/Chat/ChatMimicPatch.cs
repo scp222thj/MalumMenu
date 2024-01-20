@@ -2,32 +2,29 @@ using HarmonyLib;
 using Hazel;
 using Il2CppSystem.Collections.Generic;
 using System;
-using InnerNet;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-public static class Chat_ChatMimicPrefix
+public static class ChatMimic_PlayerControl_RpcSendChat_Prefix
 {
     public static PlayerControl chatMimicTarget = null;
 
-    // Prefix patch of PlayerControl.RpcSendChat to set spamText based on the user's chat messages
+    // Prefix patch of PlayerControl.RpcSendChat to send chat messages as another player
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
         if (chatMimicTarget == null)
         {
-            return true;
+            return true; //Only works if the target has been specified
         }
 
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
+
+        //Send a fake SendChat RPC with your text to each player from the chatMimicTarget
+        foreach (var item in PlayerControl.AllPlayerControls)
         {
-            foreach (var item in PlayerControl.AllPlayerControls)
-            {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(chatMimicTarget.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                writer.Write(chatText);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-            }
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(chatMimicTarget.NetId, (byte)RpcCalls.SendChat, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+            writer.Write(chatText);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
 
         return false;
@@ -35,52 +32,55 @@ public static class Chat_ChatMimicPrefix
 }
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class Chat_ChatMimicSetTargetPostfix
+public static class ChatMimic_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to open spectator menu
+    //Postfix patch of PlayerPhysics.LateUpdate to pick a target for ChatMimic
     public static bool isActive;
     public static void Postfix(PlayerPhysics __instance){
-        if (CheatSettings.chatMimic){
+        if (CheatToggles.chatMimic){
 
-            //Open spectator menu when CheatSettings.spectate is first enabled
+            //Open player pick menu when CheatSettings.chatMimic is first enabled
             if (!isActive){
 
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null){
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatSettings.teleportPlayer = CheatSettings.spectate = CheatSettings.saveSpoofData = CheatSettings.callMeeting = CheatSettings.copyAllOutfits = CheatSettings.copyOutfit = CheatSettings.kickPlayer = CheatSettings.murderPlayer = false;
+                    CheatToggles.DisablePPMCheats("chatMimic");
                 }
 
-                List<PlayerControl> playerList = new List<PlayerControl>();
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
                     if (!player.AmOwner){
-                        playerList.Add(player);
+                        playerDataList.Add(player.Data);
                     }
                 }
 
-                //New player pick menu made for spectating
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerList, (Action) (() =>
+                //New player pick menu made for picking a ChatMimic target
+                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    Chat_ChatMimicPrefix.chatMimicTarget = Utils_PlayerPickMenu.targetPlayer;
+                    ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget = Utils_PlayerPickMenu.targetPlayerData.Object;
+
+                    Utils.OpenChat();
                 }));
+
+                CheatToggles.spamChat = CheatToggles.setNameAll = CheatToggles.setName = false; //SpamChat, ChatMimic & ChangeName do not work well with each other
 
                 isActive = true;
 
-                CheatSettings.spamChat = false;
-
             }
 
-            //Deactivate cheat if menu is closed without spectating anyone
-            if (Utils_PlayerPickMenu.playerpickMenu == null && Chat_ChatMimicPrefix.chatMimicTarget == null){
-                CheatSettings.chatMimic = false;
+            //Deactivate cheat if menu is closed and the target is gone
+            if (Utils_PlayerPickMenu.playerpickMenu == null && ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget == null){
+                CheatToggles.chatMimic = false;
             }
         }else{
             //Deactivate cheat when it is disabled from the GUI
             if (isActive){
                 isActive = false;
-                Chat_ChatMimicPrefix.chatMimicTarget = null;
+
+                ChatMimic_PlayerControl_RpcSendChat_Prefix.chatMimicTarget = null;
             }
         }
     }

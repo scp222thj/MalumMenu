@@ -5,8 +5,15 @@
 
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Made%20with-C%23-1f425f.svg?style=plastic&logo=csharp&color=000000&labelColor=A200FF">
-  <img src="https://img.shields.io/badge/License-GPL%20v3-yellow.svg?style=plastic&logo=GNU">
+  
+  <a href="https://discord.gg/YYcYf88jAb">
+    <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
+  </a>
+  
+  <a href="https://ko-fi.com/scp222thj">
+    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
+  </a>
+  
 </p>
 
 <p align="center">
@@ -23,6 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v2.0.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.0.0/MalumMenu-2.0.0.zip) |
 | v1.2.1 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip) |
 | v1.2.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.0/MalumMenu-1.2.0.zip) |
 | v1.1.2 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.2/MalumMenu-1.1.2.zip) |
@@ -39,22 +47,22 @@
 3. Start the game normally
     - The first launch will take a **MUCH** longer time than usual, so don't be alarmed if you have to wait a while
 4. Toggle the cheat menu on by pressing **DELETE** on your keyboard
-5. If the installation doesn't work, check out our [FAQ](#im-having-issues-installing-malummenu)
+5. If the installation doesn't work, check out our [FAQ](#-im-having-issues-installing-malummenu)
 
 # 📋 Features
 
 <img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
 
-- Popular hacking modules such as [NoClip](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#noclip) and [Godmode](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#godmode)
-- Reveal [ghosts](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeghosts) and [impostors](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#seeroles) easily
-- Access [vents](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#usevents) without being impostor or engineer
-- Advanced [ESP](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#esp) & [Tracers](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#tracers) that work completly client-side
-- [Minimap](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#minimap) to track every player on the ship
-- Special, powerful hacks for game [hosts](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#host-only)
-- All Among Us [cosmetics](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#freecosmetics) unlocked for free
-- No more disconnect [penalties](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#avoidpenalties)
-- Many Among Us special [features](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#unlockfeatures) unlocked automatically
-- [Custom announcements](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md#malumnews) fetched online
+- An intuitive GUI with our latest, greatest Among Us cheats
+- See ghosts & reveal the impostors
+- Track every player's position using the minimap
+- Teleport anywhere you want
+- Kick any player without being the host
+- Murder any player with the push of a button
+- Spam a lobby's chat with custom messages
+- Unlock all of the game's cosmetics for FREE
+- No more annoying disconnect penalties
+- Custom announcements fetched from our webserver
 
 For a complete list of all of MalumMenu's features, click [here](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md)
 
@@ -63,7 +71,7 @@ Click to expand each topic
 <details>
   <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
-First of all, make sure you are running the most recent version of Among Us (`2023.11.28`) with the most recent version of MalumMenu (`v1.2.1`)
+First of all, make sure you are running the most recent version of Among Us (`2023.11.28`) with the most recent version of MalumMenu (`v2.0.0`)
 
 Also, check if your platform is officially supported:
 
@@ -79,7 +87,9 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 
 <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1189514291993387098/image.png" alt="drawing" width="550"/>
 
-After installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while.
+Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
+
+After successfully installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while.
 
 If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 </details>
