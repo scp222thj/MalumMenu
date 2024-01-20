@@ -44,6 +44,7 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 
             } else {
                 HudManager.Instance.Notifier.AddItem("Oxygen system not present on this map");
+                CheatToggles.oxygenSab = false;
             }
         
         } else if (CheatToggles.commsSab && !commsSab) { //Communications sabotages
@@ -54,6 +55,8 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
         } else if (CheatToggles.elecSab && !elecSab) { //Eletrical sabotage
 
             if (currentMapID != 5) { //Fungle has no eletrical sabotage
+
+                CheatToggles.unfixableLights = false;
 
                 byte b = 4;
                 for (int i = 0; i < 5; i++)
@@ -69,6 +72,7 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 
             } else {
                 HudManager.Instance.Notifier.AddItem("Eletrical system not present on this map");
+                CheatToggles.elecSab = false;
             }
             
         } else if (CheatToggles.mushSab) {
@@ -94,7 +98,6 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
         }
 
 
-        // repair sabotage
         if (!CheatToggles.reactorSab && reactorSab)
         {
             if (currentMapID == 2)
@@ -209,9 +212,9 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 
         if (reactorSys != null || labSys != null || HeliSys != null)
         {
-            var reactorSabctive = reactorSys == null ? labSys == null ? HeliSys.IsActive : labSys.IsActive : reactorSys.IsActive;
-            CheatToggles.reactorSab = reactorSabctive;
-            reactorSab = reactorSabctive;
+            var reactorSabActive = reactorSys == null ? labSys == null ? HeliSys.IsActive : labSys.IsActive : reactorSys.IsActive;
+            CheatToggles.reactorSab = reactorSabActive;
+            reactorSab = reactorSabActive;
         }
         if ((hqcommsSys != null && hqcommsSys.IsActive) || (commsSys != null && commsSys.IsActive))
         {
@@ -246,6 +249,8 @@ public static class UnfixableLights_ShipStatus_FixedUpdate_Postfix
             //They are unfixable through regular means (toggling switches)
             //They can only be repaired by repeating RpcUpdateSystem with the same amount
             
+            CheatToggles.elecSab = false;
+
             byte currentMapID = Utils.getCurrentMapID();
 
             if (currentMapID != 5){ //Fungle has no lights, so blackout can't trigger there
@@ -255,8 +260,10 @@ public static class UnfixableLights_ShipStatus_FixedUpdate_Postfix
             }else{
 
                 HudManager.Instance.Notifier.AddItem("Eletrical system not present on this map");
+
+                CheatToggles.unfixableLights = false;
                 
-                }
+            }
 
             isActive = true;
         }
