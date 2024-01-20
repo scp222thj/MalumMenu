@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using AmongUs.Data;
 using InnerNet;
 using Il2CppSystem.Collections.Generic;
@@ -8,8 +7,6 @@ using Hazel;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
-using Il2CppSystem;
-using Sentry.Internal.Extensions;
 using AmongUs.GameOptions;
 
 namespace MalumMenu;
@@ -24,6 +21,10 @@ public static class Utils
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
     
+    public static bool isShip => ShipStatus.Instance != null;
+    public static bool isLobby => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined;
+    public static bool isPlayer => PlayerControl.LocalPlayer != null;
+    public static bool isHost = AmongUsClient.Instance.AmHost;
     public static bool utilsOpenChat;
     
     //Completly randomize a player outfit using fake RPC calls
@@ -321,14 +322,6 @@ public static class Utils
         } */
     }
 
-    public static bool IsInLobby()
-    {
-        if (AmongUsClient.Instance.IsNull()) return false;
-        if (GameManager.Instance.IsNull()) return false;
-        if (PlayerControl.LocalPlayer.IsNull()) return false;
-        return AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined;
-    }
-
     //Get ShapeshifterMenu prefab to instantiate it
     //Found here: https://github.com/AlchlcDvl/TownOfUsReworked/blob/9f3cede9d30bab2c11eb7c960007ab3979f09156/TownOfUsReworked/Custom/Menu.cs
     public static ShapeshifterMinigame getShapeshifterMenu()
@@ -494,25 +487,5 @@ public static class Utils_PlayerPickMenu_ShapeshifterPanelSetPlayer
         }
 
         return true; //Open normal shapeshifter menu if not active
-    }
-}
-
-//Some useful cheat checks that I use in MenuUI.cs
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class CheatChecks
-{
-    public static bool isShip;
-    public static bool isPlayer;
-    public static bool isLobby;
-
-    //public static bool isHost;
-
-    public static void Postfix(PlayerPhysics __instance)
-    {
-        isShip = ShipStatus.Instance != null;
-        isPlayer = PlayerControl.LocalPlayer != null;
-        isLobby = Utils.IsInLobby();
-
-        //isHost = AmongUsClient.Instance.AmHost;
     }
 }

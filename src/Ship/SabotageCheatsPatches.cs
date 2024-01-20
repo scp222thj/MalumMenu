@@ -1,10 +1,4 @@
 using HarmonyLib;
-using Hazel;
-using System;
-using System.Runtime.CompilerServices;
-using Il2CppSystem;
-using System.Numerics;
-using System.Collections.Generic;
 
 namespace MalumMenu;
 
@@ -173,9 +167,9 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
 
         ReactorSystemType reactorSys = null;
         ReactorSystemType labSys = null;
-        HeliSabotageSystem HeliSys = null;
+        HeliSabotageSystem heliSys = null;
         LifeSuppSystemType oxygenSys = null;
-        HqHudSystemType hqcommsSys = null;
+        HqHudSystemType hqCommsSys = null;
         HudOverrideSystemType commsSys = null;
         SwitchSystem elecSys = null;
 
@@ -191,7 +185,7 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
             case 1:
                 reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
                 oxygenSys = __instance.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
-                hqcommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
+                hqCommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
                 elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                 break;
             case 2:
@@ -200,38 +194,35 @@ public static class Sabotages_ShipStatus_FixedUpdate_Postfix
                 elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                 break;
             case 4:
-                HeliSys = __instance.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
+                heliSys = __instance.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
                 commsSys = __instance.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
                 elecSys = __instance.Systems[SystemTypes.Electrical].Cast<SwitchSystem>();
                 break;
             case 5:
                 reactorSys = __instance.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
-                hqcommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
+                hqCommsSys = __instance.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
                 break;
         }
 
-        if (reactorSys != null || labSys != null || HeliSys != null)
+        if (reactorSys != null || labSys != null || heliSys != null)
         {
-            var reactorSabActive = reactorSys == null ? labSys == null ? HeliSys.IsActive : labSys.IsActive : reactorSys.IsActive;
-            CheatToggles.reactorSab = reactorSabActive;
-            reactorSab = reactorSabActive;
+            var reactorSabActive = reactorSys == null ? labSys == null ? heliSys.IsActive : labSys.IsActive : reactorSys.IsActive;
+            CheatToggles.reactorSab = reactorSab = reactorSabActive;
         }
-        if ((hqcommsSys != null && hqcommsSys.IsActive) || (commsSys != null && commsSys.IsActive))
+        if (hqCommsSys != null || commsSys != null)
         {
-            var commsSabActive = hqcommsSys == null ? commsSys.IsActive : hqcommsSys.IsActive;
-            CheatToggles.commsSab = commsSabActive;
-            commsSab = commsSabActive;
+            var commsSabActive = hqCommsSys == null ? commsSys.IsActive : hqCommsSys.IsActive;
+            CheatToggles.commsSab = commsSab = commsSabActive;
         }
         if (oxygenSys != null)
         {
-            CheatToggles.oxygenSab = oxygenSys.IsActive;
-            oxygenSab = oxygenSys.IsActive;
+            CheatToggles.oxygenSab = oxygenSab = oxygenSys.IsActive;
         }
-        if (!elecSab && elecSys != null)
+        if (elecSys != null)
         {
-            var elecSabActive = (elecSys.ActualSwitches != elecSys.ExpectedSwitches) && !UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive;
-            CheatToggles.elecSab = elecSabActive;
-            elecSab = elecSabActive;
+            var elecSabActive = elecSys.IsActive && !UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive;
+
+            CheatToggles.elecSab = elecSab = elecSabActive;
         }
     }
 }
