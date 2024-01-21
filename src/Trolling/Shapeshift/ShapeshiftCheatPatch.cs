@@ -1,8 +1,6 @@
 using HarmonyLib;
-using Hazel;
 using Il2CppSystem.Collections.Generic;
 using System;
-using InnerNet;
 
 namespace MalumMenu;
 
@@ -38,6 +36,7 @@ public static class ShapeshiftCheat_PlayerPhysics_LateUpdate_Postfix
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                 {
                     shiftingPlayer = Utils_PlayerPickMenu.targetPlayerData.Object;
+
                     Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                     {
                         shiftingTarget = Utils_PlayerPickMenu.targetPlayerData.Object;
@@ -54,6 +53,11 @@ public static class ShapeshiftCheat_PlayerPhysics_LateUpdate_Postfix
                 }));
 
                 isActive = true;
+            }
+
+            //Deactivate cheat if menu is closed
+            if (Utils_PlayerPickMenu.playerpickMenu == null){
+                CheatToggles.shapeshiftCheat = false;
             }
         }
         else if (isActive)
