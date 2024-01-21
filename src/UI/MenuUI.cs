@@ -64,7 +64,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Me to Player", () => CheatToggles.teleportMePlayer, x => CheatToggles.teleportMePlayer = x),
             }),
             new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
-                new ToggleInfo(" ShapeshiftCheat", () => CheatToggles.shapeshiftCheat, x => CheatToggles.shapeshiftCheat = x),
+                new ToggleInfo(" ShapeshiftPlayer", () => CheatToggles.shapeshiftCheat, x => CheatToggles.shapeshiftCheat = x),
                 new ToggleInfo(" ShapeshiftAll", () => CheatToggles.shapeshiftAll, x => CheatToggles.shapeshiftAll = x),
                 new ToggleInfo(" RevertShapeshifters", () => CheatToggles.revertShapeshifters, x => CheatToggles.revertShapeshifters = x),
             }),

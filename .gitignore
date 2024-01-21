@@ -399,3 +399,7 @@ FodyWeavers.xsd
 
 # MacOS File Cache
 **/.DS_Store
+
+# QuickBuild
+package.json
+dist/
