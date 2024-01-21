@@ -143,9 +143,11 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" ChatJailbreak", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
         }, new List<SubmenuInfo>()));
 
-        // Host-Only 'voting' cheats are disabled until we find a better way to use RPCs
+        //Host-Only cheats are temporarly disabled because of some bugs
 
         //groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
+        //    new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
+        //    new ToggleInfo(" Godmode", () => CheatSettings.godMode, x => CheatSettings.godMode = x),
         //    new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
         //    new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
         //}, new List<SubmenuInfo>()));
