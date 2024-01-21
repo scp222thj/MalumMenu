@@ -55,6 +55,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Trolling", false, new List<ToggleInfo>() {
             new ToggleInfo(" KickPlayer", () => CheatToggles.kickPlayer, x => CheatToggles.kickPlayer = x),
             new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
+            new ToggleInfo(" All ReportBody", () => CheatToggles.allReportBody, x => CheatToggles.allReportBody = x),
             new ToggleInfo(" All MedScan", () => CheatToggles.allMedScan, x => CheatToggles.allMedScan = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
