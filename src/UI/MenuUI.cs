@@ -113,7 +113,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" All MimicOutfit", () => CheatToggles.mimicAllOutfits, x => CheatToggles.mimicAllOutfits = x),
             }),
             new SubmenuInfo("Name", false, new List<ToggleInfo>() {
-                new ToggleInfo(" SetName", () => CheatToggles.setName, x => CheatToggles.setName = x),
+                new ToggleInfo(" SetPlayerName", () => CheatToggles.setPlayerName, x => CheatToggles.setPlayerName = x),
                 new ToggleInfo(" All SetName", () => CheatToggles.setNameAll, x => CheatToggles.setNameAll = x),
             }),
         }));
@@ -187,7 +187,7 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         if(!Utils.isPlayer){
-            CheatToggles.copyPlayerFC = CheatToggles.changeRole = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftCheat = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
+            CheatToggles.copyPlayerFC = CheatToggles.changeRole = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftCheat = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setPlayerName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host

@@ -51,7 +51,7 @@ namespace MalumMenu
 
         //Appearance
         public static bool resetAppearance;
-        public static bool setName;
+        public static bool setPlayerName;
         public static bool setNameAll;
         public static bool unlockColors;
         public static bool mimicOutfit;
@@ -113,6 +113,7 @@ namespace MalumMenu
 
         public static void DisablePPMCheats(string variableToKeep)
         {
+            setPlayerName = variableToKeep != "setPlayerName" ? false : setPlayerName;
             mimicAllOutfits = variableToKeep != "mimicAllOutfits" ? false : mimicAllOutfits;
             copyPlayerFC = variableToKeep != "copyPlayerFC" ? false : copyPlayerFC;
             chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
@@ -131,7 +132,7 @@ namespace MalumMenu
         }
 
         public static bool shouldPPMClose(){
-            return !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerMe && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !setPlayerName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerMe && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }

@@ -32,7 +32,7 @@ public static class SpamChat_PlayerPhysics_RpcSendChat_Prefix
 
             if (!isActive){
 
-                CheatToggles.chatMimic = CheatToggles.setName = CheatToggles.setNameAll = false;
+                CheatToggles.chatMimic = CheatToggles.setPlayerName = CheatToggles.setNameAll = false;
 
                 Utils.OpenChat();
 
