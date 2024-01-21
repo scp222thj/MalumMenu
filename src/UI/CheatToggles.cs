@@ -36,6 +36,7 @@ namespace MalumMenu
         public static bool kickPlayer;
         public static bool allMedScan;
         public static bool reportBody;
+        public static bool allReportBody;
         public static bool murderPlayer;
         public static bool murderAll;
         public static bool shapeshiftAll;
