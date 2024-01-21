@@ -50,14 +50,10 @@ public static class SeeRoles_ChatBubble_SetName_Postfix
 {
     //Postfix patch of ChatBubble.SetName to get colored names in chat messages
     public static void Postfix(ChatBubble __instance){
-        if (CheatToggles.seeRoles)
-        {
-            var player = __instance.playerInfo.Object;
-            __instance.NameText.text = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleName(player.Data)}</size></color> " + __instance.NameText.text;
-            __instance.NameText.ForceMeshUpdate(true, true);
-            __instance.Background.size = new Vector2(5.52f, 0.2f + __instance.NameText.GetNotDumbRenderedHeight() + __instance.TextArea.GetNotDumbRenderedHeight());
-            __instance.MaskArea.size = __instance.Background.size - new Vector2(0f, 0.03f);
-        }
+        __instance.NameText.text = Utils.getNameTag(__instance.playerInfo.Object, __instance.NameText.text, true);
+        __instance.NameText.ForceMeshUpdate(true, true);
+        __instance.Background.size = new Vector2(5.52f, 0.2f + __instance.NameText.GetNotDumbRenderedHeight() + __instance.TextArea.GetNotDumbRenderedHeight());
+        __instance.MaskArea.size = __instance.Background.size - new Vector2(0f, 0.03f);
     }
 }    
 

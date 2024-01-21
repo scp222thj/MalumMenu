@@ -298,6 +298,11 @@ public static class Utils
 
         if (CheatToggles.seeRoles){
 
+            if (isChat){
+                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleName(player.Data)}</size>{nameTag}</color>";
+                return nameTag;
+            }
+
             nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{getRoleName(player.Data)}</size>\r\n{nameTag}</color>";
         
         } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
@@ -307,19 +312,6 @@ public static class Utils
         }
 
         return nameTag;
-
-/*      if (cheatVar){
-                
-            return playerInfo.Role.TeamColor; //Cheat vision
-
-        }else if(PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor){
-
-            return playerInfo.Role.NameColor; //Normal Impostor Vision
-
-        }else {
-
-            return Color.white; //Normal Crewmate Vision
-        } */
     }
 
     //Get ShapeshifterMenu prefab to instantiate it

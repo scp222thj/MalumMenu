@@ -25,7 +25,9 @@ public static class ReportBody_PlayerPhysics_LateUpdate_Postfix
 
                 //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls){
-                    playerDataList.Add(player.Data);
+                    if (!player.Data.IsDead){
+                        playerDataList.Add(player.Data);
+                    }
                 }
 
                 //New player pick menu
