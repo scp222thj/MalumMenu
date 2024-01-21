@@ -68,7 +68,7 @@ public static class TeleportCursor_PlayerPhysics_LateUpdate_Postfix
 
         if (Input.GetMouseButtonDown(1)) // Register right-click
         {
-            if (CheatToggles.teleportPlayerCursor) // Teleport LocalPlayer to cursor position
+            if (CheatToggles.teleportPlayerCursor && playerTeleportTarget != null) // Teleport LocalPlayer to cursor position
             {
                 Utils.TeleportPlayer(playerTeleportTarget, Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
@@ -164,7 +164,12 @@ public static class TeleportPlayerMe_PlayerPhysics_LateUpdate_Postfix
 
             // Deactivate cheat if menu is closed
             if (Utils_PlayerPickMenu.playerpickMenu == null) CheatToggles.teleportPlayerMe = false;
-        } else if (isActive) isActive = false;
+        
+        } else if (isActive){
+
+            isActive = false;
+
+        } 
     }
 }
 
@@ -210,10 +215,10 @@ public static class TeleportAllPlayer_PlayerPhysics_LateUpdate_Postfix
                 CheatToggles.teleportAllPlayer = false;
             }
 
-        }else{
-            if (isActive){
-                isActive = false;
-            }
+        }else if (isActive){
+
+            isActive = false;
+        
         }
     }
 }
