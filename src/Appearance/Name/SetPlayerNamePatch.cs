@@ -59,12 +59,18 @@ public static class SetPlayerName_PlayerControl_LateUpdate_Postfix
 
                 isMenuActive = true;
             }
+
+            //Deactivate cheat if menu is closed
+            if (Utils_PlayerPickMenu.playerpickMenu == null && SetPlayerName_PlayerControl_RpcSendChat_Prefix.setNameTarget == null){
+                CheatToggles.setPlayerName = false;
+            }
         }
         else
         {
             if (isActive)
             {
                 if (!CheatToggles.chatMimic && !CheatToggles.spamChat && !CheatToggles.setNameAll) Utils.CloseChat();
+                SetPlayerName_PlayerControl_RpcSendChat_Prefix.setNameTarget = null;
                 isActive = false;
             };
 

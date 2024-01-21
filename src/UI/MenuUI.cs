@@ -113,7 +113,7 @@ public class MenuUI : MonoBehaviour
             }),
             new SubmenuInfo("Name", false, new List<ToggleInfo>() {
                 new ToggleInfo(" SetPlayerName", () => CheatToggles.setPlayerName, x => CheatToggles.setPlayerName = x),
-                new ToggleInfo(" All SetName", () => CheatToggles.setNameAll, x => CheatToggles.setNameAll = x),
+                new ToggleInfo(" SetAllName", () => CheatToggles.setNameAll, x => CheatToggles.setNameAll = x),
             }),
         }));
 
