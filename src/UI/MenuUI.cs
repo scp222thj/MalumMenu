@@ -64,7 +64,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Me to Player", () => CheatToggles.teleportMePlayer, x => CheatToggles.teleportMePlayer = x),
             }),
             new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
-                new ToggleInfo(" ShapeshiftPlayer", () => CheatToggles.shapeshiftCheat, x => CheatToggles.shapeshiftCheat = x),
+                new ToggleInfo(" ShapeshiftPlayer", () => CheatToggles.shapeshiftPlayer, x => CheatToggles.shapeshiftPlayer = x),
                 new ToggleInfo(" ShapeshiftAll", () => CheatToggles.shapeshiftAll, x => CheatToggles.shapeshiftAll = x),
                 new ToggleInfo(" RevertShapeshifters", () => CheatToggles.revertShapeshifters, x => CheatToggles.revertShapeshifters = x),
             }),
@@ -186,7 +186,7 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         if(!Utils.isPlayer){
-            CheatToggles.copyPlayerFC = CheatToggles.changeRole = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftCheat = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setPlayerName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
+            CheatToggles.copyPlayerFC = CheatToggles.changeRole = CheatToggles.resetAppearance = CheatToggles.murderAll = CheatToggles.revertShapeshifters  = CheatToggles.shapeshiftPlayer = CheatToggles.shapeshiftAll = CheatToggles.teleportMePlayer = CheatToggles.teleportAllPlayer = CheatToggles.setPlayerName = CheatToggles.setNameAll = CheatToggles.allMedScan = CheatToggles.spamChat = CheatToggles.chatMimic = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.kickPlayer = CheatToggles.murderPlayer = CheatToggles.mimicOutfit = CheatToggles.mimicAllOutfits = false;
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host

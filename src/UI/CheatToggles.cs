@@ -40,7 +40,7 @@ namespace MalumMenu
         public static bool murderAll;
         public static bool shapeshiftAll;
         public static bool revertShapeshifters;
-        public static bool shapeshiftCheat;
+        public static bool shapeshiftPlayer;
 
         //Teleport
         public static bool teleportMePlayer;
@@ -125,12 +125,12 @@ namespace MalumMenu
             kickPlayer = variableToKeep != "kickPlayer" ? false : kickPlayer;
             spectate = variableToKeep != "spectate" ? false : spectate;
             shapeshiftAll = variableToKeep != "shapeshiftAll" ? false : shapeshiftAll;
-            shapeshiftCheat = variableToKeep != "shapeshiftCheat" ? false : shapeshiftCheat;
+            shapeshiftPlayer = variableToKeep != "shapeshiftPlayer" ? false : shapeshiftPlayer;
             changeRole = variableToKeep != "changeRole" ? false : changeRole;
         }
 
         public static bool shouldPPMClose(){
-            return !setPlayerName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !setPlayerName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftPlayer && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }

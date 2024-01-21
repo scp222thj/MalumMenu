@@ -5,15 +5,14 @@ using System;
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class ShapeshiftCheat_PlayerPhysics_LateUpdate_Postfix
+public static class ShapeshiftPlayer_PlayerPhysics_LateUpdate_Postfix
 {
     //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to shapeshift into any player
     public static bool isActive;
     public static PlayerControl shiftingPlayer = null;
-    public static PlayerControl shiftingTarget = null;
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (CheatToggles.shapeshiftCheat)
+        if (CheatToggles.shapeshiftPlayer)
         {
             if (!isActive)
             {
@@ -21,7 +20,7 @@ public static class ShapeshiftCheat_PlayerPhysics_LateUpdate_Postfix
                 if (Utils_PlayerPickMenu.playerpickMenu != null)
                 {
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("shapeshiftCheat");
+                    CheatToggles.DisablePPMCheats("shapeshiftPlayer");
                 }
 
                 List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
@@ -39,15 +38,12 @@ public static class ShapeshiftCheat_PlayerPhysics_LateUpdate_Postfix
 
                     Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                     {
-                        shiftingTarget = Utils_PlayerPickMenu.targetPlayerData.Object;
-
                         var HostData = AmongUsClient.Instance.GetHost();
                         if (HostData != null && !HostData.Character.Data.Disconnected)
                         {
                             Utils.ShapeshiftPlayer(shiftingPlayer, Utils_PlayerPickMenu.targetPlayerData.Object, !CheatToggles.noShapeshiftAnim); // Compatible with noShapeshiftAnim
                             shiftingPlayer = null;
-                            shiftingTarget = null;
-                            CheatToggles.shapeshiftCheat = false;
+                            CheatToggles.shapeshiftPlayer = false;
                         }
                     }));
                 }));
@@ -57,12 +53,14 @@ public static class ShapeshiftCheat_PlayerPhysics_LateUpdate_Postfix
 
             //Deactivate cheat if menu is closed
             if (Utils_PlayerPickMenu.playerpickMenu == null){
-                CheatToggles.shapeshiftCheat = false;
+                CheatToggles.shapeshiftPlayer = false;
+                shiftingPlayer = null;
             }
         }
         else if (isActive)
         {
             isActive = false;
+            shiftingPlayer = null;
         }
     }
 }
