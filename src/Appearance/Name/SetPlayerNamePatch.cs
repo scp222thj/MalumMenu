@@ -11,7 +11,7 @@ public static class SetPlayerName_PlayerControl_RpcSendChat_Prefix
     // Prefix patch of PlayerControl.RpcSendChat to set a custom name to the player
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatToggles.setPlayerName) return true; //Only works if CheatToggles.setPlayerName is enabled
+        if (!CheatToggles.setPlayerName || setNameTarget == null) return true; //Only works if CheatToggles.setPlayerName is enabled
 
         Utils.SetName(setNameTarget, chatText);
 

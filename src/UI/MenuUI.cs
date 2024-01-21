@@ -58,11 +58,10 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" All MedScan", () => CheatToggles.allMedScan, x => CheatToggles.allMedScan = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
-                new ToggleInfo(" Me to Player", () => CheatToggles.teleportMePlayer, x => CheatToggles.teleportMePlayer = x),
-                new ToggleInfo(" Player to Me", () => CheatToggles.teleportPlayerMe, x => CheatToggles.teleportPlayerMe = x),
                 new ToggleInfo(" Player to Cursor", () => CheatToggles.teleportPlayerCursor, x => CheatToggles.teleportPlayerCursor = x),
                 new ToggleInfo(" All to Cursor", () => CheatToggles.teleportAllCursor, x => CheatToggles.teleportAllCursor = x),
-                new ToggleInfo(" All to Player", () => CheatToggles.teleportAllPlayer, x => CheatToggles.teleportAllPlayer = x)
+                new ToggleInfo(" All to Player", () => CheatToggles.teleportAllPlayer, x => CheatToggles.teleportAllPlayer = x),
+                new ToggleInfo(" Me to Player", () => CheatToggles.teleportMePlayer, x => CheatToggles.teleportMePlayer = x),
             }),
             new SubmenuInfo("Shapeshift", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ShapeshiftCheat", () => CheatToggles.shapeshiftCheat, x => CheatToggles.shapeshiftCheat = x),
