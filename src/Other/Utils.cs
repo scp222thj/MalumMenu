@@ -299,7 +299,7 @@ public static class Utils
         if (CheatToggles.seeRoles){
 
             if (isChat){
-                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleName(player.Data)}</size>{nameTag}</color>";
+                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleName(player.Data)}</size> {nameTag}</color>";
                 return nameTag;
             }
 
