@@ -43,14 +43,14 @@ namespace MalumMenu
         public static bool shapeshiftCheat;
 
         //Teleport
-        public static bool teleportMeCursor;
         public static bool teleportMePlayer;
+        public static bool teleportPlayerCursor;
         public static bool teleportAllPlayer;
         public static bool teleportAllCursor;
 
         //Appearance
         public static bool resetAppearance;
-        public static bool setName;
+        public static bool setPlayerName;
         public static bool setNameAll;
         public static bool unlockColors;
         public static bool mimicOutfit;
@@ -112,10 +112,12 @@ namespace MalumMenu
 
         public static void DisablePPMCheats(string variableToKeep)
         {
+            setPlayerName = variableToKeep != "setPlayerName" ? false : setPlayerName;
             mimicAllOutfits = variableToKeep != "mimicAllOutfits" ? false : mimicAllOutfits;
             copyPlayerFC = variableToKeep != "copyPlayerFC" ? false : copyPlayerFC;
             chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
+            teleportPlayerCursor = variableToKeep != "teleportPlayerCursor" ? false : teleportPlayerCursor;
             teleportMePlayer = variableToKeep != "teleportMePlayer" ? false : teleportMePlayer;
             teleportAllPlayer = variableToKeep != "teleportAllPlayer" ? false : teleportAllPlayer;
             mimicOutfit = variableToKeep != "mimicOutfit" ? false : mimicOutfit;
@@ -128,7 +130,7 @@ namespace MalumMenu
         }
 
         public static bool shouldPPMClose(){
-            return !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !setPlayerName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }
