@@ -43,8 +43,9 @@ namespace MalumMenu
         public static bool shapeshiftCheat;
 
         //Teleport
-        public static bool teleportMeCursor;
         public static bool teleportMePlayer;
+        public static bool teleportPlayerMe;
+        public static bool teleportPlayerCursor;
         public static bool teleportAllPlayer;
         public static bool teleportAllCursor;
 
@@ -116,6 +117,8 @@ namespace MalumMenu
             copyPlayerFC = variableToKeep != "copyPlayerFC" ? false : copyPlayerFC;
             chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
+            teleportPlayerCursor = variableToKeep != "teleportPlayerCursor" ? false : teleportPlayerCursor;
+            teleportPlayerMe = variableToKeep != "teleportPlayerMe" ? false : teleportPlayerMe;
             teleportMePlayer = variableToKeep != "teleportMePlayer" ? false : teleportMePlayer;
             teleportAllPlayer = variableToKeep != "teleportAllPlayer" ? false : teleportAllPlayer;
             mimicOutfit = variableToKeep != "mimicOutfit" ? false : mimicOutfit;
@@ -128,7 +131,7 @@ namespace MalumMenu
         }
 
         public static bool shouldPPMClose(){
-            return !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftCheat && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerMe && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }
