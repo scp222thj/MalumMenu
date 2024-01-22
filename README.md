@@ -1,24 +1,18 @@
+<img align="center" src="./logo.png">
 
-<p align="center">
-  <img src="./logo.png">
-</p>
-
-
-<p align="center">
-  
+<div align="center">
   <a href="https://discord.gg/YYcYf88jAb">
-    <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
+    <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=for-the-badge&logo=discord" alt="Discord">
   </a>
   
   <a href="https://ko-fi.com/scp222thj">
-    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
+    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=for-the-badge&logo=ko-fi" alt="Ko-fi">
   </a>
-  
-</p>
+</div>
 
-<p align="center">
-<b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules. </b>
-
+<br>
+<h3 align="center"><b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules.</b></h3>
+<br>
 
 # 😎 Table Of Contents
 - [🎁 Releases](#-releases)
@@ -26,6 +20,8 @@
 - [📋 Features](#-features)
 - [❓ FAQ](#-faq)
 - [⚠️ Disclaimer](#️-disclaimer)
+
+<br>
 
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
@@ -38,6 +34,7 @@
 | v1.1.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.0/MalumMenu-1.1.0.zip) |
 | v1.0.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.0.0/MalumMenu-1.0.0.zip) |
 
+<br>
 
 # ⬇️ Installation
 
@@ -49,22 +46,28 @@
 4. Toggle the cheat menu on by pressing **DELETE** on your keyboard
 5. If the installation doesn't work, check out our [FAQ](#-im-having-issues-installing-malummenu)
 
+<br>
+
 # 📋 Features
 
 <img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
+<h6>the GUI, as shown in game</h6>
+<br>
 
 - An intuitive GUI with our latest, greatest Among Us cheats
-- See ghosts & reveal the impostors
-- Track every player's position using the minimap
-- Teleport anywhere you want
+- See ghosts & roles (Impostors & Crewmates)
+- Track every player's position
+- Teleport anywhere and anyone you want
 - Kick any player without being the host
-- Murder any player with the push of a button
+- Murder or shapeshift any player
 - Spam a lobby's chat with custom messages
 - Unlock all of the game's cosmetics for FREE
 - No more annoying disconnect penalties
 - Custom announcements fetched from our webserver
 
 For a complete list of all of MalumMenu's features, click [here](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md)
+
+<br>
 
 # ❓ FAQ
 Click to expand each topic
@@ -80,7 +83,8 @@ Also, check if your platform is officially supported:
 - ✅ Epic Games Launcher
 - ❌ Microsoft Store
 - ❌ Cracked
-- ❌ iOS App Store & Google Play
+- ❌ iOS App Store & Apple Silicon
+- ❌ Google Play
 - ❌ PS & Switch & Xbox
 
 Make sure you followed the installation guide precisely. This is what your `Among Us` folder should look like after a successful installation:
@@ -89,9 +93,10 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 
 Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
 
-After successfully installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while.
+After successfully installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while. Our program is adding files.
 
 If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
+
 </details>
 
 <details>
@@ -105,7 +110,7 @@ If you want, you can also contribute to the project and implement the change you
 <details>
   <summary><h2>👨‍💻 I want to contribute to this project</h2></summary>
   
-To get started, I suggest you first learn about the basics of C# and Unity, since that's what Among Us is written in. There are plenty of tutorials out there to help you with that.
+To get started, you first need to learn about the basics of C# and Unity, since that's what Among Us is written in. There are plenty of tutorials out there to help you with that.
 
 You should also learn about Github forking and pull requests, since you will need to use those to make any contributions to the project. [Here](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project) is the official documentation on the topic.
 
@@ -120,8 +125,10 @@ Here are some other useful resources:
 - [AUWiki](https://auwiki.duikbo.at) & [sus.wiki](https://github.com/roobscoob/among-us-protocol)
     - Useful resources to learn more about the Among Us network protocol 
     - Keep in mind that both these resources are slightly outdated
+  
 </details>
 
+<br>
 
 # ⚠️ Disclaimer
 
