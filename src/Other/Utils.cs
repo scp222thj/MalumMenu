@@ -142,7 +142,8 @@ public static class Utils
         }
     }
 
-    //Make any player copy any other player's outfit using fake RPC calls
+    // Make any player copy any other player's outfit using fake RPC calls
+    // First argument is the player being copied onto, second player is the original outfit
     public static void CopyOutfit(PlayerControl source, PlayerControl target)
     {
         var HostData = AmongUsClient.Instance.GetHost();

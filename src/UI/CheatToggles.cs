@@ -32,7 +32,7 @@ namespace MalumMenu
         public static bool ventVision;
         public static bool revealVotes;
 
-        //RPC Exploit
+        // Trolling (RPC exploit)
         public static bool kickPlayer;
         public static bool allMedScan;
         public static bool reportBody;
@@ -41,6 +41,10 @@ namespace MalumMenu
         public static bool shapeshiftAll;
         public static bool revertShapeshifters;
         public static bool shapeshiftPlayer;
+        public static bool exilePlayer;
+        public static bool exileAll;
+        public static bool restorePlayer;
+        public static bool restoreAll;
 
         //Teleport
         public static bool teleportMePlayer;
@@ -53,6 +57,7 @@ namespace MalumMenu
         public static bool setPlayerName;
         public static bool setNameAll;
         public static bool unlockColors;
+        public static bool swapOutfit;
         public static bool mimicOutfit;
         public static bool mimicAllOutfits;
 
@@ -113,6 +118,7 @@ namespace MalumMenu
         public static void DisablePPMCheats(string variableToKeep)
         {
             setPlayerName = variableToKeep != "setPlayerName" ? false : setPlayerName;
+            swapOutfit = variableToKeep != "swapOutfit" ? false : swapOutfit;
             mimicAllOutfits = variableToKeep != "mimicAllOutfits" ? false : mimicAllOutfits;
             copyPlayerFC = variableToKeep != "copyPlayerFC" ? false : copyPlayerFC;
             chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
@@ -123,6 +129,8 @@ namespace MalumMenu
             mimicOutfit = variableToKeep != "mimicOutfit" ? false : mimicOutfit;
             murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
             kickPlayer = variableToKeep != "kickPlayer" ? false : kickPlayer;
+            exilePlayer = variableToKeep != "exilePlayer" ? false : exilePlayer;
+            restorePlayer = variableToKeep != "restorePlayer" ? false : restorePlayer;
             spectate = variableToKeep != "spectate" ? false : spectate;
             shapeshiftAll = variableToKeep != "shapeshiftAll" ? false : shapeshiftAll;
             shapeshiftPlayer = variableToKeep != "shapeshiftPlayer" ? false : shapeshiftPlayer;
@@ -130,7 +138,7 @@ namespace MalumMenu
         }
 
         public static bool shouldPPMClose(){
-            return !setPlayerName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftPlayer && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !setPlayerName && !swapOutfit && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftPlayer && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !exilePlayer && !restorePlayer && !spectate;
         }
     }
 }

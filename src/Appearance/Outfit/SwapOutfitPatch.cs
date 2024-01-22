@@ -1,49 +1,56 @@
 using HarmonyLib;
+using Hazel;
 using Il2CppSystem.Collections.Generic;
 using System;
+using InnerNet;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class MurderPlayer_PlayerPhysics_LateUpdate_Postfix
+public static class SwapOutfit_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to murder any player
+    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to pick a player outfit to swap
     public static bool isActive;
-    public static PlayerControl murderer = null;
+    public static PlayerControl firstTarget = null;
+
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (CheatToggles.murderPlayer)
+        if (CheatToggles.swapOutfit)
         {
             if (!isActive)
             {
-                //Close any player pick menus already open & their cheats
+                // Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null)
                 {
                     Utils_PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("murderPlayer");
+                    CheatToggles.DisablePPMCheats("swapOutfit");
                 }
 
                 List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
-                // All players are saved to playerList
+                //All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    playerDataList.Add(player.Data);
+                    if (!player.AmOwner)
+                    {
+                        playerDataList.Add(player.Data);
+                    }
                 }
 
-                // Two consecutive player pick menus, first for the murderer, second for the target of the murder
+                // Two consecutive player pick menus for both targets
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                 {
-                    murderer = Utils_PlayerPickMenu.targetPlayerData.Object;
+                    firstTarget = Utils_PlayerPickMenu.targetPlayerData.Object;
 
                     Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                     {
                         var HostData = AmongUsClient.Instance.GetHost();
                         if (HostData != null && !HostData.Character.Data.Disconnected)
                         {
-                            Utils.MurderPlayer(murderer, Utils_PlayerPickMenu.targetPlayerData.Object);
-                            murderer = null;
-                            CheatToggles.murderPlayer = false;
+                            Utils.CopyOutfit(firstTarget, Utils_PlayerPickMenu.targetPlayerData.Object);
+                            Utils.CopyOutfit(Utils_PlayerPickMenu.targetPlayerData.Object, firstTarget);
+                            firstTarget = null;
+                            CheatToggles.swapOutfit = false;
                         }
                     }));
                 }));
@@ -51,17 +58,18 @@ public static class MurderPlayer_PlayerPhysics_LateUpdate_Postfix
                 isActive = true;
             }
 
-            // Deactivate cheat if menu is closed
+            //Deactivate cheat if menu is closed
             if (Utils_PlayerPickMenu.playerpickMenu == null)
             {
-                CheatToggles.murderPlayer = false;
-                murderer = null;
+                CheatToggles.swapOutfit = false;
+                firstTarget = null;
             }
+
         }
         else if (isActive)
         {
             isActive = false;
-            murderer = null;
+            firstTarget = null;
         }
     }
 }

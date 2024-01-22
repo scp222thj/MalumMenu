@@ -72,6 +72,12 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" MurderPlayer", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
                 new ToggleInfo(" MurderAll", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
             }),
+            new SubmenuInfo("Exile", false, new List<ToggleInfo>() {
+                new ToggleInfo(" ExilePlayer", () => CheatToggles.exilePlayer, x => CheatToggles.exilePlayer = x),
+                new ToggleInfo(" ExileAll", () => CheatToggles.exileAll, x => CheatToggles.exileAll = x),
+                new ToggleInfo(" RestorePlayer", () => CheatToggles.restorePlayer, x => CheatToggles.restorePlayer = x),
+                new ToggleInfo(" RestoreAll", () => CheatToggles.restoreAll, x => CheatToggles.restoreAll = x),                
+            }),
         }));
 
         groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {
@@ -108,6 +114,7 @@ public class MenuUI : MonoBehaviour
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Outfit", false, new List<ToggleInfo>() {
                 new ToggleInfo(" UnlockAllColors", () => CheatToggles.unlockColors, x => CheatToggles.unlockColors = x),
+                new ToggleInfo(" SwapPlayerOutfits", () => CheatToggles.swapOutfit, x => CheatToggles.swapOutfit = x),
                 new ToggleInfo(" MimicOutfit", () => CheatToggles.mimicOutfit, x => CheatToggles.mimicOutfit = x),
                 new ToggleInfo(" All MimicOutfit", () => CheatToggles.mimicAllOutfits, x => CheatToggles.mimicAllOutfits = x),
             }),
