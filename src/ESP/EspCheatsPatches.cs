@@ -1,4 +1,3 @@
-using AmongUs.Data.Player;
 using HarmonyLib;
 using Sentry.Internal.Extensions;
 using System.Collections.Generic;
@@ -28,6 +27,7 @@ public static class SeeRoles_MeetingHud_Update_Postfix
 {
     //Postfix patch of MeetingHud.Update to get colored names in meetings
     public static void Postfix(MeetingHud __instance){
+        //seeRoles code
         try{
             foreach (PlayerVoteArea playerState in __instance.playerStates)
             {
@@ -42,6 +42,9 @@ public static class SeeRoles_MeetingHud_Update_Postfix
 
             }
         }catch{}
+
+        //Bugfix: NoClip staying active if meeting is called whilst climbing ladder
+        PlayerControl.LocalPlayer.onLadder = false;
     }
 }    
 

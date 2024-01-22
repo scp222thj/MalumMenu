@@ -38,12 +38,9 @@ public static class ReportBody_PlayerPhysics_LateUpdate_Postfix
                     {
                         //Make a player report their own dead body & start a meeting
                         //by sending a (fake) ReportDeadBody RPC as the player to all clients
-                        foreach (var item in PlayerControl.AllPlayerControls)
-                        {
-                            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(Utils_PlayerPickMenu.targetPlayerData.Object.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                            writer.Write(Utils_PlayerPickMenu.targetPlayerData.PlayerId);
-                            AmongUsClient.Instance.FinishRpcImmediately(writer);
-                        }
+                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(Utils_PlayerPickMenu.targetPlayerData.Object.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, HostData.Id);
+                        writer.Write(Utils_PlayerPickMenu.targetPlayerData.PlayerId);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer);
                     }
             
                 }));

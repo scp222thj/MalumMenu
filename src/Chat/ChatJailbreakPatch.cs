@@ -11,7 +11,7 @@ public static class ChatJailBreak_PlayerControl_RpcSendChat_Prefix
     [HarmonyPriority(Priority.VeryHigh)]
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic || CheatToggles.setNameAll || CheatToggles.spamChat || CheatToggles.setPlayerName){
+        if (!CheatToggles.chatJailbreak || CheatToggles.chatMimic || CheatToggles.changeNameAll || CheatToggles.spamChat || CheatToggles.changeName){
             return true; //Only works if CheatSettings.chatJailbreak is enabled & CheatSettings.chatMimic is disabled
         }
 

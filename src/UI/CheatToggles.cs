@@ -34,6 +34,7 @@ namespace MalumMenu
 
         //RPC Exploit
         public static bool kickPlayer;
+        public static bool extraOptions;
         public static bool allMedScan;
         public static bool reportBody;
         public static bool murderPlayer;
@@ -43,22 +44,21 @@ namespace MalumMenu
         public static bool shapeshiftPlayer;
 
         //Teleport
-        public static bool teleportMePlayer;
+        public static bool teleportPlayerPlayer;
         public static bool teleportPlayerCursor;
         public static bool teleportAllPlayer;
         public static bool teleportAllCursor;
 
         //Appearance
         public static bool resetAppearance;
-        public static bool setPlayerName;
-        public static bool setNameAll;
+        public static bool changeName;
+        public static bool changeNameAll;
         public static bool unlockColors;
         public static bool mimicOutfit;
         public static bool mimicAllOutfits;
 
         //Spoofing
         public static bool spoofRandomFC;
-        public static bool copyPlayerFC;
 
         //Camera
         public static bool spectate;
@@ -112,13 +112,12 @@ namespace MalumMenu
 
         public static void DisablePPMCheats(string variableToKeep)
         {
-            setPlayerName = variableToKeep != "setPlayerName" ? false : setPlayerName;
+            changeName = variableToKeep != "changeName" ? false : changeName;
             mimicAllOutfits = variableToKeep != "mimicAllOutfits" ? false : mimicAllOutfits;
-            copyPlayerFC = variableToKeep != "copyPlayerFC" ? false : copyPlayerFC;
             chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
             teleportPlayerCursor = variableToKeep != "teleportPlayerCursor" ? false : teleportPlayerCursor;
-            teleportMePlayer = variableToKeep != "teleportMePlayer" ? false : teleportMePlayer;
+            teleportPlayerPlayer = variableToKeep != "teleportPlayerPlayer" ? false : teleportPlayerPlayer;
             teleportAllPlayer = variableToKeep != "teleportAllPlayer" ? false : teleportAllPlayer;
             mimicOutfit = variableToKeep != "mimicOutfit" ? false : mimicOutfit;
             murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
@@ -130,7 +129,7 @@ namespace MalumMenu
         }
 
         public static bool shouldPPMClose(){
-            return !setPlayerName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftPlayer && !copyPlayerFC && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportMePlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !changeName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftPlayer && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportPlayerPlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
         }
     }
 }

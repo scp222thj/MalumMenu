@@ -5,34 +5,34 @@ using Il2CppSystem.Collections.Generic;
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-public static class SetPlayerName_PlayerControl_RpcSendChat_Prefix
+public static class ChangePlayerName_PlayerControl_RpcSendChat_Prefix
 {
-    public static PlayerControl setNameTarget = null;
+    public static PlayerControl changeNameTarget = null;
     // Prefix patch of PlayerControl.RpcSendChat to set a custom name to the player
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatToggles.setPlayerName || setNameTarget == null) return true; //Only works if CheatToggles.setPlayerName is enabled
+        if (!CheatToggles.changeName || changeNameTarget == null) return true; //Only works if CheatToggles.setPlayerName is enabled
 
-        Utils.SetName(setNameTarget, chatText);
+        Utils.SetName(changeNameTarget, chatText);
 
-        CheatToggles.setPlayerName = false; // Disable the cheat toggle
+        CheatToggles.changeName = false; // Disable the cheat toggle
 
         return false;
     }
 }
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class SetPlayerName_PlayerControl_LateUpdate_Postfix
+public static class ChangePlayerName_PlayerControl_LateUpdate_Postfix
 {
     public static bool isActive; // this is for the chat to close automatically later
     public static bool isMenuActive; // this is internally needed for menu
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (CheatToggles.setPlayerName)
+        if (CheatToggles.changeName)
         {
             if (!isActive && !isMenuActive)
             {
-                CheatToggles.chatMimic = CheatToggles.spamChat = CheatToggles.setNameAll = false; // these cheats do not work together
+                CheatToggles.chatMimic = CheatToggles.spamChat = CheatToggles.changeNameAll = false; // these cheats do not work together
 
                 //Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null)
@@ -52,7 +52,7 @@ public static class SetPlayerName_PlayerControl_LateUpdate_Postfix
                 // New player pick menu made for teleporting
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                 {
-                    SetPlayerName_PlayerControl_RpcSendChat_Prefix.setNameTarget = Utils_PlayerPickMenu.targetPlayerData.Object; // send the target to the rpcsendchat detector
+                    ChangePlayerName_PlayerControl_RpcSendChat_Prefix.changeNameTarget = Utils_PlayerPickMenu.targetPlayerData.Object; // send the target to the rpcsendchat detector
                     Utils.OpenChat(); // open the chat box
                     isActive = true;
                 }));
@@ -61,16 +61,16 @@ public static class SetPlayerName_PlayerControl_LateUpdate_Postfix
             }
 
             //Deactivate cheat if menu is closed
-            if (Utils_PlayerPickMenu.playerpickMenu == null && SetPlayerName_PlayerControl_RpcSendChat_Prefix.setNameTarget == null){
-                CheatToggles.setPlayerName = false;
+            if (Utils_PlayerPickMenu.playerpickMenu == null && ChangePlayerName_PlayerControl_RpcSendChat_Prefix.changeNameTarget == null){
+                CheatToggles.changeName = false;
             }
         }
         else
         {
             if (isActive)
             {
-                if (!CheatToggles.chatMimic && !CheatToggles.spamChat && !CheatToggles.setNameAll) Utils.CloseChat();
-                SetPlayerName_PlayerControl_RpcSendChat_Prefix.setNameTarget = null;
+                if (!CheatToggles.chatMimic && !CheatToggles.spamChat && !CheatToggles.changeNameAll) Utils.CloseChat();
+                ChangePlayerName_PlayerControl_RpcSendChat_Prefix.changeNameTarget = null;
                 isActive = false;
             };
 

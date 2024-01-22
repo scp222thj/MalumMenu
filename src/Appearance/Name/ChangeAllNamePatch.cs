@@ -8,7 +8,7 @@ public static class SetAllName_PlayerControl_RpcSendChat_Prefix
     // Prefix patch of PlayerControl.RpcSendChat to set a custom name to LocalPlayer
     public static bool Prefix(string chatText, PlayerControl __instance)
     {
-        if (!CheatToggles.setNameAll)
+        if (!CheatToggles.changeNameAll)
         {
             return true; //Only works if CheatToggles.setName is enabled
         }
@@ -18,7 +18,7 @@ public static class SetAllName_PlayerControl_RpcSendChat_Prefix
             Utils.SetName(sender, chatText);
         }
 
-        CheatToggles.setNameAll = false;
+        CheatToggles.changeNameAll = false;
 
         return false;
     }
@@ -30,9 +30,9 @@ public static class SetNameAll_PlayerControl_LateUpdate_Postfix
     public static bool isActive;
     public static void Postfix(PlayerPhysics __instance)
     {
-        if (CheatToggles.setNameAll){
+        if (CheatToggles.changeNameAll){
             if (!isActive){
-                CheatToggles.chatMimic = CheatToggles.spamChat = CheatToggles.setPlayerName = false;
+                CheatToggles.chatMimic = CheatToggles.spamChat = CheatToggles.changeName = false;
 
                 Utils.OpenChat();
 
@@ -40,7 +40,7 @@ public static class SetNameAll_PlayerControl_LateUpdate_Postfix
             }
         }else{
             if (isActive){
-                if (!CheatToggles.chatMimic && !CheatToggles.spamChat && !CheatToggles.setPlayerName){
+                if (!CheatToggles.chatMimic && !CheatToggles.spamChat && !CheatToggles.changeName){
                     Utils.CloseChat();
                 }
 

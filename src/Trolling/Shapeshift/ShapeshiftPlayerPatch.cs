@@ -9,7 +9,7 @@ public static class ShapeshiftPlayer_PlayerPhysics_LateUpdate_Postfix
 {
     //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to shapeshift into any player
     public static bool isActive;
-    public static PlayerControl shiftingPlayer = null;
+    public static PlayerControl target = null;
     public static void Postfix(PlayerPhysics __instance)
     {
         if (CheatToggles.shapeshiftPlayer)
@@ -34,18 +34,26 @@ public static class ShapeshiftPlayer_PlayerPhysics_LateUpdate_Postfix
                 // Two consecutive player pick menus, first for the shifter, second for the target of the shifter
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                 {
-                    shiftingPlayer = Utils_PlayerPickMenu.targetPlayerData.Object;
-
-                    Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
+                    target = Utils_PlayerPickMenu.targetPlayerData.Object;
+                    
+                    var HostData = AmongUsClient.Instance.GetHost();
+                    if (HostData != null && !HostData.Character.Data.Disconnected)
                     {
-                        var HostData = AmongUsClient.Instance.GetHost();
-                        if (HostData != null && !HostData.Character.Data.Disconnected)
-                        {
-                            Utils.ShapeshiftPlayer(shiftingPlayer, Utils_PlayerPickMenu.targetPlayerData.Object, !CheatToggles.noShapeshiftAnim); // Compatible with noShapeshiftAnim
-                            shiftingPlayer = null;
-                            CheatToggles.shapeshiftPlayer = false;
+                        if (CheatToggles.extraOptions){
+                            Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
+                            {
+                                Utils.ShapeshiftPlayer(target, Utils_PlayerPickMenu.targetPlayerData.Object, true);
+                                
+                                target = null;
+                                CheatToggles.shapeshiftPlayer = false;
+                            }));
+                        }else{
+                            Utils.ShapeshiftPlayer(PlayerControl.LocalPlayer, target, !CheatToggles.noShapeshiftAnim);
                         }
-                    }));
+                    }
+
+                    target = null;
+                    CheatToggles.shapeshiftPlayer = false;
                 }));
 
                 isActive = true;
@@ -54,13 +62,12 @@ public static class ShapeshiftPlayer_PlayerPhysics_LateUpdate_Postfix
             //Deactivate cheat if menu is closed
             if (Utils_PlayerPickMenu.playerpickMenu == null){
                 CheatToggles.shapeshiftPlayer = false;
-                shiftingPlayer = null;
             }
         }
         else if (isActive)
         {
             isActive = false;
-            shiftingPlayer = null;
+            target = null;
         }
     }
 }
