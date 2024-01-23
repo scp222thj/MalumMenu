@@ -11,10 +11,10 @@ public static class MurderAll_PlayerPhysics_LateUpdate_Postfix
     public static void Postfix(PlayerPhysics __instance){
         if (CheatToggles.murderAll){
 
-            //Kill all players by sending a (fake) successful MurderPlayer RPC call to all clients
+            //Kill all players by sending a successful MurderPlayer RPC call to all clients
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                Utils.MurderPlayer(PlayerControl.LocalPlayer, player, MurderResultFlags.Succeeded);
+                Utils.MurderPlayer(player, MurderResultFlags.Succeeded);
             }
 
             CheatToggles.murderAll = false;

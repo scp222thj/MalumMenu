@@ -24,8 +24,11 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
 
                 List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
+                //This check is done to prevent players from getting kicked by mistake
+                //when switching to shapeshifter role & trying to shapeshift
                 if (oldRole == AmongUs.GameOptions.RoleTypes.Shapeshifter){
 
+                    //Shapeshifter custom choice
                     GameData.PlayerInfo shapeshifterChoice = new GameData.PlayerInfo(255)
                     {
                         PlayerName = "Shapeshifter"
@@ -39,6 +42,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
 
                 }
 
+                //Impostor custom choice
                 GameData.PlayerInfo impostorChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Impostor"
@@ -48,6 +52,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 impostorChoice.PlayerName = Utils.getRoleName(impostorChoice);
                 playerDataList.Add(impostorChoice);
 
+                //Engineer custom choice
                 GameData.PlayerInfo engineerChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Engineer"
@@ -59,6 +64,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 engineerChoice.PlayerName = Utils.getRoleName(engineerChoice);
                 playerDataList.Add(engineerChoice);
 
+                //Scientist custom choice
                 GameData.PlayerInfo scientistChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Scientist"
@@ -70,6 +76,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 scientistChoice.PlayerName = Utils.getRoleName(scientistChoice);
                 playerDataList.Add(scientistChoice);
 
+                //Crewmate custom choice
                 GameData.PlayerInfo crewmateChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Crewmate"
@@ -79,15 +86,16 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 crewmateChoice.PlayerName = Utils.getRoleName(crewmateChoice);
                 playerDataList.Add(crewmateChoice);
 
-                //New player pick menu made for killing players
+                //New player pick menu made for changing your roles with a custom choice list
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
 
+                    //Log the old, original role before it gets changed by changeRole cheat
                     if (!Utils.isLobby && oldRole == null){
                         oldRole = PlayerControl.LocalPlayer.Data.RoleType;
                     }
 
-                    if (PlayerControl.LocalPlayer.Data.IsDead){
+                    if (PlayerControl.LocalPlayer.Data.IsDead){ //Prevent accidential revives
                         if (Utils_PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor){
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
                         }else{

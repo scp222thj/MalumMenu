@@ -59,15 +59,15 @@ public static class Utils
         }
     } */
 
-    //Kill any player using fake RPC calls
-    public static void MurderPlayer(PlayerControl source, PlayerControl target, MurderResultFlags result)
+    //Kill any player using RPC calls
+    public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
         {
             foreach (var item in PlayerControl.AllPlayerControls)
             {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
                 writer.WriteNetObject(target);
                 writer.Write((int)result);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -76,7 +76,7 @@ public static class Utils
     }
 
 
-    //Complete any player's tasks using fake RPC calls
+    //Complete all your tasks using RPC calls
     public static void CompleteAllTasks()
     {
         var HostData = AmongUsClient.Instance.GetHost();
@@ -94,19 +94,6 @@ public static class Utils
                     }
 
                 }
-            }
-        }
-    }
-
-    public static void SetRole(PlayerControl player, AmongUs.GameOptions.RoleTypes role)
-    {
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected){
-            foreach (var item in PlayerControl.AllPlayerControls)
-            {
-                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetRole, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                messageWriter.Write((ushort)role);
-                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             }
         }
     }

@@ -7,6 +7,9 @@ namespace MalumMenu
         public static bool speedBoost;
         public static bool teleportPlayer;
         public static bool teleportCursor;
+        public static bool reportBody;
+        public static bool murderPlayer;
+        public static bool murderAll;
 
         //Roles
         public static bool changeRole;
@@ -32,11 +35,6 @@ namespace MalumMenu
         public static bool seeRoles;
         public static bool ventVision;
         public static bool revealVotes;
-
-        //Trolling
-        public static bool reportBody;
-        public static bool murderPlayer;
-        public static bool murderAll;
 
         //Spoofing
         public static bool spoofRandomFC;

@@ -18,14 +18,15 @@ public static class ImpostorCheats_PlayerControl_CmdCheckMurder_Postfix
 			return false;
 		}
 
-        if (target.protectedByGuardianId > 0 && !CheatToggles.killAnyone){
-            Utils.MurderPlayer(__instance, target, MurderResultFlags.FailedProtected);
+        //Protected players can only be killed if killAnyone is enabled
+        if (target.protectedByGuardianId > -1 && !CheatToggles.killAnyone){
+            Utils.MurderPlayer(target, MurderResultFlags.FailedProtected);
         }
 
 		__instance.isKilling = true;
 
         //Use custom util to bypass anticheat
-        Utils.MurderPlayer(__instance, target, MurderResultFlags.Succeeded);
+        Utils.MurderPlayer(target, MurderResultFlags.Succeeded);
 
         return false;
 

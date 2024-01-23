@@ -8,7 +8,7 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class TeleportCursor_PlayerPhysics_LateUpdate_Postfix
 {
-    // Postfix patch of PlayerPhysics.LateUpdate to teleport players to cursor position on right-click
+    //Postfix patch of PlayerPhysics.LateUpdate to teleport to cursor position on right-click
     public static void Postfix(PlayerPhysics __instance)
     {
         if (CheatToggles.teleportCursor)
@@ -24,7 +24,7 @@ public static class TeleportCursor_PlayerPhysics_LateUpdate_Postfix
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class TeleportPlayerPlayer_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to shapeshift into any player
+    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to teleport to any player
     public static bool isActive;
     public static void Postfix(PlayerPhysics __instance)
     {
@@ -41,7 +41,7 @@ public static class TeleportPlayerPlayer_PlayerPhysics_LateUpdate_Postfix
 
                 List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
-                // All players are saved to playerList, including the localplayer
+                // All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
                     if (!player.AmOwner){
@@ -49,7 +49,7 @@ public static class TeleportPlayerPlayer_PlayerPhysics_LateUpdate_Postfix
                     }
                 }
 
-                // Two consecutive player pick menus, first for the shifter, second for the target of the shifter
+                //New player pick menu made for teleporting yourself to any player's position
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                 {
                     PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Utils_PlayerPickMenu.targetPlayerData.Object.transform.position);
