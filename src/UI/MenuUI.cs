@@ -24,8 +24,8 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" MurderAll", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
             }),
             new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
-                new ToggleInfo(" to Cursor", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
-                new ToggleInfo(" to Player", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
+                new ToggleInfo(" to Cursor", () => CheatToggles.teleportCursor, x => CheatToggles.teleportCursor = x),
+                new ToggleInfo(" to Player", () => CheatToggles.teleportPlayer, x => CheatToggles.teleportPlayer = x),
             }),
         }
         ));

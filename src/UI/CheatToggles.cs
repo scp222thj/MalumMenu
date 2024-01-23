@@ -91,10 +91,11 @@ namespace MalumMenu
             murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
             spectate = variableToKeep != "spectate" ? false : spectate;
             changeRole = variableToKeep != "changeRole" ? false : changeRole;
+            teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
         }
 
         public static bool shouldPPMClose(){
-            return !changeRole && !reportBody && !murderPlayer && !spectate;
+            return !changeRole && !reportBody && !murderPlayer && !spectate && !teleportPlayer;
         }
     }
 }
