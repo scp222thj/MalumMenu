@@ -6,7 +6,21 @@
 |------------|-------------|------|--------|
 | NoClip     | Allows you to walk through walls like a ghost | Toggle | Off
 | SpeedBoost | Doubles your player's speed | Toggle | Off |
+| ReportBody | Allows you to make a player report their own dead body and start a meeting | Menu |
 
+#### Murder
+
+| Cheat | Description | Type | 
+|------------|-------------|------|
+| MurderPlayer | Murders the targeted player | Menu |
+| MurderAll | Murders all the players | Button |
+
+#### Teleport
+
+| Cheat | Description | Type | Default |
+|------------|-------------|------|----|
+| to Cursor | Allows you to teleport by right-clicking<br> Works best when used along with ZoomOut | Toggle | Off |
+| to Player | Allows you to pick a player to teleport to | Menu |
 
 ## 👁️ ESP
 
@@ -17,6 +31,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | SeeGhosts | Allows you to see ghosts, protections, and ghost chat even if you are alive | Toggle | Off
 | FullBright | Removes all shadows, allowing you to see during blackouts and even through walls<br>Also, lets you see through spore clouds in the Fungle Jungle | Toggle | Off |
 | RevealVotes | Lets you see colored votes even if votes are set to anonymous | Toggle | Off |
+| AlwaysChat | Keeps the chat icon always enabled, allowing you to chat at any time, even while you're not in a meeting or the lobby | Toggle | Off |
 
 #### NameTags
 | Cheat | Description | Type | Default |
@@ -51,42 +66,6 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Ghosts | Changes the map so that it shows the position of every ghost (color: white) | Toggle | Off |
 | Color-based | Changes the color of map icons to the color of their players | Toggle | Off |
 
-## 🤡 Trolling
-
-MalumMenu's newest and most powerful cheats. 
-
-They take advantage of a severe vulnerability within the game, **and because of this they might get patched soon**
-
-| Cheat | Description | Type | Default |
-|------------|-------------|------|----|
-| KickPlayer | Allows you to pick a player to kick from the game<br>(*Might be buggy sometimes*) | Menu |
-| ReportBody | Allows you to make a player report their own dead body and start a meeting | Menu |
-| All MedScan | Plays the MedBay scan animation on all players | Toggle | Off |
-
-#### Teleport
-
-| Cheat | Description | Type | Default |
-|------------|-------------|------|----|
-| Me to Cursor | Allows you to teleport by right-clicking<br> Works best when used along with ZoomOut | Toggle | Off |
-| Me to Player | Allows you to pick a player to teleport to | Menu |
-| All to Cursor | Allows you to teleport all players by right-clicking<br>Works best when used along with ZoomOut | Toggle | Off |
-| All to Player | Allows you to teleport all players to the targeted player | Menu |
-    
-#### Shapeshift
-
-| Cheat | Description | Type | 
-|------------|-------------|------|
-| ShapeshiftCheat | Allows you to shapeshift into any player without needing to be a Shapeshifter | Menu |
-| ShapeshiftAll | Shapeshifts all players into the targeted player | Menu |
-| RevertShapeshifters | Reverts all shapeshifters to their normal outfit | Button |
-
-#### Murder
-
-| Cheat | Description | Type | 
-|------------|-------------|------|
-| MurderPlayer | Murders the targeted player | Menu |
-| MurderAll | Murders all the players | Button |
-
 ## 🎭 Roles
 
 | Cheat | Description | Type | 
@@ -98,7 +77,6 @@ They take advantage of a severe vulnerability within the game, **and because of 
 | Cheat | Description | Type |
 |------------|-------------|------|
 | CompleteMyTasks | Marks all your tasks as completed | Button |
-| CompleteAllTasks | Marks the tasks of all players as completed | Button | 
 
 #### Impostor
 
@@ -115,7 +93,6 @@ They take advantage of a severe vulnerability within the game, **and because of 
 |------------|-------------|------|----|
 | NoSsAnimation | Removes the animation when shapeshifting | Toggle | Off |
 | EndlessSsDuration | Allows you to stay shifted forever | Toggle | Off |
-| NoSsCooldown | Allows you to shapeshift as often as you want with no cooldown in between | Toggle | Off |
 
 #### Engineer
 
@@ -131,27 +108,6 @@ They take advantage of a severe vulnerability within the game, **and because of 
 | EndlessBattery | Allows you to watch the vitals forever | Toggle | Off |
 | NoVitalsCooldown | Allows you to watch the vitals without cooldown | Toggle | Off |
 
-## 👔 Appearance
-
-| Cheat | Description | Type |
-|------------|-------------|------|
-| ResetAppearance | Resets your appearance to your default settings | Button |
-
-#### Outfit
-
-| Cheat | Description | Type | Default |
-|------------|-------------|------|----|
-| UnlockAllColors | Allows you to pick any color, regardless if it's already taken by another player in the lobby | Toggle | Off |
-| MimicOutfit | Changes your appearence to look identical to the targeted player | Menu |
-| All MimicOutfit | Changes the appearence of all players to look identical to the targeted player | Menu |
-
-#### Name
-
-| Cheat | Description | Type |
-|------------|-------------|------|
-| SetName | Changes your name to the next chat message you send | Chat Input |
-| All SetName | Changes the name of all players to the next chat message you send | Chat Input |
-    
 ## 🚀 Ship
 
 | Cheat | Description | Type | Default |
@@ -182,27 +138,11 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 | KickVents | Forcefully kicks all players from vents | Button |
 | WalkInVents | Allows you to move and interact with the game even though you are inside of a vent<br>This gives you a sort of invisibility until you disable the setting and leave the vent<br>(*Some activites such as killing will forcefully make you visible again*) | Toggle | Off
 
-## 💬 Chat
-
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| AlwaysChat | Keeps the chat icon always enabled, allowing you to chat at any time, even while you're not in a meeting or the lobby | Toggle | Off |
-| ChatMimic | Allows you to pick any player and send chat messages as them | Menu |
-| SpamChat | Every message you send will keep getting repeated by all other players, flooding the chat with your message | Toggle | Off |
-| ChatJailbreak | Unlocks special chat features that normally wouldn't be possible in-game<br><br>- Messages won't be rate-limited<br>- Messages can be longer than 100 characters<br>- Lets you use special characters & URLs in messages<br>- You can use [Unity Rich Text Tags](https://docs.unity3d.com/Packages/com.unity.textmeshpro@4.0/manual/RichText.html) in your messages<br>- You can send empty messages | Toggle | Off |
-
-
 ## 🕵️ Spoofing
 
 | Cheat | Description | Type |
 |------------|-------------|------|
 | RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, players won't be able to send you friend requests*) | Toggle | Off |
-
-#### Advanced
-
-| Cheat | Description | Type | Default |
-|------------|-------------|------|--------|
-| Copy FriendCode | Copies a player's friend code to your clipboard | Menu |
 
 #### Config
 
@@ -220,6 +160,7 @@ These cheats are constantly running in the background and **cannot be disabled t
 | FreeCosmetics | Gives you access to all of the game's cosmetics for free, including:<br><br>- Hats<br>- Visors<br>- Skins<br>- Pets<br>- Nameplates<br>- Bundles<br>- Cosmicubes | Toggle | On |
 | AvoidPenalties | Removes the penalty you receive when disconnecting from games early | Toggle | On |
 | UnlockFeatures | Unlocks many of the game's special features automatically, including:<br><br>- Freechat<br>- Friend list<br>- Custom name<br>- Online gameplay | Toggle | On |
+
 
 ## 📃 Config
 
