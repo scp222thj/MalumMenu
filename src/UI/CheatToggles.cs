@@ -17,7 +17,6 @@ namespace MalumMenu
         public static bool completeMyTasks;
         public static bool killReach;
         public static bool killAnyone;
-        public static bool impostorTasks;
         public static bool endlessSsDuration;
         public static bool endlessBattery;
         public static bool noVitalsCooldown;

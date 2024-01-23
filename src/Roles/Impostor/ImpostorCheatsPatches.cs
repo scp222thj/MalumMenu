@@ -111,13 +111,3 @@ public static class killJailbreak_ImpostorRole_IsValidTarget_Postfix
 
     }
 }
-
-[HarmonyPatch(typeof(ImpostorRole), nameof(ImpostorRole.CanUse))]
-public static class impostorTasks_ImpostorRole_CanUse_Prefix
-{
-    //Prefix patch of ImpostorRole.CanUse to do tasks as an impostor
-    public static void Postfix(ImpostorRole __instance, Console usable, ref bool __result)
-    {
-        __result = !(usable != null) || usable.AllowImpostor || CheatToggles.impostorTasks;
-    }
-}
