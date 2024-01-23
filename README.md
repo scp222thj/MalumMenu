@@ -89,7 +89,7 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 
 Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
 
-After successfully installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through the useful BepInEx console window that pops up when you start the game.
+When installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through the useful BepInEx console window that pops up when you start the game.
 
 <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1199461727247544350/image.png" alt="drawing" width="550"/>
 
