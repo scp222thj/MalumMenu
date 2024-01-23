@@ -11,6 +11,7 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
 {
     //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to murder any player
     public static bool isActive;
+    public static AmongUs.GameOptions.RoleTypes? oldRole = null;
     public static void Postfix(PlayerPhysics __instance){
         if (CheatToggles.changeRole){
 
@@ -24,16 +25,20 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
 
                 List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
 
-                GameData.PlayerInfo shapeshifterChoice = new GameData.PlayerInfo(255)
-                {
-                    PlayerName = "Shapeshifter"
-                };
-                shapeshifterChoice.Outfits[PlayerOutfitType.Default].ColorId = 0;
-                shapeshifterChoice.Outfits[PlayerOutfitType.Default].SkinId = "skin_screamghostface";
-                shapeshifterChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_eliksni";
-                shapeshifterChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Shapeshifter);
-                shapeshifterChoice.PlayerName = Utils.getRoleName(shapeshifterChoice);
-                playerDataList.Add(shapeshifterChoice);
+                if (oldRole == AmongUs.GameOptions.RoleTypes.Shapeshifter){
+
+                    GameData.PlayerInfo shapeshifterChoice = new GameData.PlayerInfo(255)
+                    {
+                        PlayerName = "Shapeshifter"
+                    };
+                    shapeshifterChoice.Outfits[PlayerOutfitType.Default].ColorId = 0;
+                    shapeshifterChoice.Outfits[PlayerOutfitType.Default].SkinId = "skin_screamghostface";
+                    shapeshifterChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_eliksni";
+                    shapeshifterChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Shapeshifter);
+                    shapeshifterChoice.PlayerName = Utils.getRoleName(shapeshifterChoice);
+                    playerDataList.Add(shapeshifterChoice);
+
+                }
 
                 GameData.PlayerInfo impostorChoice = new GameData.PlayerInfo(255)
                 {
@@ -78,6 +83,11 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 //New player pick menu made for killing players
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
+
+                    if (!Utils.isLobby && oldRole == null){
+                        oldRole = PlayerControl.LocalPlayer.Data.RoleType;
+                    }
+
                     if (PlayerControl.LocalPlayer.Data.IsDead){
                         if (Utils_PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor){
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
