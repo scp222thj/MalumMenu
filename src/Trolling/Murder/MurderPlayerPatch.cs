@@ -39,7 +39,7 @@ public static class MurderPlayer_PlayerPhysics_LateUpdate_Postfix
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected)
                     {
-                        Utils.MurderPlayer(PlayerControl.LocalPlayer, target);
+                        Utils.MurderPlayer(PlayerControl.LocalPlayer, target, MurderResultFlags.Succeeded);
                     }
 
                     target = null;

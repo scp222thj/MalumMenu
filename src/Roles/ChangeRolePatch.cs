@@ -2,7 +2,6 @@ using HarmonyLib;
 using System.Linq;
 using Il2CppSystem.Collections.Generic;
 using System;
-using Rewired;
 
 namespace MalumMenu;
 

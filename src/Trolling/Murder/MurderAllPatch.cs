@@ -14,7 +14,7 @@ public static class MurderAll_PlayerPhysics_LateUpdate_Postfix
             //Kill all players by sending a (fake) successful MurderPlayer RPC call to all clients
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                Utils.MurderPlayer(PlayerControl.LocalPlayer, player);
+                Utils.MurderPlayer(PlayerControl.LocalPlayer, player, MurderResultFlags.Succeeded);
             }
 
             CheatToggles.murderAll = false;

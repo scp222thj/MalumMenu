@@ -60,7 +60,7 @@ public static class Utils
     } */
 
     //Kill any player using fake RPC calls
-    public static void MurderPlayer(PlayerControl source, PlayerControl target)
+    public static void MurderPlayer(PlayerControl source, PlayerControl target, MurderResultFlags result)
     {
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
@@ -69,7 +69,7 @@ public static class Utils
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
                 writer.WriteNetObject(target);
-                writer.Write((int)MurderResultFlags.Succeeded);
+                writer.Write((int)result);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
         }

@@ -2,9 +2,6 @@ using System.Linq;
 using HarmonyLib;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Text;
-using AmongUs.GameOptions;
 
 namespace MalumMenu;
 
@@ -21,10 +18,14 @@ public static class ImpostorCheats_PlayerControl_CmdCheckMurder_Postfix
 			return false;
 		}
 
+        if (target.protectedByGuardianId > 0 && !CheatToggles.killAnyone){
+            Utils.MurderPlayer(__instance, target, MurderResultFlags.FailedProtected);
+        }
+
 		__instance.isKilling = true;
 
         //Use custom util to bypass anticheat
-        Utils.MurderPlayer(__instance, target);
+        Utils.MurderPlayer(__instance, target, MurderResultFlags.Succeeded);
 
         return false;
 
