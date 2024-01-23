@@ -57,9 +57,9 @@
 - See ghosts & reveal the impostors
 - Track every player's position using the minimap
 - Teleport anywhere you want
-- Kick any player without being the host
-- Murder any player with the push of a button
-- Spam a lobby's chat with custom messages
+- Change your role whenever you please
+- Remove kill cooldown & spam-kill everyone
+- Murder any distant player from across the map
 - Unlock all of the game's cosmetics for FREE
 - No more annoying disconnect penalties
 - Custom announcements fetched from our webserver
@@ -117,9 +117,9 @@ Here are some other useful resources:
     - A great community of Among Us modders where you can ask questions and get help
     - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](https://github.com/dnSpy/dnSpy/releases/latest) to go through these.
 
-- [AUWiki](https://auwiki.duikbo.at) & [sus.wiki](https://github.com/roobscoob/among-us-protocol)
-    - Useful resources to learn more about the Among Us network protocol 
-    - Keep in mind that both these resources are slightly outdated
+- [sus.wiki](https://github.com/roobscoob/among-us-protocol)
+    - Useful resource to learn more about the Among Us network protocol 
+    - Keep in mind that both it is slightly outdated
 </details>
 
 
