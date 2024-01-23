@@ -10,18 +10,9 @@ public static class CrewmateCheats_PlayerPhysics_LateUpdate_Postfix
     public static void Postfix(PlayerPhysics __instance){
 
         if (CheatToggles.completeMyTasks){
-            Utils.CompleteAllTasks(PlayerControl.LocalPlayer);
+            Utils.CompleteAllTasks();
 
             CheatToggles.completeMyTasks = false;
-        }
-
-        if (CheatToggles.completeAllTasks){
-
-            foreach (PlayerControl item in PlayerControl.AllPlayerControls){
-                Utils.CompleteAllTasks(item);
-            }
-
-            CheatToggles.completeAllTasks = false;
         }
     }
 }

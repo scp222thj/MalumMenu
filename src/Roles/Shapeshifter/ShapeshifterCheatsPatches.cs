@@ -6,22 +6,14 @@ namespace MalumMenu;
 public static class ShapeshifterCheats_PlayerControl_CmdCheckShapeshift_Postfix
 {
     //Prefix patch of PlayerControl.CmdCheckShapeshift to bypass anticheat & prevent SS animation
-    public static bool Prefix(PlayerControl __instance, PlayerControl target, bool shouldAnimate){
-
-        if (!target || target.Data == null || __instance.Data.Disconnected)
-		{
-			return false;
-		}
+    public static bool Prefix(PlayerControl __instance, bool shouldAnimate){
 
         //Only animate the transformation if the noShapeshiftAnim cheat is disabled
         if (shouldAnimate && CheatToggles.noShapeshiftAnim){
             shouldAnimate = false;
         }
 
-        //Use custom util to bypass anticheat
-		Utils.ShapeshiftPlayer(__instance, target, shouldAnimate);
-
-        return false; //The original method is skipped
+        return true;
 
     }
 }
@@ -32,20 +24,12 @@ public static class ShapeshifterCheats_PlayerControl_CmdCheckRevertShapeshift_Po
     //Prefix patch of PlayerControl.CmdCheckRevertShapeshift to bypass anticheat & prevent SS animation
     public static bool Prefix(PlayerControl __instance, bool shouldAnimate){
 
-        if (!__instance || __instance.Data == null || __instance.Data.Disconnected)
-		{
-			return false;
-		}
-
         //Only animate the transformation if the noShapeshiftAnim cheat is disabled
         if (shouldAnimate && CheatToggles.noShapeshiftAnim){
             shouldAnimate = false;
         }
 
-        //Use custom util to bypass anticheat
-		Utils.ShapeshiftPlayer(__instance, __instance, shouldAnimate);
-
-        return false; //The original method is skipped
+        return true;
 
     }
 }
@@ -71,30 +55,6 @@ public static class endlessSsDuration_ShapeshifterRole_FixedUpdate_Postfix
                     
                     __instance.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetShapeshifterDuration();
                 
-                }
-
-            }
-
-        }catch{};
-    }
-}
-
-[HarmonyPatch(typeof(ShapeshifterRole), nameof(ShapeshifterRole.FixedUpdate))]
-public static class noSsCooldown_ShapeshifterRole_FixedUpdate_Postfix
-{
-
-    //Postfix patch of ShapeshifterRole.FixedUpdate to remove shapeshift cooldown
-    public static void Postfix(ShapeshifterRole __instance){
-        
-        //try-catch to avoid breaking when spectator menu is open
-        try{
-
-            if(__instance.Player.AmOwner){
-
-                if (CheatToggles.noSsCooldown){
-
-                    __instance.cooldownSecondsRemaining = 0f;
-                    
                 }
 
             }

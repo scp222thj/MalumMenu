@@ -39,17 +39,7 @@ public static class MurderPlayer_PlayerPhysics_LateUpdate_Postfix
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected)
                     {
-                        if (CheatToggles.extraOptions){
-                            Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
-                            {
-                                Utils.MurderPlayer(target, Utils_PlayerPickMenu.targetPlayerData.Object);
-                            
-                                target = null;
-                                CheatToggles.murderPlayer = false;
-                            }));
-                        }else{
-                            Utils.MurderPlayer(target, target);
-                        }
+                        Utils.MurderPlayer(PlayerControl.LocalPlayer, target);
                     }
 
                     target = null;

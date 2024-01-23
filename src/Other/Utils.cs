@@ -77,18 +77,18 @@ public static class Utils
 
 
     //Complete any player's tasks using fake RPC calls
-    public static void CompleteAllTasks(PlayerControl player)
+    public static void CompleteAllTasks()
     {
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
         {
-            foreach (PlayerTask task in player.myTasks)
+            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
             {
                 if (!task.IsComplete){
 
                     foreach (var item in PlayerControl.AllPlayerControls)
                     {
-                        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
                         messageWriter.WritePacked(task.Id);
                         AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
                     }
@@ -109,88 +109,6 @@ public static class Utils
                 AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             }
         }
-    }
-
-    //Make any player shapeshift into any other player using fake RPC calls
-    public static void ShapeshiftPlayer(PlayerControl source, PlayerControl target, bool shouldAnimate)
-    {
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
-        {
-            foreach (var item in PlayerControl.AllPlayerControls)
-            {
-                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.Shapeshift, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                messageWriter.WriteNetObject(target);
-                messageWriter.Write(shouldAnimate);
-                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
-            }
-        }
-    }
-
-    //Make any player teleport anywhere using fake RPC calls
-    public static void TeleportPlayer(PlayerControl player, Vector2 position)
-    {
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
-        {
-            foreach (PlayerControl item in PlayerControl.AllPlayerControls){
-                MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(player.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                NetHelpers.WriteVector2(position, messageWriter);
-                messageWriter.Write(player.NetTransform.lastSequenceId + 100U);
-                AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
-            }
-        }
-    }
-
-    //Make any player copy any other player's outfit using fake RPC calls
-    public static void CopyOutfit(PlayerControl source, PlayerControl target)
-    {
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
-        {
-            foreach (var item in PlayerControl.AllPlayerControls)
-            {
-                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(source.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-
-                colorWriter.Write(target.Data.DefaultOutfit.ColorId);
-                nameWriter.Write(target.Data.DefaultOutfit.PlayerName);
-                hatWriter.Write(target.Data.DefaultOutfit.HatId);
-                petWriter.Write(target.Data.DefaultOutfit.PetId);
-                visorWriter.Write(target.Data.DefaultOutfit.VisorId);
-                skinWriter.Write(target.Data.DefaultOutfit.SkinId);
-
-                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(petWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
-            }
-        }
-
-    }
-
-    //Change any player's name using fake RPC calls
-    public static void SetName(PlayerControl target, string name)
-    {
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
-        {
-            foreach (var item in PlayerControl.AllPlayerControls)
-            {
-                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(target.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                
-                nameWriter.Write(name);
-                
-                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
-            }
-        }
-
     }
 
     //Open Chat UI

@@ -5,18 +5,18 @@ namespace MalumMenu
         //Player
         public static bool noClip;
         public static bool speedBoost;
+        public static bool teleportPlayer;
+        public static bool teleportCursor;
 
         //Roles
         public static bool changeRole;
         public static bool zeroKillCd;
         public static bool completeMyTasks;
-        public static bool completeAllTasks;
         public static bool killReach;
         public static bool killAnyone;
         public static bool impostorTasks;
         public static bool endlessSsDuration;
         public static bool endlessBattery;
-        public static bool noSsCooldown;
         public static bool noVitalsCooldown;
         public static bool noVentCooldown;
         public static bool endlessVentTime;
@@ -24,6 +24,7 @@ namespace MalumMenu
 
         //ESP
         public static bool fullBright;
+        public static bool alwaysChat;
         public static bool seeTaskCount;
         public static bool seeKillCd;
         public static bool seeDisguises;
@@ -32,30 +33,10 @@ namespace MalumMenu
         public static bool ventVision;
         public static bool revealVotes;
 
-        //RPC Exploit
-        public static bool kickPlayer;
-        public static bool extraOptions;
-        public static bool allMedScan;
+        //Trolling
         public static bool reportBody;
         public static bool murderPlayer;
         public static bool murderAll;
-        public static bool shapeshiftAll;
-        public static bool revertShapeshifters;
-        public static bool shapeshiftPlayer;
-
-        //Teleport
-        public static bool teleportPlayerPlayer;
-        public static bool teleportPlayerCursor;
-        public static bool teleportAllPlayer;
-        public static bool teleportAllCursor;
-
-        //Appearance
-        public static bool resetAppearance;
-        public static bool changeName;
-        public static bool changeNameAll;
-        public static bool unlockColors;
-        public static bool mimicOutfit;
-        public static bool mimicAllOutfits;
 
         //Spoofing
         public static bool spoofRandomFC;
@@ -93,12 +74,6 @@ namespace MalumMenu
         public static bool walkVent;
         public static bool kickVents;
 
-        //Chat
-        public static bool alwaysChat;
-        public static bool chatJailbreak;
-        public static bool spamChat;
-        public static bool chatMimic;
-
         //Host-Only
         //public static bool impostorHack;
         //public static bool godMode;
@@ -112,24 +87,14 @@ namespace MalumMenu
 
         public static void DisablePPMCheats(string variableToKeep)
         {
-            changeName = variableToKeep != "changeName" ? false : changeName;
-            mimicAllOutfits = variableToKeep != "mimicAllOutfits" ? false : mimicAllOutfits;
-            chatMimic = variableToKeep != "chatMimic" ? false : chatMimic;
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
-            teleportPlayerCursor = variableToKeep != "teleportPlayerCursor" ? false : teleportPlayerCursor;
-            teleportPlayerPlayer = variableToKeep != "teleportPlayerPlayer" ? false : teleportPlayerPlayer;
-            teleportAllPlayer = variableToKeep != "teleportAllPlayer" ? false : teleportAllPlayer;
-            mimicOutfit = variableToKeep != "mimicOutfit" ? false : mimicOutfit;
             murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
-            kickPlayer = variableToKeep != "kickPlayer" ? false : kickPlayer;
             spectate = variableToKeep != "spectate" ? false : spectate;
-            shapeshiftAll = variableToKeep != "shapeshiftAll" ? false : shapeshiftAll;
-            shapeshiftPlayer = variableToKeep != "shapeshiftPlayer" ? false : shapeshiftPlayer;
             changeRole = variableToKeep != "changeRole" ? false : changeRole;
         }
 
         public static bool shouldPPMClose(){
-            return !changeName && !mimicAllOutfits && !changeRole && !shapeshiftAll && !shapeshiftPlayer && !chatMimic && !reportBody && !teleportPlayerCursor && !teleportPlayerPlayer && !teleportAllPlayer && !mimicOutfit && !murderPlayer && !kickPlayer && !spectate;
+            return !changeRole && !reportBody && !murderPlayer && !spectate;
         }
     }
 }
