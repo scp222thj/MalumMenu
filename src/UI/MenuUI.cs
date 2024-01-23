@@ -36,7 +36,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" RevealVotes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
             new ToggleInfo(" AlwaysChat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("NameTags", false, new List<ToggleInfo>() {
+            new SubmenuInfo("Nametags", false, new List<ToggleInfo>() {
                 new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
                 new ToggleInfo(" VentVision", () => CheatToggles.ventVision, x => CheatToggles.ventVision = x)
             }),
