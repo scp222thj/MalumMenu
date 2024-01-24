@@ -30,6 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v2.1.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.1.0/MalumMenu-2.1.0.zip) |
 | v2.0.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.0.0/MalumMenu-2.0.0.zip) |
 | v1.2.1 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip) |
 | v1.2.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.0/MalumMenu-1.2.0.zip) |
@@ -57,9 +58,9 @@
 - See ghosts & reveal the impostors
 - Track every player's position using the minimap
 - Teleport anywhere you want
-- Kick any player without being the host
-- Murder any player with the push of a button
-- Spam a lobby's chat with custom messages
+- Change your role whenever you please
+- Remove kill cooldown & spam-kill everyone
+- Murder any distant player from across the map
 - Unlock all of the game's cosmetics for FREE
 - No more annoying disconnect penalties
 - Custom announcements fetched from our webserver
@@ -71,15 +72,15 @@ Click to expand each topic
 <details>
   <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
-First of all, make sure you are running the most recent version of Among Us (`2023.11.28`) with the most recent version of MalumMenu (`v2.0.0`)
+First of all, make sure you are running the most recent version of Among Us (`2023.11.28`) with the most recent version of MalumMenu (`v2.1.0`)
 
 Also, check if your platform is officially supported:
 
 - ✅ Steam
 - ✅ Itch.io
 - ✅ Epic Games Launcher
+- ❔ Cracked (rarely works)
 - ❌ Microsoft Store
-- ❌ Cracked
 - ❌ iOS App Store & Google Play
 - ❌ PS & Switch & Xbox
 
@@ -87,11 +88,13 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 
 <img src="https://cdn.discordapp.com/attachments/1097928762324168744/1189514291993387098/image.png" alt="drawing" width="550"/>
 
-Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
+<br>Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
 
-After successfully installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while.
+When installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through this useful BepInEx console window that pops up when you start the game:
 
-If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
+<img src="https://cdn.discordapp.com/attachments/1097928762324168744/1199461727247544350/image.png" alt="drawing" width="550"/>
+
+<br>If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 </details>
 
 <details>
@@ -117,9 +120,9 @@ Here are some other useful resources:
     - A great community of Among Us modders where you can ask questions and get help
     - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](https://github.com/dnSpy/dnSpy/releases/latest) to go through these.
 
-- [AUWiki](https://auwiki.duikbo.at) & [sus.wiki](https://github.com/roobscoob/among-us-protocol)
-    - Useful resources to learn more about the Among Us network protocol 
-    - Keep in mind that both these resources are slightly outdated
+- [sus.wiki](https://github.com/roobscoob/among-us-protocol)
+    - Useful resource to learn more about the Among Us network protocol 
+    - Keep in mind that both it is slightly outdated
 </details>
 
 
