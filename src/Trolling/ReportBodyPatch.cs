@@ -37,13 +37,7 @@ public static class ReportBody_PlayerPhysics_LateUpdate_Postfix
                 // New player pick menu to choose any body (alive or dead) to report
                 Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
                 {
-                    var HostData = AmongUsClient.Instance.GetHost();
-                    if (HostData != null && !HostData.Character.Data.Disconnected)
-                    {
-                        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, HostData.Id);
-                        writer.Write(Utils_PlayerPickMenu.targetPlayerData.PlayerId);
-                        AmongUsClient.Instance.FinishRpcImmediately(writer);
-                    }
+                    Utils.ReportDeadBody(Utils_PlayerPickMenu.targetPlayerData);
                 }));
 
                 isActive = true;

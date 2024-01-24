@@ -32,6 +32,13 @@ public static class Utils
     // Kill any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
+        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+
+            PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
+            return;
+        
+        }
+
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
         {
@@ -45,10 +52,43 @@ public static class Utils
         }
     }
 
+    //Report any body using RPC calls
+    public static void ReportDeadBody(GameData.PlayerInfo playerData)
+    {
+
+        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+
+            PlayerControl.LocalPlayer.CmdReportDeadBody(playerData);
+            return;
+        
+        }
+
+        var HostData = AmongUsClient.Instance.GetHost();
+        if (HostData != null && !HostData.Character.Data.Disconnected)
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, HostData.Id);
+            writer.Write(playerData.PlayerId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+    }
+
 
     // Complete all your tasks using RPC calls
     public static void CompleteAllTasks()
     {
+
+        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+
+            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+            {
+                if (!task.IsComplete){
+                    PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
+                }
+            }
+            return;
+        
+        }
+
         var HostData = AmongUsClient.Instance.GetHost();
         if (HostData != null && !HostData.Character.Data.Disconnected)
         {
