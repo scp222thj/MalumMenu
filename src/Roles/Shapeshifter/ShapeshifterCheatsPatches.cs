@@ -5,11 +5,11 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckShapeshift))]
 public static class ShapeshifterCheats_PlayerControl_CmdCheckShapeshift_Postfix
 {
-    //Prefix patch of PlayerControl.CmdCheckShapeshift to bypass anticheat & prevent SS animation
-    public static bool Prefix(PlayerControl __instance, bool shouldAnimate){
+    //Prefix patch of PlayerControl.CmdCheckShapeshift to prevent SS animation
+    public static bool Prefix(PlayerControl __instance, ref bool shouldAnimate){
 
-        //Only animate the transformation if the noShapeshiftAnim cheat is disabled
-        if (shouldAnimate && CheatToggles.noShapeshiftAnim){
+        //Remove the shapeshift animation if noShapeshiftAnim is enabled
+        if (CheatToggles.noShapeshiftAnim){
             shouldAnimate = false;
         }
 
@@ -21,11 +21,11 @@ public static class ShapeshifterCheats_PlayerControl_CmdCheckShapeshift_Postfix
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckRevertShapeshift))]
 public static class ShapeshifterCheats_PlayerControl_CmdCheckRevertShapeshift_Postfix
 {
-    //Prefix patch of PlayerControl.CmdCheckRevertShapeshift to bypass anticheat & prevent SS animation
-    public static bool Prefix(PlayerControl __instance, bool shouldAnimate){
+    //Prefix patch of PlayerControl.CmdCheckRevertShapeshift to prevent SS animation
+    public static bool Prefix(PlayerControl __instance, ref bool shouldAnimate){
 
-        //Only animate the transformation if the noShapeshiftAnim cheat is disabled
-        if (shouldAnimate && CheatToggles.noShapeshiftAnim){
+        //Remove the shapeshift animation if noShapeshiftAnim is enabled
+        if (CheatToggles.noShapeshiftAnim){
             shouldAnimate = false;
         }
 
