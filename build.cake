@@ -13,7 +13,7 @@ Task("Build")
         MSBuildSettings = new DotNetMSBuildSettings()
     };
 
-    if (tag != null) 
+    if (tag != null)
     {
         settings.MSBuildSettings.Version = tag;
     }

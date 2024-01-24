@@ -7,46 +7,52 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class SeeGhosts_PlayerPhysics_LateUpdate_Postfix
 {
-	//Postfix patch of PlayerPhysics.LateUpdate to render all ghosts visible if CheatSettings.seeGhosts is enabled or if LocalPlayer is dead
-    public static void Postfix(PlayerPhysics __instance){
-        try{
-            if(__instance.myPlayer.Data.IsDead && !PlayerControl.LocalPlayer.Data.IsDead){
-                __instance.myPlayer.Visible = CheatToggles.seeGhosts;
-            }    
-        }catch{}
-    }
-}    
+	// Postfix patch of PlayerPhysics.LateUpdate to render all ghosts visible if CheatSettings.seeGhosts is enabled or if LocalPlayer is dead
+	public static void Postfix(PlayerPhysics __instance)
+	{
+		try
+		{
+			if (__instance.myPlayer.Data.IsDead && !PlayerControl.LocalPlayer.Data.IsDead)
+			{
+				__instance.myPlayer.Visible = CheatToggles.seeGhosts;
+			}
+		}
+		catch { }
+	}
+}
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.ProtectPlayer))]
 public static class SeeGhosts_PlayerControl_ProtectPlayer_Prefix
 {
-	//Prefix patch of PlayerControl.ProtectPlayer to render all protections visible if CheatSettings.seeGhosts is enabled or if LocalPlayer is dead
-	//Basically does what the original method did with the required modifications
-    public static bool Prefix(PlayerControl target, int colorId, PlayerControl __instance){
+	// Prefix patch of PlayerControl.ProtectPlayer to render all protections visible if CheatSettings.seeGhosts is enabled or if LocalPlayer is dead
+	// Basically does what the original method did with the required modifications
+	public static bool Prefix(PlayerControl target, int colorId, PlayerControl __instance)
+	{
 		__instance.logger.Debug(string.Format("{0} protected {1}", __instance.PlayerId, target.PlayerId), null);
 		if (__instance.AmOwner)
 		{
 			__instance.Data.Role.SetCooldown();
 		}
 
-		target.TurnOnProtection(CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead, colorId, (int)__instance.Data.PlayerId); //Render protection animation if LocalPlayer dead or CheatSettings.seeGhosts
-    
-        return false; //Skips the original method completly
-    }
-}    
+		target.TurnOnProtection(CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead, colorId, (int)__instance.Data.PlayerId); // Render protection animation if LocalPlayer dead or CheatSettings.seeGhosts
+
+		return false; // Skips the original method completly
+	}
+}
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
 public static class SeeGhosts_ChatController_AddChat_Prefix
 {
-	//Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
-	//Basically does what the original method did with the required modifications
-    public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
-    {
-        if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead){
-            return true; //Run original method if seeGhosts is disabled or LocalPlayer already dead
-        }
+	// Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
+	// Basically does what the original method did with the required modifications
+	public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
+	{
+		if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead)
+		{
+			return true; // Run original method if seeGhosts is disabled or LocalPlayer already dead
+		}
 
-        if (!sourcePlayer || !PlayerControl.LocalPlayer)
+		if (!sourcePlayer || !PlayerControl.LocalPlayer)
 		{
 			return false;
 		}
@@ -54,7 +60,7 @@ public static class SeeGhosts_ChatController_AddChat_Prefix
 		GameData.PlayerInfo data = PlayerControl.LocalPlayer.Data;
 		GameData.PlayerInfo data2 = sourcePlayer.Data;
 
-		if (data2 == null || data == null) //Remove isDead check for LocalPlayer
+		if (data2 == null || data == null) // Remove isDead check for LocalPlayer
 		{
 			return false;
 		}
@@ -98,7 +104,7 @@ public static class SeeGhosts_ChatController_AddChat_Prefix
 			ChatController.Logger.Error(message.ToString(), null);
 			__instance.chatBubblePool.Reclaim(pooledBubble);
 		}
-        
-        return false; //Skips the original method completly
-    }
+
+		return false; // Skips the original method completly
+	}
 }

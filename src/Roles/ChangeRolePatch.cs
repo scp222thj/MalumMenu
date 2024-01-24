@@ -8,27 +8,30 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to murder any player
+    // Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to pick a role
     public static bool isActive;
     public static AmongUs.GameOptions.RoleTypes? oldRole = null;
-    public static void Postfix(PlayerPhysics __instance){
-        if (CheatToggles.changeRole){
-
-            if (!isActive){
-
-                //Close any player pick menus already open & their cheats
-                if (Utils_PlayerPickMenu.playerpickMenu != null){
+    public static void Postfix(PlayerPhysics __instance)
+    {
+        if (CheatToggles.changeRole)
+        {
+            if (!isActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (Utils_PlayerPickMenu.playerpickMenu != null)
+                {
                     Utils_PlayerPickMenu.playerpickMenu.Close();
                     CheatToggles.DisablePPMCheats("changeRole");
                 }
 
-                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
+                // Creates a list of roles for the pick menu
+                List<GameData.PlayerInfo> roleList = new List<GameData.PlayerInfo>();
 
-                //This check is done to prevent players from getting kicked by mistake
-                //when switching to shapeshifter role & trying to shapeshift
-                if (oldRole == AmongUs.GameOptions.RoleTypes.Shapeshifter){
-
-                    //Shapeshifter custom choice
+                // This check is done to prevent players from getting kicked by mistake
+                // when switching to shapeshifter role & trying to shapeshift
+                if (oldRole == AmongUs.GameOptions.RoleTypes.Shapeshifter)
+                {
+                    // Shapeshifter custom choice
                     GameData.PlayerInfo shapeshifterChoice = new GameData.PlayerInfo(255)
                     {
                         PlayerName = "Shapeshifter"
@@ -38,11 +41,11 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                     shapeshifterChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_eliksni";
                     shapeshifterChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Shapeshifter);
                     shapeshifterChoice.PlayerName = Utils.getRoleName(shapeshifterChoice);
-                    playerDataList.Add(shapeshifterChoice);
+                    roleList.Add(shapeshifterChoice);
 
                 }
 
-                //Impostor custom choice
+                // Impostor choice for the pick menu
                 GameData.PlayerInfo impostorChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Impostor"
@@ -50,9 +53,9 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 impostorChoice.Outfits[PlayerOutfitType.Default].ColorId = 0;
                 impostorChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Impostor);
                 impostorChoice.PlayerName = Utils.getRoleName(impostorChoice);
-                playerDataList.Add(impostorChoice);
+                roleList.Add(impostorChoice);
 
-                //Engineer custom choice
+                // Engineer choice for the pick menu
                 GameData.PlayerInfo engineerChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Engineer"
@@ -62,9 +65,9 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 engineerChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_D2CGoggles";
                 engineerChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Engineer);
                 engineerChoice.PlayerName = Utils.getRoleName(engineerChoice);
-                playerDataList.Add(engineerChoice);
+                roleList.Add(engineerChoice);
 
-                //Scientist custom choice
+                // Scientist choice for the pick menu
                 GameData.PlayerInfo scientistChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Scientist"
@@ -74,9 +77,9 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 scientistChoice.Outfits[PlayerOutfitType.Default].VisorId = "visor_pk01_PaperMaskVisor";
                 scientistChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Scientist);
                 scientistChoice.PlayerName = Utils.getRoleName(scientistChoice);
-                playerDataList.Add(scientistChoice);
+                roleList.Add(scientistChoice);
 
-                //Crewmate custom choice
+                // Crewmate choice for the pick menu
                 GameData.PlayerInfo crewmateChoice = new GameData.PlayerInfo(255)
                 {
                     PlayerName = "Crewmate"
@@ -84,41 +87,47 @@ public static class ChangeRole_PlayerPhysics_LateUpdate_Postfix
                 crewmateChoice.Outfits[PlayerOutfitType.Default].ColorId = 10;
                 crewmateChoice.Role = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Crewmate);
                 crewmateChoice.PlayerName = Utils.getRoleName(crewmateChoice);
-                playerDataList.Add(crewmateChoice);
+                roleList.Add(crewmateChoice);
 
-                //New player pick menu made for changing your roles with a custom choice list
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
+                // New player pick menu made for changing your roles with the custom list
+                Utils_PlayerPickMenu.openPlayerPickMenu(roleList, (Action)(() =>
                 {
-
-                    //Log the old, original role before it gets changed by changeRole cheat
-                    if (!Utils.isLobby && oldRole == null){
+                    // Log the old, original role before it gets changed by changeRole cheat
+                    if (!Utils.isLobby && oldRole == null)
+                    {
                         oldRole = PlayerControl.LocalPlayer.Data.RoleType;
                     }
 
-                    if (PlayerControl.LocalPlayer.Data.IsDead){ //Prevent accidential revives
-                        if (Utils_PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor){
+                    if (PlayerControl.LocalPlayer.Data.IsDead)
+                    { // Prevent accidential client-side revives
+                        if (Utils_PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor)
+                        {
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.ImpostorGhost);
-                        }else{
+                        }
+                        else
+                        {
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, AmongUs.GameOptions.RoleTypes.CrewmateGhost);
                         }
-                    }else{
+                    }
+                    else
+                    {
                         RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, Utils_PlayerPickMenu.targetPlayerData.Role.Role);
                     }
-
-                    
-                
                 }));
 
                 isActive = true;
             }
 
-            //Deactivate cheat if menu is closed
-            if (Utils_PlayerPickMenu.playerpickMenu == null){
+            // Deactivate cheat if menu is closed
+            if (Utils_PlayerPickMenu.playerpickMenu == null)
+            {
                 CheatToggles.changeRole = false;
             }
-
-        }else{
-            if (isActive){
+        }
+        else
+        {
+            if (isActive)
+            {
                 isActive = false;
             }
         }

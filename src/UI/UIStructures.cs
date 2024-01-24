@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+// This file just helps to create & handle the toggles & subcateogries in the UI.
+
 namespace MalumMenu
 {
     public struct SubmenuInfo

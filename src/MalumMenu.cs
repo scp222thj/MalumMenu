@@ -24,7 +24,7 @@ public partial class MalumMenu : BasePlugin
     public override void Load()
     {
 
-        //Load config settings
+        // Load config settings
         menuKeybind = Config.Bind("MalumMenu",
                                 "GUIKeybind",
                                 "Delete",
@@ -43,14 +43,15 @@ public partial class MalumMenu : BasePlugin
         Harmony.PatchAll();
         menuUI = AddComponent<MenuUI>();
 
-        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
+        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
         {
             if (scene.name == "MainMenu")
             {
-                ModManager.Instance.ShowModStamp(); //Required by InnerSloth Modding Policy
+                ModManager.Instance.ShowModStamp(); // Required by InnerSloth Modding Policy. Also helps debug players
 
-                //Warn about unsupported AU versions
-                if (!supportedAU.Contains(Application.version)){
+                // Warn about unsupported AU versions
+                if (!supportedAU.Contains(Application.version))
+                {
                     Utils.showPopup("\nThis version of MalumMenu and this version of Among Us are incompatible\n\nInstall the right version to avoid problems");
                 }
             }

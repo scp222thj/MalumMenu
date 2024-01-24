@@ -10,45 +10,60 @@ public static class HudCheats_HudManager_Update_Postfix
     public static bool chatActive;
     public static bool fullBrightActive;
 
-    //Postfix patch of HudManager.Update for several HUD modules
-    public static void Postfix(HudManager __instance){
-        //Remove all shadows if CheatSettings.fullBright or camera is zoomed-out or spectating/freecam
+    // Postfix patch of HudManager.Update for several HUD modules
+    public static void Postfix(HudManager __instance)
+    {
+        // Remove all shadows if CheatSettings.fullBright or camera is zoomed-out or spectating/freecam
         fullBrightActive = CheatToggles.fullBright || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
         __instance.ShadowQuad.gameObject.SetActive(!fullBrightActive);
 
-        //Allow seeing chat icon in-game even while you're not supposed to
-        try{
+        // Allow seeing chat icon in-game even while you're not supposed to
+        try
+        {
             chatActive = Utils.utilsOpenChat || CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
-        }catch{chatActive = false;}
+        }
+        catch
+        {
+            chatActive = false;
+        }
         __instance.Chat.gameObject.SetActive(chatActive);
 
-        //Allow zooming-out through mouse wheel if CheatSettings.zoomOut is enabled
-        if(CheatToggles.zoomOut){
+        // Allow zooming-out through mouse wheel if CheatSettings.zoomOut is enabled
+        if (CheatToggles.zoomOut)
+        {
             resolutionchangeNeeded = true;
-            if(Input.GetAxis("Mouse ScrollWheel") < 0f ){
-                Camera.main.orthographicSize++; //Uses the orthographicSize of both the main camera and the UI camera
+            if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+            {
+                Camera.main.orthographicSize++; // Uses the orthographicSize of both the main camera and the UI camera
                 __instance.UICamera.orthographicSize++;
-                Utils.adjustResolution(); //Utils.AdjustResolution() is needed to properly position the game's UI after a change in orthographicSize
-            } else if(Input.GetAxis("Mouse ScrollWheel") > 0f ){
-                if (Camera.main.orthographicSize > 3f){
+                Utils.adjustResolution(); // Utils.AdjustResolution() is needed to properly position the game's UI after a change in orthographicSize
+            }
+            else if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+            {
+                if (Camera.main.orthographicSize > 3f)
+                {
                     Camera.main.orthographicSize--;
                     __instance.UICamera.orthographicSize--;
                     Utils.adjustResolution();
                 }
             }
-        //Reset camera when CheatSettings.zoomOut is disabled
-        } else {
+            // Reset camera when CheatSettings.zoomOut is disabled
+        }
+        else
+        {
             Camera.main.orthographicSize = 3f;
             __instance.UICamera.orthographicSize = 3f;
-            if (resolutionchangeNeeded){ //Only invoked once when CheatSettings.zoomOut is disabled to prevent problems with the UI
+            if (resolutionchangeNeeded) // Only invoked once when CheatSettings.zoomOut is disabled to prevent problems with the UI
+            {
                 Utils.adjustResolution();
                 resolutionchangeNeeded = false;
             }
         }
 
-        //Close player pick menu when it is not being used
-        if (Utils_PlayerPickMenu.playerpickMenu != null && CheatToggles.shouldPPMClose()){
+        // Close player pick menu when it is not being used
+        if (Utils_PlayerPickMenu.playerpickMenu != null && CheatToggles.shouldPPMClose())
+        {
             Utils_PlayerPickMenu.playerpickMenu.Close();
         }
     }
-}    
+}

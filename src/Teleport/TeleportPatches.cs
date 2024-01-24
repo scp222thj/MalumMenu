@@ -8,13 +8,14 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class TeleportCursor_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to teleport to cursor position on right-click
+    // Postfix patch of PlayerPhysics.LateUpdate to teleport to cursor position on right-click
     public static void Postfix(PlayerPhysics __instance)
     {
         if (CheatToggles.teleportCursor)
         {
             if (Input.GetMouseButtonDown(1)) // Register right-click
             {
+                // Snap the client to the screen point from the mouse position
                 PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
         }
@@ -22,9 +23,9 @@ public static class TeleportCursor_PlayerPhysics_LateUpdate_Postfix
 }
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class TeleportPlayerPlayer_PlayerPhysics_LateUpdate_Postfix
+public static class TeleportToPlayer_PlayerPhysics_LateUpdate_Postfix
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to teleport to any player
+    // Postfix patch of PlayerPhysics.LateUpdate to open player pick menu to teleport yourself to any player
     public static bool isActive;
     public static void Postfix(PlayerPhysics __instance)
     {
@@ -32,7 +33,7 @@ public static class TeleportPlayerPlayer_PlayerPhysics_LateUpdate_Postfix
         {
             if (!isActive)
             {
-                //Close any player pick menus already open & their cheats
+                // Close any player pick menus already open & their cheats
                 if (Utils_PlayerPickMenu.playerpickMenu != null)
                 {
                     Utils_PlayerPickMenu.playerpickMenu.Close();
@@ -44,7 +45,8 @@ public static class TeleportPlayerPlayer_PlayerPhysics_LateUpdate_Postfix
                 // All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (!player.AmOwner){
+                    if (!player.AmOwner)
+                    {
                         playerDataList.Add(player.Data);
                     }
                 }
@@ -59,7 +61,8 @@ public static class TeleportPlayerPlayer_PlayerPhysics_LateUpdate_Postfix
             }
 
             //Deactivate cheat if menu is closed
-            if (Utils_PlayerPickMenu.playerpickMenu == null){
+            if (Utils_PlayerPickMenu.playerpickMenu == null)
+            {
                 CheatToggles.teleportPlayer = false;
             }
         }

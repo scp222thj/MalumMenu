@@ -4,14 +4,13 @@ using System.Collections.Generic;
 namespace MalumMenu;
 public class MenuUI : MonoBehaviour
 {
-
     public List<GroupInfo> groups = new List<GroupInfo>();
     private bool isDragging = false;
     private Rect windowRect = new Rect(10, 10, 300, 500);
     private bool isGUIActive = false;
     private GUIStyle submenuButtonStyle;
 
-    //Create all groups (buttons) and their toggles on start
+    // Create all groups (buttons) and their toggles on start
     private void Start()
     {
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
@@ -62,7 +61,7 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {
             new ToggleInfo(" ChangeRole", () => CheatToggles.changeRole, x => CheatToggles.changeRole = x),
-        }, 
+        },
             new List<SubmenuInfo> {
                 new SubmenuInfo("Crewmate", false, new List<ToggleInfo>() {
                     new ToggleInfo(" CompleteMyTasks", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x)
@@ -105,14 +104,14 @@ public class MenuUI : MonoBehaviour
             }),
         }));
 
-        //Host-Only cheats are temporarly disabled because of some bugs
+        // Host-Only cheats are temporarly disabled because of some bugs
 
-        //groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
-        //    new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
-        //    new ToggleInfo(" Godmode", () => CheatSettings.godMode, x => CheatSettings.godMode = x),
-        //    new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
-        //    new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
-        //}, new List<SubmenuInfo>()));
+        // groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
+        //     new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
+        //     new ToggleInfo(" Godmode", () => CheatSettings.godMode, x => CheatSettings.godMode = x),
+        //     new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
+        //     new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
+        // }, new List<SubmenuInfo>()));
 
         groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>(){
             new ToggleInfo(" RandomFriendCode", () => CheatToggles.spoofRandomFC, x => CheatToggles.spoofRandomFC = x),
@@ -130,31 +129,35 @@ public class MenuUI : MonoBehaviour
         }, new List<SubmenuInfo>()));
     }
 
-    private void Update(){
+    private void Update()
+    {
+        // Enable-disable GUI with config key, default DELETE
         if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), MalumMenu.menuKeybind.Value)))
         {
-            //Enable-disable GUI with DELETE key
             isGUIActive = !isGUIActive;
 
-            //Also teleport the window to the mouse for immediate use
+            // Teleport the window to the mouse for immediate use
             Vector2 mousePosition = Input.mousePosition;
             windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
         }
 
-        //Passive cheats are always on to avoid problems
+        // Passive cheats are always on to avoid problems
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
-        if(!Utils.isPlayer){
+        if (!Utils.isPlayer)
+        {
             CheatToggles.changeRole = CheatToggles.murderAll = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.murderPlayer;
         }
 
-        //Host-only cheats are turned off if LocalPlayer is not the game's host
-        //if(!CheatChecks.isHost){
-        //    CheatToggles.voteImmune = CheatToggles.godMode = CheatToggles.impostorHack = CheatToggles.evilVote = false;
-        //}
+        // Host-only cheats are turned off if LocalPlayer is not the game's host
+        // if (!CheatChecks.isHost)
+        // {
+        //     CheatToggles.voteImmune = CheatToggles.godMode = CheatToggles.impostorHack = CheatToggles.evilVote = false;
+        // }
 
-        //Some cheats only work if the ship is present, so they are turned off if it is not
-        if(!Utils.isShip){
+        // Some cheats only work if the ship is present, so they are turned off if it is not
+        if (!Utils.isShip)
+        {
             CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
             Sabotages_ShipStatus_FixedUpdate_Postfix.reactorSab = Sabotages_ShipStatus_FixedUpdate_Postfix.commsSab = Sabotages_ShipStatus_FixedUpdate_Postfix.elecSab = Sabotages_ShipStatus_FixedUpdate_Postfix.oxygenSab = UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive = false;
         }
@@ -171,14 +174,13 @@ public class MenuUI : MonoBehaviour
             submenuButtonStyle.normal.background.Apply();
         }
 
-        //If GUI is enabled render the window
+        // If GUI is enabled, render the window
         if (isGUIActive)
         {
             GUI.skin.toggle.fontSize = 20;
             GUI.skin.button.fontSize = 20;
 
-            //Only change the window height while the user is not dragging it
-            //Or else dragging breaks
+            // Only change the window height while the user is not dragging it, or else dragging breaks
             if (!isDragging)
             {
                 int windowHeight = CalculateWindowHeight();
@@ -189,6 +191,7 @@ public class MenuUI : MonoBehaviour
         }
     }
 
+    // Handles window creation
     public void WindowFunction(int windowID)
     {
         int groupSpacing = 50;
@@ -204,7 +207,7 @@ public class MenuUI : MonoBehaviour
             {
                 group.isExpanded = !group.isExpanded;
                 groups[groupId] = group;
-                CloseAllGroupsExcept(groupId); // Close all other groups when one is expanded
+                CloseAllGroupsExcept(groupId); //  Close all other groups when one is expanded
             }
             currentYPosition += groupSpacing;
 
@@ -266,12 +269,11 @@ public class MenuUI : MonoBehaviour
             isDragging = false;
         }
 
-        GUI.DragWindow(); //Allows dragging the GUI window with mouse
+        GUI.DragWindow(); // Allows dragging the GUI window with mouse
     }
 
 
-    //Dynamically calculate the window's height depending on
-    //The number of toggles & group expansion
+    // Dynamically calculate the window's height depending on the number of toggles & group expansion
     private int CalculateWindowHeight()
     {
         int totalHeight = 70; // Base height for the window
@@ -329,5 +331,4 @@ public class MenuUI : MonoBehaviour
             }
         }
     }
-
 }

@@ -6,46 +6,43 @@ namespace MalumMenu;
 public static class WalkInVents_PlayerPhysics_LateUpdate_Postfix
 {
 
-    //Postfix patch of PlayerPhysics.LateUpdate to allow movement and interactions from within vents
-    //if CheatSettings.walkVent is enabled
+    // Postfix patch of PlayerPhysics.LateUpdate to allow movement and interactions from within vents if walkVent is enabled
     public static void Postfix(PlayerPhysics __instance)
     {
-        try{
-
-        if (PlayerControl.LocalPlayer.inVent && CheatToggles.walkVent){
-            PlayerControl.LocalPlayer.inVent = false;
-            PlayerControl.LocalPlayer.moveable = true;
+        try
+        {
+            if (PlayerControl.LocalPlayer.inVent && CheatToggles.walkVent)
+            {
+                // Tricks the client into thinking the player is in a vent, but doesn't actually kick them out.
+                PlayerControl.LocalPlayer.inVent = false;
+                PlayerControl.LocalPlayer.moveable = true;
+            }
         }
-
-        }catch{}
-
+        catch { }
     }
 }
 
-//This patch contains some old commented-out code that I might re-add in the future
-//However I removed it because it slowed down the operation
+// This patch contains some old commented-out code that I might re-add in the future
+// However I removed it because it slowed down the operation
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class KickVents_ShipStatus_FixedUpdate_Postfix
 {
-
-    //Postfix patch of ShipStatus.FixedUpdate that loops through all vents and kicks players within
+    // Postfix patch of ShipStatus.FixedUpdate that loops through all vents and kicks players within
     public static void Postfix(ShipStatus __instance)
     {
-        if (CheatToggles.kickVents){
-
+        if (CheatToggles.kickVents)
+        {
             //var ventSystem = __instance.Systems[SystemTypes.Ventilation].Cast<VentilationSystem>();
 
-            foreach(var vent in ShipStatus.Instance.AllVents){
-
-                //if (ventSystem.IsImpostorInsideVent(vent.Id)){
-
+            foreach (var vent in ShipStatus.Instance.AllVents)
+            {
+                //if (ventSystem.IsImpostorInsideVent(vent.Id))
+                // {
                 VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id); //Unlike PlayerPhysics.RpcBootFromVent, this code also works for clients
-                
                 //}
-
             }
 
-            CheatToggles.kickVents = false; //Button behaviour
+            CheatToggles.kickVents = false; // Disable cheat instantly because it's complete
         }
     }
 }
