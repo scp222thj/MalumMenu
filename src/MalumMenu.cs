@@ -38,7 +38,7 @@ public partial class MalumMenu : BasePlugin
         spoofLevel = Config.Bind("MalumMenu.Spoofing",
                                 "Level",
                                 "",
-                                "Your spoofed level that will be used in online games.");
+                                "Your spoofed level that will be used in online games. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
 
         Harmony.PatchAll();
         menuUI = AddComponent<MenuUI>();

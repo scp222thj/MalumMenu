@@ -1,7 +1,5 @@
 using AmongUs.Data;
-using AmongUs.Data.Player;
 using HarmonyLib;
-using static Il2CppSystem.Linq.Expressions.Interpreter.CastInstruction.CastInstructionNoT;
 
 namespace MalumMenu;
 
@@ -9,9 +7,10 @@ namespace MalumMenu;
 public static class Spoofing_EOSManager_Update_Postfix
 {
     public static string defaultFC = null;
-    public static string defaultLevel = null;
+    public static uint? defaultLevel = null;
+    public static uint parsedValue;
 
-    //Postfix patch of EOSManager.Update to spoof friend codes
+    //Postfix patch of EOSManager.Update to spoof some player attributes
     public static void Postfix(EOSManager __instance)
     {
         try{
@@ -36,18 +35,21 @@ public static class Spoofing_EOSManager_Update_Postfix
                 defaultFC = null;
             }
 
-            if (MalumMenu.spoofLevel.Value != "" && int.Parse(MalumMenu.spoofLevel.Value) > 0 && int.Parse(MalumMenu.spoofLevel.Value) != (int)DataManager.Player.Stats.Level){ //friendCodeSpoofing from config cheat logic
+            if (!string.IsNullOrEmpty(MalumMenu.spoofLevel.Value) && 
+                uint.TryParse(MalumMenu.spoofLevel.Value, out parsedValue) &&
+                parsedValue != DataManager.Player.Stats.Level)
+            {
                 if (defaultLevel == null)
                 {
-                    defaultLevel = $"{DataManager.Player.Stats.Level}";
+                    defaultLevel = DataManager.Player.Stats.Level;
                 }
 
-                DataManager.Player.stats.level = (uint)(int.Parse(MalumMenu.spoofLevel.Value) - 1);
+                DataManager.Player.stats.level = parsedValue - 1;
                 DataManager.Player.Save();
             }
 
             else if (defaultLevel != null){
-                DataManager.Player.stats.level = (uint)int.Parse(defaultLevel);
+                DataManager.Player.stats.level = (uint)defaultLevel;
                 DataManager.Player.Save();
                 defaultLevel = null;
             }
