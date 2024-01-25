@@ -136,7 +136,7 @@ public class MenuUI : MonoBehaviour
 
     private void Update(){
 
-        if (Input.GetKeyDown(MalumMenu.menuKeybind.Value.toKeyCode()))
+        if (Input.GetKeyDown(Utils.stringToKeycode(MalumMenu.menuKeybind.Value)))
         {
             //Enable-disable GUI with DELETE key
             isGUIActive = !isGUIActive;

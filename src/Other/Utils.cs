@@ -165,6 +165,16 @@ public static class Utils
 
     }
 
+    //Close Chat UI
+    public static float getDistanceFrom(this PlayerControl source, PlayerControl target){
+        
+        Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
+		float magnitude = vector.magnitude;
+
+        return magnitude;
+
+    }
+
     //Gets current map ID
     public static byte getCurrentMapID()
     {
@@ -202,7 +212,7 @@ public static class Utils
     }
 
     //Get a UnityEngine.KeyCode from a string
-    public static KeyCode toKeyCode(this string keyCodeStr){
+    public static KeyCode stringToKeycode(string keyCodeStr){
 
         if(!string.IsNullOrEmpty(keyCodeStr)){ //Empty strings are automatically invalid
 

@@ -55,6 +55,7 @@ namespace MalumMenu
         public static bool tracersGhosts;
         public static bool tracersBodies;
         public static bool colorBasedTracers;
+        public static bool distanceBasedTracers;
         
         //Ship
         public static bool closeMeeting;
