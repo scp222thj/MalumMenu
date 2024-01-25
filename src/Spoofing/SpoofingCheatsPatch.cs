@@ -25,7 +25,7 @@ public static class Spoofing_EOSManager_Update_Postfix
                 __instance.FriendCode = username + "#" + discriminator;
             }
 
-            else if (MalumMenu.spoofFriendCode.Value != "" && MalumMenu.spoofFriendCode.Value != __instance.FriendCode){ //friendCodeSpoofing from config cheat logic
+            else if (!string.IsNullOrEmpty(MalumMenu.spoofFriendCode.Value) && MalumMenu.spoofFriendCode.Value != __instance.FriendCode){ //friendCodeSpoofing from config cheat logic
                 __instance.FriendCode = MalumMenu.spoofFriendCode.Value; //Set custom friend code from config file
             }
 

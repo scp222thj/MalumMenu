@@ -201,6 +201,25 @@ public static class Utils
         }
     }
 
+    //Get a UnityEngine.KeyCode from a string
+    public static KeyCode toKeyCode(this string keyCodeStr){
+
+        if(!string.IsNullOrEmpty(keyCodeStr)){ //Empty strings are automatically invalid
+
+            try{
+                
+                //Case-insensitive parse of UnityEngine.KeyCode to check if string is validssss
+                KeyCode keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyCodeStr, true);
+                
+                return keyCode;
+
+            }catch{}
+        
+        }
+
+        return KeyCode.Delete; //If string is invalid, return Delete as the default key
+    }
+
     public static string getRoleName(GameData.PlayerInfo playerData)
     {
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());

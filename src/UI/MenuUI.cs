@@ -123,6 +123,10 @@ public class MenuUI : MonoBehaviour
             }),
         }));
 
+        groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
+            new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
+        }, new List<SubmenuInfo>()));
+
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" FreeCosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
             new ToggleInfo(" AvoidPenalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
@@ -131,7 +135,8 @@ public class MenuUI : MonoBehaviour
     }
 
     private void Update(){
-        if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), MalumMenu.menuKeybind.Value)))
+
+        if (Input.GetKeyDown(MalumMenu.menuKeybind.Value.toKeyCode()))
         {
             //Enable-disable GUI with DELETE key
             isGUIActive = !isGUIActive;
@@ -185,7 +190,7 @@ public class MenuUI : MonoBehaviour
                 windowRect.height = windowHeight;
             }
 
-            windowRect = GUI.Window(0, windowRect, (UnityEngine.GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+            windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
         }
     }
 
