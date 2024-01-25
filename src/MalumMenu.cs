@@ -16,7 +16,8 @@ public partial class MalumMenu : BasePlugin
     public Harmony Harmony { get; } = new(Id);
     public static string malumVersion = "2.1.0";
     public static List<string> supportedAU = new List<string> { "2023.11.28" };
-    private static MenuUI menuUI;
+    public static MenuUI menuUI;
+    public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> spoofFriendCode;
     public static ConfigEntry<string> spoofLevel;
@@ -41,7 +42,9 @@ public partial class MalumMenu : BasePlugin
                                 "Your spoofed level that will be used in online games. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
 
         Harmony.PatchAll();
+        
         menuUI = AddComponent<MenuUI>();
+        consoleUI = AddComponent<ConsoleUI>();
 
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
         {

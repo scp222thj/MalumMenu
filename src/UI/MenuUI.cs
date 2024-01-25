@@ -122,6 +122,10 @@ public class MenuUI : MonoBehaviour
             }),
         }));
 
+        groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
+            new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
+        }, new List<SubmenuInfo>()));
+
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" FreeCosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
             new ToggleInfo(" AvoidPenalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
@@ -131,8 +135,7 @@ public class MenuUI : MonoBehaviour
 
     private void Update()
     {
-        // Enable-disable GUI with config key, default DELETE
-        if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), MalumMenu.menuKeybind.Value)))
+        if (Input.GetKeyDown(Utils.stringToKeycode(MalumMenu.menuKeybind.Value))) // Enable-disable GUI with config key, default DELETE
         {
             isGUIActive = !isGUIActive;
 
@@ -165,30 +168,31 @@ public class MenuUI : MonoBehaviour
 
     public void OnGUI()
     {
+
+        if (!isGUIActive) return;
+
         if (submenuButtonStyle == null)
         {
             submenuButtonStyle = new GUIStyle(GUI.skin.button);
+
             submenuButtonStyle.normal.textColor = Color.white;
+
             submenuButtonStyle.fontSize = 18;
+            GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = 20;
+
             submenuButtonStyle.normal.background = Texture2D.grayTexture;
             submenuButtonStyle.normal.background.Apply();
         }
 
-        // If GUI is enabled, render the window
-        if (isGUIActive)
+        // Only change the window height while the user is not dragging it
+        // Or else dragging breaks
+        if (!isDragging)
         {
-            GUI.skin.toggle.fontSize = 20;
-            GUI.skin.button.fontSize = 20;
-
-            // Only change the window height while the user is not dragging it, or else dragging breaks
-            if (!isDragging)
-            {
-                int windowHeight = CalculateWindowHeight();
-                windowRect.height = windowHeight;
-            }
-
-            windowRect = GUI.Window(0, windowRect, (UnityEngine.GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+            int windowHeight = CalculateWindowHeight();
+            windowRect.height = windowHeight;
         }
+
+        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
 
     // Handles window creation

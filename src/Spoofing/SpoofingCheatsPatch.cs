@@ -27,14 +27,11 @@ public static class Spoofing_EOSManager_Update_Postfix
                 string discriminator = new System.Random().Next(1000, 10000).ToString();
                 __instance.FriendCode = username + "#" + discriminator;
             }
-
-            else if (MalumMenu.spoofFriendCode.Value != "" && MalumMenu.spoofFriendCode.Value != __instance.FriendCode)
+            else if (!string.IsNullOrEmpty(MalumMenu.spoofFriendCode.Value) && MalumMenu.spoofFriendCode.Value != __instance.FriendCode)
             {
-                __instance.FriendCode = MalumMenu.spoofFriendCode.Value; //Set custom friend code from config file
+                __instance.FriendCode = MalumMenu.spoofFriendCode.Value; // Set custom friend code from config file
             }
-
-            // Return to default friend code if both cheats are disabled
-            else if (defaultFC != null)
+            else if (defaultFC != null) // Return to default friend code if both cheats are disabled
             {
                 __instance.FriendCode = defaultFC;
                 defaultFC = null;

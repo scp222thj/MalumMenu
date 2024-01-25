@@ -5,7 +5,7 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class CloseMeeting_ShipStatus_FixedUpdate_Postfix
 {
-    //Postfix patch of ShipStatus.FixedUpdate
+    //Postfix patch of ShipStatus.FixedUpdate to close meeting or exile animation at will
     public static void Postfix(ShipStatus __instance)
     {
         if (CheatToggles.closeMeeting)
@@ -17,6 +17,10 @@ public static class CloseMeeting_ShipStatus_FixedUpdate_Postfix
                 UnityEngine.Object.Destroy(MeetingHud.Instance.gameObject);
                 exileController.ReEnableGameplay();
                 exileController.WrapUp();
+
+            }else if (ExileController.Instance != null){ //Closes ExileController window if it is open
+                ExileController.Instance.ReEnableGameplay();
+                ExileController.Instance.WrapUp();
             }
 
             CheatToggles.closeMeeting = false; // Disables the cheat, now that it's complete.

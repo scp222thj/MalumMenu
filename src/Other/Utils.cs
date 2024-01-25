@@ -12,27 +12,26 @@ using AmongUs.GameOptions;
 namespace MalumMenu;
 public static class Utils
 {
-    // Adjusts HUD resolution
-    // Used to fix UI problems when zooming out
-    public static void adjustResolution()
-    {
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
-    }
-
     // Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
 
     // Quick references for cheats
     public static bool isShip => ShipStatus.Instance != null;
     public static bool isLobby => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined;
+    public static bool isFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
     public static bool isPlayer => PlayerControl.LocalPlayer != null;
     public static bool isHost = AmongUsClient.Instance.AmHost;
     public static bool utilsOpenChat;
 
+    // Adjusts HUD resolution, fixes zoom-out UI issues
+    public static void adjustResolution() {
+        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+    }
+
     // Kill any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
-        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+        if (isFreePlay){
 
             PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
             return;
@@ -56,7 +55,7 @@ public static class Utils
     public static void ReportDeadBody(GameData.PlayerInfo playerData)
     {
 
-        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+        if (isFreePlay){
 
             PlayerControl.LocalPlayer.CmdReportDeadBody(playerData);
             return;
@@ -77,7 +76,7 @@ public static class Utils
     public static void CompleteAllTasks()
     {
 
-        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+        if (isFreePlay){
 
             foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
             {
@@ -133,14 +132,21 @@ public static class Utils
         }
     }
 
+    // Get the distance between two players as a float
+    public static float getDistanceFrom(this PlayerControl source, PlayerControl target)
+    {
+        Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
+		float magnitude = vector.magnitude;
+        return magnitude;
+    }
+
     // Gets current map ID
     public static byte getCurrentMapID()
     {
         // If playing the tutorial
-        if (DestroyableSingleton<TutorialManager>.InstanceExists)
-        {
+        if (isFreePlay)
+	      {
             return (byte)AmongUsClient.Instance.TutorialMapId;
-
         }
         else
         {
@@ -155,10 +161,10 @@ public static class Utils
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
     }
 
-    // Fancy colored ping text
+    //Fancy colored ping text
     public static string getColoredPingText(int ping)
     {
-        if (ping < 100)
+        if (ping <= 100)
         { // Green for ping < 100
             return $"<color=#00ff00ff>\nPing: {ping} ms</color>";
         }
@@ -170,6 +176,21 @@ public static class Utils
         { // Red for ping > 400
             return $"<color=#ff0000ff>\nPing: {ping} ms</color>";
         }
+    }
+
+    // Get a UnityEngine.KeyCode from a string
+    public static KeyCode stringToKeycode(string keyCodeStr)
+    {
+        if (!string.IsNullOrEmpty(keyCodeStr)) // Empty strings are automatically invalid
+        { 
+            try
+            {
+                // Case-insensitive parse of UnityEngine.KeyCode to check if string is valids
+                KeyCode keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyCodeStr, true);
+                return keyCode;
+            } catch{ }
+        }
+        return KeyCode.Delete; // If string is invalid, return Delete as the default key
     }
 
     // Gets the name of your role in the current language of your client.
@@ -245,10 +266,8 @@ public static class Utils
 
     // Show custom popup ingame
     // Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
-    public static void showPopup(string text)
-    {
-        var popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
-
+    public static void showPopup(string text){
+        var popup = Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
         var background = popup.transform.Find("Background").GetComponent<SpriteRenderer>();
         var size = background.size;
         size.x *= 2.5f;
