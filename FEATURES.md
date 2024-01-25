@@ -142,14 +142,14 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 
 | Cheat | Description | Type |
 |------------|-------------|------|
-| RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, you won't be able to recieve friend requests*) | Toggle | Off |
+| RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, players won't be able to send you friend requests*) | Toggle | Off |
 
 #### Config
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
 | Spoofed FriendCode | Custom friend code that will be showed in online games<br>(*While using a spoofed friend code, players won't be able to send you friend requests*)<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
-| Spoofed Level | Custom player level<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
+| Spoofed Level | Custom player level<br>(*Custom levels can only be within 0 and 4294967295. Decimal numbers will also not work*)<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
 
 ## 💤 Passive
 
@@ -168,8 +168,8 @@ You can change all of the following configs in `BepInEx/config/MalumMenu.cfg`
 | Config | Description | Type | Default|
 |------------|-------------|------|--------|
 | GUIKeybind | The keyboard key used to toggle the GUI on and off | String | Delete |
-| FriendCode | A custom friend code that will be used in online games<br><br>**IMPORTANT**: When using a spoofed friend code, players won't be able to send you friend requests | String |  |
-| Level | A custom player level that will be used in online games | String |  |
+| FriendCode | A custom friend code that will be used in online games<br><br>**IMPORTANT**: While using a spoofed friend code, players won't be able to send you friend requests | String |  |
+| Level | A custom player level that will be used in online games<br><br>**IMPORTANT**: Custom levels can only be within 0 and 4294967295. Decimal numbers will also not work | String |  |
 
 
 ## Other relevant features of MalumMenu:
