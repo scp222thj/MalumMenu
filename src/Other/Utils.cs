@@ -23,6 +23,7 @@ public static class Utils
     
     public static bool isShip => ShipStatus.Instance != null;
     public static bool isLobby => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined;
+    public static bool isFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
     public static bool isPlayer => PlayerControl.LocalPlayer != null;
     public static bool isHost = AmongUsClient.Instance.AmHost;
     public static bool utilsOpenChat;
@@ -62,7 +63,7 @@ public static class Utils
     //Kill any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
-        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+        if (isFreePlay){
 
             PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
             return;
@@ -86,7 +87,7 @@ public static class Utils
     public static void ReportDeadBody(GameData.PlayerInfo playerData)
     {
 
-        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+        if (isFreePlay){
 
             PlayerControl.LocalPlayer.CmdReportDeadBody(playerData);
             return;
@@ -107,7 +108,7 @@ public static class Utils
     public static void CompleteAllTasks()
     {
 
-        if (DestroyableSingleton<TutorialManager>.InstanceExists){
+        if (isFreePlay){
 
             foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
             {
@@ -168,7 +169,7 @@ public static class Utils
     public static byte getCurrentMapID()
     {
         //If playing the tutorial
-        if (DestroyableSingleton<TutorialManager>.InstanceExists)
+        if (isFreePlay)
 	    {
             return (byte)AmongUsClient.Instance.TutorialMapId;
 
@@ -270,7 +271,7 @@ public static class Utils
     //Show custom popup ingame
     //Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
     public static void showPopup(string text){
-        var popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
+        var popup = Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
         
         var background = popup.transform.Find("Background").GetComponent<SpriteRenderer>();
         var size = background.size;
