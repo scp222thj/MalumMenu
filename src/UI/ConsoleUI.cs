@@ -26,16 +26,14 @@ namespace MalumMenu
 
         private void OnGUI()
         {
-            
             if (!isVisible) return;
 
-            if (logStyle == null){
-
+            if (logStyle == null)
+            {
                 logStyle = new GUIStyle(GUI.skin.label)
                 {
                     fontSize = 20
-                };
-
+                }
             }
 
             windowRect = GUI.Window(1, windowRect, (GUI.WindowFunction)ConsoleWindow, "MalumConsole");
@@ -53,9 +51,7 @@ namespace MalumMenu
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
-
             GUI.DragWindow();
         }
-
     }
 }
