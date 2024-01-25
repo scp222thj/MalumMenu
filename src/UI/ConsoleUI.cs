@@ -9,6 +9,7 @@ namespace MalumMenu
         private Vector2 scrollPosition = Vector2.zero;
         private List<string> logEntries = new List<string>();
         private Rect windowRect = new Rect(320, 10, 500, 300); // Adjust size and position as needed
+        private GUIStyle logStyle;
 
         public void Log(string message)
         {
@@ -25,17 +26,23 @@ namespace MalumMenu
 
         private void OnGUI()
         {
+            
             if (!isVisible) return;
+
+            if (logStyle == null){
+
+                logStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = 20
+                };
+
+            }
 
             windowRect = GUI.Window(1, windowRect, (GUI.WindowFunction)ConsoleWindow, "MalumConsole");
         }
 
         private void ConsoleWindow(int windowID)
         {
-            // Set the font size for the console text
-            GUIStyle logStyle = new GUIStyle(GUI.skin.label);
-            logStyle.fontSize = 20; // Match this size with your MenuUI font size
-
             GUILayout.BeginVertical();
             scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, true);
 

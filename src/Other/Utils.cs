@@ -12,12 +12,6 @@ using AmongUs.GameOptions;
 namespace MalumMenu;
 public static class Utils
 {
-    //Adjusts HUD resolution
-    //Used to fix UI problems when zooming out
-    public static void adjustResolution() {
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
-    }
-
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
     
@@ -27,38 +21,12 @@ public static class Utils
     public static bool isPlayer => PlayerControl.LocalPlayer != null;
     public static bool isHost = AmongUsClient.Instance.AmHost;
     public static bool utilsOpenChat;
-    
-    //Completly randomize a player outfit using fake RPC calls
-/*  public static void ShuffleOutfit(PlayerControl sender)
-    {
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
-        {
-            foreach (var item in PlayerControl.AllPlayerControls)
-            {
-                MessageWriter colorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetColor, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter nameWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetName, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter hatWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetHatStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter petWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetPetStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter visorWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetVisorStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                MessageWriter skinWriter = AmongUsClient.Instance.StartRpcImmediately(sender.NetId, (byte)RpcCalls.SetSkinStr, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
 
-                colorWriter.Write((byte)new System.Random().Next(18));
-                nameWriter.Write(DestroyableSingleton<AccountManager>.Instance.GetRandomName());
-                hatWriter.Write(referenceDataManager.Refdata.hats[new System.Random().Next(referenceDataManager.Refdata.hats.Count)].ProdId);
-                petWriter.Write(referenceDataManager.Refdata.pets[new System.Random().Next(referenceDataManager.Refdata.pets.Count)].ProdId);
-                visorWriter.Write(referenceDataManager.Refdata.visors[new System.Random().Next(referenceDataManager.Refdata.visors.Count)].ProdId);
-                skinWriter.Write(referenceDataManager.Refdata.skins[new System.Random().Next(referenceDataManager.Refdata.skins.Count)].ProdId);
-
-                AmongUsClient.Instance.FinishRpcImmediately(colorWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(nameWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(hatWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(petWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(visorWriter);
-                AmongUsClient.Instance.FinishRpcImmediately(skinWriter);
-            }
-        }
-    } */
+    //Adjusts HUD resolution
+    //Used to fix UI problems when zooming out
+    public static void adjustResolution() {
+        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+    }
 
     //Kill any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
@@ -165,7 +133,7 @@ public static class Utils
 
     }
 
-    //Close Chat UI
+    //Get the distance between two players as a float
     public static float getDistanceFrom(this PlayerControl source, PlayerControl target){
         
         Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
@@ -197,7 +165,7 @@ public static class Utils
     //Fancy colored ping text
     public static string getColoredPingText(int ping){
 
-        if (ping < 100){ //Green for ping < 100
+        if (ping <= 100){ //Green for ping < 100
 
             return $"<color=#00ff00ff>\nPing: {ping} ms</color>";
 

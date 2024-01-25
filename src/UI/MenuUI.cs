@@ -167,31 +167,31 @@ public class MenuUI : MonoBehaviour
 
     public void OnGUI()
     {
+
+        if (!isGUIActive) return;
+
         if (submenuButtonStyle == null)
         {
             submenuButtonStyle = new GUIStyle(GUI.skin.button);
+
             submenuButtonStyle.normal.textColor = Color.white;
+
             submenuButtonStyle.fontSize = 18;
+            GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = 20;
+
             submenuButtonStyle.normal.background = Texture2D.grayTexture;
             submenuButtonStyle.normal.background.Apply();
         }
 
-        //If GUI is enabled render the window
-        if (isGUIActive)
+        //Only change the window height while the user is not dragging it
+        //Or else dragging breaks
+        if (!isDragging)
         {
-            GUI.skin.toggle.fontSize = 20;
-            GUI.skin.button.fontSize = 20;
-
-            //Only change the window height while the user is not dragging it
-            //Or else dragging breaks
-            if (!isDragging)
-            {
-                int windowHeight = CalculateWindowHeight();
-                windowRect.height = windowHeight;
-            }
-
-            windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+            int windowHeight = CalculateWindowHeight();
+            windowRect.height = windowHeight;
         }
+
+        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
 
     public void WindowFunction(int windowID)
