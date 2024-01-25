@@ -19,7 +19,7 @@
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| to Cursor | Teleport by right-clicking with your cursor | Toggle | Off |
+| to Cursor | Teleport by right-clicking with your cursor. Works best with the ZoomOut cheat | Toggle | Off |
 | to Player | Teleport to a player's position by selecting them | Menu |
 
 ## 👁️ ESP
