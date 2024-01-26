@@ -46,18 +46,20 @@ public static class Spoofing_EOSManager_Update_Postfix
     }
 }
 
-[HarmonyPatch(typeof(Constants), nameof(Constants.GetPlatformType))]
+[HarmonyPatch(typeof(PlatformSpecificData), nameof(PlatformSpecificData.Serialize))]
 public static class Spoofing_Constants_GetPlatformType_Postfix
 {
-    //Postfix patch of Constants.GetPlatformType to spoof the user's platform type
-    public static void Postfix(ref Platforms __result)
+    //Prefix patch of Constants.GetPlatformType to spoof the user's platform type
+    public static bool Prefix(PlatformSpecificData __instance)
     {
 
         Platforms? platformType;
 
         if (Utils.stringToPlatformType(MalumMenu.spoofPlatform.Value, out platformType))
         {
-            __result = (Platforms)platformType;
+            __instance.Platform = (Platforms)platformType;
         }
+
+        return true;
     }
 }
