@@ -191,6 +191,12 @@ public class MenuUI : MonoBehaviour
             windowRect.height = windowHeight;
         }
 
+        Color configUIColor;
+        
+        if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out configUIColor)){
+            GUI.backgroundColor = configUIColor;
+        }
+
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
 

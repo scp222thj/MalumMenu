@@ -38,6 +38,12 @@ namespace MalumMenu
 
             }
 
+            Color configUIColor;
+        
+            if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out configUIColor)){
+                GUI.backgroundColor = configUIColor;
+            }
+
             windowRect = GUI.Window(1, windowRect, (GUI.WindowFunction)ConsoleWindow, "MalumConsole");
         }
 

@@ -19,6 +19,7 @@ public partial class MalumMenu : BasePlugin
     public static MenuUI menuUI;
     public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
+    public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<string> spoofFriendCode;
     public static ConfigEntry<string> spoofLevel;
 
@@ -30,6 +31,11 @@ public partial class MalumMenu : BasePlugin
                                 "GUIKeybind",
                                 "Delete",
                                 "The keyboard key used to toggle the GUI on and off");
+
+        menuHtmlColor = Config.Bind("MalumMenu",
+                                "GUIColor",
+                                "",
+                                "A custom color for your MalumMenu GUI. Supports html color codes");
 
         spoofFriendCode = Config.Bind("MalumMenu.Spoofing",
                                 "FriendCode",
