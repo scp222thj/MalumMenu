@@ -193,6 +193,24 @@ public static class Utils
         return KeyCode.Delete; // If string is invalid, return Delete as the default key
     }
 
+    // Get a platform type from a string
+    public static bool stringToPlatformType(string platformStr, out Platforms? platform)
+    {
+        if (!string.IsNullOrEmpty(platformStr)) // Empty strings are automatically invalid
+        { 
+            try
+            {
+                // Case-insensitive parse of Platforms from string (if it valid)
+                platform = (Platforms)System.Enum.Parse(typeof(Platforms), platformStr, true);
+                
+                return true; // If platform type is valid, return false
+            } catch{ }
+        }
+
+        platform = null;
+        return false; // If platform type is invalid, return false
+    }
+
     // Gets the name of your role in the current language of your client.
     public static string getRoleName(GameData.PlayerInfo playerData)
     {
