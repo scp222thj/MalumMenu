@@ -22,6 +22,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<string> spoofFriendCode;
     public static ConfigEntry<string> spoofLevel;
+    public static ConfigEntry<string> spoofPlatform;
 
     public override void Load()
     {
@@ -30,7 +31,7 @@ public partial class MalumMenu : BasePlugin
         menuKeybind = Config.Bind("MalumMenu",
                                 "GUIKeybind",
                                 "Delete",
-                                "The keyboard key used to toggle the GUI on and off");
+                                "The keyboard key used to toggle the GUI on and off. List of supported keycodes: https://docs.unity3d.com/ScriptReference/KeyCode.html");
 
         menuHtmlColor = Config.Bind("MalumMenu",
                                 "GUIColor",
@@ -40,12 +41,17 @@ public partial class MalumMenu : BasePlugin
         spoofFriendCode = Config.Bind("MalumMenu.Spoofing",
                                 "FriendCode",
                                 "",
-                                "Your spoofed friend code that will be used in online games. IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests");
+                                "A spoofed friend code that will be showed instead of your normal friend code. IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests");
 
         spoofLevel = Config.Bind("MalumMenu.Spoofing",
                                 "Level",
                                 "",
-                                "Your spoofed level that will be used in online games. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
+                                "A spoofed level that will be showed instead of your normal level. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
+        
+        spoofPlatform = Config.Bind("MalumMenu.Spoofing",
+                                "Platform",
+                                "",
+                                "A spoofed platform type that will be showed instead of your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
 
         Harmony.PatchAll();
         

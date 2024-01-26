@@ -7,7 +7,6 @@ namespace MalumMenu;
 public static class Spoofing_EOSManager_Update_Postfix
 {
     public static string defaultFC = null;
-    public static uint? defaultLevel = null;
     public static uint parsedValue;
 
     //Postfix patch of EOSManager.Update to spoof some player attributes
@@ -39,21 +38,26 @@ public static class Spoofing_EOSManager_Update_Postfix
                 uint.TryParse(MalumMenu.spoofLevel.Value, out parsedValue) &&
                 parsedValue != DataManager.Player.Stats.Level)
             {
-                if (defaultLevel == null)
-                {
-                    defaultLevel = DataManager.Player.Stats.Level;
-                }
-
                 DataManager.Player.stats.level = parsedValue - 1;
                 DataManager.Player.Save();
             }
-
-            else if (defaultLevel != null){
-                DataManager.Player.stats.level = (uint)defaultLevel;
-                DataManager.Player.Save();
-                defaultLevel = null;
-            }
         }
         catch{}
+    }
+}
+
+[HarmonyPatch(typeof(Constants), nameof(Constants.GetPlatformType))]
+public static class Spoofing_Constants_GetPlatformType_Postfix
+{
+    //Postfix patch of Constants.GetPlatformType to spoof the user's platform type
+    public static void Postfix(ref Platforms __result)
+    {
+
+        Platforms? platformType;
+
+        if (Utils.stringToPlatformType(MalumMenu.spoofPlatform.Value, out platformType))
+        {
+            __result = (Platforms)platformType;
+        }
     }
 }
