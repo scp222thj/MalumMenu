@@ -114,18 +114,19 @@ public class MenuUI : MonoBehaviour
         //    new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
         //}, new List<SubmenuInfo>()));
 
+        groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
+            new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
+        }, new List<SubmenuInfo>()));
+        
         groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>(){
             new ToggleInfo(" RandomFriendCode", () => CheatToggles.spoofRandomFC, x => CheatToggles.spoofRandomFC = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Config", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Spoofed FriendCode", () => MalumMenu.spoofFriendCode.Value != "", (bool n) => { }),
                 new ToggleInfo(" Spoofed Level", () => MalumMenu.spoofLevel.Value != "", (bool n) => { }),
+                new ToggleInfo(" Spoofed Platform", () => MalumMenu.spoofPlatform.Value != "", (bool n) => { }),
             }),
         }));
-
-        groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
-            new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
-        }, new List<SubmenuInfo>()));
 
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" FreeCosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
