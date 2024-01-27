@@ -29,7 +29,7 @@ public static class SeeGhosts_PlayerControl_ProtectPlayer_Prefix
 			__instance.Data.Role.SetCooldown();
 		}
 
-		target.TurnOnProtection(CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead, colorId, (int)__instance.Data.PlayerId); //Render protection animation if LocalPlayer dead or CheatSettings.seeGhosts
+		target.TurnOnProtection(CheatToggles.seeGhosts || (PlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor && GameOptionsManager.Instance.CurrentGameOptions.GetBool(AmongUs.GameOptions.BoolOptionNames.ImpostorsCanSeeProtect)) || PlayerControl.LocalPlayer.Data.IsDead, colorId, (int)__instance.Data.PlayerId); //Render protection animation if LocalPlayer dead or CheatSettings.seeGhosts
     
         return false; //Skips the original method completly
     }
