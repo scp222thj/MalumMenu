@@ -10,7 +10,7 @@ public static class PlatformSpecificData_Serialize
     public static bool Prefix(PlatformSpecificData __instance)
     {
 
-        return SpoofingHandler.spoofPlatform(__instance);
+        return MalumSpoof.spoofPlatform(__instance);
 
     }
 }
@@ -125,12 +125,37 @@ public static class InnerNet_InnerNetClient_JoinGame
 }
 
 [HarmonyPatch(typeof(Mushroom), nameof(Mushroom.FixedUpdate))]
-public static class SporeVision_Mushroom_FixedUpdate_Postfix
+public static class Mushroom_FixedUpdate
 {
     //Postfix patch of Mushroom.FixedUpdate that slightly moves spore clouds on the Z axis when sporeVision is enabled
     //This allows sporeVision users to see players even when they are inside a spore cloud
     public static void Postfix(Mushroom __instance)
     {
-        EspHandler.sporeCloudVision(__instance);
+        MalumESP.sporeCloudVision(__instance);
+    }
+}
+
+[HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
+public static class Vent_CanUse
+{
+    //Prefix patch of Vent.CanUse to allow venting for cheaters
+    //Basically does what the original method did with the required modifications
+    public static void Postfix(Vent __instance, GameData.PlayerInfo pc, ref bool canUse, ref bool couldUse, ref float __result)
+    {
+        if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead){
+            if (CheatToggles.useVents){
+                float num = float.MaxValue;
+                PlayerControl @object = pc.Object;
+
+                Vector3 center = @object.Collider.bounds.center;
+		        Vector3 position = __instance.transform.position;
+		        num = Vector2.Distance(center, position);
+            
+                //Allow usage of vents unless the vent is too far or there are objects blocking the player's path
+                canUse = num <= __instance.UsableDistance && !PhysicsHelpers.AnythingBetween(@object.Collider, center, position, Constants.ShipOnlyMask, false);
+                couldUse = true;
+                __result = num;
+            }    
+        }
     }
 }

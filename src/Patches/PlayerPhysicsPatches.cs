@@ -7,14 +7,14 @@ public static class PlayerPhysics_LateUpdate
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-        PlayerCheatHandler.noClipCheat();
-        PlayerCheatHandler.speedBoostCheat();
-        PlayerCheatHandler.murderAllCheat();
-        PlayerCheatHandler.teleportCursorCheat();
-        PlayerCheatHandler.murderPlayerCheat();
-        PlayerCheatHandler.teleportPlayerCheat();
+        MalumCheats.noClipCheat();
+        MalumCheats.speedBoostCheat();
+        MalumCheats.murderAllCheat();
+        MalumCheats.teleportCursorCheat();
+        MalumCheats.murderPlayerCheat();
+        MalumCheats.teleportPlayerCheat();
 
-        EspHandler.spectateCheat();
+        MalumESP.spectateCheat();
 
     }
 }

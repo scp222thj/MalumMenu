@@ -3,7 +3,7 @@ using System;
 using Il2CppSystem.Collections.Generic;
 
 namespace MalumMenu;
-public static class EspHandler
+public static class MalumESP
 {
     public static bool spectateActive;
     public static void sporeCloudVision(Mushroom mushroom)

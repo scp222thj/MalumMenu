@@ -7,8 +7,8 @@ public static class ShipStatus_FixedUpdate
 {
     public static void Postfix(ShipStatus __instance)
     {
-        ShipCheatHandler.sabotageCheat(__instance);
-        ShipCheatHandler.closeMeetingCheat();
-        ShipCheatHandler.reportBodyCheat();
+        MalumCheats.sabotageCheat(__instance);
+        MalumCheats.closeMeetingCheat();
+        MalumCheats.reportBodyCheat();
     }
 }

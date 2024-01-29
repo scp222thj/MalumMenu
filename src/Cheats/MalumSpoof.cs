@@ -1,7 +1,7 @@
 using AmongUs.Data;
 
 namespace MalumMenu;
-public static class SpoofingHandler
+public static class MalumSpoof
 {
     public static string defaultFC = null;
     public static uint parsedValue;

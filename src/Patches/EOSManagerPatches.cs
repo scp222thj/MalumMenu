@@ -8,8 +8,8 @@ public static class EOSManager_Update
     public static void Postfix(EOSManager __instance)
     {
         
-        SpoofingHandler.spoofFriendCode(__instance);
-        SpoofingHandler.spoofLevel(__instance);
+        MalumSpoof.spoofFriendCode(__instance);
+        MalumSpoof.spoofLevel(__instance);
 
     }
 }

@@ -3,10 +3,100 @@ using System;
 using UnityEngine;
 
 namespace MalumMenu;
-public static class PlayerCheatHandler
+public static class MalumCheats
 {
     public static bool murderPlayerActive;
     public static bool teleportPlayerActive;
+    public static bool reportBodyActive;
+
+    public static void reportBodyCheat(){
+        if (CheatToggles.reportBody){
+
+            if (!reportBodyActive){
+
+                //Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null){
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("reportBody");
+                }
+
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
+
+                //All players are saved to playerList apart from LocalPlayer
+                foreach (var player in PlayerControl.AllPlayerControls){
+                    if (!player.Data.IsDead){
+                        playerDataList.Add(player.Data);
+                    }
+                }
+
+                //New player pick menu to choose any body (alive or dead) to report
+                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
+                {
+                    
+                    Utils.ReportDeadBody(PlayerPickMenu.targetPlayerData);
+            
+                }));
+
+                reportBodyActive = true;
+            }
+
+            //Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null){
+                CheatToggles.reportBody = false;
+            }
+
+        }else{
+            if (reportBodyActive){
+                reportBodyActive = false;
+            }
+        }
+    }
+    public static void closeMeetingCheat()
+    {
+        if(CheatToggles.closeMeeting){
+            
+            if (MeetingHud.Instance){ //Closes MeetingHud window if it is open
+                MeetingHud.Instance.DespawnOnDestroy = false;
+                ExileController exileController = UnityEngine.Object.Instantiate<ExileController>(ShipStatus.Instance.ExileCutscenePrefab);
+                UnityEngine.Object.Destroy(MeetingHud.Instance.gameObject);
+                exileController.ReEnableGameplay();
+                exileController.WrapUp();
+
+            }else if (ExileController.Instance != null){ //Closes ExileController window if it is open
+                ExileController.Instance.ReEnableGameplay();
+                ExileController.Instance.WrapUp();
+            }
+            
+            CheatToggles.closeMeeting = false; //Button behaviour
+        }
+    }
+
+    public static void useVentCheat(HudManager hudManager)
+    {
+        //try-catch to prevent errors when role is null
+        try{
+
+			//Engineers & Impostors don't need this cheat so it is disabled for them
+			//Ghost venting causes issues so it is also disabled
+			if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead){
+				hudManager.ImpostorVentButton.gameObject.SetActive(CheatToggles.useVents);
+			}
+
+        }catch{}
+    }
+
+    public static void sabotageCheat(ShipStatus shipStatus)
+    {
+        byte currentMapID = Utils.getCurrentMapID();
+
+        MalumSabotageSystem.handleReactor(shipStatus, currentMapID);
+        MalumSabotageSystem.handleOxygen(shipStatus, currentMapID);
+        MalumSabotageSystem.handleComms(shipStatus, currentMapID);
+        MalumSabotageSystem.handleElectrical(shipStatus, currentMapID);
+        MalumSabotageSystem.handleMushMix(shipStatus, currentMapID);
+        MalumSabotageSystem.handleDoors(shipStatus);
+    }
+
     public static void murderPlayerCheat()
     {
         if (CheatToggles.murderPlayer)
