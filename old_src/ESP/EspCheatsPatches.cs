@@ -185,20 +185,3 @@ public static class RevealVotes_MeetingHud_PopulateResults_Prefix
         return true;
     }
 }
-
-[HarmonyPatch(typeof(Mushroom), nameof(Mushroom.FixedUpdate))]
-public static class SporeVision_Mushroom_FixedUpdate_Postfix
-{
-    //Postfix patch of Mushroom.FixedUpdate that slightly moves spore clouds on the Z axis when sporeVision is enabled
-    //This allows sporeVision users to see players even when they are inside a spore cloud
-    public static void Postfix(Mushroom __instance)
-    {
-        if (CheatToggles.fullBright)
-        {
-            __instance.sporeMask.transform.position = new UnityEngine.Vector3(__instance.sporeMask.transform.position.x, __instance.sporeMask.transform.position.y, -1);
-            return;
-        } 
-
-        __instance.sporeMask.transform.position = new UnityEngine.Vector3(__instance.sporeMask.transform.position.x, __instance.sporeMask.transform.position.y, 5f);
-    }
-}

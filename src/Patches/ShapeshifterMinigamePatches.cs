@@ -9,7 +9,7 @@ namespace MalumMenu;
 public static class ShapeshifterMinigame_Begin
 {
     //Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
-    public static bool Prefix(PlayerTask task, ShapeshifterMinigame __instance)
+    public static bool Prefix(ShapeshifterMinigame __instance)
     {
         if (PlayerPickMenu.IsActive){ //Player pick menu logic
 

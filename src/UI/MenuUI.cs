@@ -17,7 +17,6 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
             new ToggleInfo(" SpeedBoost", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
-            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             }, new List<SubmenuInfo> {
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
                 new ToggleInfo(" MurderPlayer", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
@@ -88,6 +87,7 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Ship", false, new List<ToggleInfo> {
             new ToggleInfo(" UnfixableLights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
+            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             new ToggleInfo(" CloseMeeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Sabotage", false, new List<ToggleInfo>() {

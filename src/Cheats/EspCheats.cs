@@ -1,24 +1,32 @@
-using HarmonyLib;
 using UnityEngine;
 using System;
 using Il2CppSystem.Collections.Generic;
 
 namespace MalumMenu;
-
-[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
-public static class Spectate_PlayerPhysics_LateUpdate_Postfix
+public static class EspHandler
 {
-    //Postfix patch of PlayerPhysics.LateUpdate to open spectator menu
-    public static bool isActive;
-    public static void Postfix(PlayerPhysics __instance){
+    public static bool spectateActive;
+    public static void sporeCloudVision(Mushroom mushroom)
+    {
+        if (CheatToggles.fullBright)
+        {
+            mushroom.sporeMask.transform.position = new UnityEngine.Vector3(mushroom.sporeMask.transform.position.x, mushroom.sporeMask.transform.position.y, -1);
+            return;
+        } 
+
+        mushroom.sporeMask.transform.position = new UnityEngine.Vector3(mushroom.sporeMask.transform.position.x, mushroom.sporeMask.transform.position.y, 5f);
+    }
+
+    public static void spectateCheat()
+    {
         if (CheatToggles.spectate){
 
             //Open spectator menu when CheatSettings.spectate is first enabled
-            if (!isActive){
+            if (!spectateActive){
 
                 //Close any player pick menus already open & their cheats
-                if (Utils_PlayerPickMenu.playerpickMenu != null){
-                    Utils_PlayerPickMenu.playerpickMenu.Close();
+                if (PlayerPickMenu.playerpickMenu != null){
+                    PlayerPickMenu.playerpickMenu.Close();
                     CheatToggles.DisablePPMCheats("spectate");
                 }
 
@@ -32,12 +40,12 @@ public static class Spectate_PlayerPhysics_LateUpdate_Postfix
                 }
 
                 //New player pick menu made for spectating
-                Utils_PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
+                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(Utils_PlayerPickMenu.targetPlayerData.Object);
+                    Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerPickMenu.targetPlayerData.Object);
                 }));
 
-                isActive = true;
+                spectateActive = true;
 
                 PlayerControl.LocalPlayer.moveable = false; //Can't move while spectating
 
@@ -46,14 +54,14 @@ public static class Spectate_PlayerPhysics_LateUpdate_Postfix
             }
 
             //Deactivate cheat if menu is closed without spectating anyone
-            if (Utils_PlayerPickMenu.playerpickMenu == null && Camera.main.gameObject.GetComponent<FollowerCamera>().Target == PlayerControl.LocalPlayer){
+            if (PlayerPickMenu.playerpickMenu == null && Camera.main.gameObject.GetComponent<FollowerCamera>().Target == PlayerControl.LocalPlayer){
                 CheatToggles.spectate = false;
                 PlayerControl.LocalPlayer.moveable = true;
             }
         }else{
             //Deactivate cheat when it is disabled from the GUI
-            if (isActive){
-                isActive = false;
+            if (spectateActive){
+                spectateActive = false;
                 PlayerControl.LocalPlayer.moveable = true;
                 Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
             }
