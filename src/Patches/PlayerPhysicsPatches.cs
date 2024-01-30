@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Sentry.Internal.Extensions;
 
 namespace MalumMenu;
 
@@ -7,6 +8,9 @@ public static class PlayerPhysics_LateUpdate
 {
     public static void Postfix(PlayerPhysics __instance)
     {
+        
+        MalumESP.playerNametags(__instance);
+
         MalumCheats.noClipCheat();
         MalumCheats.speedBoostCheat();
         MalumCheats.murderAllCheat();

@@ -42,7 +42,7 @@ public class MenuUI : MonoBehaviour
             new SubmenuInfo("Camera", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ZoomOut", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
                 new ToggleInfo(" Spectate", () => CheatToggles.spectate, x => CheatToggles.spectate = x),
-                new ToggleInfo(" Freecam", () => CheatToggles.freeCam, x => CheatToggles.freeCam = x)
+                new ToggleInfo(" Freecam", () => CheatToggles.freecam, x => CheatToggles.freecam = x)
             }),
             new SubmenuInfo("Tracers", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Crewmates", () => CheatToggles.tracersCrew, x => CheatToggles.tracersCrew = x),
@@ -151,7 +151,7 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         if(!Utils.isPlayer){
-            CheatToggles.changeRole = CheatToggles.murderAll = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.murderPlayer;
+            CheatToggles.changeRole = CheatToggles.murderAll = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.murderPlayer;
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host

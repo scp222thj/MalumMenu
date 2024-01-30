@@ -97,6 +97,32 @@ public static class MalumCheats
         MalumSabotageSystem.handleDoors(shipStatus);
     }
 
+    public static void walkInVentCheat()
+    {
+        try{
+
+            if (CheatToggles.walkVent){
+                PlayerControl.LocalPlayer.inVent = false;
+                PlayerControl.LocalPlayer.moveable = true;
+            }
+
+        }catch{}
+    }
+
+    public static void kickVentsCheat()
+    {
+        if (CheatToggles.kickVents){
+
+            foreach(var vent in ShipStatus.Instance.AllVents){
+
+                VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id); //Unlike PlayerPhysics.RpcBootFromVent, this code also works for clients
+
+            }
+
+            CheatToggles.kickVents = false; //Button behaviour
+        }
+    }
+
     public static void murderPlayerCheat()
     {
         if (CheatToggles.murderPlayer)

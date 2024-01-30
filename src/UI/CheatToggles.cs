@@ -41,7 +41,7 @@ namespace MalumMenu
         //Camera
         public static bool spectate;
         public static bool zoomOut;
-        public static bool freeCam;
+        public static bool freecam;
 
         //Minimap
         public static bool mapCrew;

@@ -31,6 +31,7 @@ public static class HudManager_Update
     //Postfix patch of HudManager.Update to enable vent button
     public static void Postfix(HudManager __instance)
     {
-        MalumCheats.useVentCheat(__instance);
+		MalumCheats.useVentCheat(__instance);
+		MalumESP.freecamCheat();
     }
 }

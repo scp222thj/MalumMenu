@@ -1,4 +1,6 @@
 using HarmonyLib;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace MalumMenu;
 
@@ -10,5 +12,7 @@ public static class ShipStatus_FixedUpdate
         MalumCheats.sabotageCheat(__instance);
         MalumCheats.closeMeetingCheat();
         MalumCheats.reportBodyCheat();
+        MalumCheats.walkInVentCheat();
+        MalumCheats.kickVentsCheat();
     }
 }
