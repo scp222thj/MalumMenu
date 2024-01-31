@@ -1,5 +1,4 @@
 using HarmonyLib;
-using Sentry.Internal.Extensions;
 
 namespace MalumMenu;
 

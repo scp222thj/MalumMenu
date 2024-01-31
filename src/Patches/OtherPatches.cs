@@ -57,10 +57,9 @@ public static class PingTracker_Update
 public static class BackendEndpoints_Announcements_Getter
 {
     //Prefix patch of Getter method for BackendEndpoints.Announcements for custom announcements
-    public static bool Prefix(ref string __result)
+    public static void Postfix(ref string __result)
     {
         __result = "https://scp222thj.dev/malumnews"; //MalumNews webserver
-        return false;
     }
 }
 
