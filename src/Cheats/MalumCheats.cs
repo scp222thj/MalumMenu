@@ -33,7 +33,7 @@ public static class MalumCheats
                 PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
                     
-                    Utils.ReportDeadBody(PlayerPickMenu.targetPlayerData);
+                    Utils.reportDeadBody(PlayerPickMenu.targetPlayerData);
             
                 }));
 
@@ -150,7 +150,7 @@ public static class MalumCheats
                     var HostData = AmongUsClient.Instance.GetHost();
                     if (HostData != null && !HostData.Character.Data.Disconnected)
                     {
-                        Utils.MurderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
+                        Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
                     }
                     CheatToggles.murderPlayer = false;
                 }));
@@ -176,7 +176,7 @@ public static class MalumCheats
             //Kill all players by sending a successful MurderPlayer RPC call to all clients
             foreach (var player in PlayerControl.AllPlayerControls)
             {
-                Utils.MurderPlayer(player, MurderResultFlags.Succeeded);
+                Utils.murderPlayer(player, MurderResultFlags.Succeeded);
             }
 
             CheatToggles.murderAll = false;

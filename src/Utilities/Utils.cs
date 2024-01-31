@@ -26,7 +26,7 @@ public static class Utils
     }
 
     //Kill any player using RPC calls
-    public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
+    public static void murderPlayer(PlayerControl target, MurderResultFlags result)
     {
         if (isFreePlay){
 
@@ -49,7 +49,7 @@ public static class Utils
     }
 
     //Report any body using RPC calls
-    public static void ReportDeadBody(GameData.PlayerInfo playerData)
+    public static void reportDeadBody(GameData.PlayerInfo playerData)
     {
 
         if (isFreePlay){
@@ -70,7 +70,7 @@ public static class Utils
 
 
     //Complete all your tasks using RPC calls
-    public static void CompleteAllTasks()
+    public static void completeAllTasks()
     {
 
         if (isFreePlay){
@@ -105,7 +105,7 @@ public static class Utils
     }
 
     //Open Chat UI
-    public static void OpenChat()
+    public static void openChat()
     {
         if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
             utilsOpenChat = true;
@@ -120,8 +120,14 @@ public static class Utils
 
     }
 
+    //Draw a tracer line between to gameobjects
+    public static void drawTracer(GameObject gameObject, GameObject gameObject2, LineRenderer lineRenderer)
+    {
+        return;
+    }
+
     //Close Chat UI
-    public static void CloseChat()
+    public static void closeChat()
     {
         utilsOpenChat = false;
         if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){

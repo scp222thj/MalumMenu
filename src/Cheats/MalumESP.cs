@@ -58,6 +58,18 @@ public static class MalumESP
             chatBubble.NameText.ForceMeshUpdate(true, true);
             chatBubble.Background.size = new Vector2(5.52f, 0.2f + chatBubble.NameText.GetNotDumbRenderedHeight() + chatBubble.TextArea.GetNotDumbRenderedHeight());
             chatBubble.MaskArea.size = chatBubble.Background.size - new Vector2(0f, 0.03f);
+
+        }catch{}
+    }
+
+    public static void seeGhostsCheat(PlayerPhysics playerPhysics)
+    {
+        try{
+
+            if(playerPhysics.myPlayer.Data.IsDead && !PlayerControl.LocalPlayer.Data.IsDead){
+                playerPhysics.myPlayer.Visible = CheatToggles.seeGhosts;
+            }    
+
         }catch{}
     }
 

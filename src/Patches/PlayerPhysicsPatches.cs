@@ -9,6 +9,7 @@ public static class PlayerPhysics_LateUpdate
     {
         
         MalumESP.playerNametags(__instance);
+        MalumESP.seeGhostsCheat(__instance);
 
         MalumCheats.noClipCheat();
         MalumCheats.speedBoostCheat();
