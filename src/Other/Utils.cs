@@ -196,6 +196,10 @@ public static class Utils
         }
     }
 
+    //Get the time stamp
+    private static readonly System.DateTime timeStampStartTime = new(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+    public static long GetTimeStamp(System.DateTime? dateTime = null) => (long)((dateTime ?? System.DateTime.Now).ToUniversalTime() - timeStampStartTime).TotalSeconds;
+
     //Get player control by player Id
     public static PlayerControl GetPlayerById(byte PlayerId)
     {
