@@ -21,7 +21,7 @@ namespace MalumMenu
     {
         public string name;
         public bool isExpanded;
-        public List<ToggleInfo> toggles; // Direct toggles for the group
+        public List<ToggleInfo> toggles;
         public List<SubmenuInfo> submenus;
 
         public GroupInfo(string name, bool isExpanded, List<ToggleInfo> toggles, List<SubmenuInfo> submenus)
