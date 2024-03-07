@@ -131,3 +131,11 @@ Here are some other useful resources:
 This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. 
 
 Usage of this mod can violate the terms of service of Among Us, which may lead to punitive action including temporary or permanent bans from the game. The creator is not responsible for any consequences you may face due to usage. Use at your own risk.
+
+# GitHub Stats
+<a href="../../releases/latest">
+    <img src="https://img.shields.io/github/release/scp222thj/MalumMenu.svg?label=version&style=plastic">
+</a>
+<a href="../../releases">
+    <img src="https://img.shields.io/github/downloads/scp222thj/MalumMenu/total.svg?style=plastic&color=red">
+</a>
