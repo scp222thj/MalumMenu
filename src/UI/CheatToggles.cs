@@ -27,16 +27,10 @@ namespace MalumMenu
         //ESP
         public static bool fullBright;
         public static bool alwaysChat;
-        public static bool seeTaskCount;
-        public static bool seeKillCd;
-        public static bool seeDisguises;
         public static bool seeGhosts;
         public static bool seeRoles;
         public static bool ventVision;
         public static bool revealVotes;
-
-        //Spoofing
-        public static bool spoofRandomFC;
 
         //Camera
         public static bool spectate;

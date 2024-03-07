@@ -5,12 +5,9 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.Update))]
 public static class EOSManager_Update
 {
-    public static void Postfix(EOSManager __instance)
+    public static void Postfix()
     {
-        
-        MalumSpoof.spoofFriendCode(__instance);
-        MalumSpoof.spoofLevel(__instance);
-
+        MalumSpoof.spoofLevel();
     }
 }
 
@@ -44,7 +41,7 @@ public static class EOSManager_IsAllowedOnline
     //Prefix patch of AccountManager.CanPlayOnline to allow online games
     public static void Prefix(ref bool canOnline)
     {
-        if (CheatToggles.unlockFeatures){ //Only works if CheatSettings.unlockFeatures is enabled
+        if (CheatToggles.unlockFeatures){
             canOnline = true; 
         }
     }

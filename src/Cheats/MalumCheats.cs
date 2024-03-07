@@ -1,83 +1,112 @@
-using Il2CppSystem.Collections.Generic;
-using System;
 using UnityEngine;
 
 namespace MalumMenu;
 public static class MalumCheats
 {
-    public static bool murderPlayerActive;
-    public static bool teleportPlayerActive;
-    public static bool reportBodyActive;
-
-    public static void reportBodyCheat(){
-        if (CheatToggles.reportBody){
-
-            if (!reportBodyActive){
-
-                //Close any player pick menus already open & their cheats
-                if (PlayerPickMenu.playerpickMenu != null){
-                    PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("reportBody");
-                }
-
-                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
-
-                //All players are saved to playerList apart from LocalPlayer
-                foreach (var player in PlayerControl.AllPlayerControls){
-                    if (!player.Data.IsDead){
-                        playerDataList.Add(player.Data);
-                    }
-                }
-
-                //New player pick menu to choose any body (alive or dead) to report
-                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
-                {
-                    
-                    Utils.reportDeadBody(PlayerPickMenu.targetPlayerData);
-            
-                }));
-
-                reportBodyActive = true;
-            }
-
-            //Deactivate cheat if menu is closed
-            if (PlayerPickMenu.playerpickMenu == null){
-                CheatToggles.reportBody = false;
-            }
-
-        }else{
-            if (reportBodyActive){
-                reportBodyActive = false;
-            }
-        }
-    }
     public static void closeMeetingCheat()
     {
         if(CheatToggles.closeMeeting){
             
-            if (MeetingHud.Instance){ //Closes MeetingHud window if it is open
+            if (MeetingHud.Instance){ // Closes MeetingHud window if it's open
+
+                // Destroy MeetingHud window gameobject
                 MeetingHud.Instance.DespawnOnDestroy = false;
-                ExileController exileController = UnityEngine.Object.Instantiate<ExileController>(ShipStatus.Instance.ExileCutscenePrefab);
-                UnityEngine.Object.Destroy(MeetingHud.Instance.gameObject);
+                Object.Destroy(MeetingHud.Instance.gameObject);
+
+                // Gameplay must be reenabled
+                ExileController exileController = Object.Instantiate(ShipStatus.Instance.ExileCutscenePrefab);
                 exileController.ReEnableGameplay();
                 exileController.WrapUp();
 
-            }else if (ExileController.Instance != null){ //Closes ExileController window if it is open
+            }else if (ExileController.Instance != null){ // Ends exile cutscene if it's playing
                 ExileController.Instance.ReEnableGameplay();
                 ExileController.Instance.WrapUp();
             }
             
-            CheatToggles.closeMeeting = false; //Button behaviour
+            CheatToggles.closeMeeting = false; // Button behaviour
+        }
+    }
+
+    public static void noKillCdCheat(PlayerControl playerControl)
+    {
+        if (CheatToggles.zeroKillCd && playerControl.killTimer > 0f){
+            playerControl.SetKillTimer(0f);
+        }
+    }
+
+    public static void completeMyTasksCheat()
+    {
+        if (CheatToggles.completeMyTasks){
+            Utils.completeMyTasks();
+
+            CheatToggles.completeMyTasks = false;
+        }
+    }
+
+    public static void engineerCheats(EngineerRole engineerRole)
+    {
+        if (CheatToggles.endlessVentTime){
+
+            // Makes vent time so incredibly long (float.MaxValue) so that it never ends
+            engineerRole.inVentTimeRemaining = float.MaxValue;
+        
+        // Vent time is reset to normal value after the cheat is disabled
+        }else if (engineerRole.inVentTimeRemaining > GameManager.Instance.LogicOptions.GetEngineerCooldown()){
+            
+            engineerRole.inVentTimeRemaining = GameManager.Instance.LogicOptions.GetEngineerCooldown();
+        
+        }
+
+        if (CheatToggles.noVentCooldown){
+
+            engineerRole.cooldownSecondsRemaining = 0f;
+        
+        }
+    }
+
+    public static void shapeshifterCheats(ShapeshifterRole shapeshifterRole)
+    {
+        if (CheatToggles.endlessSsDuration){
+
+            // Makes shapeshift duration so incredibly long (float.MaxValue) so that it never ends
+            shapeshifterRole.durationSecondsRemaining = float.MaxValue; 
+            
+        // Shapeshift duration is reset to normal value after the cheat is disabled
+        }else if (shapeshifterRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetShapeshifterDuration()){
+            
+            shapeshifterRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetShapeshifterDuration();
+        
+        }
+    }
+
+    public static void scientistCheats(ScientistRole scientistRole)
+    {
+        if (CheatToggles.noVitalsCooldown){
+
+            scientistRole.currentCooldown = 0f;
+        }
+
+        if (CheatToggles.endlessBattery){
+
+            // Makes vitals battery so incredibly long (float.MaxValue) so that it never ends
+            scientistRole.currentCharge = float.MaxValue;
+
+        // Battery charge is reset to normal value after the cheat is disabled
+        }else if (scientistRole.currentCharge > GameManager.Instance.LogicOptions.GetScientistBatteryCharge()){
+            
+            scientistRole.currentCharge = GameManager.Instance.LogicOptions.GetScientistBatteryCharge();
+        
         }
     }
 
     public static void useVentCheat(HudManager hudManager)
     {
-        //try-catch to prevent errors when role is null
+        // try-catch to prevent errors when role is null
         try{
 
-			//Engineers & Impostors don't need this cheat so it is disabled for them
-			//Ghost venting causes issues so it is also disabled
+			// Engineers & Impostors don't need this cheat so it is disabled for them
+			// Ghost venting causes issues so it is also disabled
+
 			if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead){
 				hudManager.ImpostorVentButton.gameObject.SetActive(CheatToggles.useVents);
 			}
@@ -89,6 +118,7 @@ public static class MalumCheats
     {
         byte currentMapID = Utils.getCurrentMapID();
 
+        // Handle all sabotage systems
         MalumSabotageSystem.handleReactor(shipStatus, currentMapID);
         MalumSabotageSystem.handleOxygen(shipStatus, currentMapID);
         MalumSabotageSystem.handleComms(shipStatus, currentMapID);
@@ -115,57 +145,11 @@ public static class MalumCheats
 
             foreach(var vent in ShipStatus.Instance.AllVents){
 
-                VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id); //Unlike PlayerPhysics.RpcBootFromVent, this code also works for clients
+                VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
 
             }
 
-            CheatToggles.kickVents = false; //Button behaviour
-        }
-    }
-
-    public static void murderPlayerCheat()
-    {
-        if (CheatToggles.murderPlayer)
-        {
-            if (!murderPlayerActive)
-            {
-                //Close any player pick menus already open & their cheats
-                if (PlayerPickMenu.playerpickMenu != null)
-                {
-                    PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("murderPlayer");
-                }
-
-                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
-
-                // All players are saved to playerList, including the localplayer
-                foreach (var player in PlayerControl.AllPlayerControls)
-                {
-                    playerDataList.Add(player.Data);
-                }
-
-                //New player pick menu made for killing any player by sending a successful MurderPlayer RPC call
-                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
-                {
-                    var HostData = AmongUsClient.Instance.GetHost();
-                    if (HostData != null && !HostData.Character.Data.Disconnected)
-                    {
-                        Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
-                    }
-                    CheatToggles.murderPlayer = false;
-                }));
-
-                murderPlayerActive = true;
-            }
-
-            //Deactivate cheat if menu is closed
-            if (PlayerPickMenu.playerpickMenu == null){
-                CheatToggles.murderPlayer = false;
-            }
-        }
-        else if (murderPlayerActive)
-        {
-            murderPlayerActive = false;
+            CheatToggles.kickVents = false; // Button behaviour
         }
     }
 
@@ -173,7 +157,7 @@ public static class MalumCheats
     {
         if (CheatToggles.murderAll){
 
-            //Kill all players by sending a successful MurderPlayer RPC call to all clients
+            // Kill all players by sending a successful MurderPlayer RPC call
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 Utils.murderPlayer(player, MurderResultFlags.Succeeded);
@@ -188,7 +172,8 @@ public static class MalumCheats
     {
         if (CheatToggles.teleportCursor)
         {
-            if (Input.GetMouseButtonDown(1)) // Register right-click
+            // Teleport player to cursor's in-world position on right-click
+            if (Input.GetMouseButtonDown(1)) 
             {
                 PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
@@ -198,10 +183,12 @@ public static class MalumCheats
     public static void speedBoostCheat()
     {
         //try-catch to avoid some errors I was reciving in the logs related to this cheat
+
         try{
 
             //PlayerControl.LocalPlayer.MyPhysics.Speed is the base speed of a player
             //Among Us uses this value with the associated game setting to calculate the TrueSpeed of the player
+            
             if(CheatToggles.speedBoost){
                 PlayerControl.LocalPlayer.MyPhysics.Speed = 2.5f * 2;
             }else{
@@ -218,48 +205,5 @@ public static class MalumCheats
             PlayerControl.LocalPlayer.Collider.enabled = !(CheatToggles.noClip || PlayerControl.LocalPlayer.onLadder);
 
         }catch{}
-    }
-
-    public static void teleportPlayerCheat()
-    {
-        if (CheatToggles.teleportPlayer)
-        {
-            if (!teleportPlayerActive)
-            {
-                //Close any player pick menus already open & their cheats
-                if (PlayerPickMenu.playerpickMenu != null)
-                {
-                    PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("teleportPlayer");
-                }
-
-                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
-
-                // All players are saved to playerList apart from LocalPlayer
-                foreach (var player in PlayerControl.AllPlayerControls)
-                {
-                    if (!player.AmOwner){
-                        playerDataList.Add(player.Data);
-                    }
-                }
-
-                //New player pick menu made for teleporting yourself to any player's position
-                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
-                {
-                    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerPickMenu.targetPlayerData.Object.transform.position);
-                }));
-
-                teleportPlayerActive = true;
-            }
-
-            //Deactivate cheat if menu is closed
-            if (PlayerPickMenu.playerpickMenu == null){
-                CheatToggles.teleportPlayer = false;
-            }
-        }
-        else if (teleportPlayerActive)
-        {
-            teleportPlayerActive = false;
-        }
     }
 }

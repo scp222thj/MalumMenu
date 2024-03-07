@@ -8,7 +8,10 @@ namespace MalumMenu;
 public static class MeetingHud_Update
 {
     public static List<int> votedPlayers = new List<int>();
-    public static bool Prefix(MeetingHud __instance)
+
+    // Prefix patch of MeetingHud.Update to constantly bloop new vote icons for 
+    // each new vote being cast during the meeting
+    public static void Prefix(MeetingHud __instance)
     {
         if (__instance.state < MeetingHud.VoteStates.Results)
         {
@@ -53,23 +56,22 @@ public static class MeetingHud_Update
                 __instance.SkippedVoting.SetActive(CheatToggles.revealVotes);
             }
         }
-
-        return true;
     }
 
     public static void Postfix(MeetingHud __instance){
 
         MalumESP.meetingNametags(__instance);
 
-        //Bugfix: NoClip staying active if meeting is called whilst climbing ladder
+        // Bugfix: NoClip staying active if meeting is called whilst climbing ladder
         PlayerControl.LocalPlayer.onLadder = false;
     }
 }
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
-public static class RevealVotes_MeetingHud_PopulateResults_Prefix
+public static class MeetingHud_PopulateResults
 {
-    public static bool Prefix(MeetingHud __instance)
+    // Prefix patch of MeetingHud.PopulateResults to clear all vote icons before repopulating them for final results
+    public static void Prefix(MeetingHud __instance)
     {
         foreach (var votedForArea in __instance.playerStates)
         {
@@ -94,6 +96,5 @@ public static class RevealVotes_MeetingHud_PopulateResults_Prefix
             voteSpreader.Votes.Clear();
         }
         MeetingHud_Update.votedPlayers.Clear();
-        return true;
     }
 }

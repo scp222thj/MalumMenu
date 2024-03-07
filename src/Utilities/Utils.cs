@@ -1,10 +1,12 @@
 using UnityEngine;
 using InnerNet;
+using System.Linq;
 using Il2CppSystem.Collections.Generic;
 using System.IO;
 using Hazel;
 using System.Reflection;
 using AmongUs.GameOptions;
+using Sentry.Internal.Extensions;
 
 namespace MalumMenu;
 public static class Utils
@@ -19,13 +21,18 @@ public static class Utils
     public static bool isHost = AmongUsClient.Instance.AmHost;
     public static bool utilsOpenChat;
 
-    //Adjusts HUD resolution
-    //Used to fix UI problems when zooming out
+    // Adjusts HUD resolution
+    // Used to fix UI problems when zooming out
     public static void adjustResolution() {
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
-    //Kill any player using RPC calls
+    // Get RoleBehaviour from a RoleType
+    public static RoleBehaviour getBehaviourByRoleType(RoleTypes roleType) {
+        return RoleManager.Instance.AllRoles.First(r => r.Role == roleType);
+    }
+
+    // Kill any player using RPC calls
     public static void murderPlayer(PlayerControl target, MurderResultFlags result)
     {
         if (isFreePlay){
@@ -48,7 +55,7 @@ public static class Utils
         }
     }
 
-    //Report any body using RPC calls
+    // Report bodies using RPC calls
     public static void reportDeadBody(GameData.PlayerInfo playerData)
     {
 
@@ -69,8 +76,8 @@ public static class Utils
     }
 
 
-    //Complete all your tasks using RPC calls
-    public static void completeAllTasks()
+    // Complete all of LocalPlayer's tasks using RPC calls
+    public static void completeMyTasks()
     {
 
         if (isFreePlay){
@@ -104,7 +111,7 @@ public static class Utils
         }
     }
 
-    //Open Chat UI
+    // Open Chat UI
     public static void openChat()
     {
         if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
@@ -120,13 +127,41 @@ public static class Utils
 
     }
 
-    //Draw a tracer line between to gameobjects
-    public static void drawTracer(GameObject gameObject, GameObject gameObject2, LineRenderer lineRenderer)
+    // Draw a tracer line between to 2 GameObjects
+    public static void drawTracer(GameObject sourceObject, GameObject targetObject, Color color)
     {
-        return;
+        LineRenderer lineRenderer;
+
+        lineRenderer = sourceObject.GetComponent<LineRenderer>();
+
+        if(!lineRenderer){
+            lineRenderer = sourceObject.AddComponent<LineRenderer>();
+        }
+
+        lineRenderer.SetVertexCount(2);
+        lineRenderer.SetWidth(0.02F, 0.02F);
+
+        // I just picked an already existing material from the game
+        Material material = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+
+        lineRenderer.material = material;
+        lineRenderer.SetColors(color, color);
+                
+        lineRenderer.SetPosition(0, sourceObject.transform.position);
+        lineRenderer.SetPosition(1, targetObject.transform.position);
     }
 
-    //Close Chat UI
+    // Return if the ChatUI should be active or not
+    public static bool chatUiActive()
+    {
+        try{
+            return utilsOpenChat || CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
+        }catch{
+            return false;
+        }
+    }
+
+    // Close Chat UI
     public static void closeChat()
     {
         utilsOpenChat = false;
@@ -136,9 +171,13 @@ public static class Utils
 
     }
 
-    //Get the distance between two players as a float
-    public static float getDistanceFrom(this PlayerControl source, PlayerControl target){
+    // Get the distance between two players as a float
+    public static float getDistanceFrom(PlayerControl target, PlayerControl source = null){
         
+        if (source.IsNull()){
+            source = PlayerControl.LocalPlayer;
+        }
+
         Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
 		float magnitude = vector.magnitude;
 
@@ -146,50 +185,82 @@ public static class Utils
 
     }
 
-    //Gets current map ID
+    // Returns a list of all the players in the game ordered from closest to farthest (from LocalPlayer by default)
+    public static System.Collections.Generic.List<PlayerControl> getPlayersSortedByDistance(PlayerControl source = null){
+        
+        if (source.IsNull()){
+            source = PlayerControl.LocalPlayer;
+        }
+
+        System.Collections.Generic.List<PlayerControl> outputList = new System.Collections.Generic.List<PlayerControl>();
+
+        outputList.Clear();
+
+        List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        for (int i = 0; i < allPlayers.Count; i++)
+        {
+            PlayerControl player = allPlayers[i].Object;
+            if (player)
+            {
+                outputList.Add(player);
+            }
+        }
+        
+        outputList = outputList.OrderBy(target => getDistanceFrom(target, source)).ToList();
+        
+        if (outputList.Count <= 0)
+        {
+            return null;
+        }
+
+        return outputList;
+
+    }
+
+    // Gets current map ID
     public static byte getCurrentMapID()
     {
-        //If playing the tutorial
+        // If playing the tutorial
         if (isFreePlay)
 	    {
             return (byte)AmongUsClient.Instance.TutorialMapId;
 
 	    }else{
-            //Works for all other games
+            // Works for local/online games
             return GameOptionsManager.Instance.currentGameOptions.MapId;
         }
     }
 
-    //Get SystemType of the room the player is currently in
+    // Get SystemType of the room the player is currently in
     public static SystemTypes getCurrentRoom(){
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
     }
 
-    //Fancy colored ping text
+    // Fancy colored ping text
     public static string getColoredPingText(int ping){
 
-        if (ping <= 100){ //Green for ping < 100
+        if (ping <= 100){ // Green for ping < 100
 
             return $"<color=#00ff00ff>\nPing: {ping} ms</color>";
 
-        } else if (ping < 400){ //Yellow for 100 < ping < 400
+        } else if (ping < 400){ // Yellow for 100 < ping < 400
 
             return $"<color=#ffff00ff>\nPing: {ping} ms</color>";
 
-        } else{ //Red for ping > 400
+        } else{ // Red for ping > 400
 
             return $"<color=#ff0000ff>\nPing: {ping} ms</color>";
         }
     }
 
-    //Get a UnityEngine.KeyCode from a string
+    // Get a UnityEngine.KeyCode from a string
     public static KeyCode stringToKeycode(string keyCodeStr){
 
-        if(!string.IsNullOrEmpty(keyCodeStr)){ //Empty strings are automatically invalid
+        if(!string.IsNullOrEmpty(keyCodeStr)){ // Empty strings are automatically invalid
 
             try{
                 
-                //Case-insensitive parse of UnityEngine.KeyCode to check if string is validssss
+                // Case-insensitive parse of UnityEngine.KeyCode to check if string is validssss
                 KeyCode keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyCodeStr, true);
                 
                 return keyCode;
@@ -198,29 +269,31 @@ public static class Utils
         
         }
 
-        return KeyCode.Delete; //If string is invalid, return Delete as the default key
+        return KeyCode.Delete; // If string is invalid, return Delete as the default key
     }
 
-    //Get a platform type from a string
+    // Get a platform type from a string
     public static bool stringToPlatformType(string platformStr, out Platforms? platform){
 
-        if(!string.IsNullOrEmpty(platformStr)){ //Empty strings are automatically invalid
+        if(!string.IsNullOrEmpty(platformStr)){ // Empty strings are automatically invalid
 
             try{
                 
-                //Case-insensitive parse of Platforms from string (if it valid)
+                // Case-insensitive parse of Platforms from string (if it valid)
                 platform = (Platforms)System.Enum.Parse(typeof(Platforms), platformStr, true);
                 
-                return true; //If platform type is valid, return false
+                return true; // If platform type is valid, return false
 
             }catch{}
         
         }
 
         platform = null;
-        return false; //If platform type is invalid, return false
+        return false; // If platform type is invalid, return false
     }
 
+    // Get the string name for a chosen player's role
+    // String are automatically translated
     public static string getRoleName(GameData.PlayerInfo playerData)
     {
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
@@ -258,7 +331,7 @@ public static class Utils
         return translatedRole;
     }
 
-    //Get the appropriate name color for a player depending on if cheat is enabled (cheatVar)
+    // Get the appropriate nametag for a player (seeRoles cheat)
     public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
         string nameTag = playerName;
 
@@ -280,8 +353,8 @@ public static class Utils
         return nameTag;
     }
 
-    //Show custom popup ingame
-    //Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
+    // Show custom popup ingame
+    // Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
     public static void showPopup(string text){
         var popup = Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
         
@@ -294,8 +367,8 @@ public static class Utils
         popup.Show(text);
     }
 
-    //Load sprites and textures from manifest resources
-    //Found here: https://github.com/Loonie-Toons/TOHE-Restored/blob/TOHE/Modules/Utils.cs
+    // Load sprites and textures from manifest resources
+    // Found here: https://github.com/Loonie-Toons/TOHE-Restored/blob/TOHE/Modules/Utils.cs
     public static Dictionary<string, Sprite> CachedSprites = new();
     public static Sprite LoadSprite(string path, float pixelsPerUnit = 1f)
     {

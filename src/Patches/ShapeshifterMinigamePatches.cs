@@ -8,12 +8,12 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
 public static class ShapeshifterMinigame_Begin
 {
-    //Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
+    // Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
     public static bool Prefix(ShapeshifterMinigame __instance)
     {
-        if (PlayerPickMenu.IsActive){ //Player pick menu logic
+        if (PlayerPickMenu.IsActive){ // Player Pick Menu logic
 
-            //Custom player list set by openPlayerPickMenu
+            // Custom player list set by openPlayerPickMenu
             List<GameData.PlayerInfo> list = PlayerPickMenu.customPlayerList;
 
             __instance.potentialVictims = new List<ShapeshifterPanel>();
@@ -29,9 +29,9 @@ public static class ShapeshifterMinigame_Begin
                 
                 shapeshifterPanel.SetPlayer(i, playerData, (Il2CppSystem.Action) (() =>
                 {
-                    PlayerPickMenu.targetPlayerData = playerData; //Save targeted player
+                    PlayerPickMenu.targetPlayerData = playerData; // Save targeted player
 
-                    PlayerPickMenu.customAction.Invoke(); //Custom action set by openPlayerPickMenu
+                    PlayerPickMenu.customAction.Invoke(); // Custom action set by openPlayerPickMenu
 
                     __instance.Close();
                 }));
@@ -47,21 +47,21 @@ public static class ShapeshifterMinigame_Begin
             
             PlayerPickMenu.IsActive = false;
 
-            return false; //Skip original method when active
+            return false; // Skip original method when active
 
         }
 
-        return true; //Open normal shapeshifter menu if not active
+        return true; // Open normal shapeshifter menu if not active
     }
 }
 
 [HarmonyPatch(typeof(ShapeshifterPanel), nameof(ShapeshifterPanel.SetPlayer))]
 public static class ShapeshifterPanel_SetPlayer
 {
-    //Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
+    // Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
     public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Il2CppSystem.Action onShift)
     {
-        if (PlayerPickMenu.IsActive){ //Player pick menu logic
+        if (PlayerPickMenu.IsActive){ // Player Pick Menu logic
 
             __instance.shapeshift = onShift;
             __instance.PlayerIcon.SetFlipX(false);
@@ -75,16 +75,16 @@ public static class ShapeshifterPanel_SetPlayer
             __instance.PlayerIcon.UpdateFromEitherPlayerDataOrCache(playerInfo, PlayerOutfitType.Default, PlayerMaterial.MaskType.ComplexUI, false, null);
             __instance.LevelNumberText.text = ProgressionManager.FormatVisualLevel(playerInfo.PlayerLevel);
             
-            //Skips using custom nameplates because they break the PlayerPickMenu in lobbies
+            // Skips using custom nameplates because they break the PlayerPickMenu in lobbies
 
             __instance.NameText.text = playerInfo.PlayerName;
             DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Il2CppSystem.Action)__instance.SetColorblindText;
             __instance.SetColorblindText();
 
-            return false; //Skip original method when active
+            return false; // Skips original method when active
 
         }
 
-        return true; //Open normal shapeshifter menu if not active
+        return true; // Open normal shapeshifter menu if not active
     }
 }

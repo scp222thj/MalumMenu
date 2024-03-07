@@ -7,25 +7,25 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
 public static class ChatController_AddChat
 {
-	//Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
-	//Basically does what the original method did with the required modifications
+	// Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
+	// Basically does what the original method did with the required modifications
     public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
     {
         if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead){
-            return true; //Run original method if seeGhosts is disabled or LocalPlayer already dead
+            return true; // Simply run original method if seeGhosts is disabled or LocalPlayer already dead
         }
 
         if (!sourcePlayer || !PlayerControl.LocalPlayer)
 		{
-			return false;
+			return true;
 		}
 
 		GameData.PlayerInfo data = PlayerControl.LocalPlayer.Data;
 		GameData.PlayerInfo data2 = sourcePlayer.Data;
 
-		if (data2 == null || data == null) //Remove isDead check for LocalPlayer
+		if (data2 == null || data == null) // Remove isDead check for LocalPlayer
 		{
-			return false;
+			return true;
 		}
 
 		ChatBubble pooledBubble = __instance.GetPooledBubble();
@@ -68,14 +68,13 @@ public static class ChatController_AddChat
 			__instance.chatBubblePool.Reclaim(pooledBubble);
 		}
         
-        return false; //Skips the original method completly
+        return false; // Skips the original method completly
     }
 }
 
 [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetName))]
 public static class ChatBubble_SetName
 {
-    //Postfix patch of ChatBubble.SetName to get colored names in chat messages
     public static void Postfix(ChatBubble __instance){
         MalumESP.chatNametags(__instance);
     }

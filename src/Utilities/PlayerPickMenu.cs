@@ -1,6 +1,6 @@
 using UnityEngine;
 using Il2CppSystem.Collections.Generic;
-using System.Linq;
+using Sentry.Internal.Extensions;
 
 namespace MalumMenu;
 public static class PlayerPickMenu
@@ -11,15 +11,15 @@ public static class PlayerPickMenu
     public static Il2CppSystem.Action customAction;
     public static List<GameData.PlayerInfo> customPlayerList;
 
-    //Get ShapeshifterMenu prefab to instantiate it
-    //Found here: https://github.com/AlchlcDvl/TownOfUsReworked/blob/9f3cede9d30bab2c11eb7c960007ab3979f09156/TownOfUsReworked/Custom/Menu.cs
+    // Get ShapeshifterMenu prefab to instantiate it
+    // Found here: https://github.com/AlchlcDvl/TownOfUsReworked/blob/9f3cede9d30bab2c11eb7c960007ab3979f09156/TownOfUsReworked/Custom/Menu.cs
     public static ShapeshifterMinigame getShapeshifterMenu()
     {
-        var rolePrefab = RoleManager.Instance.AllRoles.First(r => r.Role == AmongUs.GameOptions.RoleTypes.Shapeshifter);
+        var rolePrefab = Utils.getBehaviourByRoleType(AmongUs.GameOptions.RoleTypes.Shapeshifter);
         return Object.Instantiate(rolePrefab?.Cast<ShapeshifterRole>(), GameData.Instance.transform).ShapeshifterMenu;
     }
 
-    //Open a custom menu to pick a player as a target
+    // Open a PlayerPickMenu to pick a specific player to target
     public static void openPlayerPickMenu(List<GameData.PlayerInfo> playerList, Il2CppSystem.Action action)
     {
         IsActive = true;
@@ -32,5 +32,21 @@ public static class PlayerPickMenu
         playerpickMenu.transform.SetParent(Camera.main.transform, false);
 		playerpickMenu.transform.localPosition = new Vector3(0f, 0f, -50f);
 		playerpickMenu.Begin(null);
+    }
+
+    // Returns a custom GameData.PlayerInfo that can be used as a PPM choice
+    public static GameData.PlayerInfo customPPMChoice(string name, GameData.PlayerOutfit outfit, RoleBehaviour role = null)
+    {
+        GameData.PlayerInfo customChoice = new GameData.PlayerInfo(255);
+
+        outfit.PlayerName = name;
+
+        customChoice.Outfits[PlayerOutfitType.Default] = outfit;
+
+        if (!role.IsNull()){
+            customChoice.Role = role;
+        }
+
+        return customChoice;
     }
 }   

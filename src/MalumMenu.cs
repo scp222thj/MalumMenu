@@ -14,13 +14,12 @@ namespace MalumMenu;
 public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
-    public static string malumVersion = "2.1.0";
-    public static List<string> supportedAU = new List<string> { "2023.11.28" };
+    public static string malumVersion = "2.2.0";
+    public static List<string> supportedAU = new List<string> { "2023.11.28", "2024.3.5" };
     public static MenuUI menuUI;
-    public static ConsoleUI consoleUI;
+    // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
-    public static ConfigEntry<string> spoofFriendCode;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
 
@@ -38,11 +37,6 @@ public partial class MalumMenu : BasePlugin
                                 "",
                                 "A custom color for your MalumMenu GUI. Supports html color codes");
 
-        spoofFriendCode = Config.Bind("MalumMenu.Spoofing",
-                                "FriendCode",
-                                "",
-                                "A spoofed friend code that will be showed instead of your normal friend code. IMPORTANT: When using a spoofed friend code, players won't be able to send you friend requests");
-
         spoofLevel = Config.Bind("MalumMenu.Spoofing",
                                 "Level",
                                 "",
@@ -56,13 +50,13 @@ public partial class MalumMenu : BasePlugin
         Harmony.PatchAll();
         
         menuUI = AddComponent<MenuUI>();
-        consoleUI = AddComponent<ConsoleUI>();
+        // consoleUI = AddComponent<ConsoleUI>();
 
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
         {
             if (scene.name == "MainMenu")
             {
-                ModManager.Instance.ShowModStamp(); //Required by InnerSloth Modding Policy
+                ModManager.Instance.ShowModStamp(); // Required by InnerSloth Modding Policy
 
                 //Warn about unsupported AU versions
                 if (!supportedAU.Contains(Application.version)){
