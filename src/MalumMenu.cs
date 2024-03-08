@@ -27,13 +27,13 @@ public partial class MalumMenu : BasePlugin
     {
 
         //Load config settings
-        menuKeybind = Config.Bind("MalumMenu",
-                                "GUIKeybind",
+        menuKeybind = Config.Bind("MalumMenu.GUI",
+                                "Keybind",
                                 "Delete",
                                 "The keyboard key used to toggle the GUI on and off. List of supported keycodes: https://docs.unity3d.com/ScriptReference/KeyCode.html");
 
-        menuHtmlColor = Config.Bind("MalumMenu",
-                                "GUIColor",
+        menuHtmlColor = Config.Bind("MalumMenu.GUI",
+                                "Color",
                                 "",
                                 "A custom color for your MalumMenu GUI. Supports html color codes");
 
