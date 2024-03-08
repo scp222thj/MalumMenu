@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="https://scp222thj.dev/static/images/logo.png">
+  <img src="https://scp222thj.dev/static/images/malumLogo.png">
 </p>
 
 
@@ -53,7 +53,7 @@
 
 # 📋 Features
 
-<img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
+<img width="550" alt="image" src="https://scp222thj.dev/static/images/malumIngame.png">
 
 - An intuitive GUI with our latest, greatest Among Us cheats
 - See ghosts & reveal the impostors
