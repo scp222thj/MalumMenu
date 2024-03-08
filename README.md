@@ -73,7 +73,7 @@ Click to expand each topic
 <details>
   <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
-First of all, make sure you are running the most recent version of Among Us (`2023.11.28`) with the most recent version of MalumMenu (`v2.1.0`)
+First of all, make sure you are running the most recent version of Among Us (`2024.3.5`) with the most recent version of MalumMenu (`v2.2.0`)
 
 Also, check if your platform is officially supported:
 
