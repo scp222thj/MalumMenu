@@ -22,8 +22,8 @@ public static class EOSManager_SetSpoofFC
     public static void Postfix(EOSManager __instance)
     {
         if (!MalumMenu.incognitoMode.Value) return;
-        __instance.FriendCode = MalumMenu.spoofFriendCode.Value;
         DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
+        __instance.FriendCode = MalumMenu.spoofFriendCode.Value;
     }
 }
 
