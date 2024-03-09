@@ -18,7 +18,7 @@ public static class PlatformSpecificData_Serialize
 }
 
 [HarmonyPatch(typeof(SystemInfo), nameof(SystemInfo.deviceUniqueIdentifier), MethodType.Getter)]
-public static class SystemInfo_deviceUniqueIdentifier
+public static class SystemInfo_deviceUniqueIdentifier_Getter
 {
     // Postfix patch of SystemInfo.deviceUniqueIdentifier Getter method 
     // to hide the user's real unique deviceId by generating a random fake one

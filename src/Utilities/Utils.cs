@@ -13,7 +13,6 @@ public static class Utils
 {
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
-    
     public static bool isShip => ShipStatus.Instance != null;
     public static bool isLobby => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined;
     public static bool isOnlineGame => AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
@@ -164,7 +163,7 @@ public static class Utils
 
     }
 
-    // Draw a tracer line between to 2 GameObjects
+    // Draw a tracer line between two 2 GameObjects
     public static void drawTracer(GameObject sourceObject, GameObject targetObject, Color color)
     {
         LineRenderer lineRenderer;
