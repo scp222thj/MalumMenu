@@ -2,6 +2,18 @@ using HarmonyLib;
 
 namespace MalumMenu;
 
+[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.StartInitialLoginFlow))]
+public static class EOSManager_StartInitialLoginFlow
+{
+    public static bool Prefix(EOSManager __instance)
+    {
+        __instance.DeleteDeviceID(new System.Action(__instance.EndMergeGuestAccountFlow));
+        __instance.StartTempAccountFlow();
+        __instance.CloseStartupWaitScreen();
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFreechatAllowed))]
 public static class EOSManager_IsFreechatAllowed
 {
