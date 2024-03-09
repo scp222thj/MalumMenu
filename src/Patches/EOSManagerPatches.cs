@@ -26,6 +26,18 @@ public static class EOSManager_IsFriendsListAllowed
     }
 }
 
+[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.StartInitialLoginFlow))]
+public static class EOSManager_StartInitialLoginFlow
+{
+    public static bool Prefix(EOSManager __instance)
+    {
+        __instance.DeleteDeviceID(new System.Action(__instance.EndMergeGuestAccountFlow));
+        __instance.StartTempAccountFlow();
+        __instance.CloseStartupWaitScreen();
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsAllowedOnline))]
 public static class EOSManager_IsAllowedOnline
 {
