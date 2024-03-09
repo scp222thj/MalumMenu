@@ -17,33 +17,6 @@ public static class EOSManager_StartInitialLoginFlow
     }
 }
 
-[HarmonyPatch(typeof(MMOnlineManager), nameof(MMOnlineManager.Start))]
-public static class MMOnline_SetFriendCode
-{
-    public static void Postfix()
-    {
-        EOSManager instance = EOSManager.Instance;
-        if (!string.IsNullOrWhiteSpace(instance.FriendCode))
-        {
-        return;
-        }
-        EditAccountUsername editUsername = instance.editAccountUsername;
-        editUsername.UsernameText.SetText(GenerateFcOrGetFromSave());
-        editUsername.SaveUsername();
-    }
-
-    public static string GenerateFcOrGetFromSave()
-    {
-        string friendCode = MalumMenu.spoofFriendCode.Value;
-        if (string.IsNullOrWhiteSpace(friendCode))
-        {
-            string username = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
-            friendCode = username;
-        }
-        return friendCode;
-    }
-}
-
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFreechatAllowed))]
 public static class EOSManager_IsFreechatAllowed
 {

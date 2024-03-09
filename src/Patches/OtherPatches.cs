@@ -43,9 +43,20 @@ public static class AmongUsClient_Update
     public static void Postfix()
     {
         MalumSpoof.spoofLevel();
+
         if (!EOSManager.Instance.loginFlowFinished || !MalumMenu.guestMode.Value) return;
+
         DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
-    }
+
+        if (string.IsNullOrWhiteSpace(EOSManager.Instance.FriendCode))
+        {
+            string friendCode = MalumSpoof.spoofFriendCode();
+            EditAccountUsername editUsername = EOSManager.Instance.editAccountUsername;
+            editUsername.UsernameText.SetText(friendCode);
+            editUsername.SaveUsername();
+            EOSManager.Instance.FriendCode = friendCode;
+        }
+}
 }
 
 [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
@@ -150,8 +161,7 @@ public static class InnerNet_InnerNetClient_JoinGame
     public static void Prefix()
     {
         if (CheatToggles.unlockFeatures){
-            EOSManager.Instance.FriendCode = MalumMenu.spoofFriendCode.Value;
-            AmongUs.Data.DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
+            DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
         }
     }
 }

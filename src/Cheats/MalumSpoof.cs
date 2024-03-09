@@ -19,6 +19,16 @@ public static class MalumSpoof
         }
     }
 
+    public static string spoofFriendCode()
+    {
+        string friendCode = MalumMenu.spoofFriendCode.Value;
+        if (string.IsNullOrWhiteSpace(friendCode))
+        {
+            friendCode = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
+        }
+        return friendCode;
+    }
+
     public static void spoofPlatform(PlatformSpecificData platformSpecificData)
     {
         Platforms? platformType;
@@ -28,11 +38,5 @@ public static class MalumSpoof
         {
             platformSpecificData.Platform = (Platforms)platformType;
         }
-    }
-
-    public static void setLoginStatus(EOSManager.AccountLoginStatus status)
-    {
-    if (!EOSManager.Instance.loginFlowFinished) return;
-    DataManager.Player.Account.LoginStatus = status;
     }
 }
