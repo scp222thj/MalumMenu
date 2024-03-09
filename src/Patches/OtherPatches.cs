@@ -1,5 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
+using System;
+using System.Security.Cryptography;
 
 namespace MalumMenu;
 
@@ -12,6 +14,25 @@ public static class PlatformSpecificData_Serialize
 
         MalumSpoof.spoofPlatform(__instance);
 
+    }
+}
+
+[HarmonyPatch(typeof(SystemInfo), nameof(SystemInfo.deviceUniqueIdentifier), MethodType.Getter)]
+public static class SystemInfo_deviceUniqueIdentifier
+{
+    // Postfix patch of SystemInfo.deviceUniqueIdentifier Getter method 
+    // to hide the user's real unique deviceId by generating a random fake one
+    public static void Postfix(ref string __result)
+    {
+
+        var bytes = new byte[16];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(bytes);
+        }
+
+        __result = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+        
     }
 }
 

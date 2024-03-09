@@ -30,7 +30,7 @@ public partial class MalumMenu : BasePlugin
         menuKeybind = Config.Bind("MalumMenu.GUI",
                                 "Keybind",
                                 "Delete",
-                                "The keyboard key used to toggle the GUI on and off. List of supported keycodes: https://docs.unity3d.com/ScriptReference/KeyCode.html");
+                                "The keyboard key used to toggle the GUI on and off. List of supported keycodes: https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html");
 
         menuHtmlColor = Config.Bind("MalumMenu.GUI",
                                 "Color",
