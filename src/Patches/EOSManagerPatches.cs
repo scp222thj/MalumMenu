@@ -1,4 +1,3 @@
-using AmongUs.Data;
 using AmongUs.Data.Player;
 using HarmonyLib;
 
@@ -10,7 +9,7 @@ public static class EOSManager_StartInitialLoginFlow
     public static bool Prefix(EOSManager __instance)
     {
         __instance.DeleteDeviceID(new System.Action(__instance.EndMergeGuestAccountFlow));
-        if (!MalumMenu.incognitoMode.Value) return true;
+        if (!MalumMenu.guestMode.Value) return true;
         __instance.StartTempAccountFlow();
         __instance.CloseStartupWaitScreen();
         EditAccountUsername editUsername = __instance.editAccountUsername;

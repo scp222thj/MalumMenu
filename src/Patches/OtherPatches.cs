@@ -1,4 +1,5 @@
 using HarmonyLib;
+using AmongUs.Data;
 using UnityEngine;
 using System;
 using System.Security.Cryptography;
@@ -42,7 +43,9 @@ public static class AmongUsClient_Update
     public static void Postfix()
     {
         MalumSpoof.spoofLevel();
-        MalumSpoof.setLoginStatus(EOSManager.AccountLoginStatus.LoggedIn);
+        
+        if (!EOSManager.Instance.loginFlowFinished || !MalumMenu.guestMode.Value) return;
+        DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
     }
 }
 
@@ -137,6 +140,19 @@ public static class AccountManager_CanPlayOnline
     {
         if (CheatToggles.unlockFeatures){
             __result = true;
+        }
+    }
+}
+
+[HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.JoinGame))]
+public static class InnerNet_InnerNetClient_JoinGame
+{
+    // Prefix patch of InnerNet.InnerNetClient.JoinGame to allow online games
+    public static void Prefix()
+    {
+        if (CheatToggles.unlockFeatures){
+            EOSManager.Instance.FriendCode = MalumMenu.spoofFriendCode.Value;
+            AmongUs.Data.DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
         }
     }
 }
