@@ -46,7 +46,7 @@ public partial class MalumMenu : BasePlugin
         spoofFriendCode = Config.Bind("MalumMenu.Incognito",
                                 "FriendCode",
                                 "",
-                                "A custom friend code for incognito mode, your friend code needs to have less than 10 characters and should not have special characters or discriminators.");
+                                "The username that will be used when setting a friend code for your guest account. IMPORTANT: Can only be used with GuestMode, needs to be shorter than 10 characters, and does not include discriminator (#1234)");
         
         spoofLevel = Config.Bind("MalumMenu.Incognito",
                                 "Level",

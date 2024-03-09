@@ -1,4 +1,5 @@
 using AmongUs.Data.Player;
+using BepInEx;
 using HarmonyLib;
 
 namespace MalumMenu;
@@ -22,6 +23,10 @@ public static class MMOnline_SetFriendCode
     public static void Postfix()
     {
         EOSManager instance = EOSManager.Instance;
+        if (!string.IsNullOrWhiteSpace(instance.FriendCode))
+        {
+        return;
+        }
         EditAccountUsername editUsername = instance.editAccountUsername;
         editUsername.UsernameText.SetText(GenerateFcOrGetFromSave());
         editUsername.SaveUsername();
