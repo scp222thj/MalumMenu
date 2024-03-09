@@ -32,7 +32,6 @@ public static class MalumSpoof
 
     public static void setLoginStatus(EOSManager.AccountLoginStatus status)
     {
-    if (!MalumMenu.incognitoMode.Value) return; //optimizations
     if (!EOSManager.Instance.loginFlowFinished) return;
     DataManager.Player.Account.LoginStatus = status;
     }

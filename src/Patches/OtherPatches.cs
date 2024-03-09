@@ -43,7 +43,6 @@ public static class AmongUsClient_Update
     public static void Postfix()
     {
         MalumSpoof.spoofLevel();
-        
         if (!EOSManager.Instance.loginFlowFinished || !MalumMenu.guestMode.Value) return;
         DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
     }

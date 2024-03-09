@@ -12,10 +12,19 @@ public static class EOSManager_StartInitialLoginFlow
         if (!MalumMenu.guestMode.Value) return true;
         __instance.StartTempAccountFlow();
         __instance.CloseStartupWaitScreen();
-        EditAccountUsername editUsername = __instance.editAccountUsername;
-        editUsername.UsernameText.SetText(GenerateFcOrGetFromSave()); 
-        editUsername.SaveUsername();
         return false;
+    }
+}
+
+[HarmonyPatch(typeof(MMOnlineManager), nameof(MMOnlineManager.Start))]
+public static class MMOnline_SetFriendCode
+{
+    public static void Postfix()
+    {
+        EOSManager instance = EOSManager.Instance;
+        EditAccountUsername editUsername = instance.editAccountUsername;
+        editUsername.UsernameText.SetText(GenerateFcOrGetFromSave());
+        editUsername.SaveUsername();
     }
 
     public static string GenerateFcOrGetFromSave()
@@ -23,7 +32,7 @@ public static class EOSManager_StartInitialLoginFlow
         string friendCode = MalumMenu.spoofFriendCode.Value;
         if (string.IsNullOrWhiteSpace(friendCode))
         {
-            string username = DestroyableSingleton<AccountManager>.Instance.GetRandomName().ToLower();
+            string username = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
             friendCode = username;
         }
         return friendCode;

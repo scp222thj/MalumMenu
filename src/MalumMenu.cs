@@ -23,6 +23,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
     public static ConfigEntry<bool> guestMode;
+    public static ConfigEntry<string> spoofFriendCode;
 
     public override void Load()
     {
@@ -42,6 +43,10 @@ public partial class MalumMenu : BasePlugin
                                 "GuestMode",
                                 false,
                                 "Generates a new guest account every time you start the game, allowing you to bypass account bans and PUID detection");
+        spoofFriendCode = Config.Bind("MalumMenu.Incognito",
+                                "FriendCode",
+                                "",
+                                "A custom friend code for incognito mode, your friend code needs to have less than 10 characters and should not have special characters or discriminators.");
         
         spoofLevel = Config.Bind("MalumMenu.Incognito",
                                 "Level",
