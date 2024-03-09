@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="./logo.png">
+  <img src="https://scp222thj.dev/static/images/malumLogo.png">
 </p>
 
 
@@ -30,6 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v2.2.0 | 2024.3.5 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.2.0/MalumMenu-2.2.0.zip) |
 | v2.1.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.1.0/MalumMenu-2.1.0.zip) |
 | v2.0.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.0.0/MalumMenu-2.0.0.zip) |
 | v1.2.1 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip) |
@@ -52,7 +53,7 @@
 
 # 📋 Features
 
-<img width="550" alt="image" src="https://cdn.discordapp.com/attachments/1097928762324168744/1133767845558362202/image.png">
+<img width="550" alt="image" src="https://scp222thj.dev/static/images/malumIngame.png">
 
 - An intuitive GUI with our latest, greatest Among Us cheats
 - See ghosts & reveal the impostors
@@ -72,7 +73,7 @@ Click to expand each topic
 <details>
   <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
-First of all, make sure you are running the most recent version of Among Us (`2023.11.28`) with the most recent version of MalumMenu (`v2.1.0`)
+First of all, make sure you are running the most recent version of Among Us (`2024.3.5`) with the most recent version of MalumMenu (`v2.2.0`)
 
 Also, check if your platform is officially supported:
 
@@ -86,13 +87,13 @@ Also, check if your platform is officially supported:
 
 Make sure you followed the installation guide precisely. This is what your `Among Us` folder should look like after a successful installation:
 
-<img src="https://cdn.discordapp.com/attachments/1097928762324168744/1189514291993387098/image.png" alt="drawing" width="550"/>
+<img src="https://scp222thj.dev/static/images/amongUsFolder.png" alt="drawing" width="550"/>
 
 <br>Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
 
 When installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through this useful BepInEx console window that pops up when you start the game:
 
-<img src="https://cdn.discordapp.com/attachments/1097928762324168744/1199461727247544350/image.png" alt="drawing" width="550"/>
+<img src="https://scp222thj.dev/static/images/bepinexConsole.png" alt="drawing" width="550"/>
 
 <br>If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 </details>

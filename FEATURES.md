@@ -6,7 +6,6 @@
 |------------|-------------|------|--------|
 | NoClip     | Allows you to walk through walls like a ghost | Toggle | Off
 | SpeedBoost | Doubles your player's speed | Toggle | Off |
-| ReportBody | Report any player as a dead body to start a meeting | Button |
 
 #### Murder
 
@@ -77,7 +76,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
-| CompleteMyTasks | Complete all of your tasks immediatly | Button |
+| CompleteMyTasks | Complete all of your crewmate tasks immediatly | Button |
 
 #### Impostor
 
@@ -98,7 +97,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
-| EndlessVentTime | Allows you to remain inside a vent forever, and never get kicked out | Toggle | Off |
+| EndlessVentTime | Allows you to remain inside a vent forever despite being an engineer | Toggle | Off |
 | NoVentCooldown | Removes the cooldown period after coming out of a vent | Toggle | Off |
 
 #### Scientist
@@ -113,6 +112,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
 | UnfixableLights | Disables lights completely (they cannot be fixed manually by players)<br>You can enable them again by clicking the button | Toggle | Off |
+| ReportBody | Report any player as a dead body to start a meeting | Button |
 | CloseMeeting | Forcefully closes the meeting window (only for you), allowing you to move and interact with the game during meetings | Button |
 
 #### Sabotage
@@ -127,7 +127,7 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 | Oxygen | Allows you to enable/disable Oxygen sabotage | Toggle | Off |
 | Lights | Allows you to enable/disable Lights sabotage | Toggle | Off |
 | Comms | Allows you to enable/disable Communications sabotage | Toggle | Off |
-| Doors | Locks all doors on the ship | Button |
+| Doors | Immediatly locks all doors on the ship | Button |
 | MushroomMixup | Induces Mushroom Mixup sabotage on Fungle map | Button |
 
 #### Vents
@@ -137,19 +137,6 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 | UseVents | Allows you to use vents even if you are not an impostor or an engineer | Toggle | Off
 | KickVents | Forcefully kicks all players from vents | Button |
 | WalkInVents | Allows you to move and interact with the game even though you are inside of a vent<br>This gives you a sort of invisibility until you disable the setting and leave the vent<br>(*Some activites such as killing will forcefully make you visible again*) | Toggle | Off
-
-## 🕵️ Spoofing
-
-| Cheat | Description | Type |
-|------------|-------------|------|
-| RandomFriendCode | Hides your real friend code from people by spoofing random fake ones<br>(*While using a spoofed friend code, players won't be able to send you friend requests*) | Toggle | Off |
-
-#### Config
-
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| Spoofed FriendCode | Custom friend code that will be showed in online games<br>(*While using a spoofed friend code, players won't be able to send you friend requests*)<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
-| Spoofed Level | Custom player level<br>(*Custom levels can only be within 0 and 4294967295. Decimal numbers will also not work*)<br>Config file: `BepInEx/config/MalumMenu.cfg` | Config | Empty |
 
 ## 💤 Passive
 
@@ -163,16 +150,16 @@ These cheats are constantly running in the background and **cannot be disabled t
 
 ## 📃 Config
 
-You can change all of the following configs in `BepInEx/config/MalumMenu.cfg`
+You can change all of the following settings in `BepInEx/config/MalumMenu.cfg`
 
-| Config | Description | Type | Default|
-|------------|-------------|------|--------|
-| GUIKeybind | The keyboard key used to toggle the GUI on and off | String | Delete |
-| FriendCode | A custom friend code that will be used in online games<br><br>**IMPORTANT**: While using a spoofed friend code, players won't be able to send you friend requests | String |  |
-| Level | A custom player level that will be used in online games<br><br>**IMPORTANT**: Custom levels can only be within 0 and 4294967295. Decimal numbers will also not work | String |  |
-
+| Config          | Description                                                                                                                                                         | Type   | Default |
+|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|---------|
+| GUIKeybind | Specifies the keyboard key that toggles the GUI on/off<br><br>**IMPORTANT**: You may only use keycodes from this [list](https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html) | String | Delete |
+| GUIColor | Sets the color of the MalumMenu's GUI using HTML color codes | String | |
+| Spoofing.Level | Sets a custom player level to display to others in online games, masking your real level<br><br>**IMPORTANT**: Only integers between 0 and 4294967295 are valid. Decimal values are not accepted | String | |
+| Spoofing.Platform | Sets a different gaming platform in online lobbies to disguise your actual platform<br><br>**IMPORTANT**: You may only use platform names from this [list](https://skeld.js.org/enums/constant.Platform.html) | String | |
 
 ## Other relevant features of MalumMenu:
 
 - MalumMenu has a simple **GUI** that is easy to navigate and can be toggled using the **DELETE** key on your keyboard
-- MalumMenu comes with **custom announcements** that it will automatically fetch online at launch.
+- [**TEMPORARILY BROKEN**] MalumMenu comes with **custom announcements** that it will automatically fetch online at launch.
