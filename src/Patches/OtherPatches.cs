@@ -36,6 +36,15 @@ public static class SystemInfo_deviceUniqueIdentifier
     }
 }
 
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Update))]
+public static class AmongUsClient_Update
+{
+    public static void Postfix()
+    {
+        MalumSpoof.spoofLevel();
+    }
+}
+
 [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
 public static class VersionShower_Start
 {

@@ -2,15 +2,6 @@ using HarmonyLib;
 
 namespace MalumMenu;
 
-[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.Update))]
-public static class EOSManager_Update
-{
-    public static void Postfix()
-    {
-        MalumSpoof.spoofLevel();
-    }
-}
-
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFreechatAllowed))]
 public static class EOSManager_IsFreechatAllowed
 {
