@@ -1,4 +1,5 @@
 using AmongUs.Data;
+using AmongUs.Data.Player;
 using HarmonyLib;
 
 namespace MalumMenu;
@@ -12,18 +13,21 @@ public static class EOSManager_StartInitialLoginFlow
         if (!MalumMenu.incognitoMode.Value) return true;
         __instance.StartTempAccountFlow();
         __instance.CloseStartupWaitScreen();
+        EditAccountUsername editUsername = __instance.editAccountUsername;
+        editUsername.UsernameText.SetText(GenerateFcOrGetFromSave()); 
+        editUsername.SaveUsername();
         return false;
     }
-}
 
-[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.UserIDToken), MethodType.Getter)]
-public static class EOSManager_SetSpoofFC
-{
-    public static void Postfix(EOSManager __instance)
+    public static string GenerateFcOrGetFromSave()
     {
-        if (!MalumMenu.incognitoMode.Value) return;
-        DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
-        __instance.FriendCode = MalumMenu.spoofFriendCode.Value;
+        string friendCode = MalumMenu.spoofFriendCode.Value;
+        if (string.IsNullOrWhiteSpace(friendCode))
+        {
+            string username = DestroyableSingleton<AccountManager>.Instance.GetRandomName().ToLower();
+            friendCode = username;
+        }
+        return friendCode;
     }
 }
 
