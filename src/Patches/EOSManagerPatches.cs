@@ -1,3 +1,5 @@
+using AmongUs.Data.Player;
+using BepInEx;
 using HarmonyLib;
 
 namespace MalumMenu;
@@ -8,6 +10,7 @@ public static class EOSManager_StartInitialLoginFlow
     public static bool Prefix(EOSManager __instance)
     {
         __instance.DeleteDeviceID(new System.Action(__instance.EndMergeGuestAccountFlow));
+        if (!MalumMenu.guestMode.Value) return true;
         __instance.StartTempAccountFlow();
         __instance.CloseStartupWaitScreen();
         return false;

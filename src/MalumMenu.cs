@@ -22,6 +22,8 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
+    public static ConfigEntry<bool> guestMode;
+    public static ConfigEntry<string> spoofFriendCode;
 
     public override void Load()
     {
@@ -37,15 +39,27 @@ public partial class MalumMenu : BasePlugin
                                 "",
                                 "A custom color for your MalumMenu GUI. Supports html color codes");
 
+        guestMode = Config.Bind("MalumMenu.GuestMode",
+                                "GuestMode",
+                                false,
+                                "Generates a new guest account every time you start the game, allowing you to bypass account bans and PUID detection");
+        
+        spoofFriendCode = Config.Bind("MalumMenu.GuestMode",
+                                "FriendName",
+                                "",
+                                "The username that will be used when setting a friend code for your guest account. IMPORTANT: Can only be used with GuestMode, needs to be ≤ 10 characters, and cannot include special characters/discriminator (#1234)");
+        
         spoofLevel = Config.Bind("MalumMenu.Spoofing",
                                 "Level",
                                 "",
-                                "A spoofed level that will be showed instead of your normal level. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
+                                "A custom player level to display to others in online games to hide your actual platform. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
         
         spoofPlatform = Config.Bind("MalumMenu.Spoofing",
                                 "Platform",
                                 "",
-                                "A spoofed platform type that will be showed instead of your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
+                                "A custom gaming platform to display to others in online lobbies to hide your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
+
+
 
         Harmony.PatchAll();
         
