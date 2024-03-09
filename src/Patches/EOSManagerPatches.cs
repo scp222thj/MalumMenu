@@ -1,4 +1,3 @@
-using AmongUs.Data;
 using HarmonyLib;
 
 namespace MalumMenu;
