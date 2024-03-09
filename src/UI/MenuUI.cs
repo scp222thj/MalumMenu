@@ -11,13 +11,12 @@ public class MenuUI : MonoBehaviour
     private bool isGUIActive = false;
     private GUIStyle submenuButtonStyle;
 
-    //Create all groups (buttons) and their toggles on start
+    // Create all groups (buttons) and their toggles on start
     private void Start()
     {
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
             new ToggleInfo(" SpeedBoost", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
-            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             }, new List<SubmenuInfo> {
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
                 new ToggleInfo(" MurderPlayer", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
@@ -43,7 +42,7 @@ public class MenuUI : MonoBehaviour
             new SubmenuInfo("Camera", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ZoomOut", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
                 new ToggleInfo(" Spectate", () => CheatToggles.spectate, x => CheatToggles.spectate = x),
-                new ToggleInfo(" Freecam", () => CheatToggles.freeCam, x => CheatToggles.freeCam = x)
+                new ToggleInfo(" Freecam", () => CheatToggles.freecam, x => CheatToggles.freecam = x)
             }),
             new SubmenuInfo("Tracers", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Crewmates", () => CheatToggles.tracersCrew, x => CheatToggles.tracersCrew = x),
@@ -88,6 +87,7 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Ship", false, new List<ToggleInfo> {
             new ToggleInfo(" UnfixableLights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
+            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             new ToggleInfo(" CloseMeeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Sabotage", false, new List<ToggleInfo>() {
@@ -105,7 +105,7 @@ public class MenuUI : MonoBehaviour
             }),
         }));
 
-        //Host-Only cheats are temporarly disabled because of some bugs
+        // Host-Only cheats are temporarly disabled because of some bugs
 
         //groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
         //    new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
@@ -114,19 +114,11 @@ public class MenuUI : MonoBehaviour
         //    new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
         //}, new List<SubmenuInfo>()));
 
-        groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
-            new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
-        }, new List<SubmenuInfo>()));
-        
-        groups.Add(new GroupInfo("Spoofing", false, new List<ToggleInfo>(){
-            new ToggleInfo(" RandomFriendCode", () => CheatToggles.spoofRandomFC, x => CheatToggles.spoofRandomFC = x),
-        }, new List<SubmenuInfo> {
-            new SubmenuInfo("Config", false, new List<ToggleInfo>() {
-                new ToggleInfo(" Spoofed FriendCode", () => MalumMenu.spoofFriendCode.Value != "", (bool n) => { }),
-                new ToggleInfo(" Spoofed Level", () => MalumMenu.spoofLevel.Value != "", (bool n) => { }),
-                new ToggleInfo(" Spoofed Platform", () => MalumMenu.spoofPlatform.Value != "", (bool n) => { }),
-            }),
-        }));
+        // Console is temporarly disabled until we implement some features for it
+
+        //groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
+        //    new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
+        //}, new List<SubmenuInfo>()));
 
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" FreeCosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
@@ -151,7 +143,7 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         if(!Utils.isPlayer){
-            CheatToggles.changeRole = CheatToggles.murderAll = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freeCam = CheatToggles.murderPlayer;
+            CheatToggles.changeRole = CheatToggles.murderAll = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.murderPlayer;
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
@@ -162,7 +154,7 @@ public class MenuUI : MonoBehaviour
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!Utils.isShip){
             CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
-            Sabotages_ShipStatus_FixedUpdate_Postfix.reactorSab = Sabotages_ShipStatus_FixedUpdate_Postfix.commsSab = Sabotages_ShipStatus_FixedUpdate_Postfix.elecSab = Sabotages_ShipStatus_FixedUpdate_Postfix.oxygenSab = UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive = false;
+            //Sabotages_ShipStatus_FixedUpdate_Postfix.reactorSab = Sabotages_ShipStatus_FixedUpdate_Postfix.commsSab = Sabotages_ShipStatus_FixedUpdate_Postfix.elecSab = Sabotages_ShipStatus_FixedUpdate_Postfix.oxygenSab = UnfixableLights_ShipStatus_FixedUpdate_Postfix.isActive = false;
         }
     }
 
@@ -282,8 +274,8 @@ public class MenuUI : MonoBehaviour
     }
 
 
-    //Dynamically calculate the window's height depending on
-    //The number of toggles & group expansion
+    // Dynamically calculate the window's height depending on
+    // The number of toggles & group expansion
     private int CalculateWindowHeight()
     {
         int totalHeight = 70; // Base height for the window
