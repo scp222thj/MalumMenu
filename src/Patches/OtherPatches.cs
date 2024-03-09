@@ -147,7 +147,6 @@ public static class InnerNet_InnerNetClient_JoinGame
     public static void Prefix()
     {
         if (CheatToggles.unlockFeatures){
-            EOSManager.Instance.FriendCode = MalumMenu.spoofFriendCode.Value;
             AmongUs.Data.DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
         }
     }

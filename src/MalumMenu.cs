@@ -22,8 +22,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
-    public static ConfigEntry<bool> incognitoMode;
-    public static ConfigEntry<string> spoofFriendCode;
+    public static ConfigEntry<bool> guestMode;
 
     public override void Load()
     {
@@ -39,25 +38,20 @@ public partial class MalumMenu : BasePlugin
                                 "",
                                 "A custom color for your MalumMenu GUI. Supports html color codes");
 
-        spoofLevel = Config.Bind("MalumMenu.Spoofing",
+        guestMode = Config.Bind("MalumMenu.Incognito",
+                                "GuestMode",
+                                false,
+                                "Generates a new guest account every time you start the game, allowing you to bypass account bans and PUID detection");
+        
+        spoofLevel = Config.Bind("MalumMenu.Incognito",
                                 "Level",
                                 "",
-                                "A spoofed level that will be showed instead of your normal level. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
+                                "A custom player level to display to others in online games to hide your actual platform. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
         
-        spoofPlatform = Config.Bind("MalumMenu.Spoofing",
+        spoofPlatform = Config.Bind("MalumMenu.Incognito",
                                 "Platform",
                                 "",
-                                "A spoofed platform type that will be showed instead of your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
-
-        incognitoMode = Config.Bind("MalumMenu.Incognito",
-                                "enabled",
-                                false,
-                                "This can bypass account ban, and change your ProductUserId.");
-
-        spoofFriendCode = Config.Bind("MalumMenu.Incognito",
-                                "FriendCode",
-                                "",
-                                "Custom friend code, can help by making users send friend requests to the wrong people.");
+                                "A custom gaming platform to display to others in online lobbies to hide your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
 
 
 
