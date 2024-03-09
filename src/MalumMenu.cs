@@ -22,6 +22,8 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
+    public static ConfigEntry<bool> incognitoMode;
+    public static ConfigEntry<string> spoofFriendCode;
 
     public override void Load()
     {
@@ -46,6 +48,18 @@ public partial class MalumMenu : BasePlugin
                                 "Platform",
                                 "",
                                 "A spoofed platform type that will be showed instead of your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
+
+        incognitoMode = Config.Bind("MalumMenu.Incognito",
+                                "enabled",
+                                false,
+                                "This can bypass account ban, and change your ProductUserId.");
+
+        spoofFriendCode = Config.Bind("MalumMenu.Incognito",
+                                "FriendCode",
+                                "",
+                                "Custom friend code, can help by making users send friend requests to the wrong people.");
+
+
 
         Harmony.PatchAll();
         

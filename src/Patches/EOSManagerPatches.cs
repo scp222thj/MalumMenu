@@ -1,3 +1,4 @@
+using AmongUs.Data;
 using HarmonyLib;
 
 namespace MalumMenu;
@@ -8,9 +9,19 @@ public static class EOSManager_StartInitialLoginFlow
     public static bool Prefix(EOSManager __instance)
     {
         __instance.DeleteDeviceID(new System.Action(__instance.EndMergeGuestAccountFlow));
+        if (!MalumMenu.incognitoMode.Value) return true;
         __instance.StartTempAccountFlow();
         __instance.CloseStartupWaitScreen();
         return false;
+    }
+}
+
+[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.UserIDToken), MethodType.Getter)]
+public static class EOSManager_SetSpoofFC
+{
+    public static void Postfix(EOSManager __instance)
+    {
+        if (!MalumMenu.incognitoMode.Value) return;
     }
 }
 
