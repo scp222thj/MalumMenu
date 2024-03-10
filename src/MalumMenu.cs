@@ -3,6 +3,7 @@ using BepInEx.Unity.IL2CPP;
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine;
+using UnityEngine.Analytics;
 using System.Collections.Generic;
 using BepInEx.Configuration;
 using HarmonyLib;
@@ -22,8 +23,10 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
+    public static ConfigEntry<bool> spoofDeviceId;
+    public static ConfigEntry<string> guestFriendCode;
     public static ConfigEntry<bool> guestMode;
-    public static ConfigEntry<string> spoofFriendCode;
+    public static ConfigEntry<bool> noTelemetry;
 
     public override void Load()
     {
@@ -42,9 +45,9 @@ public partial class MalumMenu : BasePlugin
         guestMode = Config.Bind("MalumMenu.GuestMode",
                                 "GuestMode",
                                 false,
-                                "Generates a new guest account every time you start the game, allowing you to bypass account bans and PUID detection");
+                                "When enabled, a new guest account will generate every time you start the game, allowing you to bypass account bans and PUID detection");
         
-        spoofFriendCode = Config.Bind("MalumMenu.GuestMode",
+        guestFriendCode = Config.Bind("MalumMenu.GuestMode",
                                 "FriendName",
                                 "",
                                 "The username that will be used when setting a friend code for your guest account. IMPORTANT: Can only be used with GuestMode, needs to be ≤ 10 characters, and cannot include special characters/discriminator (#1234)");
@@ -59,12 +62,30 @@ public partial class MalumMenu : BasePlugin
                                 "",
                                 "A custom gaming platform to display to others in online lobbies to hide your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
 
+        spoofDeviceId = Config.Bind("MalumMenu.Privacy",
+                                "DeviceId",
+                                true,
+                                "When enabled it will hide your unique deviceId from Among Us, which could help bypass hardware bans in the future");
+
+        noTelemetry = Config.Bind("MalumMenu.Privacy",
+                                "NoTelemetry",
+                                true,
+                                "When enabled it will stop Among Us from collecting analytics of your games and sending them Innersloth using Unity Analytics");
+
 
 
         Harmony.PatchAll();
         
         menuUI = AddComponent<MenuUI>();
         // consoleUI = AddComponent<ConsoleUI>();
+
+        if (noTelemetry.Value){
+
+            Analytics.enabled = false;
+            Analytics.deviceStatsEnabled = false;
+            PerformanceReporting.enabled = false;
+
+        }
 
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
         {

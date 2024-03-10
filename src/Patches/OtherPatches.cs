@@ -25,14 +25,17 @@ public static class SystemInfo_deviceUniqueIdentifier_Getter
     // to hide the user's real unique deviceId by generating a random fake one
     public static void Postfix(ref string __result)
     {
+        if (MalumMenu.spoofDeviceId.Value){
 
-        var bytes = new byte[16];
-        using (var rng = RandomNumberGenerator.Create())
-        {
-            rng.GetBytes(bytes);
+            var bytes = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(bytes);
+            }
+
+            __result = BitConverter.ToString(bytes).Replace("-", "").ToLower();
+
         }
-
-        __result = BitConverter.ToString(bytes).Replace("-", "").ToLower();
         
     }
 }
@@ -44,19 +47,21 @@ public static class AmongUsClient_Update
     {
         MalumSpoof.spoofLevel();
 
-        if (!EOSManager.Instance.loginFlowFinished || !MalumMenu.guestMode.Value) return;
+        if (EOSManager.Instance.loginFlowFinished && MalumMenu.guestMode.Value){
 
-        DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
+            DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
 
-        if (string.IsNullOrWhiteSpace(EOSManager.Instance.FriendCode))
-        {
-            string friendCode = MalumSpoof.spoofFriendCode();
-            EditAccountUsername editUsername = EOSManager.Instance.editAccountUsername;
-            editUsername.UsernameText.SetText(friendCode);
-            editUsername.SaveUsername();
-            EOSManager.Instance.FriendCode = friendCode;
+            if (string.IsNullOrWhiteSpace(EOSManager.Instance.FriendCode))
+            {
+                string friendCode = MalumSpoof.spoofFriendCode();
+                EditAccountUsername editUsername = EOSManager.Instance.editAccountUsername;
+                editUsername.UsernameText.SetText(friendCode);
+                editUsername.SaveUsername();
+                EOSManager.Instance.FriendCode = friendCode;
+            }
+
         }
-}
+    }
 }
 
 [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
@@ -94,16 +99,6 @@ public static class PingTracker_Update
         if (FriendsListManager.InstanceExists && FriendsListManager._instance.FriendsListButton.Button.active) offset_x += 0.8f;
         __instance.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(offset_x, 0f, 0f);
         
-    }
-}
-
-[HarmonyPatch(typeof(BackendEndpoints), nameof(BackendEndpoints.Announcements), MethodType.Getter)]
-public static class BackendEndpoints_Announcements_Getter
-{
-    // Prefix patch of Getter method for BackendEndpoints.Announcements for custom announcements
-    public static void Postfix(ref string __result)
-    {
-        __result = "https://scp222thj.dev/api/malumnews"; // MalumNews webserver
     }
 }
 

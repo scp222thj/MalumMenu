@@ -21,7 +21,7 @@ public static class MalumSpoof
 
     public static string spoofFriendCode()
     {
-        string friendCode = MalumMenu.spoofFriendCode.Value;
+        string friendCode = MalumMenu.guestFriendCode.Value;
         if (string.IsNullOrWhiteSpace(friendCode))
         {
             friendCode = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
