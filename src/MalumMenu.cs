@@ -63,7 +63,7 @@ public partial class MalumMenu : BasePlugin
                                 "A custom gaming platform to display to others in online lobbies to hide your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
 
         spoofDeviceId = Config.Bind("MalumMenu.Privacy",
-                                "DeviceId",
+                                "HideDeviceId",
                                 true,
                                 "When enabled it will hide your unique deviceId from Among Us, which could help bypass hardware bans in the future");
 
