@@ -43,13 +43,20 @@
 
 # ⬇️ Installation
 
-1. Download `MalumMenu-*.zip` from [here](https://github.com/scp222thj/MalumMenu/releases/latest)
-2. Extract the contents of the zip file and place them into your Among Us folder
-    - For Steam users, the Among Us folder can be found by right-clicking the game in their Library, clicking on `Manage`, and then clicking on `Browse local files`
-3. Start the game normally
-    - The first launch will take a **MUCH** longer time than usual, so don't be alarmed if you have to wait a while
-4. Toggle the cheat menu on by pressing **DELETE** on your keyboard
-5. If the installation doesn't work, check out our [FAQ](#-im-having-issues-installing-malummenu)
+1. Download the latest **MalumMenu zip pack** from [here](https://github.com/scp222thj/MalumMenu/releases/latest).
+   
+2. Open the zip file you have just downloaded and copy all its contents.
+   
+3. Paste these files directly into your Among Us game folder.
+    - Steam: Right-click Among Us in your Library → Click `Manage` → Click `Browse local files`.
+    - Epic Launcher: Right-click Among Us in your Library → Click `Manage` → Click the folder icon in the `Installation` box.
+4. Launch Among Us as you normally would. You should see a console window appear, installing the mod's requirements.
+
+5. Wait for the console window to finish the installation.
+   
+6. After installation, Among Us will automatically open with MalumMenu successfully installed.
+    - By default, you can toggle the cheat gui on by pressing **DELETE** on your keyboard.
+7. If the installation doesn't work, check out our [FAQ](#-faq).
 
 # 📋 Features
 
