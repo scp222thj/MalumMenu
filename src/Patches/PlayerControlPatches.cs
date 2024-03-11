@@ -20,24 +20,27 @@ public static class PlayerControl_CmdCheckMurder
     // Prefix patch of PlayerControl.CmdCheckMurder to always bypass checks when killing players
     public static bool Prefix(PlayerControl __instance, PlayerControl target){
 
-        __instance.isKilling = false;
+        if (Utils.isLobby || CheatToggles.killAnyone || Utils.isMeeting || (MalumPPMCheats.oldRole != null && Utils.getBehaviourByRoleType((AmongUs.GameOptions.RoleTypes)MalumPPMCheats.oldRole).IsImpostor)){
+            __instance.isKilling = false;
 
-		if (!__instance.Data.Role.IsValidTarget(target.Data))
-		{
-			return true;
-		}
+            if (!__instance.Data.Role.IsValidTarget(target.Data))
+            {
+                return true;
+            }
 
-        // Protected players can only be killed if killAnyone is enabled
-        if (target.protectedByGuardianId > -1 && !CheatToggles.killAnyone){
-            return true;
+            // Protected players can only be killed if killAnyone is enabled
+            if (target.protectedByGuardianId > -1 && !CheatToggles.killAnyone){
+                return true;
+            }
+
+            __instance.isKilling = true;
+
+            Utils.murderPlayer(target, MurderResultFlags.Succeeded);
+
+            return false;
         }
 
-		__instance.isKilling = true;
-
-        // Use custom util to bypass anticheat
-        Utils.murderPlayer(target, MurderResultFlags.Succeeded);
-
-        return false;
+        return true;
 
     }
 }
