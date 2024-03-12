@@ -7,6 +7,8 @@ using UnityEngine.Analytics;
 using System.Collections.Generic;
 using BepInEx.Configuration;
 using HarmonyLib;
+using UniverseLib.Config;
+using UniverseLib.UI;
 
 namespace MalumMenu;
 
@@ -17,7 +19,7 @@ public partial class MalumMenu : BasePlugin
     public Harmony Harmony { get; } = new(Id);
     public static string malumVersion = "2.2.0";
     public static List<string> supportedAU = new List<string> { "2023.11.28", "2024.3.5" };
-    public static MenuUI menuUI;
+    public static UIBase UiBase { get; private set; }
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
@@ -75,8 +77,18 @@ public partial class MalumMenu : BasePlugin
 
 
         Harmony.PatchAll();
+
+        float startupDelay = 1f;
+        UniverseLibConfig config = new()
+        {
+            Disable_EventSystem_Override = false,
+            Force_Unlock_Mouse = true,
+            Unhollowed_Modules_Folder = null
+        };
+
+        UniverseLib.Universe.Init(startupDelay, OnInitialized, LogHandler, config);
         
-        menuUI = AddComponent<MenuUI>();
+        //menuUI = AddComponent<MenuUI>();
         // consoleUI = AddComponent<ConsoleUI>();
 
         if (noTelemetry.Value){
@@ -99,6 +111,21 @@ public partial class MalumMenu : BasePlugin
                 }
             }
         }));
+    }
+
+    void OnInitialized() 
+    {
+        UiBase = UniversalUI.RegisterUI("scp222thj.malummenu.universeui", UiUpdate);
+    }
+
+    void UiUpdate()
+    {
+        Debug.Log("working!");
+    }
+
+    void LogHandler(string message, LogType type) 
+    {
+        Debug.Log(message);
     }
 }
 
