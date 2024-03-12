@@ -6,7 +6,7 @@
 
         <VersionPrefix>2.2.0</VersionPrefix>
         <Description>all play and no cheats makes among us a dull game</Description>
-        <!-- <Authors>scp222thj</Authors> -->
+        <Authors>scp222thj</Authors>
     </PropertyGroup>
 
     <!--<ItemGroup>
@@ -26,7 +26,14 @@
         </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="..\modules\UniverseLib.BIE.IL2CPP.Interop.dll">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AmongUs)/BepInEx/plugins/scp222thj-MalumMenu" UseSymboliclinksIfPossible="true" />
+        <Copy SourceFiles="..\modules\UniverseLib.BIE.IL2CPP.Interop.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/scp222thj-MalumMenu" UseSymboliclinksIfPossible="true" />
     </Target>
 </Project>
