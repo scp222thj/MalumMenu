@@ -19,7 +19,7 @@ public partial class MalumMenu : BasePlugin
     public Harmony Harmony { get; } = new(Id);
     public static string malumVersion = "2.2.0";
     public static List<string> supportedAU = new List<string> { "2023.11.28", "2024.3.5" };
-    public static UIBase UiBase { get; private set; }
+    public static UIBase malumUi { get; private set; }
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
@@ -115,12 +115,13 @@ public partial class MalumMenu : BasePlugin
 
     void OnInitialized() 
     {
-        UiBase = UniversalUI.RegisterUI("scp222thj.malummenu.universeui", UiUpdate);
+        malumUi = UniversalUI.RegisterUI("scp222thj.malummenu.malumui", UiUpdate);
+        MalumPanel malumPanel = new(malumUi);
     }
 
     void UiUpdate()
     {
-        Debug.Log("working!");
+        //
     }
 
     void LogHandler(string message, LogType type) 
