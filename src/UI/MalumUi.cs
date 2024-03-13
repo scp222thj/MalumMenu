@@ -35,6 +35,7 @@ public class MalumPanelManager
 {
     public MalumPanel malumPanel;
     public Text mousePosition;
+    public Text playerPosition;
     public ButtonRef murderAll;
     public Toggle speedBoost;
     bool isMenuActive;
@@ -53,6 +54,8 @@ public class MalumPanelManager
         malumPanel.Dragger.OnEndResize();
 
         mousePosition = UIFactory.CreateLabel(mainContentRoot, "mousePos", "Mouse position:");
+
+        playerPosition = UIFactory.CreateLabel(mainContentRoot, "playerPos", "Player position:");
 
         murderAll = UIFactory.CreateButton(mainContentRoot, "murderAll", "Murder All");
         UIFactory.SetLayoutElement(murderAll.GameObject, flexibleWidth: 9999, minHeight: 25);
@@ -77,6 +80,11 @@ public class MalumPanelManager
         }
 
         mousePosition.text = $"Mouse position: x:{Input.mousePosition.x} y:{Input.mousePosition.y}";
+        if (Utils.isPlayer)
+        {
+        Vector2 playerPos = PlayerControl.LocalPlayer.GetTruePosition();
+        playerPosition.text = $"Player position: x:{playerPos.x:F2} y:{playerPos.y:F2}";
+        }
     }
 
     public static void ToggleClicked(bool value, ref bool value2)
