@@ -155,17 +155,13 @@ public static class MalumCheats
 
     public static void murderAllCheat()
     {
-        if (CheatToggles.murderAll){
-
-            // Kill all players by sending a successful MurderPlayer RPC call
-            foreach (var player in PlayerControl.AllPlayerControls)
-            {
-                Utils.murderPlayer(player, MurderResultFlags.Succeeded);
-            }
-
-            CheatToggles.murderAll = false;
-
-        }
+       if (!Utils.isPlayer) return;
+       // Kill all players by sending a successful MurderPlayer RPC call
+       MalumMenu.LogHandler("Murder all runned", LogType.Log);
+       foreach (var player in PlayerControl.AllPlayerControls)
+       {
+       Utils.murderPlayer(player, MurderResultFlags.Succeeded);
+       }
     }
 
     public static void teleportCursorCheat()

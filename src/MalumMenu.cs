@@ -20,6 +20,8 @@ public partial class MalumMenu : BasePlugin
     public static string malumVersion = "2.2.0";
     public static List<string> supportedAU = new List<string> { "2023.11.28", "2024.3.5" };
     public static UIBase malumUi { get; private set; }
+    public static MalumPanelManager malumPanelManager;
+    public static BepInEx.Logging.ManualLogSource Logger;
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
@@ -86,6 +88,7 @@ public partial class MalumMenu : BasePlugin
             Unhollowed_Modules_Folder = null
         };
 
+        Logger = BepInEx.Logging.Logger.CreateLogSource("MalumMenu");
         UniverseLib.Universe.Init(startupDelay, OnInitialized, LogHandler, config);
         
         //menuUI = AddComponent<MenuUI>();
@@ -113,20 +116,35 @@ public partial class MalumMenu : BasePlugin
         }));
     }
 
+
     void OnInitialized() 
     {
-        malumUi = UniversalUI.RegisterUI("scp222thj.malummenu.malumui", UiUpdate);
+        malumPanelManager = new MalumPanelManager();
+        malumUi = UniversalUI.RegisterUI("scp222thj.malummenu.malumui", malumPanelManager.Update);
         MalumPanel malumPanel = new(malumUi);
+        malumPanelManager.RegisterPanel(malumPanel);
     }
 
-    void UiUpdate()
+    public static void LogHandler(string message, LogType type)
     {
-        //
-    }
-
-    void LogHandler(string message, LogType type) 
-    {
-        Debug.Log(message);
+        switch (type)
+        {
+            case LogType.Log:
+            Logger.LogMessage(message);
+            break;
+            case LogType.Error:
+            Logger.LogError(message);
+            break;
+            case LogType.Assert:
+            Logger.LogInfo(message);
+            break;
+            case LogType.Warning:
+            Logger.LogWarning(message);
+            break;
+            case LogType.Exception:
+            Logger.LogFatal(message);
+            break;
+        }
     }
 }
 

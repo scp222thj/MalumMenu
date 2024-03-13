@@ -289,6 +289,43 @@ public static class Utils
         }
     }
 
+    //Cheks if the target bool requires PlayerControl.LocalPlayer
+    public static bool isPlayerBool(ref bool value)
+    {
+        if (value == CheatToggles.changeRole ||
+            value == CheatToggles.murderAll ||
+            value == CheatToggles.teleportCursor ||
+            value == CheatToggles.teleportPlayer ||
+            value == CheatToggles.spectate ||
+            value == CheatToggles.freecam ||
+            value == CheatToggles.murderPlayer)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    //Cheks if the target bool requires ShipStatus.Instance
+    public static bool isShipBool(ref bool value)
+    {
+        if (value == CheatToggles.unfixableLights ||
+            value == CheatToggles.completeMyTasks ||
+            value == CheatToggles.kickVents ||
+            value == CheatToggles.reportBody ||
+            value == CheatToggles.closeMeeting ||
+            value == CheatToggles.reactorSab ||
+            value == CheatToggles.oxygenSab ||
+            value == CheatToggles.commsSab ||
+            value == CheatToggles.elecSab ||
+            value == CheatToggles.mushSab ||
+            value == CheatToggles.doorsSab)
+        {
+            return true;
+        }
+        return false;
+    }
+
+
     // Get a UnityEngine.KeyCode from a string
     public static KeyCode stringToKeycode(string keyCodeStr){
 
