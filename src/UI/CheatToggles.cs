@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using MalumMenu;
+
 namespace MalumMenu
 {
     public struct CheatToggles
@@ -85,6 +89,25 @@ namespace MalumMenu
             changeRole = variableToKeep != "changeRole" ? false : changeRole;
             teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
         }
+
+        public static Dictionary<string, Action<bool>> AllTogglesFast()
+        {
+            var toggleDictionary = new Dictionary<string, Action<bool>>
+            {
+        { "NoClip", (value) => MalumPanelManager.ToggleClicked(value, ref noClip) },
+        { "SpeedBoost", (value) => MalumPanelManager.ToggleClicked(value, ref speedBoost) },
+        { "NoKillCooldown", (value) => MalumPanelManager.ToggleClicked(value, ref zeroKillCd) },
+        { "KillReach", (value) => MalumPanelManager.ToggleClicked(value, ref killReach) },
+        { "KillAnyone", (value) => MalumPanelManager.ToggleClicked(value, ref killAnyone) },
+        { "EndlessSsDuration", (value) => MalumPanelManager.ToggleClicked(value, ref endlessSsDuration) },
+        { "EndlessBattery", (value) => MalumPanelManager.ToggleClicked(value, ref endlessBattery) },
+        { "NoVitalsCooldown", (value) => MalumPanelManager.ToggleClicked(value, ref noVitalsCooldown) },
+        { "NoVentCooldown", (value) => MalumPanelManager.ToggleClicked(value, ref noVentCooldown) },
+        };
+
+            return toggleDictionary;
+        }
+
 
         public static bool shouldPPMClose(){
             return !changeRole && !reportBody && !murderPlayer && !spectate && !teleportPlayer;

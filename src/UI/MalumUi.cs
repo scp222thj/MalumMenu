@@ -58,8 +58,10 @@ public class MalumPanelManager
         UIFactory.SetLayoutElement(murderAll.GameObject, flexibleWidth: 9999, minHeight: 25);
         murderAll.OnClick += () => { MalumCheats.murderAllCheat(); };
 
-        System.Action<bool> speedBoostAction = (value => ToggleClicked(value, ref CheatToggles.speedBoost));
-        speedBoost = UiUtils.CreateToggle(mainContentRoot, "speedBoost", "Speed Boost", speedBoostAction);
+        foreach (var option in MalumMenu.allTogglesPreloaded)
+        {
+            UiUtils.CreateToggle(mainContentRoot, option.Key.ToLower().Trim(), option.Key, option.Value);
+        }
     }
 
     public void Update()
@@ -77,7 +79,7 @@ public class MalumPanelManager
         mousePosition.text = $"Mouse position: x:{Input.mousePosition.x} y:{Input.mousePosition.y}";
     }
 
-    public void ToggleClicked(bool value, ref bool value2)
+    public static void ToggleClicked(bool value, ref bool value2)
     {
         if (Utils.isShipBool(ref value2))
         {

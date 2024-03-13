@@ -22,6 +22,7 @@ public partial class MalumMenu : BasePlugin
     public static UIBase malumUi { get; private set; }
     public static MalumPanelManager malumPanelManager;
     public static BepInEx.Logging.ManualLogSource Logger;
+    public static Dictionary<string, Action<bool>> allTogglesPreloaded;
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
@@ -31,9 +32,35 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> guestFriendCode;
     public static ConfigEntry<bool> guestMode;
     public static ConfigEntry<bool> noTelemetry;
+    public static string ErrorText = "";
 
     public override void Load()
     {
+        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
+        {
+            if (scene.name == "SplashIntro")
+            {
+                SplashManager splashManager = GameObject.FindAnyObjectByType<SplashManager>();
+                SplashErrorPopup splashError = splashManager.errorPopup;
+                if (string.IsNullOrEmpty(ErrorText)) return;
+                if (splashManager != null) splashManager.enabled = false;
+                if (splashError != null) splashError.Show("MalumMenu", ErrorText);
+                Harmony.UnpatchAll();
+            }
+            if (scene.name == "MainMenu")
+            {
+                ModManager.Instance.ShowModStamp(); // Required by InnerSloth Modding Policy
+
+                //Warn about unsupported AU versions
+                if (!supportedAU.Contains(Application.version))
+                {
+                    Utils.showPopup("\nThis version of MalumMenu and this version of Among Us are incompatible\n\nInstall the right version to avoid problems");
+                }
+            }
+        }));
+
+        //Add Logger
+        Logger = BepInEx.Logging.Logger.CreateLogSource("MalumMenu");
 
         //Load config settings
         menuKeybind = Config.Bind("MalumMenu.GUI",
@@ -77,6 +104,17 @@ public partial class MalumMenu : BasePlugin
                                 "When enabled it will stop Among Us from collecting analytics of your games and sending them Innersloth using Unity Analytics");
 
 
+        try
+        {
+        allTogglesPreloaded = CheatToggles.AllTogglesFast();
+        LogHandler("Preloaded toggles", LogType.Log);
+        }
+        catch 
+        {
+        LogHandler("Failed to load toggles", LogType.Exception);
+        ErrorText = "Failed to load toggles!";
+        return;
+        }
 
         Harmony.PatchAll();
 
@@ -88,7 +126,6 @@ public partial class MalumMenu : BasePlugin
             Unhollowed_Modules_Folder = null
         };
 
-        Logger = BepInEx.Logging.Logger.CreateLogSource("MalumMenu");
         UniverseLib.Universe.Init(startupDelay, OnInitialized, LogHandler, config);
         
         //menuUI = AddComponent<MenuUI>();
@@ -101,19 +138,6 @@ public partial class MalumMenu : BasePlugin
             PerformanceReporting.enabled = false;
 
         }
-
-        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
-        {
-            if (scene.name == "MainMenu")
-            {
-                ModManager.Instance.ShowModStamp(); // Required by InnerSloth Modding Policy
-
-                //Warn about unsupported AU versions
-                if (!supportedAU.Contains(Application.version)){
-                    Utils.showPopup("\nThis version of MalumMenu and this version of Among Us are incompatible\n\nInstall the right version to avoid problems");
-                }
-            }
-        }));
     }
 
 
