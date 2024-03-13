@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UniverseLib;
 using UniverseLib.UI;
 using UniverseLib.UI.Models;
+using UniverseLib.UI.Panels;
 
 namespace MalumMenu;
 
@@ -14,11 +15,16 @@ public class MalumPanel : UniverseLib.UI.Panels.PanelBase
     public MalumPanel(UIBase owner) : base(owner) { }
 
     public override string Name => "MalumMenu v" + MalumMenu.malumVersion;
-    public override int MinWidth => 100;
-    public override int MinHeight => 200;
+    public override int MinWidth => int.MinValue;
+    public override int MinHeight => int.MinValue;
     public override Vector2 DefaultAnchorMin => new(0.25f, 0.25f);
     public override Vector2 DefaultAnchorMax => new(0.75f, 0.75f);
     public override bool CanDragAndResize => true;
+
+    protected override PanelDragger CreatePanelDragger()
+    {
+        return new MalumPanelDragger(this);
+    }
 
     protected override void ConstructPanelContent()
     {
@@ -41,6 +47,10 @@ public class MalumPanelManager
         GameObject mainContentRoot = malumPanel.ContentRoot;
 
         malumPanel.TitleBar.transform.Find("CloseHolder").gameObject.SetActive(false);
+
+        malumPanel.Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 260);
+        malumPanel.Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 470);
+        malumPanel.Dragger.OnEndResize();
 
         mousePosition = UIFactory.CreateLabel(mainContentRoot, "mousePos", "Mouse position:");
 
