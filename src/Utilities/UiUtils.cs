@@ -14,7 +14,7 @@ namespace MalumMenu.Utilities
     {
         public static Toggle CreateToggle(GameObject parent, string name, string text, UnityAction<bool> action, bool defaultValue = false, Color bgColor = default, int checkWidth = 20, int checkHeight = 20)
         {
-            GameObject toggleObj = UIFactory.CreateToggle(parent, name, out Toggle toggle, out Text toggleText);
+            GameObject toggleObj = UIFactory.CreateToggle(parent, name, out Toggle toggle, out Text toggleText, bgColor, checkWidth, checkHeight);
             toggle.isOn = defaultValue;
             toggle.onValueChanged.AddListener(action);
             toggleText.text = text;
