@@ -6,7 +6,7 @@
 
         <VersionPrefix>2.2.0</VersionPrefix>
         <Description>all play and no cheats makes among us a dull game</Description>
-        <!-- <Authors>scp222thj</Authors> -->
+        <Authors>scp222thj</Authors>
     </PropertyGroup>
 
     <!--<ItemGroup>
