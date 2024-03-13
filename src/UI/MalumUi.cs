@@ -55,7 +55,7 @@ public class MalumPanelManager
         mousePosition = UIFactory.CreateLabel(mainContentRoot, "mousePos", "Mouse position:");
 
         murderAll = UIFactory.CreateButton(mainContentRoot, "murderAll", "Murder All");
-        UIFactory.SetLayoutElement(murderAll.Component.gameObject, minWidth: 110, minHeight: 25);
+        UIFactory.SetLayoutElement(murderAll.GameObject, flexibleWidth: 9999, minHeight: 25);
         murderAll.OnClick += () => { MalumCheats.murderAllCheat(); };
 
         System.Action<bool> speedBoostAction = (value => ToggleClicked(value, ref CheatToggles.speedBoost));
