@@ -14,7 +14,7 @@ public class MalumPanel : UniverseLib.UI.Panels.PanelBase
 {
     public MalumPanel(UIBase owner) : base(owner) { }
 
-    public override string Name => "MalumMenu v" + MalumMenu.malumVersion;
+    public override string Name => $"MalumMenu v{MalumMenu.malumVersion}";
     public override int MinWidth => int.MinValue;
     public override int MinHeight => int.MinValue;
     public override Vector2 DefaultAnchorMin => new(0.25f, 0.25f);
