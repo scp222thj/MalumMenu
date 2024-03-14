@@ -1,53 +1,18 @@
 using ImGuiNET;
+using UnityEngine;
 
 namespace MalumMenu;
 public class MenuUI
 {
-    private static bool _isMyUIOpen = true;
-    public static void MyUI()
+    public static bool _isMyUIOpen = true;
+    public static void render()
     {
-        if (DearImGuiInjection.DearImGuiInjection.IsCursorVisible)
-        {
-            var dummy = true;
-            ImGui.ShowDemoWindow(ref dummy);
-
-            if (ImGui.BeginMainMenuBar())
-            {
-                if (ImGui.BeginMenu("MainBar", true))
-                {
-                    if (ImGui.MenuItem("MyTestPlugin"))
-                    {
-                        _isMyUIOpen ^= true;
-                    }
-
-                    ImGui.EndMenu();
-                }
-
-                ImGui.EndMainMenuBar();
-            }
-
-            if (ImGui.BeginMainMenuBar())
-            {
-                if (ImGui.BeginMenu("MainBar", true))
-                {
-                    if (ImGui.MenuItem("MyTestPlugin2"))
-                    {
-                        _isMyUIOpen ^= true;
-                    }
-
-                    ImGui.EndMenu();
-                }
-
-                ImGui.EndMainMenuBar();
-            }
-        }
-
         if (_isMyUIOpen)
         {
             var dummy2 = true;
-            if (ImGui.Begin("test", ref dummy2, (int)ImGuiWindowFlags.None))
+            if (ImGui.Begin("Test Window", ref dummy2, (int)ImGuiWindowFlags.None))
             {
-                ImGui.Text("hello there");
+                ImGui.Text("Hello, World!");
 
 
                 if (ImGui.Button("Click me"))
@@ -56,7 +21,7 @@ public class MenuUI
                     // Can just use the dispatcher shipped with the library for that
                     UnityMainThreadDispatcher.Enqueue(() =>
                     {
-                        UnityEngine.Debug.Log("test");
+                        Debug.Log("test");
                     });
                 }
             }
@@ -64,5 +29,4 @@ public class MenuUI
             ImGui.End();
         }
     }
-
 }

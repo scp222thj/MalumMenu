@@ -18,8 +18,6 @@ public partial class MalumMenu : BasePlugin
     public Harmony Harmony { get; } = new(Id);
     public static string malumVersion = "2.2.0";
     public static List<string> supportedAU = new List<string> { "2023.11.28", "2024.3.5" };
-    //public static MenuUI menuUI;
-    // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<string> spoofLevel;
@@ -31,7 +29,6 @@ public partial class MalumMenu : BasePlugin
 
     public override void Load()
     {
-        DearImGuiInjection.DearImGuiInjection.Render += MenuUI.MyUI;
 
         //Load config settings
         menuKeybind = Config.Bind("MalumMenu.GUI",
@@ -78,8 +75,7 @@ public partial class MalumMenu : BasePlugin
 
         Harmony.PatchAll();
         
-        //menuUI = AddComponent<MenuUI>();
-        // consoleUI = AddComponent<ConsoleUI>();
+        DearImGuiInjection.DearImGuiInjection.Render += MenuUI.render;
 
         if (noTelemetry.Value){
 
