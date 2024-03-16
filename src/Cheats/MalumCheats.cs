@@ -190,9 +190,9 @@ public static class MalumCheats
             //Among Us uses this value with the associated game setting to calculate the TrueSpeed of the player
             
             if(CheatToggles.speedBoost){
-                PlayerControl.LocalPlayer.MyPhysics.Speed = 2.5f * 2;
+                PlayerControl.LocalPlayer.MyPhysics.Speed = 4.5f * 2;
             }else{
-                PlayerControl.LocalPlayer.MyPhysics.Speed = 2.5f; //By default, Speed is always 2.5f
+                PlayerControl.LocalPlayer.MyPhysics.Speed = 4.5f; //By default, Speed is always 2.5f
             }
 
         }catch{}
