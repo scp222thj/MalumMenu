@@ -21,19 +21,19 @@
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivateAssets="all" ExcludeAssets="runtime" />
         
         <Reference Include="UniverseLib">
-            <HintPath>..\modules\UniverseLib.BIE.IL2CPP.Interop.dll</HintPath>
+            <HintPath>..\lib\UniverseLib.BIE.IL2CPP.Interop.dll</HintPath>
             <Private>True</Private>
         </Reference>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="..\modules\UniverseLib.BIE.IL2CPP.Interop.dll">
+        <Content Include="..\lib\UniverseLib.BIE.IL2CPP.Interop.dll">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AmongUs)/BepInEx/plugins/scp222thj-MalumMenu" UseSymboliclinksIfPossible="true" />
-        <Copy SourceFiles="..\modules\UniverseLib.BIE.IL2CPP.Interop.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/scp222thj-MalumMenu" UseSymboliclinksIfPossible="true" />
+        <Copy SourceFiles="..\lib\UniverseLib.BIE.IL2CPP.Interop.dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/scp222thj-MalumMenu" UseSymboliclinksIfPossible="true" />
     </Target>
 </Project>
