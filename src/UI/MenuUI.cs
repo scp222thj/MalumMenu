@@ -6,11 +6,9 @@ namespace MalumMenu
     public class MenuUI : MonoBehaviour
     {
         public bool isVisible = false;
-        private Rect windowRect = new Rect(10, 10, 200, 100); // Start with minimum size
-        
-        // Define minimum size constants
-        private const float MinWindowWidth = 200;
-        private const float MinWindowHeight = 100;
+        private const float MinWindowWidth = 500;
+        private const float MinWindowHeight = 400;
+        private Rect windowRect = new Rect(10, 10, MinWindowWidth, MinWindowHeight);
 
         public int selectedTab = 0;
         public List<ITab> tabs;
@@ -36,6 +34,15 @@ namespace MalumMenu
                     windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
                 }
             }
+
+            if(Input.GetMouseButtonDown(0))
+            {
+                if(!windowRect.Contains(Input.mousePosition))
+                {
+                    TextInput.clearFocusedTextInput();
+                }
+            }
+
         }
 
         void OnGUI()

@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class TextField
+public class TextInput
 {
     public string Text { get; set; } = "";
-    private bool isFocused = false;
+    private static TextInput focusedTextInput = null;
     private Rect textFieldRect;
     private float cursorBlinkTime = 0.5f;
     private float lastBlinkTime = 0.0f;
@@ -11,7 +13,7 @@ public class TextField
 
     public void draw()
     {
-        GUILayout.Box("", GUILayout.Width(200), GUILayout.Height(20));
+        GUILayout.Box("");
         
         if (Event.current.type == EventType.Repaint)
         {
@@ -20,32 +22,40 @@ public class TextField
 
         handleTextInput();
 
-        GUI.Label(new Rect(textFieldRect.x, textFieldRect.y, textFieldRect.width - 10, textFieldRect.height), Text);
+        GUI.Label(new Rect(textFieldRect.x, textFieldRect.y, textFieldRect.width - 10, textFieldRect.height), Text + (cursorVisible && this == focusedTextInput ? "|" : ""));
 
         if (Event.current.type == EventType.MouseDown)
         {
             if (textFieldRect.Contains(Event.current.mousePosition))
             {
-                isFocused = true;
+                focusedTextInput = this;
                 lastBlinkTime = Time.time;
                 cursorVisible = true;
                 Event.current.Use();
             }
-            else
+            else if (focusedTextInput == this)
             {
-                isFocused = false;
+                focusedTextInput = null;
             }
         }
 
-        if (isFocused)
+        if (this == focusedTextInput)
         {
             manageCursor();
         }
     }
 
+    public static void clearFocusedTextInput()
+    {
+        if (focusedTextInput != null)
+        {
+            focusedTextInput = null;
+        }
+    }
+
     private void handleTextInput()
     {
-        if (isFocused && Event.current.type == EventType.KeyDown)
+        if (this == focusedTextInput && Event.current.type == EventType.KeyDown)
         {
             if (Event.current.keyCode == KeyCode.Backspace)
             {
@@ -70,11 +80,53 @@ public class TextField
             cursorVisible = !cursorVisible;
             lastBlinkTime = Time.time;
         }
+    }
+}
 
-        if (cursorVisible)
+public class PlayerListInput
+{
+    public List<string> selectedPlayerNames = new List<string>();
+    private Dictionary<string, PlayerControl> allPlayers = new Dictionary<string, PlayerControl>();
+
+    public void draw()
+    {
+        refreshPlayerList();
+
+        // Display checkboxes for player selection
+        foreach (var player in allPlayers)
         {
-            Vector2 textSize = GUI.skin.label.CalcSize(new GUIContent(Text));
-            GUI.Label(new Rect(textFieldRect.x + textSize.x + 2, textFieldRect.y + 2, 10, textFieldRect.height - 4), "|");
+            bool isSelected = selectedPlayerNames.Contains(player.Key);
+            bool newIsSelected = GUILayout.Toggle(isSelected, $" {player.Key}");
+            // Update the selection state based on the checkbox
+            if (newIsSelected && !isSelected)
+            {
+                selectedPlayerNames.Add(player.Key);
+            }
+            else if (!newIsSelected && isSelected)
+            {
+                selectedPlayerNames.Remove(player.Key);
+            }
         }
+    }
+
+    private void refreshPlayerList()
+    {
+        // Get the current list of players and update the dictionary
+        var currentPlayers = PlayerControl.AllPlayerControls.ToArray()
+            .Where(pc => pc != null && pc.Data != null && pc.Data.DefaultOutfit != null)
+            .ToList();
+
+        allPlayers = currentPlayers.ToDictionary(pc => pc.Data.DefaultOutfit.PlayerName, pc => pc);
+
+        // Remove any selected players that are no longer present
+        selectedPlayerNames = selectedPlayerNames.Where(name => allPlayers.ContainsKey(name)).ToList();
+    }
+
+    public List<PlayerControl> getSelectedPlayers()
+    {
+        return selectedPlayerNames
+            .Where(allPlayers.ContainsKey)
+            .Select(playerName => allPlayers[playerName])
+            .ToList();
     }
 }
