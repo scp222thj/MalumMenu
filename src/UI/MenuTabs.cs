@@ -13,12 +13,7 @@ public interface ITab
 
 public class TextTab : ITab
 {
-    private string textFieldContent = "";
-    private bool isTextFieldFocused = false;
-    private Rect textFieldRect;
-    private float cursorBlinkTime = 0.5f; // Time in seconds for each blink state
-    private float lastBlinkTime = 0.0f;
-    private bool cursorVisible = true;
+    private TextField userInput = new TextField();
 
     public string title => "TextTest";
 
@@ -27,77 +22,10 @@ public class TextTab : ITab
     public void drawContent()
     {
         GUILayout.Label("Custom Text Field Below:");
-
-        GUILayout.Box("", GUILayout.Width(200), GUILayout.Height(20));
-
-        if (Event.current.type == EventType.Repaint)
-        {
-            textFieldRect = GUILayoutUtility.GetLastRect();
-        }
-
-        HandleTextInput();
-
-        // Adjust GUI.Label to leave space for the cursor
-        GUI.Label(new Rect(textFieldRect.x, textFieldRect.y, textFieldRect.width - 10, textFieldRect.height), textFieldContent);
-
-        if (Event.current.type == EventType.MouseDown)
-        {
-            if (textFieldRect.Contains(Event.current.mousePosition))
-            {
-                isTextFieldFocused = true;
-                lastBlinkTime = Time.time; // Reset blink timing on focus
-                cursorVisible = true; // Ensure cursor is visible when field is focused
-                Event.current.Use();
-            }
-            else
-            {
-                isTextFieldFocused = false;
-            }
-        }
-
-        if (isTextFieldFocused)
-        {
-            ManageCursorBlinking();
-        }
-    }
-
-    private void HandleTextInput()
-    {
-        if (isTextFieldFocused && Event.current.type == EventType.KeyDown)
-        {
-            if (Event.current.keyCode == KeyCode.Backspace)
-            {
-                if (textFieldContent.Length > 0)
-                {
-                    textFieldContent = textFieldContent.Substring(0, textFieldContent.Length - 1);
-                    Event.current.Use();
-                }
-            }
-            else if (Event.current.character != '\0' && !char.IsControl(Event.current.character))
-            {
-                textFieldContent += Event.current.character;
-                Event.current.Use();
-            }
-        }
-    }
-
-    private void ManageCursorBlinking()
-    {
-        // Toggle cursor visibility based on blink time
-        if (Time.time - lastBlinkTime > cursorBlinkTime)
-        {
-            cursorVisible = !cursorVisible;
-            lastBlinkTime = Time.time;
-        }
-
-        // Draw cursor if visible
-        if (cursorVisible)
-        {
-            Vector2 textSize = GUI.skin.label.CalcSize(new GUIContent(textFieldContent));
-            GUI.Label(new Rect(textFieldRect.x + textSize.x + 2, textFieldRect.y + 2, 10, textFieldRect.height - 4), "|");
-        }
+        userInput.draw();
     }
 }
+
 
 
 public class PlayerListTab : ITab
