@@ -34,15 +34,6 @@ namespace MalumMenu
                     windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
                 }
             }
-
-            if(Input.GetMouseButtonDown(0))
-            {
-                if(!windowRect.Contains(Input.mousePosition))
-                {
-                    TextInput.clearFocusedTextInput();
-                }
-            }
-
         }
 
         void OnGUI()

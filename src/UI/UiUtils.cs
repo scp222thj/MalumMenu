@@ -24,14 +24,13 @@ public class TextInput
 
         GUI.Label(new Rect(textFieldRect.x, textFieldRect.y, textFieldRect.width - 10, textFieldRect.height), Text + (cursorVisible && this == focusedTextInput ? "|" : ""));
 
-        if (Event.current.type == EventType.MouseDown)
+        if (Input.GetMouseButtonDown(0))
         {
             if (textFieldRect.Contains(Event.current.mousePosition))
             {
                 focusedTextInput = this;
                 lastBlinkTime = Time.time;
                 cursorVisible = true;
-                Event.current.Use();
             }
             else if (focusedTextInput == this)
             {
@@ -42,14 +41,6 @@ public class TextInput
         if (this == focusedTextInput)
         {
             manageCursor();
-        }
-    }
-
-    public static void clearFocusedTextInput()
-    {
-        if (focusedTextInput != null)
-        {
-            focusedTextInput = null;
         }
     }
 
