@@ -62,8 +62,9 @@ public static class ShapeshifterCheats_PlayerControl_CmdCheckShapeshift_Postfix
     // Prefix patch of PlayerControl.CmdCheckShapeshift to prevent SS animation
     public static void Prefix(ref bool shouldAnimate){
 
-        shouldAnimate = !CheatToggles.noShapeshiftAnim;
-
+        if (shouldAnimate && CheatToggles.noShapeshiftAnim){
+            shouldAnimate = false;
+        }
     }
 }
 
@@ -73,7 +74,8 @@ public static class ShapeshifterCheats_PlayerControl_CmdCheckRevertShapeshift_Po
     // Prefix patch of PlayerControl.CmdCheckRevertShapeshift to prevent SS animation
     public static void Prefix(ref bool shouldAnimate){
 
-        shouldAnimate = !CheatToggles.noShapeshiftAnim;
-
+        if (shouldAnimate && CheatToggles.noShapeshiftAnim){
+            shouldAnimate = false;
+        }
     }
 }

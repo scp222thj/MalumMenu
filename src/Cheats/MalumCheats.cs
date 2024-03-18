@@ -51,9 +51,9 @@ public static class MalumCheats
             engineerRole.inVentTimeRemaining = float.MaxValue;
         
         // Vent time is reset to normal value after the cheat is disabled
-        }else if (engineerRole.inVentTimeRemaining > GameManager.Instance.LogicOptions.GetEngineerCooldown()){
+        }else if (engineerRole.inVentTimeRemaining > engineerRole.GetCooldown()){
             
-            engineerRole.inVentTimeRemaining = GameManager.Instance.LogicOptions.GetEngineerCooldown();
+            engineerRole.inVentTimeRemaining = engineerRole.GetCooldown();
         
         }
 
@@ -92,9 +92,9 @@ public static class MalumCheats
             scientistRole.currentCharge = float.MaxValue;
 
         // Battery charge is reset to normal value after the cheat is disabled
-        }else if (scientistRole.currentCharge > GameManager.Instance.LogicOptions.GetScientistBatteryCharge()){
+        }else if (scientistRole.currentCharge > scientistRole.RoleCooldownValue){
             
-            scientistRole.currentCharge = GameManager.Instance.LogicOptions.GetScientistBatteryCharge();
+            scientistRole.currentCharge = scientistRole.RoleCooldownValue;
         
         }
     }
