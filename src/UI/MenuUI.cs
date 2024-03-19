@@ -18,7 +18,7 @@ namespace MalumMenu
             tabs = new List<ITab>
             {
                 new TextTab(),
-                new PlayerListTab(),
+                new PlayerListTab()
             };
         }
 

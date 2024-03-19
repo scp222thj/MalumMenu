@@ -9,11 +9,16 @@ public class TextInput
     private Rect textFieldRect;
     private float cursorBlinkTime = 0.5f;
     private float lastBlinkTime = 0.0f;
-    private bool cursorVisible = true;
+    private bool cursorVisible = true; 
+    private GUILayoutOption[] guiLayout;
+
+    public TextInput(params GUILayoutOption[] options){
+        guiLayout = options;
+    }
 
     public void draw()
     {
-        GUILayout.Box("");
+        GUILayout.Box("", guiLayout);
         
         if (Event.current.type == EventType.Repaint)
         {
