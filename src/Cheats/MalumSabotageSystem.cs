@@ -221,7 +221,6 @@ public static class MalumSabotageSystem
             if (mapId == 5){ // MushroomMixup only works on Fungle
                 
                 shipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); // Sabotage
-                return;
             
             } else {
 
