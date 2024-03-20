@@ -20,6 +20,7 @@ public static class PlayerControl_CmdCheckMurder
     // Prefix patch of PlayerControl.CmdCheckMurder to always bypass checks when killing players
     public static bool Prefix(PlayerControl __instance, PlayerControl target){
 
+        // Direct kill RPC should only be used when absolutely necessary as to avoid detection from anticheat mods
         if (Utils.isLobby || CheatToggles.killAnyone || Utils.isMeeting || (MalumPPMCheats.oldRole != null && Utils.getBehaviourByRoleType((AmongUs.GameOptions.RoleTypes)MalumPPMCheats.oldRole).IsImpostor)){
             __instance.isKilling = false;
 

@@ -182,17 +182,19 @@ public static class MalumCheats
 
     public static void speedBoostCheat()
     {
-        //try-catch to avoid some errors I was reciving in the logs related to this cheat
+        // try-catch to avoid some errors I was reciving in the logs related to this cheat
 
         try{
 
-            //PlayerControl.LocalPlayer.MyPhysics.Speed is the base speed of a player
-            //Among Us uses this value with the associated game setting to calculate the TrueSpeed of the player
+            // PlayerControl.LocalPlayer.MyPhysics.Speed is the base speed of a player
+            // Among Us uses this value with the associated game setting to calculate the TrueSpeed of the player
             
             if(CheatToggles.speedBoost){
                 PlayerControl.LocalPlayer.MyPhysics.Speed = 4.5f * 2;
             }else{
-                PlayerControl.LocalPlayer.MyPhysics.Speed = 4.5f; //By default, Speed is always 2.5f
+
+                // By default, Speed is always 4.5f, but this needs a better implementation since hard-coding values isn't great
+                PlayerControl.LocalPlayer.MyPhysics.Speed = 4.5f;
             }
 
         }catch{}

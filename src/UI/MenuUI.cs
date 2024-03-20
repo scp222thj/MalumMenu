@@ -188,12 +188,18 @@ public class MenuUI : MonoBehaviour
 
         string configHtmlColor = MalumMenu.menuHtmlColor.Value;
 
-        if (!configHtmlColor.StartsWith("#"))
+        if (!ColorUtility.TryParseHtmlString(configHtmlColor, out uiColor))
         {
-            configHtmlColor = "#" + configHtmlColor;
+            if (!configHtmlColor.StartsWith("#"))
+            {
+                if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
+                {
+                    GUI.backgroundColor = uiColor;
+                }
+            }
         }
-
-        if(ColorUtility.TryParseHtmlString(configHtmlColor, out uiColor)){
+        else
+        {
             GUI.backgroundColor = uiColor;
         }
 

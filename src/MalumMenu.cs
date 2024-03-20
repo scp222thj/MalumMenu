@@ -79,6 +79,7 @@ public partial class MalumMenu : BasePlugin
         menuUI = AddComponent<MenuUI>();
         // consoleUI = AddComponent<ConsoleUI>();
 
+        // Disable Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value){
 
             Analytics.enabled = false;

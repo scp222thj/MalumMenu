@@ -14,7 +14,7 @@ public static class Utils
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
     public static bool isShip => ShipStatus.Instance != null;
-    public static bool isLobby => AmongUsClient.Instance.GameState == AmongUsClient.GameStates.Joined;
+    public static bool isLobby => AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined;
     public static bool isOnlineGame => AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
     public static bool isLocalGame => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
     public static bool isFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
@@ -33,7 +33,6 @@ public static class Utils
     public static bool DleksIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Dleks;
     public static bool AirshipIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Airship;
     public static bool FungleIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Fungle;
-    public static bool utilsOpenChat;
 
     //Get ClientData by PlayerControl
     public static ClientData getClientByPlayer(PlayerControl player)
@@ -151,7 +150,6 @@ public static class Utils
     public static void openChat()
     {
         if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
-            utilsOpenChat = true;
             DestroyableSingleton<HudManager>.Instance.Chat.chatScreen.SetActive(true);
             PlayerControl.LocalPlayer.NetTransform.Halt();
             DestroyableSingleton<HudManager>.Instance.Chat.StartCoroutine(DestroyableSingleton<HudManager>.Instance.Chat.CoOpen());
@@ -191,7 +189,7 @@ public static class Utils
     public static bool chatUiActive()
     {
         try{
-            return utilsOpenChat || CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
+            return CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
         }catch{
             return false;
         }
@@ -200,7 +198,6 @@ public static class Utils
     // Close Chat UI
     public static void closeChat()
     {
-        utilsOpenChat = false;
         if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
             DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
         }

@@ -47,6 +47,7 @@ public static class AmongUsClient_Update
     {
         MalumSpoof.spoofLevel();
 
+        // Code to treat temp accounts the same as full accounts, including access to friend codes
         if (EOSManager.Instance.loginFlowFinished && MalumMenu.guestMode.Value){
 
             DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
