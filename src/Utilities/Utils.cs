@@ -332,31 +332,9 @@ public static class Utils
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         if (translatedRole == "STRMISS")
         {
-            StringNames @string;
             if (playerData.RoleWhenAlive.HasValue)
             {
-                switch (playerData.RoleWhenAlive.Value)
-                {
-                    case RoleTypes.Crewmate:
-                        @string = DestroyableSingleton<CrewmateRole>.Instance.StringName;
-                        break;
-                    case RoleTypes.Engineer:
-                        @string = DestroyableSingleton<EngineerRole>.Instance.StringName;
-                        break;
-                    case RoleTypes.Scientist:
-                        @string = DestroyableSingleton<ScientistRole>.Instance.StringName;
-                        break;
-                    case RoleTypes.Impostor:
-                        @string = DestroyableSingleton<ImpostorRole>.Instance.StringName;
-                        break;
-                    case RoleTypes.Shapeshifter:
-                        @string = DestroyableSingleton<ShapeshifterRole>.Instance.StringName;
-                        break;
-                    default:
-                        @string = DestroyableSingleton<GuardianAngelRole>.Instance.StringName;
-                        break;
-                }
-                translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(@string, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+                translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(getBehaviourByRoleType(playerData.RoleWhenAlive.Value).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
             } else {
                 translatedRole = "Ghost";
             }

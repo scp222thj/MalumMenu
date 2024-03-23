@@ -29,7 +29,7 @@ public static class HudManager_Update
 {
 	public static void Postfix(HudManager __instance)
     {
-		__instance.ShadowQuad.gameObject.SetActive(MalumESP.fullBrightActive()); // Fullbright
+		__instance.ShadowQuad.gameObject.SetActive(!MalumESP.fullBrightActive()); // Fullbright
 
 		if (Utils.chatUiActive()){ // AlwaysChat
 			__instance.Chat.gameObject.SetActive(true);

@@ -25,7 +25,7 @@ public static class MalumESP
         // Fullbright is automatically activated when zooming out, spectating other players, or "freecamming"
         // This is done to avoid issues with shadows
 
-        return !(CheatToggles.fullBright || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer);
+        return CheatToggles.fullBright || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
     }
 
     public static void zoomOut(HudManager hudManager)
@@ -93,10 +93,6 @@ public static class MalumESP
             if (!playerPhysics.myPlayer.Data.IsNull() && !playerPhysics.myPlayer.Data.Disconnected && !playerPhysics.myPlayer.CurrentOutfit.IsNull())
             {
                 playerPhysics.myPlayer.cosmetics.SetName(Utils.getNameTag(playerPhysics.myPlayer, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
-                
-                if (playerPhysics.myPlayer.inVent){
-                    playerPhysics.myPlayer.cosmetics.nameText.gameObject.SetActive(CheatToggles.ventVision);
-                }
             }
         }catch{}
     }

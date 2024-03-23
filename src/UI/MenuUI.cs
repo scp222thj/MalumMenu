@@ -30,15 +30,12 @@ public class MenuUI : MonoBehaviour
         ));
 
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
+            new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
             new ToggleInfo(" SeeGhosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
             new ToggleInfo(" FullBright", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
             new ToggleInfo(" RevealVotes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
             new ToggleInfo(" AlwaysChat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("Nametags", false, new List<ToggleInfo>() {
-                new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
-                new ToggleInfo(" VentVision", () => CheatToggles.ventVision, x => CheatToggles.ventVision = x)
-            }),
             new SubmenuInfo("Camera", false, new List<ToggleInfo>() {
                 new ToggleInfo(" ZoomOut", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
                 new ToggleInfo(" Spectate", () => CheatToggles.spectate, x => CheatToggles.spectate = x),
