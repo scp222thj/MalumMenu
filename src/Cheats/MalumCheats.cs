@@ -171,7 +171,7 @@ public static class MalumCheats
     {
         if (CheatToggles.reviveAll){
 
-            // Kill all players by sending a successful MurderPlayer RPC call
+            // Revive all players
             foreach (var player in PlayerControl.AllPlayerControls)
             {
                 Utils.revivePlayer(player);
