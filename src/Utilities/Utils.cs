@@ -90,6 +90,12 @@ public static class Utils
         }
     }
 
+    public static void revivePlayer(PlayerControl target)
+    {
+            target.Revive();
+            return;
+    }
+
     // Report bodies using RPC calls
     public static void reportDeadBody(GameData.PlayerInfo playerData)
     {
