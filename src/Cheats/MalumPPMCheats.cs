@@ -7,6 +7,7 @@ namespace MalumMenu;
 public static class MalumPPMCheats
 {
     public static bool murderPlayerActive;
+    public static bool revivePlayerActive;
     public static bool spectateActive;
     public static bool teleportPlayerActive;
     public static bool reportBodyActive;
@@ -92,6 +93,47 @@ public static class MalumPPMCheats
         else if (murderPlayerActive)
         {
             murderPlayerActive = false;
+        }
+    }
+
+    public static void revivePlayerPPM()
+    {
+        if (CheatToggles.revivePlayer)
+        {
+            if (!revivePlayerActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("revivePlayer");
+                }
+
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
+
+                // All players are saved to playerList
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    playerDataList.Add(player.Data);
+                }
+
+                // Player pick menu made for reviving any player
+                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
+                {
+                    Utils.revivePlayer(PlayerPickMenu.targetPlayerData.Object);
+                }));
+
+                revivePlayerActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null){
+                CheatToggles.revivePlayer = false;
+            }
+        }
+        else if (revivePlayerActive)
+        {
+            revivePlayerActive = false;
         }
     }
 
