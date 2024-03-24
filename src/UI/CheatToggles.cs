@@ -9,7 +9,9 @@ namespace MalumMenu
         public static bool teleportCursor;
         public static bool reportBody;
         public static bool murderPlayer;
+        public static bool revivePlayer;
         public static bool murderAll;
+        public static bool reviveAll;
 
         //Roles
         public static bool changeRole;
@@ -80,13 +82,14 @@ namespace MalumMenu
         {
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
             murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
+            revivePlayer = variableToKeep != "revivePlayer" ? false : revivePlayer;
             spectate = variableToKeep != "spectate" ? false : spectate;
             changeRole = variableToKeep != "changeRole" ? false : changeRole;
             teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
         }
 
         public static bool shouldPPMClose(){
-            return !changeRole && !reportBody && !murderPlayer && !spectate && !teleportPlayer;
+            return !changeRole && !reportBody && !murderPlayer && !spectate && !teleportPlayer && !revivePlayer;
         }
     }
 }
