@@ -167,6 +167,20 @@ public static class MalumCheats
 
         }
     }
+    public static void reviveAllCheat()
+    {
+        if (CheatToggles.reviveAll){
+
+            // Kill all players by sending a successful MurderPlayer RPC call
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                Utils.revivePlayer(player);
+            }
+
+            CheatToggles.reviveAll = false;
+
+        }
+    }
 
     public static void teleportCursorCheat()
     {
