@@ -18,7 +18,7 @@
 
 <p align="center">
 <b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules. </b>
-
+Note: this is an unofficial rework of the MaluMenu mod with everything I wanted to add and which were refused, check the official one here: https://github.com/scp222thj/MalumMenu
 
 # 😎 Table Of Contents
 - [🎁 Releases](#-releases)
@@ -30,15 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
-| v2.2.0 | 2024.3.5 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.2.0/MalumMenu-2.2.0.zip) |
-| v2.1.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.1.0/MalumMenu-2.1.0.zip) |
-| v2.0.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.0.0/MalumMenu-2.0.0.zip) |
-| v1.2.1 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip) |
-| v1.2.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.0/MalumMenu-1.2.0.zip) |
-| v1.1.2 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.2/MalumMenu-1.1.2.zip) |
-| v1.1.1 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.1/MalumMenu-1.1.1.zip) |
-| v1.1.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.0/MalumMenu-1.1.0.zip) |
-| v1.0.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.0.0/MalumMenu-1.0.0.zip) |
+| v0.0.1 | 2024.3.5 | [Download](https://github.com/lekillerdesgames/MalumMenu-Edited/releases/download/v.0.0.1/MalumMenu.dll) |
 
 
 # ⬇️ Installation
@@ -50,13 +42,18 @@
 3. Paste these files directly into your Among Us game folder.
     - Steam: Right-click Among Us in your Library → Click `Manage` → Click `Browse local files`.
     - Epic Launcher: Right-click Among Us in your Library → Click `Manage` → Click the folder icon in the `Installation` box.
-4. Launch Among Us as you normally would. You should see a console window appear, installing the mod's requirements.
 
-5. Wait for the console window to finish the installation.
+4. Download the latest **MelumMenu-edited dll file** from [here](https://github.com/lekillerdesgames/MalumMenu-Edited/releases/download/v.0.0.1/MalumMenu.dll)
+
+5. Browse to your Among Us game folder then click `Bepinex` → `plugins` and replace the MalumMenu.dll with the one you just downloaded.
    
-6. After installation, Among Us will automatically open with MalumMenu successfully installed.
+6. Launch Among Us as you normally would. You should see a console window appear, installing the mod's requirements.
+
+7. Wait for the console window to finish the installation.
+   
+8. After installation, Among Us will automatically open with MalumMenu successfully installed.
     - By default, you can toggle the cheat gui on by pressing **DELETE** on your keyboard.
-7. If the installation doesn't work, check out our [FAQ](#-faq).
+9. If the installation doesn't work, check out our [FAQ](#-faq).
 
 # 📋 Features
 
@@ -65,6 +62,7 @@
 - An intuitive GUI with our latest, greatest Among Us cheats
 - See ghosts & reveal the impostors
 - Track every player's position using the minimap
+- Revive anyone whenever you want (client sided)
 - Teleport anywhere you want
 - Change your role whenever you please
 - Remove kill cooldown & spam-kill everyone
