@@ -13,7 +13,6 @@ public static class PlayerPhysics_LateUpdate
         MalumESP.seeGhostsCheat(__instance);
 
         MalumCheats.noClipCheat();
-        MalumCheats.speedBoostCheat();
         MalumCheats.murderAllCheat();
         MalumCheats.teleportCursorCheat();
         MalumCheats.completeMyTasksCheat();
