@@ -4,9 +4,9 @@
         <LangVersion>latest</LangVersion>
         <DebugType>embedded</DebugType>
 
-        <VersionPrefix>2.2.0</VersionPrefix>
+        <VersionPrefix>2.2.0.1</VersionPrefix>
         <Description>all play and no cheats makes among us a dull game</Description>
-        <Authors>scp222thj</Authors>
+        <Authors>scp222thj,Yu</Authors>
     </PropertyGroup>
 
     <!--<ItemGroup>
@@ -14,7 +14,7 @@
     </ItemGroup>-->
 
     <ItemGroup>
-        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.662" Private="false" ExcludeAssets="runtime;native" />
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.688" Private="false" ExcludeAssets="runtime;native" />
         <PackageReference Include="AmongUs.GameLibs.Steam" Version="2024.3.5" PrivateAssets="all" />
 
         <PackageReference Include="BepInEx.AutoPlugin" Version="1.1.0" PrivateAssets="all" />

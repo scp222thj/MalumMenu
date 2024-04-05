@@ -70,15 +70,16 @@ public static class VersionShower_Start
     // Postfix patch of VersionShower.Start to show MalumMenu version
     public static void Postfix(VersionShower __instance)
     {
-        if (MalumMenu.supportedAU.Contains(Application.version)){ // Checks if Among Us version is supported
+        if (MalumMenu.supportedAU.Contains(Application.version)){ // 检测AU版本
 
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
+            __instance.text.text =  $"MalumMenu-Yu v{MalumMenu.malumVersion} (v{Application.version})"; // 支持
         
         }else{
 
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; //Unsupported
+            __instance.text.text =  $"MalumMenu-Yu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)\n使用了不被支持的AmongUs版本"; //不支持
         
         }
+
     }
 }
 
@@ -90,8 +91,11 @@ public static class PingTracker_Update
     {
         __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
         
-        __instance.text.text = $"MalumMenu by scp222thj" + // Mod info
+        __instance.text.text = $"- MalumMenu by scp222thj\n- MalumMenu-Yu by Yu" + // Mod info
                                 Utils.getColoredPingText(AmongUsClient.Instance.Ping); // Colored Ping
+#if DEBUG
+        __instance.text.text += $"\n<color=red>Debug</color>";
+#endif
 
         // Position adjustments
         var offset_x = 1.2f;

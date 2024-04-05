@@ -9,7 +9,9 @@ namespace MalumMenu
         public static bool teleportCursor;
         public static bool reportBody;
         public static bool murderPlayer;
+        public static bool chixumurderPlayer;
         public static bool murderAll;
+        public  static bool ContinuousKillingAll;
 
         //Roles
         public static bool changeRole;

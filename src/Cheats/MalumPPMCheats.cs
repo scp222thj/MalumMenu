@@ -2,11 +2,14 @@ using Il2CppSystem.Collections.Generic;
 using System;
 using AmongUs.GameOptions;
 using UnityEngine;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MalumMenu;
 public static class MalumPPMCheats
 {
     public static bool murderPlayerActive;
+    public static bool chixumurderPlayerActive;
     public static bool spectateActive;
     public static bool teleportPlayerActive;
     public static bool reportBodyActive;
@@ -95,6 +98,61 @@ public static class MalumPPMCheats
         }
     }
 
+    public static async void chixumurderPlayerPPM()
+    {
+        if (CheatToggles.chixumurderPlayer)
+        {
+            if (!chixumurderPlayerActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("chixumurderPlayer");
+                }
+
+                List<GameData.PlayerInfo> playerDataList = new List<GameData.PlayerInfo>();
+
+                // All players are saved to playerList
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    playerDataList.Add(player.Data);
+                }
+
+                // Player pick menu made for killing any player by sending a successful MurderPlayer RPC call
+                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
+                {
+                    try
+                    {
+                        if (CheatToggles.chixumurderPlayer)
+                        {
+                            //¿ñ»¶ÆðÀ´
+                            Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
+                            Thread.Sleep(500);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        System.Console.WriteLine(e);
+                        throw;
+                    }
+                }));
+
+                chixumurderPlayerActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.chixumurderPlayer = false;
+            }
+        }
+        else if (chixumurderPlayerActive)
+        {
+            chixumurderPlayerActive = false;
+        }
+    }
+
     public static void teleportPlayerPPM()
     {
         if (CheatToggles.teleportPlayer)
@@ -154,7 +212,6 @@ public static class MalumPPMCheats
 
                 // Shapeshifter role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Shapeshifter){
 
                     GameData.PlayerOutfit shapeshifterOutfit = new GameData.PlayerOutfit
                     {
@@ -166,7 +223,7 @@ public static class MalumPPMCheats
                     // Custom PPM choice for Shapeshifter role
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", shapeshifterOutfit, Utils.getBehaviourByRoleType(RoleTypes.Shapeshifter)));
 
-                }
+                
 
                 GameData.PlayerOutfit impostorOutfit = new GameData.PlayerOutfit
                 {

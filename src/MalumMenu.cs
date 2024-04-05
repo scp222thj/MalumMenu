@@ -16,7 +16,7 @@ public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
     public static string malumVersion = "2.2.0";
-    public static List<string> supportedAU = new List<string> { "2023.11.28", "2024.3.5" };
+    public static List<string> supportedAU = new List<string> { "2023.11.28", "2024.3.5" };//宝宝们这个东西真的好用吗
     public static MenuUI menuUI;
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
@@ -91,12 +91,13 @@ public partial class MalumMenu : BasePlugin
         {
             if (scene.name == "MainMenu")
             {
-                ModManager.Instance.ShowModStamp(); // Required by InnerSloth Modding Policy
-
-                //Warn about unsupported AU versions
+                ModManager.Instance.ShowModStamp(); // byd树懒的byd要求
+                
+                //不是牢底你AU版本错了还弄呢（笑
                 if (!supportedAU.Contains(Application.version)){
-                    Utils.showPopup("\nThis version of MalumMenu and this version of Among Us are incompatible\n\nInstall the right version to avoid problems");
+                    Utils.showPopup("\nAU版本不对啊 请你————滚！粗！砌！更！新！\n否则可能导致很多问题");
                 }
+                Utils.showPopup("\n用本MOD可能导致账号永久封禁！\n模组作者不承担任何后果！\n随时跑路！\n");
             }
         }));
     }

@@ -1,4 +1,15 @@
 using UnityEngine;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MalumMenu;
 public static class MalumCheats
@@ -11,10 +22,10 @@ public static class MalumCheats
 
                 // Destroy MeetingHud window gameobject
                 MeetingHud.Instance.DespawnOnDestroy = false;
-                Object.Destroy(MeetingHud.Instance.gameObject);
+                UnityEngine.Object.Destroy(MeetingHud.Instance.gameObject);
 
                 // Gameplay must be reenabled
-                ExileController exileController = Object.Instantiate(ShipStatus.Instance.ExileCutscenePrefab);
+                ExileController exileController = UnityEngine.Object.Instantiate(ShipStatus.Instance.ExileCutscenePrefab);
                 exileController.ReEnableGameplay();
                 exileController.WrapUp();
 
@@ -166,6 +177,32 @@ public static class MalumCheats
             CheatToggles.murderAll = false;
 
         }
+    }
+
+    public static async void ContinuousKillingAllCheck(){
+        // var thread = new Thread(() =>
+        // {
+        try
+        {
+            if (CheatToggles.ContinuousKillingAll)
+            {
+                //狂欢起来
+                //Kill all players by sending a successful MurderPlayer RPC call to all clients
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    Utils.murderPlayer(player, MurderResultFlags.Succeeded);
+                }
+
+                Thread.Sleep(500);
+            }
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine(e);
+            throw;
+        }
+        //});
+        //thread.Start();
     }
 
     public static void teleportCursorCheat()

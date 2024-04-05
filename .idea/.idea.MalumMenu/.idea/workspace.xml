@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="138b2e82-69f9-44eb-8bdf-c2b95a14356a" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Cheats/MalumCheats.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cheats/MalumCheats.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cheats/MalumPPMCheats.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cheats/MalumPPMCheats.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MalumMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/MalumMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MalumMenu.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/MalumMenu.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Patches/OtherPatches.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Patches/OtherPatches.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Patches/PlayerPhysicsPatches.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Patches/PlayerPhysicsPatches.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/CheatToggles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/CheatToggles.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/UI/MenuUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/UI/MenuUI.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/39fda803208a44d3ae0b23512d13bf0a691a00/67/4cb02b1a/ShapeshifterRole.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c5a8f7810eef43ed972d56df326e3f79227200/ea/1ec88978/Component.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2doZiGiqQb6abY7IxKRIXeUnT8M" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.build&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\aaa11_t7v0chn\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\aaa11_t7v0chn\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\aaa11_t7v0chn\\AppData\\Local\\Symbols\\src&quot;
+    ]
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="138b2e82-69f9-44eb-8bdf-c2b95a14356a" name="更改" comment="" />
+      <created>1710676519410</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710676519410</updated>
+      <workItem from="1710676526259" duration="192000" />
+      <workItem from="1710676928806" duration="3585000" />
+      <workItem from="1710680774741" duration="117000" />
+      <workItem from="1710680923447" duration="1254000" />
+      <workItem from="1710864384411" duration="2023000" />
+      <workItem from="1710913874434" duration="743000" />
+      <workItem from="1711203201950" duration="56000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

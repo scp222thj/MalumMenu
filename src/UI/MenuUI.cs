@@ -14,94 +14,96 @@ public class MenuUI : MonoBehaviour
     // Create all groups (buttons) and their toggles on start
     private void Start()
     {
-        groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
-            new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
-            new ToggleInfo(" SpeedBoost", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
+        groups.Add(new GroupInfo("玩家", false, new List<ToggleInfo>() {
+            new ToggleInfo(" 穿墙", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
+            new ToggleInfo(" 速度3x", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
             }, new List<SubmenuInfo> {
-            new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
-                new ToggleInfo(" MurderPlayer", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
-                new ToggleInfo(" MurderAll", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
+            new SubmenuInfo("击杀", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 击杀指定玩家", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
+                new ToggleInfo(" 击杀所有玩家", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
+                new ToggleInfo(" 持续击杀", () => CheatToggles.ContinuousKillingAll, x => CheatToggles.ContinuousKillingAll = x),
+                new ToggleInfo(" 持续击杀指定玩家", () => CheatToggles.chixumurderPlayer, x => CheatToggles.chixumurderPlayer = x),
             }),
-            new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
-                new ToggleInfo(" to Cursor", () => CheatToggles.teleportCursor, x => CheatToggles.teleportCursor = x),
-                new ToggleInfo(" to Player", () => CheatToggles.teleportPlayer, x => CheatToggles.teleportPlayer = x),
+            new SubmenuInfo("传送", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 到 鼠标", () => CheatToggles.teleportCursor, x => CheatToggles.teleportCursor = x),
+                new ToggleInfo(" 到 指定玩家", () => CheatToggles.teleportPlayer, x => CheatToggles.teleportPlayer = x),
             }),
         }
         ));
 
-        groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
-            new ToggleInfo(" SeeGhosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
-            new ToggleInfo(" FullBright", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
-            new ToggleInfo(" RevealVotes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
-            new ToggleInfo(" AlwaysChat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
+        groups.Add(new GroupInfo("系统级别外挂", false, new List<ToggleInfo>() {
+            new ToggleInfo(" 见鬼啦！", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
+            new ToggleInfo(" 明亮！", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
+            new ToggleInfo(" 投票可视", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
+            new ToggleInfo(" 总是聊天", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("Nametags", false, new List<ToggleInfo>() {
-                new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
-                new ToggleInfo(" VentVision", () => CheatToggles.ventVision, x => CheatToggles.ventVision = x)
+            new SubmenuInfo("名字标签", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 职业", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
+                new ToggleInfo(" 管道", () => CheatToggles.ventVision, x => CheatToggles.ventVision = x)
             }),
-            new SubmenuInfo("Camera", false, new List<ToggleInfo>() {
-                new ToggleInfo(" ZoomOut", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
-                new ToggleInfo(" Spectate", () => CheatToggles.spectate, x => CheatToggles.spectate = x),
-                new ToggleInfo(" Freecam", () => CheatToggles.freecam, x => CheatToggles.freecam = x)
+            new SubmenuInfo("视角", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 缩放", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
+                new ToggleInfo(" 观战", () => CheatToggles.spectate, x => CheatToggles.spectate = x),
+                new ToggleInfo(" 自由", () => CheatToggles.freecam, x => CheatToggles.freecam = x)
             }),
-            new SubmenuInfo("Tracers", false, new List<ToggleInfo>() {
-                new ToggleInfo(" Crewmates", () => CheatToggles.tracersCrew, x => CheatToggles.tracersCrew = x),
-                new ToggleInfo(" Impostors", () => CheatToggles.tracersImps, x => CheatToggles.tracersImps = x),
-                new ToggleInfo(" Ghosts", () => CheatToggles.tracersGhosts, x => CheatToggles.tracersGhosts = x),
-                new ToggleInfo(" Dead Bodies", () => CheatToggles.tracersBodies, x => CheatToggles.tracersBodies = x),
-                new ToggleInfo(" Color-based", () => CheatToggles.colorBasedTracers, x => CheatToggles.colorBasedTracers = x),
+            new SubmenuInfo("追踪", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 船员", () => CheatToggles.tracersCrew, x => CheatToggles.tracersCrew = x),
+                new ToggleInfo(" 内鬼", () => CheatToggles.tracersImps, x => CheatToggles.tracersImps = x),
+                new ToggleInfo(" 鬼魂", () => CheatToggles.tracersGhosts, x => CheatToggles.tracersGhosts = x),
+                new ToggleInfo(" 尸体", () => CheatToggles.tracersBodies, x => CheatToggles.tracersBodies = x),
+                new ToggleInfo(" 颜色显示", () => CheatToggles.colorBasedTracers, x => CheatToggles.colorBasedTracers = x),
             }),
-            new SubmenuInfo("Minimap", false, new List<ToggleInfo>() {
-                new ToggleInfo(" Crewmates", () => CheatToggles.mapCrew, x => CheatToggles.mapCrew = x),
-                new ToggleInfo(" Impostors", () => CheatToggles.mapImps, x => CheatToggles.mapImps = x),
-                new ToggleInfo(" Ghosts", () => CheatToggles.mapGhosts, x => CheatToggles.mapGhosts = x),
-                new ToggleInfo(" Color-based", () => CheatToggles.colorBasedMap, x => CheatToggles.colorBasedMap = x)
+            new SubmenuInfo("小地图标志", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 船员", () => CheatToggles.mapCrew, x => CheatToggles.mapCrew = x),
+                new ToggleInfo(" 内鬼", () => CheatToggles.mapImps, x => CheatToggles.mapImps = x),
+                new ToggleInfo(" 鬼魂", () => CheatToggles.mapGhosts, x => CheatToggles.mapGhosts = x),
+                new ToggleInfo(" 颜色显示", () => CheatToggles.colorBasedMap, x => CheatToggles.colorBasedMap = x)
             }),
         }));
 
-        groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {
-            new ToggleInfo(" ChangeRole", () => CheatToggles.changeRole, x => CheatToggles.changeRole = x),
+        groups.Add(new GroupInfo("职业", false, new List<ToggleInfo>() {
+            new ToggleInfo(" 修改职业", () => CheatToggles.changeRole, x => CheatToggles.changeRole = x),
         }, 
             new List<SubmenuInfo> {
-                new SubmenuInfo("Crewmate", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" CompleteMyTasks", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x)
+                new SubmenuInfo("船员", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" 完成所有任务", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x)
                 }),
-                new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
-                    new ToggleInfo(" NoKillCooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
-                    new ToggleInfo(" KillReach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
+                new SubmenuInfo("内鬼", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" 可击杀所有人", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
+                    new ToggleInfo(" 无CD", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
+                    new ToggleInfo(" 无击杀范围", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
                 }),
-                new SubmenuInfo("Shapeshifter", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" NoSsAnimation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
-                    new ToggleInfo(" EndlessSsDuration", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x),
+                new SubmenuInfo("变形", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" 没有蛋壳动画", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
+                    new ToggleInfo(" 无限持续", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x),
                 }),
-                new SubmenuInfo("Engineer", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" EndlessVentTime", () => CheatToggles.endlessVentTime, x => CheatToggles.endlessVentTime = x),
-                    new ToggleInfo(" NoVentCooldown", () => CheatToggles.noVentCooldown, x => CheatToggles.noVentCooldown = x),
+                new SubmenuInfo("工程师", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" 无限管道", () => CheatToggles.endlessVentTime, x => CheatToggles.endlessVentTime = x),
+                    new ToggleInfo(" 无管道CD", () => CheatToggles.noVentCooldown, x => CheatToggles.noVentCooldown = x),
                 }),
-                new SubmenuInfo("Scientist", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" EndlessBattery", () => CheatToggles.endlessBattery, x => CheatToggles.endlessBattery = x),
-                    new ToggleInfo(" NoVitalsCooldown", () => CheatToggles.noVitalsCooldown, x => CheatToggles.noVitalsCooldown = x),
+                new SubmenuInfo("科学家", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" 无尽电池", () => CheatToggles.endlessBattery, x => CheatToggles.endlessBattery = x),
+                    new ToggleInfo(" 无电池冷却", () => CheatToggles.noVitalsCooldown, x => CheatToggles.noVitalsCooldown = x),
                 }),
             }));
 
-        groups.Add(new GroupInfo("Ship", false, new List<ToggleInfo> {
-            new ToggleInfo(" UnfixableLights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
-            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
-            new ToggleInfo(" CloseMeeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
+        groups.Add(new GroupInfo("船", false, new List<ToggleInfo> {
+            new ToggleInfo(" 无法修复的灯", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
+            new ToggleInfo(" 报告尸体", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
+            new ToggleInfo(" 关闭会议界面", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
         }, new List<SubmenuInfo> {
-            new SubmenuInfo("Sabotage", false, new List<ToggleInfo>() {
-                new ToggleInfo(" Reactor", () => CheatToggles.reactorSab, x => CheatToggles.reactorSab = x),
-                new ToggleInfo(" Oxygen", () => CheatToggles.oxygenSab, x => CheatToggles.oxygenSab = x),
-                new ToggleInfo(" Lights", () => CheatToggles.elecSab, x => CheatToggles.elecSab = x),
-                new ToggleInfo(" Comms", () => CheatToggles.commsSab, x => CheatToggles.commsSab = x),
-                new ToggleInfo(" Doors", () => CheatToggles.doorsSab, x => CheatToggles.doorsSab = x),
-                new ToggleInfo(" MushroomMixup", () => CheatToggles.mushSab, x => CheatToggles.mushSab = x),
+            new SubmenuInfo("破坏", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 反应堆", () => CheatToggles.reactorSab, x => CheatToggles.reactorSab = x),
+                new ToggleInfo(" 氧气", () => CheatToggles.oxygenSab, x => CheatToggles.oxygenSab = x),
+                new ToggleInfo(" 灯", () => CheatToggles.elecSab, x => CheatToggles.elecSab = x),
+                new ToggleInfo(" 通讯", () => CheatToggles.commsSab, x => CheatToggles.commsSab = x),
+                new ToggleInfo(" 门", () => CheatToggles.doorsSab, x => CheatToggles.doorsSab = x),
+                new ToggleInfo(" 蘑菇", () => CheatToggles.mushSab, x => CheatToggles.mushSab = x),
             }),
-            new SubmenuInfo("Vents", false, new List<ToggleInfo>() {
-                new ToggleInfo(" UseVents", () => CheatToggles.useVents, x => CheatToggles.useVents = x),
-                new ToggleInfo(" KickVents", () => CheatToggles.kickVents, x => CheatToggles.kickVents = x),
-                new ToggleInfo(" WalkInVents", () => CheatToggles.walkVent, x => CheatToggles.walkVent = x)
+            new SubmenuInfo("管道", false, new List<ToggleInfo>() {
+                new ToggleInfo(" 可使用管道", () => CheatToggles.useVents, x => CheatToggles.useVents = x),
+                new ToggleInfo(" 释放管道", () => CheatToggles.kickVents, x => CheatToggles.kickVents = x),
+                new ToggleInfo(" 在管道内行动", () => CheatToggles.walkVent, x => CheatToggles.walkVent = x)
             }),
         }));
 
@@ -120,10 +122,10 @@ public class MenuUI : MonoBehaviour
         //    new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
         //}, new List<SubmenuInfo>()));
 
-        groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
-            new ToggleInfo(" FreeCosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
-            new ToggleInfo(" AvoidPenalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
-            new ToggleInfo(" UnlockFeatures", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
+        groups.Add(new GroupInfo("系统级别", false, new List<ToggleInfo>() {
+            new ToggleInfo(" 免费皮肤", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
+            new ToggleInfo(" 避免惩罚", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
+            new ToggleInfo(" 解锁功能", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
         }, new List<SubmenuInfo>()));
     }
 
