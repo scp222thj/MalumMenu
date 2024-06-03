@@ -37,3 +37,22 @@ public static class PlayerPhysics_LateUpdate
         }
     }
 }
+
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity))]
+public static class PlayerPhysics_SetNormalizedVelocity
+{
+    public static bool Prefix(PlayerPhysics __instance, Vector2 direction)
+    {
+        if (CheatToggles.speedBoost){
+            float cheatSpeed = 2f;
+
+            float actualSpeed = PlayerControl.LocalPlayer.MyPhysics.Speed * PlayerControl.LocalPlayer.MyPhysics.SpeedMod;
+
+            PlayerControl.LocalPlayer.MyPhysics.body.velocity = direction * actualSpeed * cheatSpeed;
+
+            return false;
+        }
+
+        return true;
+    }
+} 
