@@ -114,7 +114,7 @@ public static class HatManager_Initialize
 }
 
 [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.BanMinutesLeft), MethodType.Getter)]
-public static class StatsManager_BanMinutesLeft
+public static class StatsManager_BanMinutesLeft_Getter
 {
     // Prefix patch of Getter method for StatsManager.BanMinutesLeft to remove disconnect penalty
     public static void Postfix(StatsManager __instance, ref int __result)
