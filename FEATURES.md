@@ -27,17 +27,11 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
+| SeeRoles | See every player's role through their nametag | Toggle | Off |
 | SeeGhosts | Allows you to see ghosts, protections, and ghost chat even if you are alive | Toggle | Off
 | FullBright | Removes all shadows, allowing you to see during blackouts and even through walls<br>Also, lets you see through spore clouds in the Fungle Jungle | Toggle | Off |
 | RevealVotes | Reveals votes as they are being cast rather than at the end of the meeting<br>Also, lets you see colored votes even if votes are set to anonymous | Toggle | Off |
 | AlwaysChat | Keeps the chat icon always enabled, allowing you to chat at any time (even while not in a meeting or the lobby) | Toggle | Off |
-
-#### Nametags
-
-| Cheat | Description | Type | Default|
-|------------|-------------|------|--------|
-| SeeRoles | See every player's role through their nametag | Toggle | Off |
-| VentVision | Allows you to see the names of players inside vents | Toggle | Off |
 
 #### Camera
     
@@ -154,8 +148,12 @@ You can change all of the following settings in `BepInEx/config/MalumMenu.cfg`
 
 | Config          | Description                                                                                                                                                         | Type   | Default |
 |-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|---------|
-| GUIKeybind | Specifies the keyboard key that toggles the GUI on/off<br><br>**IMPORTANT**: You may only use keycodes from this [list](https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html) | String | Delete |
-| GUIColor | Sets the color of the MalumMenu's GUI using HTML color codes | String | |
+| GuestMode.GuestMode | When enabled, a new guest account will generate every time you start the game<br><br>Allows you to bypass account bans and PUID detection | Boolean | false |
+| GuestMode.FriendName | The username that will be used when setting a friend code for your guest account<br><br>**IMPORTANT**: <br>- Can only be used with GuestMode<br>- Needs to be ≤ 10 characters<br>- Cannot include special characters/discriminator (#1234) | String |  |
+| GUI.Keybind | Specifies the keyboard key that toggles the GUI on/off<br><br>**IMPORTANT**: You may only use keycodes from this [list](https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html) | String | Delete |
+| GUI.Color | Sets the color of MalumMenu's GUI using HTML color codes | String | |
+| Privacy.HideDeviceId | When enabled, it will hide your unique deviceId from Among Us<br><br>Could **potentially** help bypass hardware bans in the future | Boolean | true |
+| Privacy.NoTelemetry | When enabled, it will stop Among Us from collecting analytics of your games using Unity Analytics and sending them to Innersloth | Boolean | true |
 | Spoofing.Level | Sets a custom player level to display to others in online games, masking your real level<br><br>**IMPORTANT**: Only integers between 0 and 4294967295 are valid. Decimal values are not accepted | String | |
 | Spoofing.Platform | Sets a different gaming platform in online lobbies to disguise your actual platform<br><br>**IMPORTANT**: You may only use platform names from this [list](https://skeld.js.org/enums/constant.Platform.html) | String | |
 
