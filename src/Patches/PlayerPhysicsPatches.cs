@@ -41,11 +41,15 @@ public static class PlayerPhysics_LateUpdate
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.SetNormalizedVelocity))]
 public static class PlayerPhysics_SetNormalizedVelocity
 {
+    // Prefix patch of PlayerPhysics.SetNormalizedVelocity to double the player's speed when the speedBoost cheat is enabled
     public static bool Prefix(PlayerPhysics __instance, Vector2 direction)
     {
         if (CheatToggles.speedBoost){
+
+            // Cheat multiplier
             float cheatSpeed = 2f;
 
+            // Actual speed of player (no hacks)
             float actualSpeed = PlayerControl.LocalPlayer.MyPhysics.Speed * PlayerControl.LocalPlayer.MyPhysics.SpeedMod;
 
             PlayerControl.LocalPlayer.MyPhysics.body.velocity = direction * actualSpeed * cheatSpeed;

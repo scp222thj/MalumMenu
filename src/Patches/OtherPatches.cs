@@ -22,7 +22,7 @@ public static class PlatformSpecificData_Serialize
 public static class SystemInfo_deviceUniqueIdentifier_Getter
 {
     // Postfix patch of SystemInfo.deviceUniqueIdentifier Getter method 
-    // to hide the user's real unique deviceId by generating a random fake one
+    // Made to hide the user's real unique deviceId by generating a random fake one
     public static void Postfix(ref string __result)
     {
         if (MalumMenu.spoofDeviceId.Value){
