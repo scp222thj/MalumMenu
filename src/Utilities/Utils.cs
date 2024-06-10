@@ -357,6 +357,10 @@ public static class Utils
         
         } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
 
+            if (isChat){
+                return nameTag;
+            }
+
             nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.NameColor)}>{nameTag}</color>";
 
         }
