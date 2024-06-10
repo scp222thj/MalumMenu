@@ -65,12 +65,12 @@ public partial class MalumMenu : BasePlugin
         spoofDeviceId = Config.Bind("MalumMenu.Privacy",
                                 "HideDeviceId",
                                 true,
-                                "When enabled it will hide your unique deviceId from Among Us, which could help bypass hardware bans in the future");
+                                "When enabled it will hide your unique deviceId from Among Us, which could potentially help bypass hardware bans in the future");
 
         noTelemetry = Config.Bind("MalumMenu.Privacy",
                                 "NoTelemetry",
                                 true,
-                                "When enabled it will stop Among Us from collecting analytics of your games and sending them Innersloth using Unity Analytics");
+                                "When enabled it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
 
 
 
