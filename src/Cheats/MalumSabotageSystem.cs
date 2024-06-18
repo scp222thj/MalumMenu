@@ -88,7 +88,7 @@ public static class MalumSabotageSystem
 
         // Notify the player if they try to activate the cheat in a map without an oxygen system
         if (CheatToggles.oxygenSab){
-            HudManager.Instance.Notifier.AddItem("Oxygen system not present on this map");
+            HudManager.Instance.Notifier.AddDisconnectMessage("Oxygen system not present on this map");
             CheatToggles.oxygenSab = false;
         }
     }
@@ -189,7 +189,7 @@ public static class MalumSabotageSystem
 
         // Notify the player if they try to activate the cheat in a map without an oxygen system
         if (CheatToggles.elecSab || CheatToggles.unfixableLights){
-            HudManager.Instance.Notifier.AddItem("Eletrical system not present on this map");
+            HudManager.Instance.Notifier.AddDisconnectMessage("Eletrical system not present on this map");
             CheatToggles.elecSab = CheatToggles.unfixableLights = false;
         }
     }
@@ -226,7 +226,7 @@ public static class MalumSabotageSystem
 
                 // Notify the player if they try to activate the cheat in a map without mushrooms
 
-                HudManager.Instance.Notifier.AddItem("Mushrooms not present on this map");
+                HudManager.Instance.Notifier.AddDisconnectMessage("Mushrooms not present on this map");
             }
             
             CheatToggles.mushSab = false; //Button behaviour

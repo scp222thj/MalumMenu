@@ -74,8 +74,8 @@ public static class MalumESP
         try{
             foreach (PlayerVoteArea playerState in meetingHud.playerStates)
             {
-                // Fetch the GameData.PlayerInfo of each playerState
-                GameData.PlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
+                // Fetch the NetworkedPlayerInfo of each playerState
+                NetworkedPlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
                 if (!data.IsNull() && !data.Disconnected && !data.Outfits[PlayerOutfitType.Default].IsNull())
                 {

@@ -96,7 +96,7 @@ public static class PingTracker_Update
 
         // Position adjustments
         var offset_x = 1.2f;
-        if (HudManager.InstanceExists && HudManager._instance.Chat.chatButton.active) offset_x += 0.8f;
+        if (HudManager.InstanceExists && HudManager._instance.Chat.chatButton.selected) offset_x += 0.8f;
         if (FriendsListManager.InstanceExists && FriendsListManager._instance.FriendsListButton.Button.active) offset_x += 0.8f;
         __instance.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(offset_x, 0f, 0f);
         
@@ -176,7 +176,7 @@ public static class Vent_CanUse
 {
     // Prefix patch of Vent.CanUse to allow venting for cheaters
     // Basically does what the original method did with the required modifications
-    public static void Postfix(Vent __instance, GameData.PlayerInfo pc, ref bool canUse, ref bool couldUse, ref float __result)
+    public static void Postfix(Vent __instance, NetworkedPlayerInfo pc, ref bool canUse, ref bool couldUse, ref float __result)
     {
         if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead){
             if (CheatToggles.useVents){

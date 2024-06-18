@@ -20,8 +20,8 @@ public static class ChatController_AddChat
 			return true;
 		}
 
-		GameData.PlayerInfo data = PlayerControl.LocalPlayer.Data;
-		GameData.PlayerInfo data2 = sourcePlayer.Data;
+		NetworkedPlayerInfo data = PlayerControl.LocalPlayer.Data;
+		NetworkedPlayerInfo data2 = sourcePlayer.Data;
 
 		if (data2 == null || data == null) // Remove isDead check for LocalPlayer
 		{

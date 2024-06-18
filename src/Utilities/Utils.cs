@@ -91,7 +91,7 @@ public static class Utils
     }
 
     // Report bodies using RPC calls
-    public static void reportDeadBody(GameData.PlayerInfo playerData)
+    public static void reportDeadBody(NetworkedPlayerInfo playerData)
     {
 
         if (isFreePlay){
@@ -229,7 +229,7 @@ public static class Utils
 
         outputList.Clear();
 
-        List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+        List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
         for (int i = 0; i < allPlayers.Count; i++)
         {
             PlayerControl player = allPlayers[i].Object;
@@ -327,7 +327,7 @@ public static class Utils
 
     // Get the string name for a chosen player's role
     // String are automatically translated
-    public static string getRoleName(GameData.PlayerInfo playerData)
+    public static string getRoleName(NetworkedPlayerInfo playerData)
     {
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         if (translatedRole == "STRMISS")

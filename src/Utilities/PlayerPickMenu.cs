@@ -7,9 +7,9 @@ public static class PlayerPickMenu
 {
     public static ShapeshifterMinigame playerpickMenu;
     public static bool IsActive;
-    public static GameData.PlayerInfo targetPlayerData;
+    public static NetworkedPlayerInfo targetPlayerData;
     public static Il2CppSystem.Action customAction;
-    public static List<GameData.PlayerInfo> customPlayerList;
+    public static List<NetworkedPlayerInfo> customPlayerList;
 
     // Get ShapeshifterMenu prefab to instantiate it
     // Found here: https://github.com/AlchlcDvl/TownOfUsReworked/blob/9f3cede9d30bab2c11eb7c960007ab3979f09156/TownOfUsReworked/Custom/Menu.cs
@@ -20,7 +20,7 @@ public static class PlayerPickMenu
     }
 
     // Open a PlayerPickMenu to pick a specific player to target
-    public static void openPlayerPickMenu(List<GameData.PlayerInfo> playerList, Il2CppSystem.Action action)
+    public static void openPlayerPickMenu(List<NetworkedPlayerInfo> playerList, Il2CppSystem.Action action)
     {
         IsActive = true;
         customPlayerList = playerList;
@@ -34,10 +34,10 @@ public static class PlayerPickMenu
 		playerpickMenu.Begin(null);
     }
 
-    // Returns a custom GameData.PlayerInfo that can be used as a PPM choice
-    public static GameData.PlayerInfo customPPMChoice(string name, GameData.PlayerOutfit outfit, RoleBehaviour role = null)
+    // Returns a custom NetworkedPlayerInfo that can be used as a PPM choice
+    public static NetworkedPlayerInfo customPPMChoice(string name, NetworkedPlayerInfo.PlayerOutfit outfit, RoleBehaviour role = null)
     {
-        GameData.PlayerInfo customChoice = new GameData.PlayerInfo(255);
+        NetworkedPlayerInfo customChoice = new NetworkedPlayerInfo((System.IntPtr)255);
 
         outfit.PlayerName = name;
 

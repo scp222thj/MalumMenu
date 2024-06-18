@@ -50,7 +50,7 @@ public static class ImpostorRole_IsValidTarget
 {
     // Prefix patch of ImpostorRole.IsValidTarget to allow forbidden kill targets for killAnyone cheat
     // Allows killing ghosts (with seeGhosts), impostors, players in vents, etc...
-    public static bool Prefix(ImpostorRole __instance, GameData.PlayerInfo target, ref bool __result){
+    public static bool Prefix(ImpostorRole __instance, NetworkedPlayerInfo target, ref bool __result){
 
         if (CheatToggles.killAnyone){
            __result = target != null && !target.Disconnected && (!target.IsDead || CheatToggles.seeGhosts) && target.PlayerId != __instance.Player.PlayerId && !(target.Object == null);

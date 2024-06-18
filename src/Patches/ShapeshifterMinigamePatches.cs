@@ -14,14 +14,14 @@ public static class ShapeshifterMinigame_Begin
         if (PlayerPickMenu.IsActive){ // Player Pick Menu logic
 
             // Custom player list set by openPlayerPickMenu
-            List<GameData.PlayerInfo> list = PlayerPickMenu.customPlayerList;
+            List<NetworkedPlayerInfo> list = PlayerPickMenu.customPlayerList;
 
             __instance.potentialVictims = new List<ShapeshifterPanel>();
             List<UiElement> list2 = new List<UiElement>();
 
             for (int i = 0; i < list.Count; i++)
             {
-                GameData.PlayerInfo playerData = list[i];
+                NetworkedPlayerInfo playerData = list[i];
                 int num = i % 3;
                 int num2 = i / 3;
                 ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
@@ -59,7 +59,7 @@ public static class ShapeshifterMinigame_Begin
 public static class ShapeshifterPanel_SetPlayer
 {
     // Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
-    public static bool Prefix(ShapeshifterPanel __instance, int index, GameData.PlayerInfo playerInfo, Il2CppSystem.Action onShift)
+    public static bool Prefix(ShapeshifterPanel __instance, int index, NetworkedPlayerInfo playerInfo, Il2CppSystem.Action onShift)
     {
         if (PlayerPickMenu.IsActive){ // Player Pick Menu logic
 
