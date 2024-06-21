@@ -343,29 +343,26 @@ public static class Utils
     }
 
     // Get the appropriate nametag for a player (seeRoles cheat)
-    public static string getNameTag(PlayerControl player, string playerName, bool isChat = false){
+    public static string getNameTag(NetworkedPlayerInfo playerInfo, string playerName, bool isChat = false){
         string nameTag = playerName;
 
-        if (!player.Data.Role.IsNull()){
+        if (CheatToggles.seeRoles){
 
-            if (CheatToggles.seeRoles){
-
-                if (isChat){
-                    nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{Utils.getRoleName(player.Data)}</size> {nameTag}</color>";
-                    return nameTag;
-                }
-
-                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.TeamColor)}><size=70%>{getRoleName(player.Data)}</size>\r\n{nameTag}</color>";
-            
-            } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == player.Data.Role.NameColor){
-
-                if (isChat){
-                    return nameTag;
-                }
-
-                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Role.NameColor)}>{nameTag}</color>";
-
+            if (isChat){
+                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{Utils.getRoleName(playerInfo)}</size> {nameTag}</color>";
+                return nameTag;
             }
+
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
+        
+        } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor){
+
+            if (isChat){
+                return nameTag;
+            }
+
+            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color>";
+
         }
 
         return nameTag;

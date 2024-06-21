@@ -80,7 +80,7 @@ public static class MalumESP
                 if (!data.IsNull() && !data.Disconnected && !data.Outfits[PlayerOutfitType.Default].IsNull())
                 {
                     // Update the player's nametag appropriately
-                    playerState.NameText.text = Utils.getNameTag(data.Object, data.DefaultOutfit.PlayerName);
+                    playerState.NameText.text = Utils.getNameTag(data, data.DefaultOutfit.PlayerName);
                 }
 
             }
@@ -90,9 +90,9 @@ public static class MalumESP
     public static void playerNametags(PlayerPhysics playerPhysics)
     {
         try{
-            if (!playerPhysics.myPlayer.Data.IsNull() && !playerPhysics.myPlayer.Data.Disconnected && !playerPhysics.myPlayer.CurrentOutfit.IsNull())
+            if (!playerPhysics.myPlayer.Data.IsNull() && !playerPhysics.myPlayer.Data.Role.IsNull() && !playerPhysics.myPlayer.Data.Disconnected && !playerPhysics.myPlayer.CurrentOutfit.IsNull())
             {
-                playerPhysics.myPlayer.cosmetics.SetName(Utils.getNameTag(playerPhysics.myPlayer, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
+                playerPhysics.myPlayer.cosmetics.SetName(Utils.getNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
             }
         }catch{}
     }
@@ -102,7 +102,7 @@ public static class MalumESP
         try{
 
             // Update the player's nametag appropriately
-            chatBubble.NameText.text = Utils.getNameTag(chatBubble.playerInfo.Object, chatBubble.NameText.text, true);
+            chatBubble.NameText.text = Utils.getNameTag(chatBubble.playerInfo, chatBubble.NameText.text, true);
             
             // Adjust the chatBubble's size to the new nametag to prevent issues
             chatBubble.NameText.ForceMeshUpdate(true, true);

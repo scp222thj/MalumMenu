@@ -37,7 +37,7 @@ public static class ShapeshifterMinigame_Begin
                 }));
 
                 if (playerData.Object != null){
-                    shapeshifterPanel.NameText.text = Utils.getNameTag(playerData.Object, playerData.DefaultOutfit.PlayerName);
+                    shapeshifterPanel.NameText.text = Utils.getNameTag(playerData, playerData.DefaultOutfit.PlayerName);
                 }
                 __instance.potentialVictims.Add(shapeshifterPanel);
                 list2.Add(shapeshifterPanel.Button);

@@ -37,7 +37,7 @@ public static class PlayerPickMenu
     // Returns a custom NetworkedPlayerInfo that can be used as a PPM choice
     public static NetworkedPlayerInfo customPPMChoice(string name, NetworkedPlayerInfo.PlayerOutfit outfit, RoleBehaviour role = null)
     {
-        NetworkedPlayerInfo customChoice = new NetworkedPlayerInfo((System.IntPtr)255);
+        NetworkedPlayerInfo customChoice = Object.Instantiate<NetworkedPlayerInfo>(GameData.Instance.PlayerInfoPrefab);
 
         outfit.PlayerName = name;
 
