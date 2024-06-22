@@ -67,7 +67,7 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("murderPlayer");
                 }
 
-                if (Utils.isLobby){
+                if (Utils.isLobby && !Utils.isFreePlay){
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
                     CheatToggles.murderPlayer = false;
                     return;

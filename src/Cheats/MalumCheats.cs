@@ -157,7 +157,7 @@ public static class MalumCheats
     {
         if (CheatToggles.murderAll){
 
-            if (Utils.isLobby){
+            if (Utils.isLobby && !Utils.isFreePlay){
 
                 HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
 
