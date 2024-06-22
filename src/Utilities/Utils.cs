@@ -270,15 +270,15 @@ public static class Utils
 
         if (ping <= 100){ // Green for ping < 100
 
-            return $"<color=#00ff00ff>\nPing: {ping} ms</color>";
+            return $"<color=#00ff00ff>PING: {ping} ms</color>";
 
         } else if (ping < 400){ // Yellow for 100 < ping < 400
 
-            return $"<color=#ffff00ff>\nPing: {ping} ms</color>";
+            return $"<color=#ffff00ff>PING: {ping} ms</color>";
 
         } else{ // Red for ping > 400
 
-            return $"<color=#ff0000ff>\nPing: {ping} ms</color>";
+            return $"<color=#ff0000ff>PING: {ping} ms</color>";
         }
     }
 

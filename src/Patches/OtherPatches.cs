@@ -83,25 +83,27 @@ public static class VersionShower_Start
     }
 }
 
-/*[HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
+[HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
 public static class PingTracker_Update
 {
-    // Postfix patch of PingTracker.Update to show game metrics
+    // Postfix patch of PingTracker.Update to show mod name & ping
     public static void Postfix(PingTracker __instance)
     {
-        __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
-        
-        __instance.text.text = $"MalumMenu by scp222thj" + // Mod info
-                                Utils.getColoredPingText(AmongUsClient.Instance.Ping); // Colored Ping
+        __instance.text.alignment = TMPro.TextAlignmentOptions.Center;
 
-        // Position adjustments
-        var offset_x = 1.2f;
-        if (HudManager.InstanceExists && HudManager._instance.Chat.chatButton.selected) offset_x += 0.8f;
-        if (FriendsListManager.InstanceExists && FriendsListManager._instance.FriendsListButton.Button.active) offset_x += 0.8f;
-        __instance.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(offset_x, 0f, 0f);
+        if (AmongUsClient.Instance.IsGameStarted){
+
+            __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
+
+            __instance.text.text = $"MalumMenu by scp222thj ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+            
+            return;
+        }
+
+        __instance.text.text = $"MalumMenu by scp222thj\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
         
     }
-}*/
+}
 
 [HarmonyPatch(typeof(HatManager), nameof(HatManager.Initialize))]
 public static class HatManager_Initialize
