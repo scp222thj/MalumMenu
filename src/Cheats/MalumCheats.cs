@@ -205,6 +205,9 @@ public static class MalumCheats
 
         try
         {
+            // If the speedBoost cheat is enabled, the default speed is multiplied by the speed multiplier
+            // Otherwise the default speed is used by itself
+
             float newSpeed = CheatToggles.speedBoost ? defaultSpeed * speedMultiplier : defaultSpeed;
 
             float newGhostSpeed = CheatToggles.speedBoost ? defaultGhostSpeed * speedMultiplier : defaultGhostSpeed;

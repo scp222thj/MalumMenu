@@ -17,6 +17,8 @@ public static class MapBehaviour_ShowNormalMap
 
         __instance.ColorControl.SetColor(Palette.Purple); // Custom map color 😎
 
+        __instance.DisableTrackerOverlays();
+
         // Destroy old player icons (herePoints)
         try
             {
