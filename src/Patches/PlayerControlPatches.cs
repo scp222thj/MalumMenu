@@ -20,8 +20,13 @@ public static class PlayerControl_CmdCheckMurder
     // Prefix patch of PlayerControl.CmdCheckMurder to always bypass checks when killing players
     public static bool Prefix(PlayerControl __instance, PlayerControl target){
 
+        if (Utils.isLobby){
+            HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
+            return false;
+        }
+
         // Direct kill RPC should only be used when absolutely necessary as to avoid detection from anticheat mods
-        if (Utils.isLobby || CheatToggles.killAnyone || Utils.isMeeting || (MalumPPMCheats.oldRole != null && Utils.getBehaviourByRoleType((AmongUs.GameOptions.RoleTypes)MalumPPMCheats.oldRole).IsImpostor)){
+        if (CheatToggles.killAnyone || Utils.isMeeting || (MalumPPMCheats.oldRole != null && Utils.getBehaviourByRoleType((AmongUs.GameOptions.RoleTypes)MalumPPMCheats.oldRole).IsImpostor)){
             __instance.isKilling = false;
 
             if (!__instance.Data.Role.IsValidTarget(target.Data))
