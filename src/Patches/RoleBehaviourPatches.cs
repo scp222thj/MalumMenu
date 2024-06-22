@@ -45,6 +45,19 @@ public static class ScientistRole_Update
     }
 }
 
+[HarmonyPatch(typeof(TrackerRole), nameof(TrackerRole.FixedUpdate))]
+public static class TrackerRole_FixedUpdate
+{
+
+    public static void Postfix(TrackerRole __instance){
+
+        if(__instance.Player.AmOwner){
+
+            MalumCheats.trackerCheats(__instance);
+        }
+    }
+}
+
 [HarmonyPatch(typeof(ImpostorRole), nameof(ImpostorRole.IsValidTarget))]
 public static class ImpostorRole_IsValidTarget
 {

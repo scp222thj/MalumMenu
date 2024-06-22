@@ -60,6 +60,9 @@ public static class MalumCheats
         if (CheatToggles.noVentCooldown){
 
             engineerRole.cooldownSecondsRemaining = 0f;
+
+            DestroyableSingleton<HudManager>.Instance.AbilityButton.ResetCoolDown();
+            DestroyableSingleton<HudManager>.Instance.AbilityButton.SetCooldownFill(0f);
         
         }
     }
@@ -95,6 +98,31 @@ public static class MalumCheats
         }else if (scientistRole.currentCharge > scientistRole.RoleCooldownValue){
             
             scientistRole.currentCharge = scientistRole.RoleCooldownValue;
+        
+        }
+    }
+
+    public static void trackerCheats(TrackerRole trackerRole)
+    {
+        if (CheatToggles.noTrackingCooldown){
+
+            trackerRole.cooldownSecondsRemaining = 0f;
+            trackerRole.delaySecondsRemaining = 0f;
+
+            DestroyableSingleton<HudManager>.Instance.AbilityButton.ResetCoolDown();
+            DestroyableSingleton<HudManager>.Instance.AbilityButton.SetCooldownFill(0f);
+
+        }
+
+        if (CheatToggles.endlessTracking){
+
+            // Makes vitals battery so incredibly long (float.MaxValue) so that it never ends
+            trackerRole.durationSecondsRemaining = float.MaxValue;
+
+        // Battery charge is reset to normal value after the cheat is disabled
+        }else if (trackerRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetTrackerDuration()){
+            
+            trackerRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetTrackerDuration();
         
         }
     }

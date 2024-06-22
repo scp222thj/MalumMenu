@@ -72,6 +72,10 @@ public class MenuUI : MonoBehaviour
                     new ToggleInfo(" NoSsAnimation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
                     new ToggleInfo(" EndlessSsDuration", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x),
                 }),
+                new SubmenuInfo("Tracker", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" EndlessTracking", () => CheatToggles.endlessTracking, x => CheatToggles.endlessTracking = x),
+                    new ToggleInfo(" NoTrackCooldown", () => CheatToggles.noTrackingCooldown, x => CheatToggles.noTrackingCooldown = x),
+                }),
                 new SubmenuInfo("Engineer", false, new List<ToggleInfo>() {
                     new ToggleInfo(" EndlessVentTime", () => CheatToggles.endlessVentTime, x => CheatToggles.endlessVentTime = x),
                     new ToggleInfo(" NoVentCooldown", () => CheatToggles.noVentCooldown, x => CheatToggles.noVentCooldown = x),

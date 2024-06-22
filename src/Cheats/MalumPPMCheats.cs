@@ -182,6 +182,16 @@ public static class MalumPPMCheats
                 // Custom PPM choice for Impostor role
                 playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", impostorOutfit, Utils.getBehaviourByRoleType(RoleTypes.Impostor)));
 
+                NetworkedPlayerInfo.PlayerOutfit trackerOutfit = new NetworkedPlayerInfo.PlayerOutfit
+                {
+                    ColorId = 10,
+                    SkinId = "skin_Wall",
+                    VisorId = "visor_Stealthgoggles"
+                };
+
+                // Custom PPM choice for Engineer role
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Tracker", trackerOutfit, Utils.getBehaviourByRoleType(RoleTypes.Tracker)));
+
                 NetworkedPlayerInfo.PlayerOutfit engineerOutfit = new NetworkedPlayerInfo.PlayerOutfit
                 {
                     ColorId = 10,
