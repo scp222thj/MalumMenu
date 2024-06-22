@@ -83,7 +83,7 @@ public static class VersionShower_Start
     }
 }
 
-[HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
+/*[HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
 public static class PingTracker_Update
 {
     // Postfix patch of PingTracker.Update to show game metrics
@@ -101,7 +101,7 @@ public static class PingTracker_Update
         __instance.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(offset_x, 0f, 0f);
         
     }
-}
+}*/
 
 [HarmonyPatch(typeof(HatManager), nameof(HatManager.Initialize))]
 public static class HatManager_Initialize

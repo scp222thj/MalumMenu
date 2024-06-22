@@ -90,10 +90,9 @@ public static class MalumESP
     public static void playerNametags(PlayerPhysics playerPhysics)
     {
         try{
-            if (!playerPhysics.myPlayer.Data.IsNull() && !playerPhysics.myPlayer.Data.Role.IsNull() && !playerPhysics.myPlayer.Data.Disconnected && !playerPhysics.myPlayer.CurrentOutfit.IsNull())
-            {
-                playerPhysics.myPlayer.cosmetics.SetName(Utils.getNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
-            }
+
+            playerPhysics.myPlayer.cosmetics.SetName(Utils.getNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
+        
         }catch{}
     }
 

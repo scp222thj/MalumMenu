@@ -77,16 +77,12 @@ public static class Utils
         
         }
 
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
+        foreach (var item in PlayerControl.AllPlayerControls)
         {
-            foreach (var item in PlayerControl.AllPlayerControls)
-            {
-                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                writer.WriteNetObject(target);
-                writer.Write((int)result);
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-            }
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+            writer.WriteNetObject(target);
+            writer.Write((int)result);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
     }
 
@@ -346,23 +342,26 @@ public static class Utils
     public static string getNameTag(NetworkedPlayerInfo playerInfo, string playerName, bool isChat = false){
         string nameTag = playerName;
 
-        if (CheatToggles.seeRoles){
+        if (!playerInfo.Role.IsNull() && !playerInfo.IsNull() && !playerInfo.Disconnected && !playerInfo.Object.CurrentOutfit.IsNull()){
 
-            if (isChat){
-                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{Utils.getRoleName(playerInfo)}</size> {nameTag}</color>";
-                return nameTag;
+            if (CheatToggles.seeRoles){
+
+                if (isChat){
+                    nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{Utils.getRoleName(playerInfo)}</size> {nameTag}</color>";
+                    return nameTag;
+                }
+
+                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
+            
+            } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor){
+
+                if (isChat){
+                    return nameTag;
+                }
+
+                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color>";
+
             }
-
-            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
-        
-        } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor){
-
-            if (isChat){
-                return nameTag;
-            }
-
-            nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color>";
-
         }
 
         return nameTag;
