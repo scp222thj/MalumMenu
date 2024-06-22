@@ -188,4 +188,23 @@ public static class MalumCheats
 
         }catch{}
     }
+
+    public static void speedBoostCheat()
+    {
+        const float defaultSpeed = 2.5f;
+        const float defaultGhostSpeed = 3f;
+        const float speedMultiplier = 2.0f;
+
+        try
+        {
+            float newSpeed = CheatToggles.speedBoost ? defaultSpeed * speedMultiplier : defaultSpeed;
+
+            float newGhostSpeed = CheatToggles.speedBoost ? defaultGhostSpeed * speedMultiplier : defaultGhostSpeed;
+
+            PlayerControl.LocalPlayer.MyPhysics.Speed = newSpeed;
+            PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = newGhostSpeed;
+        }
+        catch{}
+    }
+
 }
