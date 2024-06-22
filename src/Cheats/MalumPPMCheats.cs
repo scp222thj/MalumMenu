@@ -67,6 +67,12 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("murderPlayer");
                 }
 
+                if (Utils.isLobby){
+                    HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
+                    CheatToggles.murderPlayer = false;
+                    return;
+                }
+
                 List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
 
                 // All players are saved to playerList
