@@ -30,6 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v2.3.1 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.3.0/MalumMenu-2.3.1.zip) |
 | v2.3.0 | 2024.6.4 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.3.0/MalumMenu-2.3.0.zip) |
 | v2.2.0 | 2024.3.5 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.2.0/MalumMenu-2.2.0.zip) |
 | v2.1.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.1.0/MalumMenu-2.1.0.zip) |
@@ -81,7 +82,7 @@ Click to expand each topic
 <details>
   <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
-First of all, make sure you are running the most recent version of Among Us (`2024.6.4`) with the most recent version of MalumMenu (`v2.3.0`)
+First of all, make sure you are running the most recent version of Among Us (`2024.6.18`) with the most recent version of MalumMenu (`v2.3.1`)
 
 Also, check if your platform is officially supported:
 
