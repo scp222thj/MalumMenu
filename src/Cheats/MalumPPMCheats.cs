@@ -185,8 +185,7 @@ public static class MalumPPMCheats
                 NetworkedPlayerInfo.PlayerOutfit trackerOutfit = new NetworkedPlayerInfo.PlayerOutfit
                 {
                     ColorId = 10,
-                    SkinId = "skin_Wall",
-                    VisorId = "visor_Stealthgoggles"
+                    SkinId = "skin_rhm"
                 };
 
                 // Custom PPM choice for Engineer role
