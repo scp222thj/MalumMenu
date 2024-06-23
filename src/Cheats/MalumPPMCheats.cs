@@ -160,7 +160,7 @@ public static class MalumPPMCheats
 
                 // Shapeshifter role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Shapeshifter){
+                if (oldRole == RoleTypes.Shapeshifter || Utils.isFreePlay){
 
                     NetworkedPlayerInfo.PlayerOutfit shapeshifterOutfit = new NetworkedPlayerInfo.PlayerOutfit
                     {
@@ -171,6 +171,20 @@ public static class MalumPPMCheats
 
                     // Custom PPM choice for Shapeshifter role
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", shapeshifterOutfit, Utils.getBehaviourByRoleType(RoleTypes.Shapeshifter)));
+
+                }
+
+                if (oldRole == RoleTypes.Phantom || Utils.isFreePlay){
+
+                    NetworkedPlayerInfo.PlayerOutfit phantomOutfit = new NetworkedPlayerInfo.PlayerOutfit
+                    {
+                        ColorId = 0,
+                        HatId = "hat_screamghostface",
+                        SkinId = "skin_screamghostface"
+                    };
+
+                    // Custom PPM choice for Impostor role
+                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", phantomOutfit, Utils.getBehaviourByRoleType(RoleTypes.Phantom)));
 
                 }
 
@@ -244,7 +258,7 @@ public static class MalumPPMCheats
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.CrewmateGhost);
                         }
                     }else{
-                        
+
                         /* if (PlayerPickMenu.targetPlayerData.Role.Role == RoleTypes.Shapeshifter && oldRole != RoleTypes.Shapeshifter){
 
                             Utils.showPopup("\n<size=125%>Changing into the Shapeshifter role is not recommended\nsince shapeshifting will get you kicked by the anticheat");
