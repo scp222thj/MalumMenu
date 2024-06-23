@@ -188,8 +188,17 @@ public static class MalumPPMCheats
                     SkinId = "skin_rhm"
                 };
 
-                // Custom PPM choice for Engineer role
+                // Custom PPM choice for Tracker role
                 playerDataList.Add(PlayerPickMenu.customPPMChoice("Tracker", trackerOutfit, Utils.getBehaviourByRoleType(RoleTypes.Tracker)));
+
+                NetworkedPlayerInfo.PlayerOutfit noisemakerOutfit = new NetworkedPlayerInfo.PlayerOutfit
+                {
+                    ColorId = 10,
+                    HatId = "hat_pk03_Headphones"
+                };
+
+                // Custom PPM choice for Noisemaker role
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Noisemaker", noisemakerOutfit, Utils.getBehaviourByRoleType(RoleTypes.Noisemaker)));
 
                 NetworkedPlayerInfo.PlayerOutfit engineerOutfit = new NetworkedPlayerInfo.PlayerOutfit
                 {
@@ -235,6 +244,21 @@ public static class MalumPPMCheats
                             RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.CrewmateGhost);
                         }
                     }else{
+                        
+                        /* if (PlayerPickMenu.targetPlayerData.Role.Role == RoleTypes.Shapeshifter && oldRole != RoleTypes.Shapeshifter){
+
+                            Utils.showPopup("\n<size=125%>Changing into the Shapeshifter role is not recommended\nsince shapeshifting will get you kicked by the anticheat");
+                        
+                        } else if (PlayerPickMenu.targetPlayerData.Role.Role == RoleTypes.Noisemaker && oldRole != RoleTypes.Noisemaker){
+                            
+                            Utils.showPopup("\n<size=125%>Changing into the Noisemaker role is not recommended\nsince dying won't trigger the alert for other players");
+                        
+                        } else if (oldRole == RoleTypes.Noisemaker){
+                            
+                            Utils.showPopup("\n<size=125%>Your \"real\" role is still Noisemaker\nso other players will still see the alert when you die");
+                        
+                        } */
+                        
                         RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, PlayerPickMenu.targetPlayerData.Role.Role);
                     }
 
