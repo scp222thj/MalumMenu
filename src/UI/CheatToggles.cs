@@ -21,6 +21,7 @@ namespace MalumMenu
         public static bool endlessBattery;
         public static bool endlessTracking;
         public static bool noTrackingCooldown;
+        public static bool noTrackingDelay;
         public static bool noVitalsCooldown;
         public static bool noVentCooldown;
         public static bool endlessVentTime;

@@ -114,6 +114,12 @@ public static class MalumCheats
 
         }
 
+        if (CheatToggles.noTrackingDelay){
+
+            MapBehaviour.Instance.trackedPointDelayTime = GameManager.Instance.LogicOptions.GetTrackerDelay();
+
+        }
+
         if (CheatToggles.endlessTracking){
 
             // Makes vitals battery so incredibly long (float.MaxValue) so that it never ends

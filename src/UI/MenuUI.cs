@@ -74,6 +74,7 @@ public class MenuUI : MonoBehaviour
                 }),
                 new SubmenuInfo("Tracker", false, new List<ToggleInfo>() {
                     new ToggleInfo(" EndlessTracking", () => CheatToggles.endlessTracking, x => CheatToggles.endlessTracking = x),
+                    new ToggleInfo(" NoTrackDelay", () => CheatToggles.noTrackingDelay, x => CheatToggles.noTrackingDelay = x),
                     new ToggleInfo(" NoTrackCooldown", () => CheatToggles.noTrackingCooldown, x => CheatToggles.noTrackingCooldown = x),
                 }),
                 new SubmenuInfo("Engineer", false, new List<ToggleInfo>() {
