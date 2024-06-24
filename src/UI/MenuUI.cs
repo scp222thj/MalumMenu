@@ -16,11 +16,11 @@ public class MenuUI : MonoBehaviour
     {
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
-            new ToggleInfo(" SpeedBoost", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
+            new ToggleInfo(" Boost Speed", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
             }, new List<SubmenuInfo> {
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
-                new ToggleInfo(" MurderPlayer", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
-                new ToggleInfo(" MurderAll", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
+                new ToggleInfo(" Murder Player", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
+                new ToggleInfo(" Murder All", () => CheatToggles.murderAll, x => CheatToggles.murderAll = x),
             }),
             new SubmenuInfo("Teleport", false, new List<ToggleInfo>() {
                 new ToggleInfo(" to Cursor", () => CheatToggles.teleportCursor, x => CheatToggles.teleportCursor = x),
@@ -30,14 +30,14 @@ public class MenuUI : MonoBehaviour
         ));
 
         groups.Add(new GroupInfo("ESP", false, new List<ToggleInfo>() {
-            new ToggleInfo(" SeeRoles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
-            new ToggleInfo(" SeeGhosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
-            new ToggleInfo(" FullBright", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
-            new ToggleInfo(" RevealVotes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
-            new ToggleInfo(" AlwaysChat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
+            new ToggleInfo(" See Roles", () => CheatToggles.seeRoles, x => CheatToggles.seeRoles = x),
+            new ToggleInfo(" See Ghosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
+            new ToggleInfo(" No Shadows", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
+            new ToggleInfo(" Reveal Votes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
+            new ToggleInfo(" Always Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Camera", false, new List<ToggleInfo>() {
-                new ToggleInfo(" ZoomOut", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
+                new ToggleInfo(" Zoom Out", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
                 new ToggleInfo(" Spectate", () => CheatToggles.spectate, x => CheatToggles.spectate = x),
                 new ToggleInfo(" Freecam", () => CheatToggles.freecam, x => CheatToggles.freecam = x)
             }),
@@ -57,43 +57,43 @@ public class MenuUI : MonoBehaviour
         }));
 
         groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {
-            new ToggleInfo(" ChangeRole", () => CheatToggles.changeRole, x => CheatToggles.changeRole = x),
+            new ToggleInfo(" Set Fake Role", () => CheatToggles.changeRole, x => CheatToggles.changeRole = x),
         }, 
             new List<SubmenuInfo> {
-                new SubmenuInfo("Crewmate", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" CompleteMyTasks", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x)
-                }),
                 new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" KillAnyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
-                    new ToggleInfo(" NoKillCooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
-                    new ToggleInfo(" KillReach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
+                    new ToggleInfo(" Kill Anyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
+                    new ToggleInfo(" No Kill Cooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
+                    new ToggleInfo(" Kill Reach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
                 }),
                 new SubmenuInfo("Phantom", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" VanishKills", () => CheatToggles.killVanished, x => CheatToggles.killVanished = x),
+                    new ToggleInfo(" Kill While Vanished", () => CheatToggles.killVanished, x => CheatToggles.killVanished = x),
                 }),
                 new SubmenuInfo("Shapeshifter", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" NoSsAnimation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
-                    new ToggleInfo(" EndlessSsDuration", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x),
+                    new ToggleInfo(" No Ss Animation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
+                    new ToggleInfo(" Endless Ss Duration", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x),
+                }),
+                new SubmenuInfo("Crewmate", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" Complete My Tasks", () => CheatToggles.completeMyTasks, x => CheatToggles.completeMyTasks = x)
                 }),
                 new SubmenuInfo("Tracker", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" EndlessTracking", () => CheatToggles.endlessTracking, x => CheatToggles.endlessTracking = x),
-                    new ToggleInfo(" NoTrackDelay", () => CheatToggles.noTrackingDelay, x => CheatToggles.noTrackingDelay = x),
-                    new ToggleInfo(" NoTrackCooldown", () => CheatToggles.noTrackingCooldown, x => CheatToggles.noTrackingCooldown = x),
+                    new ToggleInfo(" Endless Tracking", () => CheatToggles.endlessTracking, x => CheatToggles.endlessTracking = x),
+                    new ToggleInfo(" No Track Delay", () => CheatToggles.noTrackingDelay, x => CheatToggles.noTrackingDelay = x),
+                    new ToggleInfo(" No Track Cooldown", () => CheatToggles.noTrackingCooldown, x => CheatToggles.noTrackingCooldown = x),
                 }),
                 new SubmenuInfo("Engineer", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" EndlessVentTime", () => CheatToggles.endlessVentTime, x => CheatToggles.endlessVentTime = x),
-                    new ToggleInfo(" NoVentCooldown", () => CheatToggles.noVentCooldown, x => CheatToggles.noVentCooldown = x),
+                    new ToggleInfo(" Endless Vent Time", () => CheatToggles.endlessVentTime, x => CheatToggles.endlessVentTime = x),
+                    new ToggleInfo(" No Vent Cooldown", () => CheatToggles.noVentCooldown, x => CheatToggles.noVentCooldown = x),
                 }),
                 new SubmenuInfo("Scientist", false, new List<ToggleInfo>() {
-                    new ToggleInfo(" EndlessBattery", () => CheatToggles.endlessBattery, x => CheatToggles.endlessBattery = x),
-                    new ToggleInfo(" NoVitalsCooldown", () => CheatToggles.noVitalsCooldown, x => CheatToggles.noVitalsCooldown = x),
+                    new ToggleInfo(" Endless Battery", () => CheatToggles.endlessBattery, x => CheatToggles.endlessBattery = x),
+                    new ToggleInfo(" No Vitals Cooldown", () => CheatToggles.noVitalsCooldown, x => CheatToggles.noVitalsCooldown = x),
                 }),
             }));
 
         groups.Add(new GroupInfo("Ship", false, new List<ToggleInfo> {
-            new ToggleInfo(" UnfixableLights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
-            new ToggleInfo(" ReportBody", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
-            new ToggleInfo(" CloseMeeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
+            new ToggleInfo(" Unfixable Lights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
+            new ToggleInfo(" Report Body", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
+            new ToggleInfo(" Close Meeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Sabotage", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Reactor", () => CheatToggles.reactorSab, x => CheatToggles.reactorSab = x),
@@ -126,9 +126,9 @@ public class MenuUI : MonoBehaviour
         //}, new List<SubmenuInfo>()));
 
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
-            new ToggleInfo(" FreeCosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
-            new ToggleInfo(" AvoidPenalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
-            new ToggleInfo(" UnlockFeatures", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
+            new ToggleInfo(" Free Cosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
+            new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
+            new ToggleInfo(" Unlock Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
         }, new List<SubmenuInfo>()));
     }
 

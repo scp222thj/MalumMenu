@@ -7,6 +7,7 @@ using Hazel;
 using System.Reflection;
 using AmongUs.GameOptions;
 using Sentry.Internal.Extensions;
+using Il2CppSystem.Net.NetworkInformation;
 
 namespace MalumMenu;
 public static class Utils
@@ -49,7 +50,7 @@ public static class Utils
     }
 
     // Get ClientData.Id by PlayerControl
-    public static int getClientIdByPlayer(this PlayerControl player)
+    public static int getClientIdByPlayer(PlayerControl player)
     {
         if (player == null) return -1;
         var client = getClientByPlayer(player);
@@ -71,7 +72,16 @@ public static class Utils
     // Custom isValidTarget method for cheats
     public static bool isValidTarget(NetworkedPlayerInfo target)
     {
-        return target != null && !target.Disconnected && (!target.IsDead || CheatToggles.seeGhosts) && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && !(target.Object == null);
+        bool killAnyoneRequirements = !(target == null) && !target.Disconnected && target.Object.Visible && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && !(target.Role == null) && !(target.Object == null);
+
+        bool fullRequirements = killAnyoneRequirements && !target.IsDead && !target.Object.inVent && !target.Object.inMovingPlat && target.Role.CanBeKilled;
+
+        if (CheatToggles.killAnyone){
+            return killAnyoneRequirements;
+        }
+
+        return fullRequirements;
+        
     }
 
     // Adjusts HUD resolution
@@ -90,7 +100,7 @@ public static class Utils
     {
         if (isFreePlay){
 
-            PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
+            PlayerControl.LocalPlayer.MurderPlayer(target, MurderResultFlags.Succeeded);
             return;
         
         }
