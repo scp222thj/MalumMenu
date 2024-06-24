@@ -68,6 +68,9 @@ public class MenuUI : MonoBehaviour
                     new ToggleInfo(" NoKillCooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                     new ToggleInfo(" KillReach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
                 }),
+                new SubmenuInfo("Phantom", false, new List<ToggleInfo>() {
+                    new ToggleInfo(" VanishKills", () => CheatToggles.killVanished, x => CheatToggles.killVanished = x),
+                }),
                 new SubmenuInfo("Shapeshifter", false, new List<ToggleInfo>() {
                     new ToggleInfo(" NoSsAnimation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
                     new ToggleInfo(" EndlessSsDuration", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x),

@@ -14,7 +14,7 @@ public static class Utils
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
     public static bool isShip => ShipStatus.Instance != null;
-    public static bool isLobby => AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined;
+    public static bool isLobby => AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !isFreePlay;
     public static bool isOnlineGame => AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
     public static bool isLocalGame => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
     public static bool isFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
@@ -48,12 +48,30 @@ public static class Utils
         }
     }
 
-    //Get ClientData.Id by PlayerControl
+    // Get ClientData.Id by PlayerControl
     public static int getClientIdByPlayer(this PlayerControl player)
     {
         if (player == null) return -1;
         var client = getClientByPlayer(player);
         return client == null ? -1 : client.Id;
+    }
+
+    // Check if player is currently vanished
+    public static bool isVanished(NetworkedPlayerInfo playerInfo)
+    {
+        PhantomRole phantomRole = playerInfo.Role as PhantomRole;
+
+        if (phantomRole != null){
+            return phantomRole.fading || phantomRole.isInvisible;
+        }
+
+        return false;
+    }
+
+    // Custom isValidTarget method for cheats
+    public static bool isValidTarget(NetworkedPlayerInfo target)
+    {
+        return target != null && !target.Disconnected && (!target.IsDead || CheatToggles.seeGhosts) && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && !(target.Object == null);
     }
 
     // Adjusts HUD resolution

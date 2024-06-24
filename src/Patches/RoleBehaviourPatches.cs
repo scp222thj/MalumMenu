@@ -58,15 +58,45 @@ public static class TrackerRole_FixedUpdate
     }
 }
 
+[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.FixedUpdate))]
+public static class PhantomRole_FixedUpdate
+{
+
+    public static void Postfix(PhantomRole __instance){
+
+        if(__instance.Player.AmOwner){
+
+            MalumCheats.phantomCheats(__instance);
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.IsValidTarget))]
+public static class PhantomRole_IsValidTarget
+{
+    // Prefix patch of PhantomRole.IsValidTarget to allow killing while invisible
+    public static bool Prefix(PhantomRole __instance, NetworkedPlayerInfo target, ref bool __result){
+
+        if (CheatToggles.killVanished){
+            __result = Utils.isValidTarget(target);
+        
+            return false;
+        }
+
+        return true;
+
+    }
+}
+
 [HarmonyPatch(typeof(ImpostorRole), nameof(ImpostorRole.IsValidTarget))]
 public static class ImpostorRole_IsValidTarget
 {
     // Prefix patch of ImpostorRole.IsValidTarget to allow forbidden kill targets for killAnyone cheat
     // Allows killing ghosts (with seeGhosts), impostors, players in vents, etc...
-    public static bool Prefix(ImpostorRole __instance, NetworkedPlayerInfo target, ref bool __result){
+    public static bool Prefix(NetworkedPlayerInfo target, ref bool __result){
 
         if (CheatToggles.killAnyone){
-           __result = target != null && !target.Disconnected && (!target.IsDead || CheatToggles.seeGhosts) && target.PlayerId != __instance.Player.PlayerId && !(target.Object == null);
+           __result = Utils.isValidTarget(target);
         
             return false;
         }

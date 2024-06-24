@@ -132,6 +132,10 @@ public static class MalumCheats
         
         }
     }
+    public static void phantomCheats(PhantomRole phantomRole)
+    {
+        return;
+    }
 
     public static void useVentCheat(HudManager hudManager)
     {
@@ -191,7 +195,7 @@ public static class MalumCheats
     {
         if (CheatToggles.murderAll){
 
-            if (Utils.isLobby && !Utils.isFreePlay){
+            if (Utils.isLobby){
 
                 HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
 

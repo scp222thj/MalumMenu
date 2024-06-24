@@ -25,6 +25,9 @@ namespace MalumMenu
         public static bool noVitalsCooldown;
         public static bool noVentCooldown;
         public static bool endlessVentTime;
+        public static bool endlessVanish;
+        public static bool killVanished;
+        public static bool noVanishAnim;
         public static bool noShapeshiftAnim;
 
         //ESP
@@ -32,6 +35,7 @@ namespace MalumMenu
         public static bool alwaysChat;
         public static bool seeGhosts;
         public static bool seeRoles;
+        public static bool seeDisguises;
         public static bool revealVotes;
 
         //Camera
