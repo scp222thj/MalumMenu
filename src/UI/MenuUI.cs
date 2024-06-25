@@ -16,7 +16,7 @@ public class MenuUI : MonoBehaviour
     {
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
-            new ToggleInfo(" Boost Speed", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
+            new ToggleInfo(" SpeedHack", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
             }, new List<SubmenuInfo> {
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Murder Player", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
@@ -104,9 +104,9 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" MushroomMixup", () => CheatToggles.mushSab, x => CheatToggles.mushSab = x),
             }),
             new SubmenuInfo("Vents", false, new List<ToggleInfo>() {
-                new ToggleInfo(" UseVents", () => CheatToggles.useVents, x => CheatToggles.useVents = x),
-                new ToggleInfo(" KickVents", () => CheatToggles.kickVents, x => CheatToggles.kickVents = x),
-                new ToggleInfo(" WalkInVents", () => CheatToggles.walkVent, x => CheatToggles.walkVent = x)
+                new ToggleInfo(" Unlock Vents", () => CheatToggles.useVents, x => CheatToggles.useVents = x),
+                new ToggleInfo(" Kick All From Vents", () => CheatToggles.kickVents, x => CheatToggles.kickVents = x),
+                new ToggleInfo(" Walk In Vents", () => CheatToggles.walkVent, x => CheatToggles.walkVent = x)
             }),
         }));
 
