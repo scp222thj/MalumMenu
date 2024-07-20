@@ -73,6 +73,8 @@ namespace MalumMenu
         public static bool kickVents;
 
         //Host-Only
+        public static bool reviveAllPlayers;
+        public static bool revivePlayer;
         //public static bool impostorHack;
         //public static bool godMode;
         //public static bool evilVote;
@@ -87,13 +89,14 @@ namespace MalumMenu
         {
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
             murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
+            revivePlayer = variableToKeep != "revivePlayer" ? false : revivePlayer;
             spectate = variableToKeep != "spectate" ? false : spectate;
             changeRole = variableToKeep != "changeRole" ? false : changeRole;
             teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
         }
 
         public static bool shouldPPMClose(){
-            return !changeRole && !reportBody && !murderPlayer && !spectate && !teleportPlayer;
+            return !changeRole && !reportBody && !murderPlayer && !spectate && !teleportPlayer && !revivePlayer;
         }
     }
 }

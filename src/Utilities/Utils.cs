@@ -113,6 +113,12 @@ public static class Utils
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
     }
+    
+    // revive any player using RPC calls
+    public static void revivePlayer(PlayerControl target)
+    {
+        target.Revive();
+    }
 
     // Report bodies using RPC calls
     public static void reportDeadBody(NetworkedPlayerInfo playerData)

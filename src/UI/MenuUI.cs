@@ -112,12 +112,14 @@ public class MenuUI : MonoBehaviour
 
         // Host-Only cheats are temporarly disabled because of some bugs
 
-        //groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
+        groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
+            new ToggleInfo(" Revive Player", () => CheatToggles.revivePlayer, x => CheatToggles.revivePlayer = x), // revive player is visual effect, player still can No Clip
+            new ToggleInfo(" Revive All Players", () => CheatToggles.reviveAllPlayers, x => CheatToggles.reviveAllPlayers = x),
         //    new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
         //    new ToggleInfo(" Godmode", () => CheatSettings.godMode, x => CheatSettings.godMode = x),
         //    new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
         //    new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
-        //}, new List<SubmenuInfo>()));
+        }, new List<SubmenuInfo>()));
 
         // Console is temporarly disabled until we implement some features for it
 
@@ -148,7 +150,7 @@ public class MenuUI : MonoBehaviour
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         if(!Utils.isPlayer){
-            CheatToggles.changeRole = CheatToggles.murderAll = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.murderPlayer;
+            CheatToggles.changeRole = CheatToggles.murderAll = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.murderPlayer = CheatToggles.revivePlayer = CheatToggles.reviveAllPlayers;
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host

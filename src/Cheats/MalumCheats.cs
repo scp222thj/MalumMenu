@@ -213,6 +213,26 @@ public static class MalumCheats
 
         }
     }
+    public static void reviveAllCheat()
+    {
+        if (CheatToggles.reviveAllPlayers){
+
+            if (!AmongUsClient.Instance.AmHost)
+            {
+                HudManager.Instance.Notifier.AddDisconnectMessage("Revive only host can use");
+                CheatToggles.reviveAllPlayers = false;
+                return;
+            }
+            
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                Utils.revivePlayer(player);
+            }
+            
+            CheatToggles.reviveAllPlayers = false;
+
+        }
+    }
 
     public static void teleportCursorCheat()
     {
