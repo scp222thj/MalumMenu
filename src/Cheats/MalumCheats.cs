@@ -42,6 +42,18 @@ public static class MalumCheats
             CheatToggles.completeMyTasks = false;
         }
     }
+    
+    public static void impostorHackCheat()
+    {
+        if (CheatToggles.impostorHack)
+        {
+            int t = MalumMenu.NumImpostors;
+            if (MalumMenu.NumImpostors < 15) MalumMenu.NumImpostors++;
+            else MalumMenu.NumImpostors = 1;
+            HudManager.Instance.Notifier.AddDisconnectMessage($"From {t} Imp(s) to { MalumMenu.NumImpostors} Imps");
+            CheatToggles.impostorHack = false;
+        }
+    }
 
     public static void engineerCheats(EngineerRole engineerRole)
     {

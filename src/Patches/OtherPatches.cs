@@ -152,6 +152,16 @@ public static class AccountManager_CanPlayOnline
     }
 }
 
+[HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+class UnrestrictedNumImpostorsPatch
+{
+    public static bool Prefix(ref int __result)
+    {
+        __result = MalumMenu.NumImpostors;
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.JoinGame))]
 public static class InnerNet_InnerNetClient_JoinGame
 {

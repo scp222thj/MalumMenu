@@ -27,6 +27,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> guestFriendCode;
     public static ConfigEntry<bool> guestMode;
     public static ConfigEntry<bool> noTelemetry;
+    public static int NumImpostors = 1;
 
     public override void Load()
     {

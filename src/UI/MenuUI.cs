@@ -115,7 +115,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
             new ToggleInfo(" Revive Player", () => CheatToggles.revivePlayer, x => CheatToggles.revivePlayer = x), // revive player is visual effect, player still can No Clip
             new ToggleInfo(" Revive All Players", () => CheatToggles.reviveAllPlayers, x => CheatToggles.reviveAllPlayers = x),
-        //    new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
+            new ToggleInfo(" ImpostorHack", () => CheatToggles.impostorHack, x => CheatToggles.impostorHack = x),
         //    new ToggleInfo(" Godmode", () => CheatSettings.godMode, x => CheatSettings.godMode = x),
         //    new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
         //    new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
@@ -154,9 +154,9 @@ public class MenuUI : MonoBehaviour
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
-        //if(!CheatChecks.isHost){
-        //    CheatToggles.voteImmune = CheatToggles.godMode = CheatToggles.impostorHack = CheatToggles.evilVote = false;
-        //}
+        if(!AmongUsClient.Instance.AmHost){
+             CheatToggles.impostorHack = CheatToggles.revivePlayer = CheatToggles.reviveAllPlayers = false;
+        }
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!Utils.isShip){

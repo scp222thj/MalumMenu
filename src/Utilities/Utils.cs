@@ -34,6 +34,7 @@ public static class Utils
     public static bool DleksIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Dleks;
     public static bool AirshipIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Airship;
     public static bool FungleIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Fungle;
+    public static int GetImpNums => GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
 
     //Get ClientData by PlayerControl
     public static ClientData getClientByPlayer(PlayerControl player)

@@ -1,3 +1,4 @@
+using AmongUs.Data;
 using AmongUs.Data.Player;
 using BepInEx;
 using HarmonyLib;

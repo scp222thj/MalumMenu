@@ -75,7 +75,7 @@ namespace MalumMenu
         //Host-Only
         public static bool reviveAllPlayers;
         public static bool revivePlayer;
-        //public static bool impostorHack;
+        public static bool impostorHack;
         //public static bool godMode;
         //public static bool evilVote;
         //public static bool voteImmune;
