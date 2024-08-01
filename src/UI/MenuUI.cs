@@ -17,6 +17,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Player", false, new List<ToggleInfo>() {
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
             new ToggleInfo(" SpeedHack", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
+            new ToggleInfo(" ForceAumRpcForEveryone", () => CheatToggles.ForceAumRpcForEveryone, x => CheatToggles.ForceAumRpcForEveryone = x),
             }, new List<SubmenuInfo> {
             new SubmenuInfo("Murder", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Murder Player", () => CheatToggles.murderPlayer, x => CheatToggles.murderPlayer = x),
@@ -154,7 +155,7 @@ public class MenuUI : MonoBehaviour
         }
 
         //Host-only cheats are turned off if LocalPlayer is not the game's host
-        if(!AmongUsClient.Instance.AmHost){
+        if(!AmongUsClient.Instance.AmHost && (Utils.isInGame || Utils.isLobby)){
              CheatToggles.impostorHack = CheatToggles.revivePlayer = CheatToggles.reviveAllPlayers = false;
         }
 

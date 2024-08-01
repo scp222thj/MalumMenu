@@ -37,6 +37,7 @@ namespace MalumMenu
         public static bool seeRoles;
         public static bool seeDisguises;
         public static bool revealVotes;
+        public static bool ForceAumRpcForEveryone;
 
         //Camera
         public static bool spectate;

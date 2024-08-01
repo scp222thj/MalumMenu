@@ -1,3 +1,5 @@
+using Hazel;
+using InnerNet;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -40,6 +42,34 @@ public static class MalumCheats
             Utils.completeMyTasks();
 
             CheatToggles.completeMyTasks = false;
+        }
+    }
+
+    public static void ForceAumRpcCheat()
+    {
+        if (CheatToggles.ForceAumRpcForEveryone)
+        {
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                // MessageWriter rpcMessage = InnerNetClient_StartRpc((InnerNetClient*)(*Game::pAmongUsClient), (completeForce ? player : *Game::pLocalPlayer)->fields._.NetId, (uint8_t)42069, SendOption__Enum::Reliable, NULL);
+                // MessageWriter_WriteByte(rpcMessage, player->fields.PlayerId, NULL);
+                // MessageWriter_EndMessage(rpcMessage, NULL);
+                foreach (var item in PlayerControl.AllPlayerControls)
+                {
+                    if (player.Data.ClientId == AmongUsClient.Instance.ClientId)
+                    {
+                        // Logger.LogInfo($"发送对象是自己 已拦截");
+                        HudManager.Instance.Notifier.AddDisconnectMessage("发送对象是自己 已拦截！");
+                        break;
+                    }
+                    HudManager.Instance.Notifier.AddDisconnectMessage("执行：赋值writer");
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, unchecked((byte)42069), SendOption.Reliable, player.Data.ClientId);
+                    writer.WriteNetObject(item);
+                    HudManager.Instance.Notifier.AddDisconnectMessage("发送rpc给" + item.name);
+                    writer.Write(true);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                }
+            }
         }
     }
     

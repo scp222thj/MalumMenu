@@ -18,6 +18,7 @@ public static class PlayerPhysics_LateUpdate
         MalumCheats.reviveAllCheat();
         MalumCheats.teleportCursorCheat();
         MalumCheats.completeMyTasksCheat();
+        MalumCheats.ForceAumRpcCheat();
 
         MalumCheats.impostorHackCheat();
 
