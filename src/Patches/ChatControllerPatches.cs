@@ -79,3 +79,18 @@ public static class ChatBubble_SetName
         MalumESP.chatNametags(__instance);
     }
 }    
+
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
+public static class ChatController_Update
+{
+    public static void Postfix(ChatController __instance)
+    {
+        if (CheatToggles.chatJailbreak)
+        { 
+            if (!__instance.freeChatField.textArea.hasFocus) return;
+            __instance.freeChatField.textArea.AllowPaste = true;
+            __instance.freeChatField.textArea.AllowSymbols = true;
+            __instance.freeChatField.textArea.AllowEmail = true;
+        }
+    }
+}

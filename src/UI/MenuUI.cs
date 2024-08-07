@@ -129,6 +129,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Free Cosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
             new ToggleInfo(" Unlock Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
+            new ToggleInfo(" Chat Jailbreak", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x),
         }, new List<SubmenuInfo>()));
     }
 
