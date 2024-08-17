@@ -199,7 +199,7 @@ public static class MalumCheats
         }
     }
 
-    public static void murderAllCheat()
+    public static void killAllCheat()
     {
         if (CheatToggles.killAll){
 
@@ -218,6 +218,56 @@ public static class MalumCheats
             }
 
             CheatToggles.killAll = false;
+
+        }
+    }
+
+    public static void killAllCrewCheat()
+    {
+        if (CheatToggles.killAllCrew){
+
+            if (Utils.isLobby){
+
+                HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
+
+            }else{
+
+                // Kill all players by sending a successful MurderPlayer RPC call
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.Data.Role.TeamType == RoleTeamTypes.Crewmate){
+                        Utils.murderPlayer(player, MurderResultFlags.Succeeded);
+                    }
+                }
+
+            }
+
+            CheatToggles.killAllCrew = false;
+
+        }
+    }
+
+    public static void killAllImpsCheat()
+    {
+        if (CheatToggles.killAllImps){
+
+            if (Utils.isLobby){
+
+                HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
+
+            }else{
+
+                // Kill all players by sending a successful MurderPlayer RPC call
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player.Data.Role.TeamType == RoleTeamTypes.Impostor){
+                        Utils.murderPlayer(player, MurderResultFlags.Succeeded);
+                    }
+                }
+
+            }
+
+            CheatToggles.killAllImps = false;
 
         }
     }
