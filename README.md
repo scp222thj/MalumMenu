@@ -30,6 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v2.4.1 | 2024.8.13 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.1/MalumMenu-2.4.1.zip) |
 | v2.4.0 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.0/MalumMenu-2.4.0.zip) |
 | v2.3.1 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.3.1/MalumMenu-2.3.1.zip) |
 | v2.3.0 | 2024.6.4 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.3.0/MalumMenu-2.3.0.zip) |
@@ -47,18 +48,24 @@
 # ⬇️ Installation
 
 1. Download the latest **MalumMenu zip pack** from [here](https://github.com/scp222thj/MalumMenu/releases/latest).
-   
+    - **For Steam, Epic Launcher, and Itch.io:** Download `MalumMenu-2.4.0.zip`.
+    - **For Microsoft Store:** Download `MalumMenu-2.4.0-Microsoft.zip`.
+
 2. Open the zip file you have just downloaded and copy all its contents.
-   
-3. Paste these files directly into your Among Us game folder.
-    - Steam: Right-click Among Us in your Library → Click `Manage` → Click `Browse local files`.
-    - Epic Launcher: Right-click Among Us in your Library → Click `Manage` → Click the folder icon in the `Installation` box.
+
+3. Paste these files directly into your Among Us game folder:
+    - **Steam:** Right-click Among Us in your Library → Click `Manage` → Click `Browse local files`.
+    - **Epic Launcher:** Right-click Among Us in your Library → Click `Manage` → Click the folder icon in the `Installation` box.
+    - **Itch.io:** Open the Itch.io app → Right-click Among Us in your Library → Click `Manage` → Click `Open folder in Explorer`.
+    - **Microsoft Store:** Open the location where Among Us is installed (usually under `C:\Program Files\WindowsApps\` or another default path depending on your installation).
+
 4. Launch Among Us as you normally would. You should see a console window appear, installing the mod's requirements.
 
 5. Wait for the console window to finish the installation.
-   
+
 6. After installation, Among Us will automatically open with MalumMenu successfully installed.
-    - By default, you can toggle the cheat gui on by pressing **DELETE** on your keyboard.
+    - By default, you can toggle the cheat GUI on by pressing **DELETE** on your keyboard.
+
 7. If the installation doesn't work, check out our [FAQ](#-faq).
 
 # 📋 Features
@@ -83,17 +90,21 @@ Click to expand each topic
 <details>
   <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
-First of all, make sure you are running the most recent version of Among Us (`2024.6.18`) with the most recent version of MalumMenu (`v2.4.0`)
+First of all, make sure you are running the most recent version of Among Us (`2024.8.13`) with the most recent version of MalumMenu (`v2.4.1`).
 
 Also, check if your platform is officially supported:
 
 - ✅ Steam
 - ✅ Itch.io
 - ✅ Epic Games Launcher
+- ✅ Microsoft Store
 - ❔ Cracked (rarely works)
-- ❌ Microsoft Store
 - ❌ iOS App Store & Google Play
 - ❌ PS & Switch & Xbox
+
+Now ensure that you have downloaded the correct zip file for your platform:
+- For Steam, Epic Games Launcher, and Itch.io, use `MalumMenu-2.4.0.zip`
+- For the Microsoft Store edition, use `MalumMenu-2.4.0-Microsoft.zip`
 
 Make sure you followed the installation guide precisely. This is what your `Among Us` folder should look like after a successful installation:
 
@@ -101,7 +112,7 @@ Make sure you followed the installation guide precisely. This is what your `Amon
 
 <br>Some antiviruses might cause issues when installing the mod, so consider temporarily deactivating your antivirus if the game isn't booting after installation.
 
-When installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completly normal and expected behaviour, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through this useful BepInEx console window that pops up when you start the game:
+When installing MalumMenu for the first time, it will take **MUCH** longer than usual for the game to load. This is completely normal and expected behavior, so don't be alarmed if you have to wait a while. You can keep track of the installation progress through this useful BepInEx console window that pops up when you start the game:
 
 <img src="https://scp222thj.dev/static/images/bepinexConsole.png" alt="drawing" width="550"/>
 
