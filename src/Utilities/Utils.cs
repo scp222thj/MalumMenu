@@ -143,9 +143,7 @@ public static class Utils
 
             foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
             {
-                if (!task.IsComplete){
-                    PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
-                }
+                PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
             }
             return;
         

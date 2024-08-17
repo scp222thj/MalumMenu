@@ -8,8 +8,11 @@ namespace MalumMenu
         public static bool teleportPlayer;
         public static bool teleportCursor;
         public static bool reportBody;
-        public static bool murderPlayer;
-        public static bool murderAll;
+        public static bool killPlayer;
+        public static bool telekillPlayer;
+        public static bool killAll;
+        public static bool killAllCrew;
+        public static bool killAllImps;
 
         //Roles
         public static bool changeRole;
@@ -86,14 +89,15 @@ namespace MalumMenu
         public static void DisablePPMCheats(string variableToKeep)
         {
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
-            murderPlayer = variableToKeep != "murderPlayer" ? false : murderPlayer;
+            killPlayer = variableToKeep != "killPlayer" ? false : killPlayer;
+            telekillPlayer = variableToKeep != "telekillPlayer" ? false : telekillPlayer;
             spectate = variableToKeep != "spectate" ? false : spectate;
             changeRole = variableToKeep != "changeRole" ? false : changeRole;
             teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
         }
 
         public static bool shouldPPMClose(){
-            return !changeRole && !reportBody && !murderPlayer && !spectate && !teleportPlayer;
+            return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
         }
     }
 }

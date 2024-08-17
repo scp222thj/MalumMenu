@@ -6,11 +6,14 @@ using UnityEngine;
 namespace MalumMenu;
 public static class MalumPPMCheats
 {
-    public static bool murderPlayerActive;
+    public static bool telekillPlayerActive;
+    public static bool killPlayerActive;
     public static bool spectateActive;
     public static bool teleportPlayerActive;
     public static bool reportBodyActive;
     public static bool changeRoleActive;
+    public static float teleKillWaitFrames = -1;
+    public static Vector2 teleKillPosition;
     public static RoleTypes? oldRole = null;
 
     public static void reportBodyPPM(){
@@ -54,22 +57,22 @@ public static class MalumPPMCheats
         }
     }
 
-    public static void murderPlayerPPM()
+    public static void killPlayerPPM()
     {
-        if (CheatToggles.murderPlayer)
+        if (CheatToggles.killPlayer)
         {
-            if (!murderPlayerActive)
+            if (!killPlayerActive)
             {
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
                     PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("murderPlayer");
+                    CheatToggles.DisablePPMCheats("killPlayer");
                 }
 
                 if (Utils.isLobby){
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
-                    CheatToggles.murderPlayer = false;
+                    CheatToggles.killPlayer = false;
                     return;
                 }
 
@@ -87,17 +90,66 @@ public static class MalumPPMCheats
                     Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
                 }));
 
-                murderPlayerActive = true;
+                killPlayerActive = true;
             }
 
             // Deactivate cheat if menu is closed
             if (PlayerPickMenu.playerpickMenu == null){
-                CheatToggles.murderPlayer = false;
+                CheatToggles.killPlayer = false;
             }
         }
-        else if (murderPlayerActive)
+        else if (killPlayerActive)
         {
-            murderPlayerActive = false;
+            killPlayerActive = false;
+        }
+    }
+
+    public static void telekillPlayerPPM()
+    {
+        if (CheatToggles.telekillPlayer)
+        {
+            if (!telekillPlayerActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("telekillPlayer");
+                }
+
+                if (Utils.isLobby){
+                    HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
+                    CheatToggles.telekillPlayer = false;
+                    return;
+                }
+
+                List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
+
+                // All players are saved to playerList
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    playerDataList.Add(player.Data);
+                }
+
+                // Player pick menu made for killing any player by sending a successful MurderPlayer RPC call
+                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
+                {
+                    teleKillPosition = PlayerControl.LocalPlayer.GetTruePosition();
+                    Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
+                    teleKillWaitFrames = 40;
+                }));
+
+                telekillPlayerActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null){
+                CheatToggles.telekillPlayer = false;
+            }
+        }
+        else if (telekillPlayerActive)
+        {
+            telekillPlayerActive = false;
         }
     }
 
@@ -247,7 +299,7 @@ public static class MalumPPMCheats
                 {
 
                     // Log the originally assigned role before it gets changed by changeRole cheat
-                    if (!Utils.isLobby && oldRole == null){
+                    if (!Utils.isLobby && !Utils.isFreePlay && oldRole == null){
                         oldRole = PlayerControl.LocalPlayer.Data.RoleType;
                     }
 

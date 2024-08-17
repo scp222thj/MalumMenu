@@ -1,3 +1,4 @@
+using Sentry.Internal.Extensions;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -14,9 +15,12 @@ public static class MalumCheats
                 Object.Destroy(MeetingHud.Instance.gameObject);
 
                 // Gameplay must be reenabled
-                ExileController exileController = Object.Instantiate(ShipStatus.Instance.ExileCutscenePrefab);
-                exileController.ReEnableGameplay();
-                exileController.WrapUp();
+                DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear, 0.2f, false));
+                PlayerControl.LocalPlayer.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown());
+                ShipStatus.Instance.EmergencyCooldown = GameManager.Instance.LogicOptions.GetEmergencyCooldown();
+                Camera.main.GetComponent<FollowerCamera>().Locked = false;
+                DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
+                ControllerManager.Instance.CloseAndResetAll();
 
             }else if (ExileController.Instance != null){ // Ends exile cutscene if it's playing
                 ExileController.Instance.ReEnableGameplay();
@@ -59,10 +63,14 @@ public static class MalumCheats
 
         if (CheatToggles.noVentCooldown){
 
-            engineerRole.cooldownSecondsRemaining = 0f;
+            if (engineerRole.cooldownSecondsRemaining > 0f){
 
-            DestroyableSingleton<HudManager>.Instance.AbilityButton.ResetCoolDown();
-            DestroyableSingleton<HudManager>.Instance.AbilityButton.SetCooldownFill(0f);
+                engineerRole.cooldownSecondsRemaining = 0f;
+
+                DestroyableSingleton<HudManager>.Instance.AbilityButton.ResetCoolDown();
+                DestroyableSingleton<HudManager>.Instance.AbilityButton.SetCooldownFill(0f);
+
+            }
         
         }
     }
@@ -193,7 +201,7 @@ public static class MalumCheats
 
     public static void murderAllCheat()
     {
-        if (CheatToggles.murderAll){
+        if (CheatToggles.killAll){
 
             if (Utils.isLobby){
 
@@ -209,7 +217,7 @@ public static class MalumCheats
 
             }
 
-            CheatToggles.murderAll = false;
+            CheatToggles.killAll = false;
 
         }
     }
