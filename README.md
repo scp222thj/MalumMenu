@@ -48,8 +48,8 @@
 # ⬇️ Installation
 
 1. Download the latest **MalumMenu zip pack** from [here](https://github.com/scp222thj/MalumMenu/releases/latest).
-    - **For Steam, Epic Launcher, and Itch.io:** Download `MalumMenu-2.4.0.zip`.
-    - **For Microsoft Store:** Download `MalumMenu-2.4.0-Microsoft.zip`.
+    - **For Steam, Epic Launcher, and Itch.io:** Download `MalumMenu-VERSION.zip`.
+    - **For Microsoft Store:** Download `MalumMenu-VERSION-Microsoft.zip`.
 
 2. Open the zip file you have just downloaded and copy all its contents.
 
@@ -103,8 +103,8 @@ Also, check if your platform is officially supported:
 - ❌ PS & Switch & Xbox
 
 Now ensure that you have downloaded the correct zip file for your platform:
-- For Steam, Epic Games Launcher, and Itch.io, use `MalumMenu-2.4.0.zip`
-- For the Microsoft Store edition, use `MalumMenu-2.4.0-Microsoft.zip`
+- For Steam, Epic Games Launcher, and Itch.io, use `MalumMenu-VERSION.zip`
+- For the Microsoft Store edition, use `MalumMenu-VERSION-Microsoft.zip`
 
 Make sure you followed the installation guide precisely. This is what your `Among Us` folder should look like after a successful installation:
 
