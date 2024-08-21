@@ -59,7 +59,7 @@ namespace MalumMenu
         public static bool tracersBodies;
         public static bool colorBasedTracers;
         public static bool distanceBasedTracers;
-        
+
         //Ship
         public static bool closeMeeting;
         public static bool doorsSab;
@@ -86,6 +86,9 @@ namespace MalumMenu
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;
 
+        //Other
+        public static bool panicMode;
+
         public static void DisablePPMCheats(string variableToKeep)
         {
             reportBody = variableToKeep != "reportBody" ? false : reportBody;
@@ -96,7 +99,8 @@ namespace MalumMenu
             teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
         }
 
-        public static bool shouldPPMClose(){
+        public static bool shouldPPMClose()
+        {
             return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
         }
     }

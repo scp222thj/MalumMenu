@@ -61,7 +61,7 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Roles", false, new List<ToggleInfo>() {
             new ToggleInfo(" Set Fake Role", () => CheatToggles.changeRole, x => CheatToggles.changeRole = x),
-        }, 
+        },
             new List<SubmenuInfo> {
                 new SubmenuInfo("Impostor", false, new List<ToggleInfo>() {
                     new ToggleInfo(" Kill Anyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
@@ -133,24 +133,56 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
             new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
         }, new List<SubmenuInfo>()));
+
+        groups.Add(new GroupInfo("Other", false, new List<ToggleInfo>() {
+            new ToggleInfo("Panic Mode", () => CheatToggles.panicMode, x => CheatToggles.panicMode = x),
+        }, new List<SubmenuInfo>()));
     }
 
-    private void Update(){
+
+
+    private void Update()
+    {
+
+        if (CheatToggles.panicMode == true)
+        {
+
+            // Disables the GUI if panicMode is enabled
+            isGUIActive = false;
+            MalumCheats.PanicMode();
+        }
 
         if (Input.GetKeyDown(Utils.stringToKeycode(MalumMenu.menuKeybind.Value)))
         {
-            //Enable-disable GUI with DELETE key
-            isGUIActive = !isGUIActive;
 
-            //Also teleport the window to the mouse for immediate use
-            Vector2 mousePosition = Input.mousePosition;
-            windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+            if (CheatToggles.panicMode == true)
+            {
+                // Keeps the GUI disabled and unopenable when panic mode is active
+                isGUIActive = false;
+
+
+            }
+            else
+            {
+
+                // Enable-disable GUI with the keybind if panic mode is not active
+                isGUIActive = !isGUIActive;
+
+                // Also teleport the window to the mouse for immediate use
+                if (isGUIActive)
+                {
+                    Vector2 mousePosition = Input.mousePosition;
+                    windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+                }
+            }
         }
+
 
         //Passive cheats are always on to avoid problems
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
-        if(!Utils.isPlayer){
+        if (!Utils.isPlayer)
+        {
             CheatToggles.changeRole = CheatToggles.killAll = CheatToggles.telekillPlayer = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.killPlayer;
         }
 
@@ -160,7 +192,8 @@ public class MenuUI : MonoBehaviour
         //}
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
-        if(!Utils.isShip){
+        if (!Utils.isShip)
+        {
             CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
         }
     }

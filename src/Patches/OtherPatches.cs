@@ -25,7 +25,8 @@ public static class SystemInfo_deviceUniqueIdentifier_Getter
     // Made to hide the user's real unique deviceId by generating a random fake one
     public static void Postfix(ref string __result)
     {
-        if (MalumMenu.spoofDeviceId.Value){
+        if (MalumMenu.spoofDeviceId.Value)
+        {
 
             var bytes = new byte[16];
             using (var rng = RandomNumberGenerator.Create())
@@ -36,7 +37,7 @@ public static class SystemInfo_deviceUniqueIdentifier_Getter
             __result = BitConverter.ToString(bytes).Replace("-", "").ToLower();
 
         }
-        
+
     }
 }
 
@@ -48,7 +49,8 @@ public static class AmongUsClient_Update
         MalumSpoof.spoofLevel();
 
         // Code to treat temp accounts the same as full accounts, including access to friend codes
-        if (EOSManager.Instance.loginFlowFinished && MalumMenu.guestMode.Value){
+        if (EOSManager.Instance.loginFlowFinished && MalumMenu.guestMode.Value)
+        {
 
             DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
 
@@ -71,14 +73,22 @@ public static class VersionShower_Start
     // Postfix patch of VersionShower.Start to show MalumMenu version
     public static void Postfix(VersionShower __instance)
     {
-        if (MalumMenu.supportedAU.Contains(Application.version)){ // Checks if Among Us version is supported
+        if (CheatToggles.panicMode == true)
+        { //checks if panic mode is enabled
+            __instance.text.text = $"v2024.8.13s (build num:4431)";
 
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
-        
-        }else{
+        }
+        else if (MalumMenu.supportedAU.Contains(Application.version))
+        { // Checks if Among Us version is supported
 
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; //Unsupported
-        
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
+
+        }
+        else
+        {
+
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; //Unsupported
+
         }
     }
 }
@@ -91,27 +101,37 @@ public static class PingTracker_Update
     {
         __instance.text.alignment = TMPro.TextAlignmentOptions.Center;
 
-        if (AmongUsClient.Instance.IsGameStarted){
+        // Check if panic mode is enabled
+        if (CheatToggles.panicMode == true)
+        {
+            // Do not show "MalumMenu by scp222thj" & colored ping if panic mode is enabled
 
+            return;
+        }
+        else if (AmongUsClient.Instance.IsGameStarted)
+        {
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
 
             __instance.text.text = $"MalumMenu by scp222thj ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
-            
+
             return;
         }
 
         __instance.text.text = $"MalumMenu by scp222thj\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
-        
     }
+
+
 }
+
 
 [HarmonyPatch(typeof(HatManager), nameof(HatManager.Initialize))]
 public static class HatManager_Initialize
 {
-    public static void Postfix(HatManager __instance){
+    public static void Postfix(HatManager __instance)
+    {
 
         CosmeticsUnlocker.unlockCosmetics(__instance);
-        
+
     }
 }
 
@@ -121,7 +141,8 @@ public static class StatsManager_BanMinutesLeft_Getter
     // Prefix patch of Getter method for StatsManager.BanMinutesLeft to remove disconnect penalty
     public static void Postfix(StatsManager __instance, ref int __result)
     {
-        if (CheatToggles.avoidBans){
+        if (CheatToggles.avoidBans)
+        {
             __instance.BanPoints = 0f; // Removes all BanPoints
             __result = 0; // Removes all BanMinutes
         }
@@ -134,7 +155,8 @@ public static class FullAccount_CanSetCustomName
     // Prefix patch of FullAccount.CanSetCustomName to allow the usage of custom names
     public static void Prefix(ref bool canSetName)
     {
-        if (CheatToggles.unlockFeatures){ 
+        if (CheatToggles.unlockFeatures)
+        {
             canSetName = true;
         }
     }
@@ -146,7 +168,8 @@ public static class AccountManager_CanPlayOnline
     // Prefix patch of AccountManager.CanPlayOnline to allow online games
     public static void Postfix(ref bool __result)
     {
-        if (CheatToggles.unlockFeatures){
+        if (CheatToggles.unlockFeatures)
+        {
             __result = true;
         }
     }
@@ -158,7 +181,8 @@ public static class InnerNet_InnerNetClient_JoinGame
     // Prefix patch of InnerNet.InnerNetClient.JoinGame to allow online games
     public static void Prefix()
     {
-        if (CheatToggles.unlockFeatures){
+        if (CheatToggles.unlockFeatures)
+        {
             DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
         }
     }
@@ -180,20 +204,22 @@ public static class Vent_CanUse
     // Basically does what the original method did with the required modifications
     public static void Postfix(Vent __instance, NetworkedPlayerInfo pc, ref bool canUse, ref bool couldUse, ref float __result)
     {
-        if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead){
-            if (CheatToggles.useVents){
+        if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            if (CheatToggles.useVents)
+            {
                 float num = float.MaxValue;
                 PlayerControl @object = pc.Object;
 
                 Vector3 center = @object.Collider.bounds.center;
-		        Vector3 position = __instance.transform.position;
-		        num = Vector2.Distance(center, position);
-            
+                Vector3 position = __instance.transform.position;
+                num = Vector2.Distance(center, position);
+
                 // Allow usage of vents unless the vent is too far or there are objects blocking the player's path
                 canUse = num <= __instance.UsableDistance && !PhysicsHelpers.AnythingBetween(@object.Collider, center, position, Constants.ShipOnlyMask, false);
                 couldUse = true;
                 __result = num;
-            }    
+            }
         }
     }
 }
