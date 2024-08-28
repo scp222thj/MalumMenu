@@ -148,9 +148,15 @@ public class MenuUI : MonoBehaviour
         }
 
         //Passive cheats are always on to avoid problems
-        CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
+        //CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
-        if(!Utils.isPlayer){
+        //Passive cheats are always toggled by the config to avoid problems
+        CheatToggles.unlockFeatures = MalumMenu.unlockFeatures.Value;
+        CheatToggles.freeCosmetics = MalumMenu.freeCosmetics.Value;
+        CheatToggles.avoidBans = MalumMenu.avoidBans.Value;
+
+
+        if (!Utils.isPlayer){
             CheatToggles.changeRole = CheatToggles.killAll = CheatToggles.telekillPlayer = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.killPlayer;
         }
 
