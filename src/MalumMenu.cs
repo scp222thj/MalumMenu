@@ -27,6 +27,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> guestFriendCode;
     public static ConfigEntry<bool> guestMode;
     public static ConfigEntry<bool> noTelemetry;
+    public static ConfigEntry<string> ToggleZoom;
 
     public override void Load()
     {
@@ -71,6 +72,11 @@ public partial class MalumMenu : BasePlugin
                                 "NoTelemetry",
                                 true,
                                 "When enabled it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
+
+        ToggleZoom = Config.Bind("MalumMenu.Cheats",
+                                "ToggleZoom",
+                                "c",
+                                "The keyboard key used to toggle the zoom hack on on press and off on release. List of supported keycodes: https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html");
 
 
 

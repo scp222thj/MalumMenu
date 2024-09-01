@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+using JetBrains.Annotations;
 
 namespace MalumMenu;
 public class MenuUI : MonoBehaviour
@@ -10,6 +12,7 @@ public class MenuUI : MonoBehaviour
     private Rect windowRect = new Rect(10, 10, 300, 500);
     private bool isGUIActive = false;
     private GUIStyle submenuButtonStyle;
+    
 
     // Create all groups (buttons) and their toggles on start
     private void Start()
@@ -145,6 +148,19 @@ public class MenuUI : MonoBehaviour
             //Also teleport the window to the mouse for immediate use
             Vector2 mousePosition = Input.mousePosition;
             windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+        }
+
+        if (Input.GetKeyDown(Utils.stringToKeycode(MalumMenu.ToggleZoom.Value)) && DestroyableSingleton<HudManager>.Instance.Chat.IsClosedOrClosing)
+        { 
+            // Toggle zoom hack with c key
+            CheatToggles.zoomOut = !CheatToggles.zoomOut; 
+
+            // Also zoom out 2 times for immediate use and easy usablity 
+            MalumESP.zoomToggle(DestroyableSingleton<HudManager>.Instance);
+        }
+        else if (Input.GetKeyUp(Utils.stringToKeycode(MalumMenu.ToggleZoom.Value)) && DestroyableSingleton<HudManager>.Instance.Chat.IsClosedOrClosing)
+        {
+            CheatToggles.zoomOut = !CheatToggles.zoomOut;
         }
 
         //Passive cheats are always on to avoid problems
