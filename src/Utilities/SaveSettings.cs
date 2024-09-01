@@ -6,7 +6,7 @@ using BepInEx.Unity.IL2CPP;
 
 namespace MalumMenu
 {
-    public static class SafeSettings
+    public static class SaveSettings
     {        
         private static Timer updateTimer;
         
