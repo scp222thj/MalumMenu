@@ -153,14 +153,14 @@ public class MenuUI : MonoBehaviour
         if (Input.GetKeyDown(Utils.stringToKeycode(MalumMenu.ToggleZoom.Value)) && DestroyableSingleton<HudManager>.Instance.Chat.IsClosedOrClosing)
         { 
             // Toggle zoom hack with c key
-            CheatToggles.zoomOut = !CheatToggles.zoomOut; 
+            CheatToggles.zoomOut = true; 
 
             // Also zoom out 2 times for immediate use and easy usablity 
             MalumESP.zoomToggle(DestroyableSingleton<HudManager>.Instance);
         }
         else if (Input.GetKeyUp(Utils.stringToKeycode(MalumMenu.ToggleZoom.Value)) && DestroyableSingleton<HudManager>.Instance.Chat.IsClosedOrClosing)
         {
-            CheatToggles.zoomOut = !CheatToggles.zoomOut;
+            CheatToggles.zoomOut = false;
         }
 
         //Passive cheats are always on to avoid problems
