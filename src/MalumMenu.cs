@@ -72,7 +72,8 @@ public partial class MalumMenu : BasePlugin
                                 true,
                                 "When enabled it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
 
-
+        
+        SafeSettings.LoadSettings(this);
 
         Harmony.PatchAll();
         
