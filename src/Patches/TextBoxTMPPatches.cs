@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace MalumMenu;
 
-// Allow copying from the chatbox
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.Update))]
 public static class TextBoxTMP_Update
 {
+    // Postfix patch of TextBoxTMP.Update to allow copying from the chatbox
     public static void Postfix(TextBoxTMP __instance)
     {
         if (CheatToggles.chatJailbreak)
@@ -19,5 +19,20 @@ public static class TextBoxTMP_Update
                 ClipboardHelper.PutClipboardString(__instance.text);
             }
         }
+    }
+}
+
+[HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.IsCharAllowed))]
+public static class TextBoxTMP_IsCharAllowed
+{
+    // Postfix patch of TextBoxTMP.IsCharAllowed to allow all characters
+    public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
+    {
+        if (!CheatToggles.chatJailbreak){
+            return true;
+        }
+
+        __result = !(i == '\b' || i == '>' || i == '<' || i == '\r'); // Some characters cause issues and must therefore be removed
+        return false;
     }
 }

@@ -18,6 +18,37 @@ public static class PlatformSpecificData_Serialize
     }
 }
 
+[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.UpdateCharCount))]
+public static class FreeChatInputField_UpdateCharCount
+{
+    // Postfix patch of FreeChatInputField.UpdateCharCount to change how charCountText displays
+    public static void Postfix(FreeChatInputField __instance)
+    {
+        if (!CheatToggles.chatJailbreak){
+            return; // Only works if CheatToggles.chatJailbreak is enabled
+        }
+
+        // Update charCountText to account for longer characterLimit
+        
+        int length = __instance.textArea.text.Length;
+        __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
+
+        if (length < 90){ // Under 75%
+
+            __instance.charCountText.color = UnityEngine.Color.black;
+        
+        }else if (length < 119){ // Under 100%
+
+            __instance.charCountText.color = new UnityEngine.Color(1f, 1f, 0f, 1f);
+        
+        }else{ // Over or equal to 100%
+
+            __instance.charCountText.color = UnityEngine.Color.red;
+
+        }
+    }
+}
+
 [HarmonyPatch(typeof(SystemInfo), nameof(SystemInfo.deviceUniqueIdentifier), MethodType.Getter)]
 public static class SystemInfo_deviceUniqueIdentifier_Getter
 {

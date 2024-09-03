@@ -34,7 +34,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" See Ghosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
             new ToggleInfo(" No Shadows", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
             new ToggleInfo(" Reveal Votes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
-            new ToggleInfo(" Always Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Camera", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Zoom Out", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
@@ -110,6 +109,11 @@ public class MenuUI : MonoBehaviour
             }),
         }));
 
+        groups.Add(new GroupInfo("Chat", false, new List<ToggleInfo>() {
+            new ToggleInfo(" Enable Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x),
+            new ToggleInfo(" Unlock Textbox", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
+        }, new List<SubmenuInfo>()));
+
         // Host-Only cheats are temporarly disabled because of some bugs
 
         //groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
@@ -128,8 +132,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" Free Cosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
-            new ToggleInfo(" Unlock Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
-            new ToggleInfo(" Chat Jailbreak", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x),
+            new ToggleInfo(" Unlock Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x)
         }, new List<SubmenuInfo>()));
     }
 
