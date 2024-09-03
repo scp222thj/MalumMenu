@@ -83,7 +83,7 @@ public static class ChatBubble_SetName
 
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
-public static class ChatJailBreak_FreeChatInputField_OnFieldChanged_Prefix
+public static class ChatController_Update
 {
     // Postfix patch of FreeChatInputField.OnFieldChanged to unlock extra chat capabilities
     public static void Postfix(ChatController __instance)

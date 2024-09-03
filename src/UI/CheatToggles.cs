@@ -35,7 +35,6 @@ namespace MalumMenu
 
         //ESP
         public static bool fullBright;
-        public static bool alwaysChat;
         public static bool seeGhosts;
         public static bool seeRoles;
         public static bool seeDisguises;
@@ -59,6 +58,10 @@ namespace MalumMenu
         public static bool tracersBodies;
         public static bool colorBasedTracers;
         public static bool distanceBasedTracers;
+
+        //Chat
+        public static bool alwaysChat;
+        public static bool chatJailbreak;
         
         //Ship
         public static bool closeMeeting;
@@ -85,7 +88,6 @@ namespace MalumMenu
         public static bool unlockFeatures = true;
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;
-        public static bool chatJailbreak;
 
         public static void DisablePPMCheats(string variableToKeep)
         {
