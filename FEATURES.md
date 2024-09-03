@@ -11,8 +11,10 @@
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| Murder Player | Select a player to kill them immediatly | Menu |
-| Murder All | Kill all players immediatly | Toggle | Off |
+| Kill Player | Select a player to kill them immediatly | Menu |
+| Kill All Crewmates | Kill all crewmates immediatly | Button |
+| Kill All Impostors | Kill all impostors immediatly | Button |
+| Kill All | Kill all players immediatly | Button |
 
 #### Teleport
 
