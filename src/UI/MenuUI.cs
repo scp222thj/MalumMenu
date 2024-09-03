@@ -37,7 +37,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" See Ghosts", () => CheatToggles.seeGhosts, x => CheatToggles.seeGhosts = x),
             new ToggleInfo(" No Shadows", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
             new ToggleInfo(" Reveal Votes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
-            new ToggleInfo(" Always Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x)
         }, new List<SubmenuInfo> {
             new SubmenuInfo("Camera", false, new List<ToggleInfo>() {
                 new ToggleInfo(" Zoom Out", () => CheatToggles.zoomOut, x => CheatToggles.zoomOut = x),
@@ -112,6 +111,11 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Walk In Vents", () => CheatToggles.walkVent, x => CheatToggles.walkVent = x)
             }),
         }));
+
+        groups.Add(new GroupInfo("Chat", false, new List<ToggleInfo>() {
+            new ToggleInfo(" Enable Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x),
+            new ToggleInfo(" Unlock Textbox", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
+        }, new List<SubmenuInfo>()));
 
         // Host-Only cheats are temporarly disabled because of some bugs
 

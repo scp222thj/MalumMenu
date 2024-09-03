@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace MalumMenu;
 
@@ -78,4 +79,62 @@ public static class ChatBubble_SetName
     public static void Postfix(ChatBubble __instance){
         MalumESP.chatNametags(__instance);
     }
-}    
+}
+
+
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
+public static class ChatJailBreak_FreeChatInputField_OnFieldChanged_Prefix
+{
+    // Postfix patch of FreeChatInputField.OnFieldChanged to unlock extra chat capabilities
+    public static void Postfix(ChatController __instance)
+    {
+        __instance.freeChatField.textArea.allowAllCharacters = CheatToggles.chatJailbreak; // Not really used by the game's code, but I include it anyway
+        __instance.freeChatField.textArea.AllowPaste = CheatToggles.chatJailbreak; // Allow pasting from clipboard in chat when chatJailbreak is enabled
+        __instance.freeChatField.textArea.AllowSymbols = true; // Allow sending certain symbols
+        __instance.freeChatField.textArea.AllowEmail = CheatToggles.chatJailbreak; // Allow sending email addresses when chatJailbreak is enabled
+        
+        if (CheatToggles.chatJailbreak){
+            __instance.freeChatField.textArea.characterLimit = 119; // Longer message length when chatJailbreak is enabled
+        }else{
+            __instance.freeChatField.textArea.characterLimit = 100;
+        }
+        
+    }
+}
+
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.SendFreeChat))]
+public static class ChatController_SendFreeChat
+{
+    // Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
+    public static bool Prefix(ChatController __instance)
+    {
+        if (!CheatToggles.chatJailbreak){
+            return true; // Only works if CheatSettings.chatJailbreak is enabled
+        }
+
+        string text = __instance.freeChatField.Text;
+
+        // Replace periods in URLs and email addresses with commas to avoid censorship
+        string modifiedText = CensorUrlsAndEmails(text);
+
+        ChatController.Logger.Debug("SendFreeChat () :: Sending message: '" + modifiedText + "'", null);
+        PlayerControl.LocalPlayer.RpcSendChat(modifiedText);
+
+        return false;
+    }
+
+    private static string CensorUrlsAndEmails(string text)
+    {
+        // Regular expression pattern to match URLs and email addresses
+        string pattern = @"(http[s]?://)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(/[\w-./?%&=]*)?|([a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)";
+        Regex regex = new Regex(pattern);
+
+        // Censor periods in each match
+        return regex.Replace(text, match =>
+        {
+            var censored = match.Value;
+            censored = censored.Replace('.', ',');
+            return censored;
+        });
+    }
+}
