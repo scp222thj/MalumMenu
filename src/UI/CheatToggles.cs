@@ -63,6 +63,12 @@ namespace MalumMenu
         public static bool alwaysChat;
         public static bool chatJailbreak;
         
+
+        
+        
+        
+        
+        
         //Ship
         public static bool closeMeeting;
         public static bool doorsSab;
@@ -85,9 +91,12 @@ namespace MalumMenu
         //public static bool voteImmune;
 
         //Passive
-        public static bool unlockFeatures = true;
-        public static bool freeCosmetics = true;
-        public static bool avoidBans = true;
+        public static bool unlockFeatures;
+        public static bool freeCosmetics;
+        public static bool avoidBans;
+
+        //Other
+        public static bool panicMode;
 
         public static void DisablePPMCheats(string variableToKeep)
         {
@@ -99,7 +108,8 @@ namespace MalumMenu
             teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
         }
 
-        public static bool shouldPPMClose(){
+        public static bool shouldPPMClose()
+        {
             return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
         }
     }
