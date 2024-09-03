@@ -132,7 +132,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Passive", false, new List<ToggleInfo>() {
             new ToggleInfo(" Free Cosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
-            new ToggleInfo(" Unlock Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x)
+            new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x)
         }, new List<SubmenuInfo>()));
     }
 
