@@ -226,6 +226,8 @@ public static class MalumPPMCheats
 
                 }
 
+                // Phantom role can only be used if it was already assigned at the start of the game
+                // This is done to prevent the anticheat from kicking players
                 if (oldRole == RoleTypes.Phantom || Utils.isFreePlay){
 
                     NetworkedPlayerInfo.PlayerOutfit phantomOutfit = new NetworkedPlayerInfo.PlayerOutfit
@@ -240,13 +242,19 @@ public static class MalumPPMCheats
 
                 }
 
-                NetworkedPlayerInfo.PlayerOutfit impostorOutfit = new NetworkedPlayerInfo.PlayerOutfit
-                {
-                    ColorId = 0
-                };
+                // Impostor role can only be used if it was already assigned at the start of the game or as host
+                // This is done to prevent the anticheat from kicking players
+                if (oldRole == RoleTypes.Impostor || Utils.isFreePlay || Utils.isHost){
 
-                // Custom PPM choice for Impostor role
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", impostorOutfit, Utils.getBehaviourByRoleType(RoleTypes.Impostor)));
+                    NetworkedPlayerInfo.PlayerOutfit impostorOutfit = new NetworkedPlayerInfo.PlayerOutfit
+                    {
+                        ColorId = 0
+                    };
+
+                    // Custom PPM choice for Impostor role
+                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", impostorOutfit, Utils.getBehaviourByRoleType(RoleTypes.Impostor)));
+                
+                }
 
                 NetworkedPlayerInfo.PlayerOutfit trackerOutfit = new NetworkedPlayerInfo.PlayerOutfit
                 {

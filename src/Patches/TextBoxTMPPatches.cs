@@ -32,7 +32,7 @@ public static class TextBoxTMP_IsCharAllowed
             return true;
         }
 
-        __result = !(i == '\b' || i == '>' || i == '<' || i == '\r'); // Some characters cause issues and must therefore be removed
+        __result = !(i == '\b' || i == '>' || i == '<' || i == ']' || i == '[' || i == '\r'); // Some characters cause issues and must therefore be removed
         return false;
     }
 }
