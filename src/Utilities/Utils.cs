@@ -14,18 +14,18 @@ public static class Utils
 {
     //Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
-    public static bool isShip => ShipStatus.Instance != null;
-    public static bool isLobby => AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !isFreePlay;
-    public static bool isOnlineGame => AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
-    public static bool isLocalGame => AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
-    public static bool isFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
-    public static bool isPlayer => PlayerControl.LocalPlayer != null;
-    public static bool isHost = AmongUsClient.Instance.AmHost;
-    public static bool isInGame => AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && isPlayer;
+    public static bool isShip => ShipStatus.Instance;
+    public static bool isLobby => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !isFreePlay;
+    public static bool isOnlineGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
+    public static bool isLocalGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
+    public static bool isFreePlay => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
+    public static bool isPlayer => PlayerControl.LocalPlayer;
+    public static bool isHost = AmongUsClient.Instance && AmongUsClient.Instance.AmHost;
+    public static bool isInGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && isPlayer;
     public static bool isMeeting => MeetingHud.Instance;
     public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
     public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
-    public static bool isExiling => ExileController.Instance != null && !(AirshipIsActive && SpawnInMinigame.Instance.isActiveAndEnabled);
+    public static bool isExiling => ExileController.Instance && !(AirshipIsActive && SpawnInMinigame.Instance.isActiveAndEnabled);
     public static bool isNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
     public static bool isHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
     public static bool SkeldIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Skeld;
