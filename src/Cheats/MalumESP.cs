@@ -28,6 +28,15 @@ public static class MalumESP
         return CheatToggles.fullBright || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
     }
 
+    public static void zoomToggle(HudManager hudManager)
+    {
+        // Funktion to zoom out 2 times
+        Camera.main.orthographicSize++;
+        hudManager.UICamera.orthographicSize++;
+        Camera.main.orthographicSize++;
+        hudManager.UICamera.orthographicSize++;
+    }
+
     public static void zoomOut(HudManager hudManager)
     {
         if(CheatToggles.zoomOut){
