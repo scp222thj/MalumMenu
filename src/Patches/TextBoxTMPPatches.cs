@@ -3,31 +3,36 @@ using UnityEngine;
 
 namespace MalumMenu;
 
-[HarmonyLib.HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
-class Pastepatch
+[HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.Update))]
+public static class TextBoxTMP_Update
 {
-    //Allows to copy/paste/delete the text
+    // Allows to copy/paste/delete the text
     static void Postfix()
     {
-        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        if (CheatToggles.chatJailbreak)
         {
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
             {
-                if (Input.GetKeyDown(KeyCode.V))
-                { 
-                    DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.SetText(DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text + GUIUtility.systemCopyBuffer); 
-                }
-                if (Input.GetKeyDown(KeyCode.X))
+                if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
                 {
-                    GUIUtility.systemCopyBuffer = DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
-                    DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.Clear();
-                }
-                if (Input.GetKeyDown(KeyCode.C))
-                {
-                    GUIUtility.systemCopyBuffer = DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                    if (Input.GetKeyDown(KeyCode.V))
+                    {
+                        DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.SetText(DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text + GUIUtility.systemCopyBuffer);
+                    }
+                    if (Input.GetKeyDown(KeyCode.X))
+                    {
+                        GUIUtility.systemCopyBuffer = DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                        DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.Clear();
+                    }
+                    if (Input.GetKeyDown(KeyCode.C))
+                    {
+                        GUIUtility.systemCopyBuffer = DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                    }
                 }
             }
         }
+    }
+}
     }
 }
 
