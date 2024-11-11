@@ -3,20 +3,29 @@ using UnityEngine;
 
 namespace MalumMenu;
 
-[HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.Update))]
-public static class TextBoxTMP_Update
+[HarmonyLib.HarmonyPatch(typeof(KeyboardJoystick), nameof(KeyboardJoystick.Update))]
+class Pastepatch
 {
-    // Postfix patch of TextBoxTMP.Update to allow copying from the chatbox
-    public static void Postfix(TextBoxTMP __instance)
+    //Allows to copy/paste/delete the text
+    static void Postfix()
     {
-        if (CheatToggles.chatJailbreak)
-        { 
-            if (!__instance.hasFocus){return;}
-
-            // If the user is pressing Ctrl + C, copy the text from the chatbox to the device's clipboard
-            if((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.C))
+        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        {
+            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
             {
-                ClipboardHelper.PutClipboardString(__instance.text);
+                if (Input.GetKeyDown(KeyCode.V))
+                { 
+                    DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.SetText(DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text + GUIUtility.systemCopyBuffer); 
+                }
+                if (Input.GetKeyDown(KeyCode.X))
+                {
+                    GUIUtility.systemCopyBuffer = DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                    DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.Clear();
+                }
+                if (Input.GetKeyDown(KeyCode.C))
+                {
+                    GUIUtility.systemCopyBuffer = DestroyableSingleton<HudManager>.Instance.Chat.freeChatField.textArea.text;
+                }
             }
         }
     }
@@ -34,5 +43,17 @@ public static class TextBoxTMP_IsCharAllowed
 
         __result = !(i == '\b' || i == '>' || i == '<' || i == ']' || i == '[' || i == '\r'); // Some characters cause issues and must therefore be removed
         return false;
+    }
+}
+
+[HarmonyPatch(typeof(BanMenu), nameof(BanMenu.Select))]
+class BanMenuSelectPatch
+{
+    //Allows to ban/kick a player during the game
+    public static void Postfix(BanMenu __instance, int clientId)
+    {
+        InnerNet.ClientData recentClient = AmongUsClient.Instance.GetRecentClient(clientId);
+        if (recentClient == null) return;
+        __instance.BanButton.GetComponent<ButtonRolloverHandler>().SetEnabledColors();
     }
 }
