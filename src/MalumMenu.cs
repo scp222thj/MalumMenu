@@ -81,11 +81,10 @@ public partial class MalumMenu : BasePlugin
 
         // Disable Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value){
-
             Analytics.enabled = false;
             Analytics.deviceStatsEnabled = false;
             PerformanceReporting.enabled = false;
-
+            Analytics.limitUserTracking = true;
         }
 
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
