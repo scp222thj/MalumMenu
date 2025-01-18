@@ -81,6 +81,7 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Ship", false, new List<ToggleInfo> {
             new ToggleInfo(" Unfixable Lights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
+            new ToggleInfo(" Infinite Doors (PERMANENT)", () => CheatToggles.infiniteDoors, x => CheatToggles.infiniteDoors = x),
             new ToggleInfo(" Report Body", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             new ToggleInfo(" Close Meeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
         }, new List<SubmenuInfo> {
@@ -172,7 +173,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!Utils.isShip){
-            CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
+            CheatToggles.unfixableLights = CheatToggles.infiniteDoors = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
         }
     }
 
