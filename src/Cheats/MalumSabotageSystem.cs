@@ -6,6 +6,8 @@ public static class MalumSabotageSystem
     public static bool commsSab;
     public static bool elecSab;
     public static bool unfixableLights;
+    public static bool infiniteDoors;
+    public static bool repeating3;
 
     public static void handleReactor(ShipStatus shipStatus, byte mapId)
     {
@@ -246,6 +248,24 @@ public static class MalumSabotageSystem
 
             CheatToggles.doorsSab = false; //Button behaviour
 
+        }
+
+        if (CheatToggles.infiniteDoors) {
+            //Loop through all rooms and close their doors
+            foreach (OpenableDoor openableDoor in ShipStatus.Instance.AllDoors)
+            {
+                try{shipStatus.RpcCloseDoorsOfType(openableDoor.Room);}catch{}
+            }
+
+            repeating3 = true;
+
+            CheatToggles.infiniteDoors = false; //Button behaviour
+        }
+
+        if (!CheatToggles.infiniteDoors) {
+            if (repeating3) {
+                CheatToggles.infiniteDoors = true;
+            }
         }
     }
 }
