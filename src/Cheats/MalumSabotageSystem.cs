@@ -1,3 +1,6 @@
+using UnityEngine;
+using System.Collections;
+
 namespace MalumMenu;
 public static class MalumSabotageSystem
 {
