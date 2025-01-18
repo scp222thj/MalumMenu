@@ -67,6 +67,7 @@ namespace MalumMenu
         public static bool closeMeeting;
         public static bool doorsSab;
         public static bool unfixableLights;
+        public static bool infiniteDoors;
         public static bool commsSab;
         public static bool elecSab;
         public static bool reactorSab;
