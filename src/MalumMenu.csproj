@@ -21,7 +21,21 @@
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivateAssets="all" ExcludeAssets="runtime" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Assembly-CSharp">
+        <HintPath>C:\XboxGames\Among Us\Content\BepInEx\interop\Assembly-CSharp.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
         <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AmongUs)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
     </Target>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>C:\XboxGames\Among Us\Content\BepInEx\interop\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
 </Project>

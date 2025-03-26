@@ -1,7 +1,9 @@
 using HarmonyLib;
 using AmongUs.Data;
+using AmongUs.Data.Player;
 using UnityEngine;
 using System;
+using System.Reflection;
 using System.Security.Cryptography;
 
 namespace MalumMenu;
@@ -136,28 +138,27 @@ public static class PingTracker_Update
     }
 }
 
-[HarmonyPatch(typeof(HatManager), nameof(HatManager.Initialize))]
-public static class HatManager_Initialize
+[HarmonyPatch]
+public static class PlayerBanData_BanMinutesLeft_Getter
 {
-    public static void Postfix(HatManager __instance){
-
-        CosmeticsUnlocker.unlockCosmetics(__instance);
-        
-    }
-}
-
-[HarmonyPatch(typeof(StatsManager), nameof(StatsManager.BanMinutesLeft), MethodType.Getter)]
-public static class StatsManager_BanMinutesLeft_Getter
-{
-    // Prefix patch of Getter method for StatsManager.BanMinutesLeft to remove disconnect penalty
-    public static void Postfix(StatsManager __instance, ref int __result)
+    static MethodBase TargetMethod()
     {
-        if (CheatToggles.avoidBans){
-            __instance.BanPoints = 0f; // Removes all BanPoints
-            __result = 0; // Removes all BanMinutes
+        var type = AccessTools.TypeByName("AmongUs.Data.Player.PlayerBanData");
+        return AccessTools.PropertyGetter(type, "BanMinutesLeft");
+    }
+
+    public static void Postfix(object __instance, ref int __result)
+    {
+        if (CheatToggles.avoidBans)
+        {
+            var prop = AccessTools.Property(__instance.GetType(), "BanPoints");
+            if (prop != null) prop.SetValue(__instance, 0f);
+            __result = 0;
         }
     }
 }
+
+
 
 [HarmonyPatch(typeof(FullAccount), nameof(FullAccount.CanSetCustomName))]
 public static class FullAccount_CanSetCustomName
