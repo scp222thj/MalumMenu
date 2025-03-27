@@ -27,10 +27,12 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> guestFriendCode;
     public static ConfigEntry<bool> guestMode;
     public static ConfigEntry<bool> noTelemetry;
+    public static ConfigEntry<bool> freeCosmetics;
+    public static ConfigEntry<bool> avoidBans;
+    public static ConfigEntry<bool> unlockFeatures;
 
     public override void Load()
     {
-
         //Load config settings
         menuKeybind = Config.Bind("MalumMenu.GUI",
                                 "Keybind",
@@ -71,8 +73,26 @@ public partial class MalumMenu : BasePlugin
                                 "NoTelemetry",
                                 true,
                                 "When enabled it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
+        
+        freeCosmetics = Config.Bind("MalumMenu.FreeCosmetics",
+            "FreeCosmetics",
+            true,
+            "When enabled it gives you access to all of the game's cosmetics for free");
 
+        avoidBans = Config.Bind("MalumMenu.AvoidBans",
+            "AvoidBans",
+            true,
+            "When enabled it removes the penalty you receive when disconnecting from games early");
 
+        unlockFeatures = Config.Bind("MalumMenu.UnlockFeatures",
+            "UnlockFeatures",
+            true,
+            "When enabled it will Unlocks many of the game's special features automatically, including: Freechat, Friend list, Custom name and Online gameplay");
+
+        CheatToggles.unlockFeatures = unlockFeatures.Value;
+        CheatToggles.freeCosmetics = freeCosmetics.Value;
+        CheatToggles.avoidBans = avoidBans.Value;
+        
 
         Harmony.PatchAll();
         
