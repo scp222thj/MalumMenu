@@ -23,5 +23,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: AUnlocker.dll
+          name: MalumMenu_fix.dll
           path: /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll

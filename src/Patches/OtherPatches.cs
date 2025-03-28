@@ -30,18 +30,18 @@ public static class FreeChatInputField_UpdateCharCount
         }
 
         // Update charCountText to account for longer characterLimit
-        
+
         int length = __instance.textArea.text.Length;
         __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
 
         if (length < 90){ // Under 75%
 
             __instance.charCountText.color = UnityEngine.Color.black;
-        
+
         }else if (length < 119){ // Under 100%
 
             __instance.charCountText.color = new UnityEngine.Color(1f, 1f, 0f, 1f);
-        
+
         }else{ // Over or equal to 100%
 
             __instance.charCountText.color = UnityEngine.Color.red;
@@ -53,22 +53,18 @@ public static class FreeChatInputField_UpdateCharCount
 [HarmonyPatch(typeof(SystemInfo), nameof(SystemInfo.deviceUniqueIdentifier), MethodType.Getter)]
 public static class SystemInfo_deviceUniqueIdentifier_Getter
 {
-    // Postfix patch of SystemInfo.deviceUniqueIdentifier Getter method 
+    // Postfix patch of SystemInfo.deviceUniqueIdentifier Getter method
     // Made to hide the user's real unique deviceId by generating a random fake one
     public static void Postfix(ref string __result)
     {
-        if (MalumMenu.spoofDeviceId.Value){
-
-            var bytes = new byte[16];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(bytes);
-            }
-
-            __result = BitConverter.ToString(bytes).Replace("-", "").ToLower();
-
+        if (!MalumMenu.spoofDeviceId.Value) return;
+        var bytes = new byte[16];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(bytes);
         }
-        
+
+        __result = BitConverter.ToString(bytes).Replace("-", "").ToLower();
     }
 }
 
@@ -80,20 +76,15 @@ public static class AmongUsClient_Update
         MalumSpoof.spoofLevel();
 
         // Code to treat temp accounts the same as full accounts, including access to friend codes
-        if (EOSManager.Instance.loginFlowFinished && MalumMenu.guestMode.Value){
+        if (!EOSManager.Instance.loginFlowFinished || !MalumMenu.guestMode.Value) return;
+        DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
 
-            DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
-
-            if (string.IsNullOrWhiteSpace(EOSManager.Instance.FriendCode))
-            {
-                string friendCode = MalumSpoof.spoofFriendCode();
-                EditAccountUsername editUsername = EOSManager.Instance.editAccountUsername;
-                editUsername.UsernameText.SetText(friendCode);
-                editUsername.SaveUsername();
-                EOSManager.Instance.FriendCode = friendCode;
-            }
-
-        }
+        if (!string.IsNullOrWhiteSpace(EOSManager.Instance.FriendCode)) return;
+        string friendCode = MalumSpoof.spoofFriendCode();
+        EditAccountUsername editUsername = EOSManager.Instance.editAccountUsername;
+        editUsername.UsernameText.SetText(friendCode);
+        editUsername.SaveUsername();
+        EOSManager.Instance.FriendCode = friendCode;
     }
 }
 
@@ -106,11 +97,11 @@ public static class VersionShower_Start
         if (MalumMenu.supportedAU.Contains(Application.version)){ // Checks if Among Us version is supported
 
             __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
-        
+
         }else{
 
             __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; //Unsupported
-        
+
         }
     }
 }
@@ -128,12 +119,12 @@ public static class PingTracker_Update
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
 
             __instance.text.text = $"MalumMenu by scp222thj ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
-            
+
             return;
         }
 
         __instance.text.text = $"MalumMenu by scp222thj\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
-        
+
     }
 }
 
@@ -143,7 +134,7 @@ public static class HatManager_Initialize
     public static void Postfix(HatManager __instance){
 
         CosmeticsUnlocker.unlockCosmetics(__instance);
-        
+
     }
 }
 
@@ -165,7 +156,7 @@ public static class FullAccount_CanSetCustomName
     // Prefix patch of FullAccount.CanSetCustomName to allow the usage of custom names
     public static void Prefix(ref bool canSetName)
     {
-        if (CheatToggles.unlockFeatures){ 
+        if (CheatToggles.unlockFeatures){
             canSetName = true;
         }
     }
@@ -211,20 +202,18 @@ public static class Vent_CanUse
     // Basically does what the original method did with the required modifications
     public static void Postfix(Vent __instance, NetworkedPlayerInfo pc, ref bool canUse, ref bool couldUse, ref float __result)
     {
-        if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead){
-            if (CheatToggles.useVents){
-                float num = float.MaxValue;
-                PlayerControl @object = pc.Object;
+        if (PlayerControl.LocalPlayer.Data.Role.CanVent || PlayerControl.LocalPlayer.Data.IsDead) return;
+        if (!CheatToggles.useVents) return;
+        float num = float.MaxValue;
+        PlayerControl @object = pc.Object;
 
-                Vector3 center = @object.Collider.bounds.center;
-		        Vector3 position = __instance.transform.position;
-		        num = Vector2.Distance(center, position);
-            
-                // Allow usage of vents unless the vent is too far or there are objects blocking the player's path
-                canUse = num <= __instance.UsableDistance && !PhysicsHelpers.AnythingBetween(@object.Collider, center, position, Constants.ShipOnlyMask, false);
-                couldUse = true;
-                __result = num;
-            }    
-        }
+        Vector3 center = @object.Collider.bounds.center;
+        Vector3 position = __instance.transform.position;
+        num = Vector2.Distance(center, position);
+
+        // Allow usage of vents unless the vent is too far or there are objects blocking the player's path
+        canUse = num <= __instance.UsableDistance && !PhysicsHelpers.AnythingBetween(@object.Collider, center, position, Constants.ShipOnlyMask, false);
+        couldUse = true;
+        __result = num;
     }
 }
