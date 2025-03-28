@@ -122,4 +122,3 @@ public partial class MalumMenu : BasePlugin
         }));
     }
 }
-
