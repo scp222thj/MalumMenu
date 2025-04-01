@@ -27,6 +27,8 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> guestFriendCode;
     public static ConfigEntry<bool> guestMode;
     public static ConfigEntry<bool> noTelemetry;
+    public static ConfigEntry<string> selectedLanguage;
+
 
     public override void Load()
     {
@@ -72,7 +74,12 @@ public partial class MalumMenu : BasePlugin
                                 true,
                                 "When enabled it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
 
+        selectedLanguage = Config.Bind("MalumMenu.Localization",
+                               "Language",
+                               "en",
+                               "Selects the language for the menu. Supported: en, ko, ru, zh-Hans, zh-Hant, es");
 
+        Localization.CurrentLanguage = selectedLanguage.Value;
 
         Harmony.PatchAll();
         
