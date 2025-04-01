@@ -403,3 +403,6 @@ FodyWeavers.xsd
 # QuickBuild
 package.json
 dist/
+
+* Ignore Directory
+ignore/
