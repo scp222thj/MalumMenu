@@ -406,3 +406,5 @@ dist/
 
 * Ignore Directory
 ignore/
+.idea/
+.idea/*
