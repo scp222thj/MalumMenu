@@ -13,7 +13,7 @@ namespace MalumMenu;
         private GUIStyle submenuButtonStyle;
 
     // Create all groups (buttons) and their toggles on start
-        private readonly string[] supportedLanguages = new[] { "en", "ko", "ru", "zh-Hans", "zh-Hant", "es" };
+        private readonly string[] supportedLanguages = new[] { "en", "ko", "ru", "zh-Hans", "zh-Hant", "es", "pl" };
         private string lastLanguage;
 
         private void Start()
