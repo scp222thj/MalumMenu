@@ -1,62 +1,60 @@
 using UnityEngine;
 
 namespace MalumMenu;
+
 public static class TracersHandler
 {
-    public static void drawPlayerTracer(PlayerPhysics playerPhysics){
-        try{
+    public static void drawPlayerTracer(PlayerPhysics playerPhysics)
+    {
+        if (playerPhysics?.myPlayer?.Data == null || PlayerControl.LocalPlayer == null)
+            return;
 
-            Color color = Color.clear; // All tracers are invisible by default
+        try
+        {
+            Color tracerColor = Color.clear;
+            var data = playerPhysics.myPlayer.Data;
 
-            if (!playerPhysics.myPlayer.Data.IsDead){
-                if (CheatToggles.tracersCrew && !playerPhysics.myPlayer.Data.Role.IsImpostor){
-                    if (CheatToggles.colorBasedTracers){
-                        color = playerPhysics.myPlayer.Data.Color; // Color-Based Tracer
-                    }else{
-                        color = playerPhysics.myPlayer.Data.Role.TeamColor; // Team-Based Tracer
-                    }
-                }else if (CheatToggles.tracersImps && playerPhysics.myPlayer.Data.Role.IsImpostor){
-                    if (CheatToggles.colorBasedTracers){
-                        color = playerPhysics.myPlayer.Data.Color; // Color-Based Tracer
-                    }else{
-                        color = playerPhysics.myPlayer.Data.Role.TeamColor; // Team-Based Tracer
-                    }
+            bool isImpostor = data.Role.IsImpostor;
+            bool isDead = data.IsDead;
+
+            if (!isDead)
+            {
+                if (CheatToggles.tracersCrew && !isImpostor)
+                {
+                    tracerColor = CheatToggles.colorBasedTracers ? data.Color : data.Role.TeamColor;
                 }
-            }else{
-                if (CheatToggles.tracersGhosts){
-                    if (CheatToggles.colorBasedTracers){
-                        color = playerPhysics.myPlayer.Data.Color; // Color-Based Tracer
-                    }else{
-                        color = Palette.White; // Ghost Tracer (White)
-                    }
+                else if (CheatToggles.tracersImps && isImpostor)
+                {
+                    tracerColor = CheatToggles.colorBasedTracers ? data.Color : data.Role.TeamColor;
                 }
             }
+            else if (CheatToggles.tracersGhosts)
+            {
+                tracerColor = CheatToggles.colorBasedTracers ? data.Color : Palette.White;
+            }
 
-            // Draw tracer between the player and LocalPlayer using the right color
-            Utils.drawTracer(playerPhysics.myPlayer.gameObject, PlayerControl.LocalPlayer.gameObject, color);
-
-        }catch{}
+            Utils.drawTracer(playerPhysics.myPlayer.gameObject, PlayerControl.LocalPlayer.gameObject, tracerColor);
+        }
+        catch
+        {
+            // Ignore draw failures silently
+        }
     }
 
-    public static void drawBodyTracer(DeadBody deadBody){
-        Color color = Color.clear; // All tracers are invisible by default
+    public static void drawBodyTracer(DeadBody deadBody)
+    {
+        if (deadBody == null || PlayerControl.LocalPlayer == null || GameData.Instance == null)
+            return;
 
-        if (CheatToggles.tracersBodies){
-            if (CheatToggles.colorBasedTracers){
+        Color tracerColor = Color.clear;
 
-                // Fetch the dead body's PlayerInfo
-                NetworkedPlayerInfo playerById = GameData.Instance.GetPlayerById(deadBody.ParentId);
-
-                color = playerById.Color; // Color-Based Tracer
-
-            }else{
-
-                color = Color.yellow; // Dead Body Tracer (Yellow)
-
-            }
+        if (CheatToggles.tracersBodies)
+        {
+            tracerColor = CheatToggles.colorBasedTracers
+                ? GameData.Instance.GetPlayerById(deadBody.ParentId)?.Color ?? Color.yellow
+                : Color.yellow;
         }
 
-        // Draw tracer between the dead body and LocalPlayer using the right color
-        Utils.drawTracer(deadBody.gameObject, PlayerControl.LocalPlayer.gameObject, color);
+        Utils.drawTracer(deadBody.gameObject, PlayerControl.LocalPlayer.gameObject, tracerColor);
     }
 }

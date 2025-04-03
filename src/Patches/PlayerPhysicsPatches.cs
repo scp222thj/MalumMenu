@@ -8,7 +8,6 @@ public static class PlayerPhysics_LateUpdate
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-
         MalumESP.playerNametags(__instance);
         MalumESP.seeGhostsCheat(__instance);
 
@@ -22,28 +21,28 @@ public static class PlayerPhysics_LateUpdate
 
         MalumPPMCheats.spectatePPM();
         MalumPPMCheats.killPlayerPPM();
-        //MalumPPMCheats.telekillPlayerPPM();
+        // MalumPPMCheats.telekillPlayerPPM(); // Optional: Enable if fixed
         MalumPPMCheats.teleportPlayerPPM();
         MalumPPMCheats.changeRolePPM();
 
-        //if (MalumPPMCheats.teleKillWaitFrames == 0){
-        //    KillAnimation.SetMovement(PlayerControl.LocalPlayer, true);
-        //    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(MalumPPMCheats.teleKillPosition);
-        //}
-
-        //MalumPPMCheats.teleKillWaitFrames--;
+        // Uncomment this if telekill is restored:
+        // if (MalumPPMCheats.teleKillWaitFrames == 0)
+        // {
+        //     KillAnimation.SetMovement(PlayerControl.LocalPlayer, true);
+        //     PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(MalumPPMCheats.teleKillPosition);
+        // }
+        //
+        // MalumPPMCheats.teleKillWaitFrames--;
 
         TracersHandler.drawPlayerTracer(__instance);
 
-        GameObject[] bodyObjects = GameObject.FindGameObjectsWithTag("DeadBody");
-        foreach(GameObject bodyObject in bodyObjects) // Finds and loops through all dead bodies
+        // Draw tracers to unreported bodies
+        foreach (var bodyObject in GameObject.FindGameObjectsWithTag("DeadBody"))
         {
-            DeadBody deadBody = bodyObject.GetComponent<DeadBody>();
-
-            if (deadBody){
-                if (!deadBody.Reported){ // Only draw tracers for unreported dead bodies
-                    TracersHandler.drawBodyTracer(deadBody);
-                }
+            var deadBody = bodyObject.GetComponent<DeadBody>();
+            if (deadBody != null && !deadBody.Reported)
+            {
+                TracersHandler.drawBodyTracer(deadBody);
             }
         }
     }

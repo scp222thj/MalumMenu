@@ -1,19 +1,20 @@
 using AmongUs.Data;
 
 namespace MalumMenu;
+
 public static class MalumSpoof
 {
     public static uint parsedLevel;
 
     public static void spoofLevel()
     {
-        // Parse Spoofing.Level config entry and turn it into a uint
-        if (!string.IsNullOrEmpty(MalumMenu.spoofLevel.Value) && 
-            uint.TryParse(MalumMenu.spoofLevel.Value, out parsedLevel) &&
+        string levelInput = MalumMenu.spoofLevel.Value;
+
+        if (!string.IsNullOrWhiteSpace(levelInput) &&
+            uint.TryParse(levelInput, out parsedLevel) &&
             parsedLevel != DataManager.Player.Stats.Level)
         {
-
-            // Temporarily save the spoofed level using DataManager
+            // Set spoofed level (internally stores +1)
             DataManager.Player.stats.level = parsedLevel - 1;
             DataManager.Player.Save();
         }
@@ -22,21 +23,24 @@ public static class MalumSpoof
     public static string spoofFriendCode()
     {
         string friendCode = MalumMenu.guestFriendCode.Value;
+
         if (string.IsNullOrWhiteSpace(friendCode))
         {
-            friendCode = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
+            friendCode = DestroyableSingleton<AccountManager>.Instance?.GetRandomName() ?? "Guest";
         }
+
         return friendCode;
     }
 
     public static void spoofPlatform(PlatformSpecificData platformSpecificData)
     {
+        if (platformSpecificData == null) return;
+
         Platforms? platformType;
 
-        // Parse Spoofing.Platform config entry and save it as the spoofed platform type
         if (Utils.stringToPlatformType(MalumMenu.spoofPlatform.Value, out platformType))
         {
-            platformSpecificData.Platform = (Platforms)platformType;
+            platformSpecificData.Platform = platformType.Value;
         }
     }
 }

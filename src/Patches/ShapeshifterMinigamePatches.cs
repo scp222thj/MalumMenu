@@ -11,47 +11,49 @@ public static class ShapeshifterMinigame_Begin
     // Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
     public static bool Prefix(ShapeshifterMinigame __instance)
     {
-        if (PlayerPickMenu.IsActive){ // Player Pick Menu logic
+        if (!PlayerPickMenu.IsActive)
+            return true; // Open normal shapeshifter menu if not active
 
-            // Custom player list set by openPlayerPickMenu
-            List<NetworkedPlayerInfo> list = PlayerPickMenu.customPlayerList;
+        // Use custom player list from PlayerPickMenu
+        List<NetworkedPlayerInfo> list = PlayerPickMenu.customPlayerList;
+        __instance.potentialVictims = new List<ShapeshifterPanel>();
+        List<UiElement> buttons = new List<UiElement>();
 
-            __instance.potentialVictims = new List<ShapeshifterPanel>();
-            List<UiElement> list2 = new List<UiElement>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            NetworkedPlayerInfo playerData = list[i];
+            int col = i % 3;
+            int row = i / 3;
 
-            for (int i = 0; i < list.Count; i++)
+            ShapeshifterPanel panel = Object.Instantiate(__instance.PanelPrefab, __instance.transform);
+            panel.transform.localPosition = new Vector3(__instance.XStart + col * __instance.XOffset, __instance.YStart + row * __instance.YOffset, -1f);
+
+            panel.SetPlayer(i, playerData, (Il2CppSystem.Action)(() =>
             {
-                NetworkedPlayerInfo playerData = list[i];
-                int num = i % 3;
-                int num2 = i / 3;
-                ShapeshifterPanel shapeshifterPanel = UnityEngine.Object.Instantiate<ShapeshifterPanel>(__instance.PanelPrefab, __instance.transform);
-                shapeshifterPanel.transform.localPosition = new Vector3(__instance.XStart + (float)num * __instance.XOffset, __instance.YStart + (float)num2 * __instance.YOffset, -1f);
-                
-                shapeshifterPanel.SetPlayer(i, playerData, (Il2CppSystem.Action) (() =>
-                {
-                    PlayerPickMenu.targetPlayerData = playerData; // Save targeted player
+                PlayerPickMenu.targetPlayerData = playerData;
+                PlayerPickMenu.customAction.Invoke();
+                __instance.Close();
+            }));
 
-                    PlayerPickMenu.customAction.Invoke(); // Custom action set by openPlayerPickMenu
-
-                    __instance.Close();
-                }));
-
-                if (playerData.Object != null){
-                    shapeshifterPanel.NameText.text = Utils.getNameTag(playerData, playerData.DefaultOutfit.PlayerName);
-                }
-                __instance.potentialVictims.Add(shapeshifterPanel);
-                list2.Add(shapeshifterPanel.Button);
+            if (playerData.Object != null)
+            {
+                panel.NameText.text = Utils.getNameTag(playerData, playerData.DefaultOutfit.PlayerName);
             }
 
-            ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, list2, false);
-            
-            PlayerPickMenu.IsActive = false;
-
-            return false; // Skip original method when active
-
+            __instance.potentialVictims.Add(panel);
+            buttons.Add(panel.Button);
         }
 
-        return true; // Open normal shapeshifter menu if not active
+        ControllerManager.Instance.OpenOverlayMenu(
+            __instance.name,
+            __instance.BackButton,
+            __instance.DefaultButtonSelected,
+            buttons,
+            false
+        );
+
+        PlayerPickMenu.IsActive = false;
+        return false; // Skip original method when using PPM
     }
 }
 
@@ -61,30 +63,33 @@ public static class ShapeshifterPanel_SetPlayer
     // Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
     public static bool Prefix(ShapeshifterPanel __instance, int index, NetworkedPlayerInfo playerInfo, Il2CppSystem.Action onShift)
     {
-        if (PlayerPickMenu.IsActive){ // Player Pick Menu logic
+        if (!PlayerPickMenu.IsActive)
+            return true; // Use original if not in PPM
 
-            __instance.shapeshift = onShift;
-            __instance.PlayerIcon.SetFlipX(false);
-            __instance.PlayerIcon.ToggleName(false);
-            SpriteRenderer[] componentsInChildren = __instance.GetComponentsInChildren<SpriteRenderer>();
-            for (int i = 0; i < componentsInChildren.Length; i++)
-            {
-                componentsInChildren[i].material.SetInt(PlayerMaterial.MaskLayer, index + 2);
-            }
-            __instance.PlayerIcon.SetMaskLayer(index + 2);
-            __instance.PlayerIcon.UpdateFromEitherPlayerDataOrCache(playerInfo, PlayerOutfitType.Default, PlayerMaterial.MaskType.ComplexUI, false, null);
-            __instance.LevelNumberText.text = ProgressionManager.FormatVisualLevel(playerInfo.PlayerLevel);
-            
-            // Skips using custom nameplates because they break the PlayerPickMenu in lobbies
+        __instance.shapeshift = onShift;
+        __instance.PlayerIcon.SetFlipX(false);
+        __instance.PlayerIcon.ToggleName(false);
 
-            __instance.NameText.text = playerInfo.PlayerName;
-            DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Il2CppSystem.Action)__instance.SetColorblindText;
-            __instance.SetColorblindText();
-
-            return false; // Skips original method when active
-
+        foreach (var renderer in __instance.GetComponentsInChildren<SpriteRenderer>())
+        {
+            renderer.material.SetInt(PlayerMaterial.MaskLayer, index + 2);
         }
 
-        return true; // Open normal shapeshifter menu if not active
+        __instance.PlayerIcon.SetMaskLayer(index + 2);
+        __instance.PlayerIcon.UpdateFromEitherPlayerDataOrCache(
+            playerInfo,
+            PlayerOutfitType.Default,
+            PlayerMaterial.MaskType.ComplexUI,
+            false,
+            null
+        );
+
+        __instance.LevelNumberText.text = ProgressionManager.FormatVisualLevel(playerInfo.PlayerLevel);
+        __instance.NameText.text = playerInfo.PlayerName;
+
+        DataManager.Settings.Accessibility.OnColorBlindModeChanged += (Il2CppSystem.Action)__instance.SetColorblindText;
+        __instance.SetColorblindText();
+
+        return false; // Skip original method when active
     }
 }

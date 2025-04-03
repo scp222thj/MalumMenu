@@ -2,7 +2,7 @@ namespace MalumMenu
 {
     public struct CheatToggles
     {
-        //Player
+        // ──────────────── Player ────────────────
         public static bool noClip;
         public static bool speedBoost;
         public static bool teleportPlayer;
@@ -14,7 +14,7 @@ namespace MalumMenu
         public static bool killAllCrew;
         public static bool killAllImps;
 
-        //Roles
+        // ──────────────── Roles ────────────────
         public static bool changeRole;
         public static bool zeroKillCd;
         public static bool completeMyTasks;
@@ -33,25 +33,25 @@ namespace MalumMenu
         public static bool noVanishAnim;
         public static bool noShapeshiftAnim;
 
-        //ESP
+        // ──────────────── ESP ────────────────
         public static bool fullBright;
         public static bool seeGhosts;
         public static bool seeRoles;
         public static bool seeDisguises;
         public static bool revealVotes;
 
-        //Camera
+        // ──────────────── Camera ────────────────
         public static bool spectate;
         public static bool zoomOut;
         public static bool freecam;
 
-        //Minimap
+        // ──────────────── Minimap ────────────────
         public static bool mapCrew;
         public static bool mapImps;
         public static bool mapGhosts;
         public static bool colorBasedMap;
 
-        //Tracers
+        // ──────────────── Tracers ────────────────
         public static bool tracersImps;
         public static bool tracersCrew;
         public static bool tracersGhosts;
@@ -59,11 +59,11 @@ namespace MalumMenu
         public static bool colorBasedTracers;
         public static bool distanceBasedTracers;
 
-        //Chat
+        // ──────────────── Chat ────────────────
         public static bool alwaysChat;
         public static bool chatJailbreak;
-        
-        //Ship
+
+        // ──────────────── Ship ────────────────
         public static bool closeMeeting;
         public static bool doorsSab;
         public static bool unfixableLights;
@@ -73,34 +73,36 @@ namespace MalumMenu
         public static bool oxygenSab;
         public static bool mushSab;
 
-        //Vents
+        // ──────────────── Vents ────────────────
         public static bool useVents;
         public static bool walkVent;
         public static bool kickVents;
 
-        //Host-Only
-        //public static bool impostorHack;
-        //public static bool godMode;
-        //public static bool evilVote;
-        //public static bool voteImmune;
-
-        //Passive
+        // ──────────────── Passive ────────────────
         public static bool unlockFeatures = true;
         public static bool freeCosmetics = true;
         public static bool avoidBans = true;
 
+        // ──────────────── Helpers ────────────────
+
         public static void DisablePPMCheats(string variableToKeep)
         {
-            reportBody = variableToKeep != "reportBody" ? false : reportBody;
-            killPlayer = variableToKeep != "killPlayer" ? false : killPlayer;
-            telekillPlayer = variableToKeep != "telekillPlayer" ? false : telekillPlayer;
-            spectate = variableToKeep != "spectate" ? false : spectate;
-            changeRole = variableToKeep != "changeRole" ? false : changeRole;
-            teleportPlayer = variableToKeep != "teleportPlayer" ? false : teleportPlayer;
+            reportBody      = variableToKeep == nameof(reportBody)      ? reportBody      : false;
+            killPlayer      = variableToKeep == nameof(killPlayer)      ? killPlayer      : false;
+            telekillPlayer  = variableToKeep == nameof(telekillPlayer)  ? telekillPlayer  : false;
+            spectate        = variableToKeep == nameof(spectate)        ? spectate        : false;
+            changeRole      = variableToKeep == nameof(changeRole)      ? changeRole      : false;
+            teleportPlayer  = variableToKeep == nameof(teleportPlayer)  ? teleportPlayer  : false;
         }
 
-        public static bool shouldPPMClose(){
-            return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        public static bool shouldPPMClose()
+        {
+            return !changeRole &&
+                   !reportBody &&
+                   !telekillPlayer &&
+                   !killPlayer &&
+                   !spectate &&
+                   !teleportPlayer;
         }
     }
 }

@@ -2,79 +2,82 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace MalumMenu;
+
 public static class MinimapHandler
 {
     public static bool minimapActive;
-    public static List<HerePoint> herePoints = new List<HerePoint>();
-    public static List<HerePoint> herePointsToRemove = new List<HerePoint>();
-    
-    public static bool isCheatEnabled(){
+    public static List<HerePoint> herePoints = new();
+    public static List<HerePoint> herePointsToRemove = new();
+
+    public static bool isCheatEnabled()
+    {
         return CheatToggles.mapCrew || CheatToggles.mapGhosts || CheatToggles.mapImps;
     }
 
-    public static void handleHerePoint(HerePoint herePoint){
+    public static void handleHerePoint(HerePoint herePoint)
+    {
+        if (herePoint?.sprite == null || herePoint.player?.Data == null)
+        {
+            return;
+        }
 
-        Color herePointColor = new Color();
+        try
+        {
+            Color herePointColor = Color.clear;
+            var playerData = herePoint.player.Data;
+            var sprite = herePoint.sprite;
+            sprite.gameObject.SetActive(false); // Initially hidden
 
-        try{ // try-catch to fix issues caused by player disconnection
+            bool isImpostor = playerData.Role.IsImpostor;
+            bool isDead = playerData.IsDead;
 
-            herePoint.sprite.gameObject.SetActive(false); // Initally make player icon invisible
-
-            // Crewmate, alive
-            if (CheatToggles.mapCrew && !herePoint.player.Data.Role.IsImpostor){
-                if (!herePoint.player.Data.IsDead){
-                    herePoint.sprite.gameObject.SetActive(true);
-                    if (CheatToggles.colorBasedMap){
-                        herePointColor = herePoint.player.Data.Color; // Color-Based Icon
-                    }else{
-                        herePointColor = herePoint.player.Data.Role.TeamColor; // Role-Based Icon
-                    }
-                }
-
-            // Impostor, alive
-            } else if (CheatToggles.mapImps && herePoint.player.Data.Role.IsImpostor){
-                if (!herePoint.player.Data.IsDead){
-                    herePoint.sprite.gameObject.SetActive(true);
-                    if (CheatToggles.colorBasedMap){
-                        herePointColor = herePoint.player.Data.Color; // Color-Based Icon
-                    }else{
-                        herePointColor = herePoint.player.Data.Role.TeamColor; // Role-Based Icon
-                    }
-                }
+            // Alive Crewmate
+            if (CheatToggles.mapCrew && !isImpostor && !isDead)
+            {
+                sprite.gameObject.SetActive(true);
+                herePointColor = CheatToggles.colorBasedMap ? playerData.Color : playerData.Role.TeamColor;
+            }
+            // Alive Impostor
+            else if (CheatToggles.mapImps && isImpostor && !isDead)
+            {
+                sprite.gameObject.SetActive(true);
+                herePointColor = CheatToggles.colorBasedMap ? playerData.Color : playerData.Role.TeamColor;
+            }
+            // Any Dead Role
+            else if (CheatToggles.mapGhosts && isDead)
+            {
+                sprite.gameObject.SetActive(true);
+                herePointColor = CheatToggles.colorBasedMap ? playerData.Color : Palette.White;
             }
 
-            // Any Role, dead
-            if (CheatToggles.mapGhosts && herePoint.player.Data.IsDead){
-                herePoint.sprite.gameObject.SetActive(true);
-                if (CheatToggles.colorBasedMap){
-                    herePointColor = herePoint.player.Data.Color; // Color-Based Icon
-                }else{
-                    herePointColor = Palette.White;
-                }
+            if (sprite.gameObject.activeSelf)
+            {
+                // Update sprite color
+                sprite.material.SetColor(PlayerMaterial.BackColor, herePointColor);
+                sprite.material.SetColor(PlayerMaterial.BodyColor, herePointColor);
+                sprite.material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
+
+                // Update sprite position relative to map scale
+                Vector3 position = herePoint.player.transform.position;
+                position /= ShipStatus.Instance.MapScale;
+                position.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+                position.z = -1f;
+
+                sprite.transform.localPosition = position;
             }
-        
-
-            if (herePoint.sprite.gameObject.active){
-
-                // Set the right colors for active herePoint icons
-                herePoint.sprite.material.SetColor(PlayerMaterial.BackColor, herePointColor);
-                herePoint.sprite.material.SetColor(PlayerMaterial.BodyColor, herePointColor);
-                herePoint.sprite.material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);	
-
-                // Sync the position of active herePoint icons with their players
-                var vector = herePoint.player.transform.position;
-                vector /= ShipStatus.Instance.MapScale;
-                vector.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
-                vector.z = -1f;
-                herePoint.sprite.transform.localPosition = vector;
+        }
+        catch
+        {
+            // Clean up bugged icons
+            if (herePoint?.sprite?.gameObject != null)
+            {
+                Object.Destroy(herePoint.sprite.gameObject);
             }
 
-        }catch{
-
-            // Remove icons that are causing problems
-            Object.Destroy(herePoint.sprite.gameObject);
-            herePointsToRemove.Add(herePoint);
-
+            if (herePoint != null)
+            {
+                herePointsToRemove.Add(herePoint);
+            }
         }
     }
 }
