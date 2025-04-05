@@ -14,7 +14,7 @@ public static class MalumESP
 
             mushroom.sporeMask.transform.position = new Vector3(mushroom.sporeMask.transform.position.x, mushroom.sporeMask.transform.position.y, -1);
             return;
-        } 
+        }
 
         // Normal Z axis position: 5f
         mushroom.sporeMask.transform.position = new Vector3(mushroom.sporeMask.transform.position.x, mushroom.sporeMask.transform.position.y, 5f);
@@ -31,29 +31,30 @@ public static class MalumESP
     public static void zoomOut(HudManager hudManager)
     {
         if(CheatToggles.zoomOut){
-            
+
             resolutionchangeNeeded = true;
 
             if(Input.GetAxis("Mouse ScrollWheel") < 0f ){ // Zoom out
-                
+
                 //Both the main camera and the UI camera need to be adjusted
 
                 Camera.main.orthographicSize++;
                 hudManager.UICamera.orthographicSize++;
 
-                // Utils.AdjustResolution() seems to be needed to properly sync the game's UI 
+                // Utils.AdjustResolution() seems to be needed to properly sync the game's UI
                 // after a change in orthographicSize
 
                 Utils.adjustResolution();
-                
-            } else if(Input.GetAxis("Mouse ScrollWheel") > 0f ){ // Zoom in
-                if (Camera.main.orthographicSize > 3f){ // Never go below the default orthographicSize: 3f
 
-                    Camera.main.orthographicSize--;
-                    hudManager.UICamera.orthographicSize--;
-                    
-                    Utils.adjustResolution();
-                }
+            } else if(Input.GetAxis("Mouse ScrollWheel") > 0f )
+            {
+                // Zoom in
+                if (!(Camera.main.orthographicSize > 3f)) return; // Never go below the default orthographicSize: 3f
+
+                Camera.main.orthographicSize--;
+                hudManager.UICamera.orthographicSize--;
+
+                Utils.adjustResolution();
             }
         } else {
 
@@ -72,10 +73,10 @@ public static class MalumESP
     public static void meetingNametags(MeetingHud meetingHud)
     {
         try{
-            foreach (PlayerVoteArea playerState in meetingHud.playerStates)
+            foreach (var playerState in meetingHud.playerStates)
             {
                 // Fetch the NetworkedPlayerInfo of each playerState
-                NetworkedPlayerInfo data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
+                var data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
                 if (!data.IsNull() && !data.Disconnected && !data.Outfits[PlayerOutfitType.Default].IsNull())
                 {
@@ -89,10 +90,11 @@ public static class MalumESP
 
     public static void playerNametags(PlayerPhysics playerPhysics)
     {
-        try{
-
+        try
+        {
             playerPhysics.myPlayer.cosmetics.SetName(Utils.getNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
-        
+            // Move the nameText up to prevent it overlaying with colorblind text
+            playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = CheatToggles.seeRoles ? new Vector3(0f, 0.093f, 0f) : new Vector3(0f, 0f, 0f);
         }catch{}
     }
 
@@ -102,7 +104,7 @@ public static class MalumESP
 
             // Update the player's nametag appropriately
             chatBubble.NameText.text = Utils.getNameTag(chatBubble.playerInfo, chatBubble.NameText.text, true);
-            
+
             // Adjust the chatBubble's size to the new nametag to prevent issues
             chatBubble.NameText.ForceMeshUpdate(true, true);
             chatBubble.Background.size = new Vector2(5.52f, 0.2f + chatBubble.NameText.GetNotDumbRenderedHeight() + chatBubble.TextArea.GetNotDumbRenderedHeight());
@@ -117,7 +119,7 @@ public static class MalumESP
 
             if(playerPhysics.myPlayer.Data.IsDead && !PlayerControl.LocalPlayer.Data.IsDead){
                 playerPhysics.myPlayer.Visible = CheatToggles.seeGhosts;
-            }    
+            }
 
         }catch{}
     }
@@ -125,7 +127,7 @@ public static class MalumESP
     public static void freecamCheat()
     {
         if(CheatToggles.freecam){
-            // Completly disable FollowerCamera
+            // Completely disable FollowerCamera
             if (!freecamActive){
 
                 Camera.main.gameObject.GetComponent<FollowerCamera>().enabled = false;
@@ -139,22 +141,20 @@ public static class MalumESP
             PlayerControl.LocalPlayer.moveable = false;
 
             // Get keyboard input
-            Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
+            var movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
 
             // Change the camera's position depending on the keyboard input
             // Speed: 10f
             Camera.main.transform.position = Camera.main.transform.position + movement * 10f * Time.deltaTime;
-            
-        }else{
+
+        }else
+        {
             // Reenable FollowerCamera & movement once freecam is disabled
-            if (freecamActive){
-
-                PlayerControl.LocalPlayer.moveable = true;
-                Camera.main.gameObject.GetComponent<FollowerCamera>().enabled = true;
-                Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
-                freecamActive = false;
-
-            }
+            if (!freecamActive) return;
+            PlayerControl.LocalPlayer.moveable = true;
+            Camera.main.gameObject.GetComponent<FollowerCamera>().enabled = true;
+            Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
+            freecamActive = false;
         }
     }
 }

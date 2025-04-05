@@ -36,15 +36,15 @@ public static class FreeChatInputField_UpdateCharCount
 
         if (length < 90){ // Under 75%
 
-            __instance.charCountText.color = UnityEngine.Color.black;
+            __instance.charCountText.color = Color.black;
 
         }else if (length < 119){ // Under 100%
 
-            __instance.charCountText.color = new UnityEngine.Color(1f, 1f, 0f, 1f);
+            __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
 
         }else{ // Over or equal to 100%
 
-            __instance.charCountText.color = UnityEngine.Color.red;
+            __instance.charCountText.color = Color.red;
 
         }
     }
@@ -80,8 +80,8 @@ public static class AmongUsClient_Update
         DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
 
         if (!string.IsNullOrWhiteSpace(EOSManager.Instance.FriendCode)) return;
-        string friendCode = MalumSpoof.spoofFriendCode();
-        EditAccountUsername editUsername = EOSManager.Instance.editAccountUsername;
+        var friendCode = MalumSpoof.spoofFriendCode();
+        var editUsername = EOSManager.Instance.editAccountUsername;
         editUsername.UsernameText.SetText(friendCode);
         editUsername.SaveUsername();
         EOSManager.Instance.FriendCode = friendCode;
@@ -204,11 +204,11 @@ public static class Vent_CanUse
     {
         if (PlayerControl.LocalPlayer.Data.Role.CanVent || PlayerControl.LocalPlayer.Data.IsDead) return;
         if (!CheatToggles.useVents) return;
-        float num = float.MaxValue;
-        PlayerControl @object = pc.Object;
+        var num = float.MaxValue;
+        var @object = pc.Object;
 
-        Vector3 center = @object.Collider.bounds.center;
-        Vector3 position = __instance.transform.position;
+        var center = @object.Collider.bounds.center;
+        var position = __instance.transform.position;
         num = Vector2.Distance(center, position);
 
         // Allow usage of vents unless the vent is too far or there are objects blocking the player's path

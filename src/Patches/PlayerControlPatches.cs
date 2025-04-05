@@ -26,22 +26,23 @@ public static class PlayerControl_CmdCheckMurder
         }
 
         // Direct kill RPC should only be used when absolutely necessary as to avoid detection from anticheat mods
-        if (CheatToggles.killAnyone || CheatToggles.zeroKillCd || Utils.isVanished(__instance.Data) || Utils.isMeeting || (MalumPPMCheats.oldRole != null && !Utils.getBehaviourByRoleType((AmongUs.GameOptions.RoleTypes)MalumPPMCheats.oldRole).IsImpostor)){
-            if (!__instance.Data.Role.IsValidTarget(target.Data))
-            {
-                return true;
-            }
-
-            if (target.protectedByGuardianId > -1 && !CheatToggles.killAnyone){
-                return true;
-            }
-            
-            Utils.murderPlayer(target, MurderResultFlags.Succeeded);
-
-            return false;
+        if (!CheatToggles.killAnyone && !CheatToggles.zeroKillCd && !Utils.isVanished(__instance.Data) &&
+            !Utils.isMeeting &&
+            (MalumPPMCheats.oldRole == null ||
+             Utils.getBehaviourByRoleType((AmongUs.GameOptions.RoleTypes)MalumPPMCheats.oldRole).IsImpostor))
+            return true;
+        if (!__instance.Data.Role.IsValidTarget(target.Data))
+        {
+            return true;
         }
 
-        return true;
+        if (target.protectedByGuardianId > -1 && !CheatToggles.killAnyone){
+            return true;
+        }
+
+        Utils.murderPlayer(target, MurderResultFlags.Succeeded);
+
+        return false;
 
     }
 }

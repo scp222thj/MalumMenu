@@ -21,7 +21,34 @@ jobs:
         with:
           verbosity: Diagnostic
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload MalumMenu.dll artifact
+        uses: actions/upload-artifact@v4
         with:
           name: MalumMenu_fix.dll
           path: /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll
+
+      - name: Download and extract BepInEx
+        run: |
+          wget -O BepInEx_x64.zip https://builds.bepinex.dev/projects/bepinex_be/697/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.697%2B5362580.zip
+          unzip BepInEx_x64.zip -d BepInEx_x64
+          wget -O BepInEx_x86.zip https://builds.bepinex.dev/projects/bepinex_be/697/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.697%2B5362580.zip
+          unzip BepInEx_x86.zip -d BepInEx_x86
+
+      - name: Copy MalumMenu.dll to BepInEx/plugins
+        run: |
+          chmod -R 755 BepInEx_x86
+          chmod -R 755 BepInEx_x64
+          cp /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll BepInEx_x86/BepInEx/plugins/
+          cp /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll BepInEx_x64/BepInEx/plugins/
+
+      - name: Upload MalumMenu_fix.zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MalumMenu_fix
+          path: BepInEx_x86
+
+      - name: Upload MalumMenu_fix-Microsoft.zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MalumMenu_fix-Microsoft
+          path: BepInEx_x64

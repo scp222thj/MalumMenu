@@ -16,7 +16,7 @@ public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
     public static string malumVersion = "2.5.0";
-    public static List<string> supportedAU = ["2025.3.25"];
+    public static List<string> supportedAU = ["2025.3.25", "2025.3.31"];
     public static MenuUI menuUI;
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
@@ -48,17 +48,17 @@ public partial class MalumMenu : BasePlugin
                                 "GuestMode",
                                 false,
                                 "When enabled, a new guest account will generate every time you start the game, allowing you to bypass account bans and PUID detection");
-        
+
         guestFriendCode = Config.Bind("MalumMenu.GuestMode",
                                 "FriendName",
                                 "",
                                 "The username that will be used when setting a friend code for your guest account. IMPORTANT: Can only be used with GuestMode, needs to be ≤ 10 characters, and cannot include special characters/discriminator (#1234)");
-        
+
         spoofLevel = Config.Bind("MalumMenu.Spoofing",
                                 "Level",
                                 "",
                                 "A custom player level to display to others in online games to hide your actual platform. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
-        
+
         spoofPlatform = Config.Bind("MalumMenu.Spoofing",
                                 "Platform",
                                 "",
@@ -73,7 +73,7 @@ public partial class MalumMenu : BasePlugin
                                 "NoTelemetry",
                                 true,
                                 "When enabled it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
-        
+
         freeCosmetics = Config.Bind("MalumMenu.FreeCosmetics",
             "FreeCosmetics",
             true,
@@ -92,10 +92,10 @@ public partial class MalumMenu : BasePlugin
         CheatToggles.unlockFeatures = unlockFeatures.Value;
         CheatToggles.freeCosmetics = freeCosmetics.Value;
         CheatToggles.avoidBans = avoidBans.Value;
-        
+
 
         Harmony.PatchAll();
-        
+
         menuUI = AddComponent<MenuUI>();
         // consoleUI = AddComponent<ConsoleUI>();
 
