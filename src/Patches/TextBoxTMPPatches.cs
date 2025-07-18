@@ -28,22 +28,11 @@ public static class TextBoxTMP_IsCharAllowed
     // Postfix patch of TextBoxTMP.IsCharAllowed to allow all characters
     public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
     {
-        if (!CheatToggles.chatJailbreak)
-        {
+        if (!CheatToggles.chatJailbreak){
             return true;
         }
 
-        // FIX russian м and o
-        if (char.IsLetter(i) || char.IsDigit(i) || char.IsPunctuation(i) || char.IsSymbol(i) || char.IsWhiteSpace(i))
-        {
-            // 
-            __result = !(i == '\b' || i == '>' || i == '<' || i == ']' || i == '[' || i == '\r');
-        }
-        else
-        {
-            __result = false;
-        }
-
-
+        __result = !(i == '\b' || i == '>' || i == '<' || i == ']' || i == '[' || i == '\r'); // Some characters cause issues and must therefore be removed
+        return false;
     }
 }
