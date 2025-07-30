@@ -15,8 +15,8 @@ namespace MalumMenu;
 public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
-    public static string malumVersion = "2.5.0";
-    public static List<string> supportedAU = ["2025.3.25", "2025.3.31"];
+    public static string malumVersion = "2.5.1";
+    public static List<string> supportedAU = ["2025.3.25", "2025.3.31", "2025.6.10"];
     public static MenuUI menuUI;
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
@@ -74,25 +74,8 @@ public partial class MalumMenu : BasePlugin
                                 true,
                                 "When enabled it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
 
-        freeCosmetics = Config.Bind("MalumMenu.FreeCosmetics",
-            "FreeCosmetics",
-            true,
-            "When enabled it gives you access to all of the game's cosmetics for free");
-
-        avoidBans = Config.Bind("MalumMenu.AvoidBans",
-            "AvoidBans",
-            true,
-            "When enabled it removes the penalty you receive when disconnecting from games early");
-
-        unlockFeatures = Config.Bind("MalumMenu.UnlockFeatures",
-            "UnlockFeatures",
-            true,
-            "When enabled it will Unlocks many of the game's special features automatically, including: Freechat, Friend list, Custom name and Online gameplay");
-
-        CheatToggles.unlockFeatures = unlockFeatures.Value;
-        CheatToggles.freeCosmetics = freeCosmetics.Value;
-        CheatToggles.avoidBans = avoidBans.Value;
-
+        // Passives are enabled by default
+        CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         Harmony.PatchAll();
 
