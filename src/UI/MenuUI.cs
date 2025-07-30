@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
 
 namespace MalumMenu;
 public class MenuUI : MonoBehaviour
@@ -10,6 +12,7 @@ public class MenuUI : MonoBehaviour
     private Rect windowRect = new Rect(10, 10, 300, 500);
     private bool isGUIActive = false;
     private GUIStyle submenuButtonStyle;
+    private float hue; // For RGB mode
 
     // Create all groups (buttons) and their toggles on start
     private void Start()
@@ -182,6 +185,10 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures,
                 x => CheatToggles.unlockFeatures = x)
         ], []));
+
+        groups.Add(new GroupInfo("Config", false, [
+            new ToggleInfo("Open config file", () => true, x => Utils.OpenConfigFile()),
+            new ToggleInfo("RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)], []));
     }
 
     private void Update(){
@@ -194,6 +201,12 @@ public class MenuUI : MonoBehaviour
             //Also teleport the window to the mouse for immediate use
             Vector2 mousePosition = Input.mousePosition;
             windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+        }
+
+        if (CheatToggles.RGBMode)
+        {
+            hue += Time.deltaTime * 0.3f; // Adjust speed of color change, higher multiplier = faster
+            if (hue > 1f) hue -= 1f; // Loop hue back to 0 when it exceeds 1
         }
 
         //Passive cheats are always on to avoid problems
@@ -248,23 +261,30 @@ public class MenuUI : MonoBehaviour
             windowRect.height = windowHeight;
         }
 
-        Color uiColor;
-
-        string configHtmlColor = MalumMenu.menuHtmlColor.Value;
-
-        if (!ColorUtility.TryParseHtmlString(configHtmlColor, out uiColor))
+        if (CheatToggles.RGBMode)
         {
-            if (!configHtmlColor.StartsWith("#"))
-            {
-                if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
-                {
-                    GUI.backgroundColor = uiColor;
-                }
-            }
+            GUI.backgroundColor = Color.HSVToRGB(hue, 1f, 1f); // Set background color based on hue
         }
         else
         {
-            GUI.backgroundColor = uiColor;
+            Color uiColor;
+
+            string configHtmlColor = MalumMenu.menuHtmlColor.Value;
+
+            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out uiColor))
+            {
+                if (!configHtmlColor.StartsWith("#"))
+                {
+                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
+                    {
+                        GUI.backgroundColor = uiColor;
+                    }
+                }
+            }
+            else
+            {
+                GUI.backgroundColor = uiColor;
+            }
         }
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);

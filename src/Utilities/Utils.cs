@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using InnerNet;
 using System.Linq;
@@ -6,8 +7,10 @@ using System.IO;
 using Hazel;
 using System.Reflection;
 using AmongUs.GameOptions;
+using BepInEx;
 using Sentry.Internal.Extensions;
-using Il2CppSystem.Net.NetworkInformation;
+using Debug = UnityEngine.Debug;
+using Object = UnityEngine.Object;
 
 namespace MalumMenu;
 public static class Utils
@@ -446,5 +449,31 @@ public static class Utils
         }
         return null;
     }
-}
 
+    public static void OpenConfigFile()
+    {
+        // Open the config file in the default text editor (doesn't work on Linux with Proton)
+        var configFilePath = Path.Combine(Paths.ConfigPath, "MalumMenu.cfg");
+
+        if (File.Exists(configFilePath))
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = configFilePath,
+                    UseShellExecute = true,
+                    Verb = "edit"
+                });
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to open config file: {ex.Message}. If you are on Linux, this is expected.");
+            }
+        }
+        else
+        {
+            Debug.LogError("Config file does not exist.");
+        }
+    }
+}

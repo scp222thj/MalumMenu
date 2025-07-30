@@ -89,6 +89,9 @@ public struct CheatToggles
     public static bool freeCosmetics;
     public static bool avoidBans;
 
+    //Config
+    public static bool RGBMode;
+
     public static void DisablePPMCheats(string variableToKeep)
     {
         reportBody = variableToKeep == "reportBody" && reportBody;
