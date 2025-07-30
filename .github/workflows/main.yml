@@ -24,14 +24,14 @@ jobs:
       - name: Upload MalumMenu.dll artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MalumMenu_fix.dll
+          name: MalumMenu.dll
           path: /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll
 
       - name: Download and extract BepInEx
         run: |
-          wget -O BepInEx_x64.zip https://builds.bepinex.dev/projects/bepinex_be/697/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.697%2B5362580.zip
+          wget -O BepInEx_x64.zip https://builds.bepinex.dev/projects/bepinex_be/735/BepInEx-Unity.IL2CPP-win-x64-6.0.0-be.735%2B5fef357.zip
           unzip BepInEx_x64.zip -d BepInEx_x64
-          wget -O BepInEx_x86.zip https://builds.bepinex.dev/projects/bepinex_be/697/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.697%2B5362580.zip
+          wget -O BepInEx_x86.zip https://builds.bepinex.dev/projects/bepinex_be/735/BepInEx-Unity.IL2CPP-win-x86-6.0.0-be.735%2B5fef357.zip
           unzip BepInEx_x86.zip -d BepInEx_x86
 
       - name: Copy MalumMenu.dll to BepInEx/plugins
@@ -41,14 +41,14 @@ jobs:
           cp /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll BepInEx_x86/BepInEx/plugins/
           cp /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll BepInEx_x64/BepInEx/plugins/
 
-      - name: Upload MalumMenu_fix.zip artifact
+      - name: Upload MalumMenu_Steam_Itch.zip artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MalumMenu_fix
+          name: MalumMenu_Steam_Itch
           path: BepInEx_x86
 
-      - name: Upload MalumMenu_fix-Microsoft.zip artifact
+      - name: Upload MalumMenu_EpicGames_MicrosoftStore_XboxApp.zip artifact
         uses: actions/upload-artifact@v4
         with:
-          name: MalumMenu_fix-Microsoft
+          name: MalumMenu_EpicGames_MicrosoftStore_XboxApp
           path: BepInEx_x64
