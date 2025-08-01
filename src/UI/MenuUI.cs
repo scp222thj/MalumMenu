@@ -20,6 +20,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Player", false, [
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
             new ToggleInfo(" SpeedHack", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x)
+            new ToggleInfo(" Fake Revive", () => CheatToggles.revive, x => CheatToggles.revive = x)
         ], [
             new SubmenuInfo("Teleport", false, [
                 new ToggleInfo(" to Cursor", () => CheatToggles.teleportCursor, x => CheatToggles.teleportCursor = x),

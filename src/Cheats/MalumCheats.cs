@@ -314,4 +314,11 @@ public static class MalumCheats
         catch{}
     }
 
+    public static void reviveCheat()
+    {
+        if (!CheatToggles.revive) return;
+
+        PlayerControl.LocalPlayer.Revive();
+        CheatToggles.revive = false;
+    }
 }

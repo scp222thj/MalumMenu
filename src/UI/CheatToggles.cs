@@ -13,6 +13,7 @@ public struct CheatToggles
     public static bool killAll;
     public static bool killAllCrew;
     public static bool killAllImps;
+    public static bool revive;
 
     //Roles
     public static bool changeRole;

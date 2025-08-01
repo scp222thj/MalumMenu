@@ -14,6 +14,7 @@ public static class PlayerPhysics_LateUpdate
 
         MalumCheats.noClipCheat();
         MalumCheats.speedBoostCheat();
+        MalumCheats.reviveCheat();
         MalumCheats.killAllCheat();
         MalumCheats.killAllCrewCheat();
         MalumCheats.killAllImpsCheat();
