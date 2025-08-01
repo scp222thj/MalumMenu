@@ -19,7 +19,7 @@ public class MenuUI : MonoBehaviour
     {
         groups.Add(new GroupInfo("Player", false, [
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
-            new ToggleInfo(" SpeedHack", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x)
+            new ToggleInfo(" SpeedHack", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
             new ToggleInfo(" Fake Revive", () => CheatToggles.revive, x => CheatToggles.revive = x)
         ], [
             new SubmenuInfo("Teleport", false, [
@@ -228,7 +228,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!Utils.isShip){
-            CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
+            CheatToggles.revive = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.closeMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.doorsSab = false;
         }
     }
 
