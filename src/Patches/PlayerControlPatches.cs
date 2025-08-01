@@ -18,9 +18,9 @@ public static class PlayerControl_FixedUpdate
 public static class PlayerControl_CmdCheckMurder
 {
     // Prefix patch of PlayerControl.CmdCheckMurder to always bypass checks when killing players
-    public static bool Prefix(PlayerControl __instance, PlayerControl target){
-
-        if (Utils.isLobby){
+    public static bool Prefix(PlayerControl __instance, PlayerControl target)
+    {
+        /*if (Utils.isLobby){
             HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
             return false;
         }
@@ -42,8 +42,12 @@ public static class PlayerControl_CmdCheckMurder
 
         Utils.murderPlayer(target, MurderResultFlags.Succeeded);
 
-        return false;
+        return false;*/
 
+        if (!Utils.isHost) return true;
+        // __instance.isKilling = true;
+        PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
+        return false;
     }
 }
 
