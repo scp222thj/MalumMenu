@@ -84,6 +84,7 @@ public struct CheatToggles
     //public static bool godMode;
     //public static bool evilVote;
     //public static bool voteImmune;
+    public static bool noOptionsLimits;
 
     //Passive
     public static bool unlockFeatures;

@@ -162,7 +162,8 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Kill While Vanished", () => CheatToggles.killVanished,
                     x => CheatToggles.killVanished = x),
                 new ToggleInfo(" Kill Anyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
-                new ToggleInfo(" No Kill Cooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x)
+                new ToggleInfo(" No Kill Cooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
+                new ToggleInfo(" No Options Limits", () => CheatToggles.noOptionsLimits, x => CheatToggles.noOptionsLimits = x)
             ],
             [
                 new SubmenuInfo("Murder", false, [
@@ -188,8 +189,8 @@ public class MenuUI : MonoBehaviour
         ], []));
 
         groups.Add(new GroupInfo("Config", false, [
-            new ToggleInfo("Open config file", () => true, x => Utils.OpenConfigFile()),
-            new ToggleInfo("RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)], []));
+            new ToggleInfo(" Open config file", () => true, x => Utils.OpenConfigFile()),
+            new ToggleInfo(" RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)], []));
     }
 
     private void Update(){

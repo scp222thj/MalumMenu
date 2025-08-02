@@ -85,3 +85,18 @@ public static class ShapeshifterCheats_PlayerControl_CmdCheckRevertShapeshift_Po
         }
     }
 }
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
+public static class NoAntiCheat_PlayerControl_RpcSyncSettings_Prefix
+{
+    /// <summary>
+    /// Prevent the anti-cheat from kicking you for some settings that are out of the "original" valid range.
+    /// </summary>
+    /// <param name="__instance">The <c>PlayerControl</c> instance.</param>
+    /// <param name="optionsByteArray">The byte array containing the options to sync.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
+    public static bool Prefix(PlayerControl __instance, byte[] optionsByteArray)
+    {
+        return !CheatToggles.noOptionsLimits;
+    }
+}

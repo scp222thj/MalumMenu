@@ -13,6 +13,14 @@
   <a href="https://ko-fi.com/scp222thj">
     <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
   </a>
+
+  <a href="../../releases">
+    <img src="https://img.shields.io/github/downloads/astra1dev/MalumMenu/total.svg?style=plastic&color=red">
+  </a>
+
+  <a href="../../releases/latest">
+    <img src="https://img.shields.io/github/downloads/astra1dev/MalumMenu/latest/total?style=plastic">
+  </a>
   
 </p>
 
@@ -28,6 +36,7 @@ For the lack of a better name, I call it **Astralum**.
 
 | Mod Version | Among Us - Version    | Link                                  |
 |-------------|-----------------------|---------------------------------------|
+| v2.5.2      | 2025.6.10 (16.1.0)    | [Download](../../releases/tag/v2.5.2) |
 | v2.5.1      | 2025.6.10 (16.1.0)    | [Download](../../releases/tag/v2.5.1) |
 
 For older (official) versions, please refer to the [original MalumMenu repository](https://github.com/scp222thj/MalumMenu).
@@ -47,12 +56,20 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
 [Original MalumMenu features](https://github.com/scp222thj/MalumMenu?tab=readme-ov-file#-features)
 
 Changes from the original MalumMenu:
+#### Fixes
 - v16.0.0 fix where the menu wouldn't load at all
+- Fix SeeRoles nametags overlaying with colorblind text if it is enabled
+- Fix killing as impostor kicking you from the lobby
+
+#### Additions
 - Added option to disable passives cheats (basically [this PR](https://github.com/scp222thj/MalumMenu/pull/164))
+- Added a new "Config" category with "RGB Mode" and "Open Config File" options
+- Added "Fake Revive" cheat (Player category)
+- Added "No Options Limits" cheat (Host-Only category)
+
+#### Other changes
 - Some refactoring and code style changes
 - BepInEx version bump and CI updates
-- Fix SeeRoles nametags overlaying with colorblind text if it is enabled
-- Added a new "Config" category with "RGB Mode" and "Open Config File" options
 
 Full Changelog [here](https://github.com/scp222thj/MalumMenu/compare/main...astra1dev:MalumMenu:astralum).
 
