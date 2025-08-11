@@ -76,11 +76,11 @@ public static class PhantomRole_FixedUpdate
 public static class PhantomRole_IsValidTarget
 {
     // Prefix patch of PhantomRole.IsValidTarget to allow killing while invisible
-    public static void Postfix(NetworkedPlayerInfo target, ref bool __result){
+    public static bool Prefix(NetworkedPlayerInfo target, ref bool __result){
 
-        if (CheatToggles.killVanished){
-            __result = Utils.isValidTarget(target);
-        }
+        if (!CheatToggles.killVanished) return true;
+        __result = Utils.isValidTarget(target);
+        return false;
     }
 }
 
@@ -89,12 +89,11 @@ public static class ImpostorRole_IsValidTarget
 {
     // Prefix patch of ImpostorRole.IsValidTarget to allow forbidden kill targets for killAnyone cheat
     // Allows killing ghosts (with seeGhosts), impostors, players in vents, etc...
-    public static void Postfix(NetworkedPlayerInfo target, ref bool __result){
+    public static bool Prefix(NetworkedPlayerInfo target, ref bool __result){
 
-        if (CheatToggles.killAnyone){
-           __result = Utils.isValidTarget(target);
-        }
-
+        if (!CheatToggles.killAnyone) return true;
+        __result = Utils.isValidTarget(target);
+        return false;
     }
 }
 
@@ -103,17 +102,12 @@ public static class ImpostorRole_FindClosestTarget
 {
     // Prefix patch of ImpostorRole.FindClosestTarget to allow for infinite kill reach
     public static bool Prefix(ImpostorRole __instance, ref PlayerControl __result){
+        if (!CheatToggles.killReach) return true;
+        var playerList = Utils.getPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
 
-        if (CheatToggles.killReach){
+        __result = playerList[0];
 
-            List<PlayerControl> playerList = Utils.getPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        return false;
 
-            __result = playerList[0];
-
-            return false;
-
-        }
-
-        return true;
     }
 }

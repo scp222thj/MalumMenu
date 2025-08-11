@@ -75,16 +75,11 @@ public static class Utils
     // Custom isValidTarget method for cheats
     public static bool isValidTarget(NetworkedPlayerInfo target)
     {
-        bool killAnyoneRequirements = !(target == null) && !target.Disconnected && target.Object.Visible && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && !(target.Role == null) && !(target.Object == null);
+        var killAnyoneRequirements = target && !target.Disconnected && target.Object.Visible && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && target.Role && target.Object;
 
-        bool fullRequirements = killAnyoneRequirements && !target.IsDead && !target.Object.inVent && !target.Object.inMovingPlat && target.Role.CanBeKilled;
+        var fullRequirements = killAnyoneRequirements && !target.IsDead && !target.Object.inVent && !target.Object.inMovingPlat && target.Role.CanBeKilled;
 
-        if (CheatToggles.killAnyone){
-            return killAnyoneRequirements;
-        }
-
-        return fullRequirements;
-        
+        return CheatToggles.killAnyone ? killAnyoneRequirements : fullRequirements;
     }
 
     // Adjusts HUD resolution
