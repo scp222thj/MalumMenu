@@ -76,11 +76,11 @@ public static class PhantomRole_FixedUpdate
 public static class PhantomRole_IsValidTarget
 {
     // Prefix patch of PhantomRole.IsValidTarget to allow killing while invisible
-    public static bool Prefix(NetworkedPlayerInfo target, ref bool __result){
+    public static void Postfix(NetworkedPlayerInfo target, ref bool __result){
 
-        if (!CheatToggles.killVanished) return true;
-        __result = Utils.isValidTarget(target);
-        return false;
+        if (CheatToggles.killVanished){
+            __result = Utils.isValidTarget(target);
+        }
     }
 }
 
@@ -89,11 +89,12 @@ public static class ImpostorRole_IsValidTarget
 {
     // Prefix patch of ImpostorRole.IsValidTarget to allow forbidden kill targets for killAnyone cheat
     // Allows killing ghosts (with seeGhosts), impostors, players in vents, etc...
-    public static bool Prefix(NetworkedPlayerInfo target, ref bool __result){
+    public static void Postfix(NetworkedPlayerInfo target, ref bool __result){
 
-        if (!CheatToggles.killAnyone) return true;
-        __result = Utils.isValidTarget(target);
-        return false;
+        if (CheatToggles.killAnyone){
+           __result = Utils.isValidTarget(target);
+        }
+
     }
 }
 
