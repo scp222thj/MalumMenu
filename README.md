@@ -34,10 +34,11 @@
 This branch is my personal fork of the original MalumMenu project. 
 For the lack of a better name, I call it **Astralum**.
 
-| Mod Version | Among Us - Version    | Link                                  |
-|-------------|-----------------------|---------------------------------------|
-| v2.5.2      | 2025.6.10 (16.1.0)    | [Download](../../releases/tag/v2.5.2) |
-| v2.5.1      | 2025.6.10 (16.1.0)    | [Download](../../releases/tag/v2.5.1) |
+| Mod Version | Among Us - Version | Link                                  |
+|-------------|--------------------|---------------------------------------|
+| v2.5.3      | 2025.9.9 (17.0.0)  | [Download](../../releases/tag/v2.5.3) |
+| v2.5.2      | 2025.6.10 (16.1.0) | [Download](../../releases/tag/v2.5.2) |
+| v2.5.1      | 2025.6.10 (16.1.0) | [Download](../../releases/tag/v2.5.1) |
 
 For older (official) versions, please refer to the [original MalumMenu repository](https://github.com/scp222thj/MalumMenu).
 
@@ -58,6 +59,7 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
 Changes from the original MalumMenu:
 #### Fixes
 - v16.0.0 fix where the menu wouldn't load at all
+- v17.0.0 fix where PPM and SeeRoles wouldn't work
 - Fix SeeRoles nametags overlaying with colorblind text if it is enabled
 - Fix killing as impostor kicking you from the lobby
 
