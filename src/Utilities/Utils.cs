@@ -89,8 +89,17 @@ public static class Utils
     }
 
     // Get RoleBehaviour from a RoleType
-    public static RoleBehaviour getBehaviourByRoleType(RoleTypes roleType) {
-        return RoleManager.Instance.AllRoles.First(r => r.Role == roleType);
+    public static RoleBehaviour getBehaviourByRoleType(RoleTypes roleType)
+    {
+        List<RoleBehaviour> allRoles = RoleManager.Instance.AllRoles;
+        if (allRoles == null) return null;
+
+        foreach (RoleBehaviour role in allRoles)
+        {
+            if (role && role.Role == roleType) return role;
+        }
+
+        return null;
     }
 
     // Kill any player using RPC calls

@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using Sentry.Internal.Extensions;
 using UnityEngine;
 
@@ -71,7 +72,7 @@ public static class MalumCheats
                 DestroyableSingleton<HudManager>.Instance.AbilityButton.SetCooldownFill(0f);
 
             }
-        
+
         }
     }
 
@@ -80,13 +81,13 @@ public static class MalumCheats
         if (CheatToggles.endlessSsDuration){
 
             // Makes shapeshift duration so incredibly long (float.MaxValue) so that it never ends
-            shapeshifterRole.durationSecondsRemaining = float.MaxValue; 
-            
+            shapeshifterRole.durationSecondsRemaining = float.MaxValue;
+
         // Shapeshift duration is reset to normal value after the cheat is disabled
-        }else if (shapeshifterRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetShapeshifterDuration()){
-            
-            shapeshifterRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetShapeshifterDuration();
-        
+        }else if (shapeshifterRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.ShapeshifterDuration)){
+
+            shapeshifterRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.ShapeshifterDuration);
+
         }
     }
 
@@ -124,7 +125,7 @@ public static class MalumCheats
 
         if (CheatToggles.noTrackingDelay){
 
-            MapBehaviour.Instance.trackedPointDelayTime = GameManager.Instance.LogicOptions.GetTrackerDelay();
+            MapBehaviour.Instance.trackedPointDelayTime = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDelay);
 
         }
 
@@ -134,10 +135,10 @@ public static class MalumCheats
             trackerRole.durationSecondsRemaining = float.MaxValue;
 
         // Battery charge is reset to normal value after the cheat is disabled
-        }else if (trackerRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetTrackerDuration()){
-            
-            trackerRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetTrackerDuration();
-        
+        }else if (trackerRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDuration)){
+
+            trackerRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDuration);
+
         }
     }
     public static void phantomCheats(PhantomRole phantomRole)
