@@ -62,12 +62,14 @@ Changes from the original MalumMenu:
 - v17.0.0 fix where PPM and SeeRoles wouldn't work
 - Fix SeeRoles nametags overlaying with colorblind text if it is enabled
 - Fix killing as impostor kicking you from the lobby
+- Fix detecting if the player is the lobby host
 
 #### Additions
 - Added option to disable passives cheats (basically [this PR](https://github.com/scp222thj/MalumMenu/pull/164))
 - Added a new "Config" category with "RGB Mode" and "Open Config File" options
 - Added "Fake Revive" cheat (Player category)
 - Added "No Options Limits" cheat (Host-Only category)
+- Added new "Animations" category
 
 #### Other changes
 - Some refactoring and code style changes

@@ -1,4 +1,6 @@
+using System.Runtime.CompilerServices;
 using AmongUs.GameOptions;
+using AmongUs.InnerNet.GameDataMessages;
 using Sentry.Internal.Extensions;
 using UnityEngine;
 
@@ -321,5 +323,77 @@ public static class MalumCheats
 
         PlayerControl.LocalPlayer.Revive();
         CheatToggles.revive = false;
+    }
+
+    private static bool _hasUsedScanCheatBefore;
+
+    private static void ForceSetScanner(PlayerControl player, bool toggle)
+    {
+        byte count = ++player.scannerCount;
+        player.SetScanner(toggle, count);
+        RpcSetScannerMessage rpcMessage = new(player.NetId, toggle, count);
+        AmongUsClient.Instance.LateBroadcastReliableMessage(Unsafe.As<IGameDataMessage>(rpcMessage));
+    }
+
+    public static void ScanCheat()
+    {
+        if (CheatToggles.animScan && !_hasUsedScanCheatBefore)
+        {
+            ForceSetScanner(PlayerControl.LocalPlayer, true);
+            _hasUsedScanCheatBefore = true;
+        }
+        else if (!CheatToggles.animScan && _hasUsedScanCheatBefore)
+        {
+            ForceSetScanner(PlayerControl.LocalPlayer, false);
+            _hasUsedScanCheatBefore = false;
+        }
+    }
+
+    private static void ForcePlayAnimation(byte animationType)
+    {
+        // PlayerControl.LocalPlayer.RpcPlayAnimation(1); wouldn't work if visual tasks are turned off
+        // The below way makes sure it works regardless of visual task settings
+
+        PlayerControl.LocalPlayer.PlayAnimation(animationType);
+        RpcPlayAnimationMessage rpcMessage = new(PlayerControl.LocalPlayer.NetId, animationType);
+        AmongUsClient.Instance.LateBroadcastUnreliableMessage(Unsafe.As<IGameDataMessage>(rpcMessage));
+    }
+
+    private static bool _hasUsedCamsCheatBefore;
+
+    public static void AnimationCheat()
+    {
+        if (CheatToggles.animShields)
+        {
+            ForcePlayAnimation((byte)TaskTypes.PrimeShields);
+            CheatToggles.animShields = false;
+        }
+        else if (CheatToggles.animAsteroids)
+        {
+            ForcePlayAnimation((byte)TaskTypes.ClearAsteroids);
+        }
+        else if (CheatToggles.animEmptyGarbage)
+        {
+            ForcePlayAnimation((byte)TaskTypes.EmptyGarbage);
+            CheatToggles.animEmptyGarbage = false;
+        }
+
+        if (CheatToggles.animCamsInUse && !_hasUsedCamsCheatBefore)
+        {
+            // There is no cameras on Mira HQ and Fungle
+            if (!(Utils.MiraHQIsActive || Utils.FungleIsActive))
+            {
+                // ShipStatus.Instance.UpdateSystem(SystemTypes.Security, PlayerControl.LocalPlayer, (byte)(CheatToggles.animCamsInUse ? 1 : 0));
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Security, 1);
+                _hasUsedCamsCheatBefore = true;
+            }
+        }
+        else if (!CheatToggles.animCamsInUse && _hasUsedCamsCheatBefore)
+        {
+            // Turn off cams if the cheat was used before and is now disabled
+            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Security, 0);
+            _hasUsedCamsCheatBefore = false;
+        }
+
     }
 }

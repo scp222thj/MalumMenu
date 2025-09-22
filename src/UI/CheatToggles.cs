@@ -91,6 +91,13 @@ public struct CheatToggles
     public static bool freeCosmetics;
     public static bool avoidBans;
 
+    // Animations
+    public static bool animShields;
+    public static bool animAsteroids;
+    public static bool animEmptyGarbage;
+    public static bool animScan;
+    public static bool animCamsInUse;
+
     //Config
     public static bool RGBMode;
 
