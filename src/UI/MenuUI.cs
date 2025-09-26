@@ -184,8 +184,8 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Passive", false, [
             new ToggleInfo(" Free Cosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
-            new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures,
-                x => CheatToggles.unlockFeatures = x)
+            new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
+            new ToggleInfo(" Panic Mode (Disable MalumMenu)", () => false, x => Utils.Panic())
         ], []));
 
         groups.Add(new GroupInfo("Animations", false, [
@@ -197,7 +197,7 @@ public class MenuUI : MonoBehaviour
         ], []));
 
         groups.Add(new GroupInfo("Config", false, [
-            new ToggleInfo(" Open config file", () => true, x => Utils.OpenConfigFile()),
+            new ToggleInfo(" Open config file", () => false, x => Utils.OpenConfigFile()),
             new ToggleInfo(" RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)], []));
     }
 
@@ -244,7 +244,7 @@ public class MenuUI : MonoBehaviour
     public void OnGUI()
     {
 
-        if (!isGUIActive) return;
+        if (!isGUIActive || CheatToggles.isPanicked) return;
 
         if (submenuButtonStyle == null)
         {

@@ -8,6 +8,7 @@ using Hazel;
 using System.Reflection;
 using AmongUs.GameOptions;
 using BepInEx;
+using HarmonyLib;
 using Sentry.Internal.Extensions;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -479,5 +480,12 @@ public static class Utils
         {
             Debug.LogError("Config file does not exist.");
         }
+    }
+
+    public static void Panic()
+    {
+        Harmony.UnpatchID(MalumMenu.Id);
+        ModManager.Instance.ModStamp.enabled = false;
+        CheatToggles.isPanicked = true;
     }
 }
