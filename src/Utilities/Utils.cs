@@ -9,6 +9,7 @@ using System.Reflection;
 using AmongUs.GameOptions;
 using BepInEx;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
 using Sentry.Internal.Extensions;
 using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
@@ -355,6 +356,24 @@ public static class Utils
         return false; // If platform type is invalid, return false
     }
 
+    public static string PlatformTypeToString(Platforms platform)
+    {
+        return platform switch
+        {
+            Platforms.StandaloneEpicPC => "Epic",
+            Platforms.StandaloneSteamPC => "Steam",
+            Platforms.StandaloneMac => "Mac",
+            Platforms.StandaloneWin10 => "Microsoft Store",
+            Platforms.StandaloneItch => "Itch.io",
+            Platforms.IPhone => "iPhone / iPad",
+            Platforms.Android => "Android",
+            Platforms.Switch => "Nintendo Switch",
+            Platforms.Xbox => "Xbox",
+            Platforms.Playstation => "PlayStation",
+            _ => "Unknown"
+        };
+    }
+
     // Get the string name for a chosen player's role
     // String are automatically translated
     public static string getRoleName(NetworkedPlayerInfo playerData)
@@ -373,28 +392,79 @@ public static class Utils
     }
 
     // Get the appropriate nametag for a player (seeRoles cheat)
-    public static string getNameTag(NetworkedPlayerInfo playerInfo, string playerName, bool isChat = false){
-        string nameTag = playerName;
+    public static string GetNameTag(NetworkedPlayerInfo playerInfo, string playerName, bool isChat = false)
+    {
+        var nameTag = playerName;
 
-        if (!playerInfo.Role.IsNull() && !playerInfo.IsNull() && !playerInfo.Disconnected && !playerInfo.Object.CurrentOutfit.IsNull()){
+        if (playerInfo.Role.IsNull() || playerInfo.IsNull() || playerInfo.Disconnected ||
+            playerInfo.Object.CurrentOutfit.IsNull()) return nameTag;
 
-            if (CheatToggles.seeRoles){
+        var player = AmongUsClient.Instance.GetClientFromPlayerInfo(playerInfo);
+        var host = AmongUsClient.Instance.GetHost();
+        var level = playerInfo.PlayerLevel + 1;
+        var platform = PlatformTypeToString(player.PlatformData.Platform);
+        var roleColor = ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor);
 
-                if (isChat){
-                    nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{Utils.getRoleName(playerInfo)}</size> {nameTag}</color>";
+        var hostString = player == host ? "Host - " : "";
+
+        if (CheatToggles.seeRoles)
+        {
+
+            if (CheatToggles.showPlayerInfo)
+            {
+                if (isChat)
+                {
+                    nameTag = $"<color=#{roleColor}>{nameTag} <size=70%>{getRoleName(playerInfo)}</size></color> <size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>";
                     return nameTag;
                 }
 
-                nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor)}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
-            
-            } else if (PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor){
-
-                if (isChat){
+                nameTag =
+                    $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{roleColor}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
+            }
+            else
+            {
+                if (isChat)
+                {
+                    nameTag = $"<color=#{roleColor}>{nameTag} <size=70%>{getRoleName(playerInfo)}</size></color>";
                     return nameTag;
                 }
+
+                nameTag = $"<color=#{roleColor}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
+            }
+        }
+        else
+        {
+            if (CheatToggles.showPlayerInfo)
+            {
+                if (PlayerControl.LocalPlayer.Data.Role.NameColor == playerInfo.Role.NameColor)
+                {
+                    if (isChat)
+                    {
+                        nameTag =
+                            $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color> <size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>";
+                        return nameTag;
+                    }
+
+                    nameTag =
+                        $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}";
+                }
+                else
+                {
+                    if (isChat)
+                    {
+                        nameTag = $"{nameTag} <size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>";
+                        return nameTag;
+                    }
+
+                    nameTag = $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n{nameTag}";
+                }
+            }
+            else
+            {
+                if (PlayerControl.LocalPlayer.Data.Role.NameColor != playerInfo.Role.NameColor || isChat)
+                    return nameTag;
 
                 nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color>";
-
             }
         }
 
@@ -482,10 +552,32 @@ public static class Utils
         }
     }
 
+    public class PanicCleaner : MonoBehaviour
+    {
+        public static void Create()
+        {
+            ClassInjector.RegisterTypeInIl2Cpp<PanicCleaner>();
+            var go = new GameObject("MalumMenu_PanicCleaner");
+            go.hideFlags = HideFlags.HideAndDontSave;
+            go.AddComponent<PanicCleaner>();
+        }
+
+        private void LateUpdate()
+        {
+            try { Harmony.UnpatchID(MalumMenu.Id); }
+            catch {}
+            Destroy(gameObject);
+        }
+    }
+
     public static void Panic()
     {
-        Harmony.UnpatchID(MalumMenu.Id);
+        CheatToggles.DisableAll();
         ModManager.Instance.ModStamp.enabled = false;
         CheatToggles.isPanicked = true;
+
+        // Create a PanicCleaner to unpatch Harmony in the next frame
+        // This allows some patches to run for a last time and finish properly
+        PanicCleaner.Create();
     }
 }

@@ -70,6 +70,8 @@ Changes from the original MalumMenu:
 - Added "Fake Revive" cheat (Player category)
 - Added "No Options Limits" cheat (Host-Only category)
 - Added new "Animations" category
+- Added "Panic Mode (Disable MalumMenu)" button (Passive category)
+- Added "Show Player Info" (ESP category)
 
 #### Other changes
 - Some refactoring and code style changes

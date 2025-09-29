@@ -60,7 +60,7 @@ public static class MeetingHud_Update
 
     public static void Postfix(MeetingHud __instance){
 
-        MalumESP.meetingNametags(__instance);
+        MalumESP.MeetingNametags(__instance);
 
         // Bugfix: NoClip staying active if meeting is called whilst climbing ladder
         PlayerControl.LocalPlayer.onLadder = false;

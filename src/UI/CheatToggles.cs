@@ -38,6 +38,7 @@ public struct CheatToggles
     public static bool fullBright;
     public static bool seeGhosts;
     public static bool seeRoles;
+    public static bool showPlayerInfo;
     public static bool seeDisguises;
     public static bool revealVotes;
 
@@ -114,5 +115,20 @@ public struct CheatToggles
 
     public static bool shouldPPMClose(){
         return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+    }
+
+    public static void DisableAll()
+    {
+        // Use reflection to set all boolean fields to false
+        var fields =
+            typeof(CheatToggles).GetFields(
+                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(bool))
+            {
+                field.SetValue(null, false);
+            }
+        }
     }
 }

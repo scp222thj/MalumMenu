@@ -77,7 +77,7 @@ public static class ChatController_AddChat
 public static class ChatBubble_SetName
 {
     public static void Postfix(ChatBubble __instance){
-        MalumESP.chatNametags(__instance);
+        MalumESP.ChatNametags(__instance);
     }
 }
 

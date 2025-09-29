@@ -70,46 +70,73 @@ public static class MalumESP
         }
     }
 
-    public static void meetingNametags(MeetingHud meetingHud)
+    public static void MeetingNametags(MeetingHud meetingHud)
     {
-        try{
+        try
+        {
             foreach (var playerState in meetingHud.playerStates)
             {
                 // Fetch the NetworkedPlayerInfo of each playerState
                 var data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
 
-                if (!data.IsNull() && !data.Disconnected && !data.Outfits[PlayerOutfitType.Default].IsNull())
-                {
-                    // Update the player's nametag appropriately
-                    playerState.NameText.text = Utils.getNameTag(data, data.DefaultOutfit.PlayerName);
-                }
+                if (data.IsNull() || data.Disconnected || data.Outfits[PlayerOutfitType.Default].IsNull()) continue;
 
+                // Update the player's nametag appropriately
+                playerState.NameText.text = Utils.GetNameTag(data, data.DefaultOutfit.PlayerName);
+
+                // Move and resize the nametag to prevent it overlapping with colorblind text
+                if (CheatToggles.seeRoles && CheatToggles.showPlayerInfo)
+                {
+                    playerState.NameText.transform.localPosition = new Vector3(0.33f, 0.08f, 0f);
+                    playerState.NameText.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                }
+                else if (CheatToggles.seeRoles || CheatToggles.showPlayerInfo)
+                {
+                    playerState.NameText.transform.localPosition = new Vector3(0.3384f, 0.1125f, -0.1f);
+                    playerState.NameText.transform.localScale = new Vector3(0.9f, 1f, 1f);
+                }
+                else
+                {
+                    // Reset the position and scale of the nametag to default values (they're kinda weird but whatever)
+                    playerState.NameText.transform.localPosition = new Vector3(0.3384f, 0.0311f, -0.1f);
+                    playerState.NameText.transform.localScale = new Vector3(0.9f, 1f, 1f);
+                }
             }
         }catch{}
     }
 
-    public static void playerNametags(PlayerPhysics playerPhysics)
+    public static void PlayerNametags(PlayerPhysics playerPhysics)
     {
         try
         {
-            playerPhysics.myPlayer.cosmetics.SetName(Utils.getNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
-            // Move the nameText up to prevent it overlaying with colorblind text
-            playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = CheatToggles.seeRoles ? new Vector3(0f, 0.093f, 0f) : new Vector3(0f, 0f, 0f);
+            playerPhysics.myPlayer.cosmetics.SetName(Utils.GetNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
+            // Move the nameText up to prevent it overlapping with colorblind text
+            if (CheatToggles.seeRoles && CheatToggles.showPlayerInfo)
+            {
+                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.186f, 0f);
+            }
+            else if (CheatToggles.seeRoles || CheatToggles.showPlayerInfo)
+            {
+                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.093f, 0f);
+            }
+            else
+            {
+                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0f, 0f);
+            }
         }catch{}
     }
 
-    public static void chatNametags(ChatBubble chatBubble)
+    public static void ChatNametags(ChatBubble chatBubble)
     {
-        try{
-
+        try
+        {
             // Update the player's nametag appropriately
-            chatBubble.NameText.text = Utils.getNameTag(chatBubble.playerInfo, chatBubble.NameText.text, true);
+            chatBubble.NameText.text = Utils.GetNameTag(chatBubble.playerInfo, chatBubble.NameText.text, true);
 
             // Adjust the chatBubble's size to the new nametag to prevent issues
             chatBubble.NameText.ForceMeshUpdate(true, true);
             chatBubble.Background.size = new Vector2(5.52f, 0.2f + chatBubble.NameText.GetNotDumbRenderedHeight() + chatBubble.TextArea.GetNotDumbRenderedHeight());
             chatBubble.MaskArea.size = chatBubble.Background.size - new Vector2(0f, 0.03f);
-
         }catch{}
     }
 
