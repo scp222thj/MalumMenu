@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.IO;
+
 namespace MalumMenu;
 
 public struct CheatToggles
@@ -117,17 +120,64 @@ public struct CheatToggles
         return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
     }
 
+    /// <summary>
+    /// Disables all cheat toggles by setting all boolean fields to false using reflection.
+    /// </summary>
     public static void DisableAll()
     {
-        // Use reflection to set all boolean fields to false
-        var fields =
-            typeof(CheatToggles).GetFields(
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+        var fields = typeof(CheatToggles).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
         foreach (var field in fields)
         {
             if (field.FieldType == typeof(bool))
             {
                 field.SetValue(null, false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Saves all cheat toggles to a file named "MalumProfile.txt" in the BepInEx config directory.
+    /// Each line in the file contains a toggle name and its value in the format "ToggleName=true/false".
+    /// </summary>
+    public static void SaveAllToFile()
+    {
+        var fields = typeof(CheatToggles).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+        using var writer = new StreamWriter(Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt"));
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(bool))
+            {
+                writer.WriteLine($"{field.Name}={field.GetValue(null)}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Loads cheat toggles from a file named "MalumProfile.txt" in the BepInEx config directory.
+    /// Each line in the file contains a toggle name and its value in the format "ToggleName=true/false".
+    /// </summary>
+    public static void LoadAllFromFile()
+    {
+        var fields = typeof(CheatToggles).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+        var fieldDict = new Dictionary<string, System.Reflection.FieldInfo>();
+        foreach (var field in fields)
+        {
+            if (field.FieldType == typeof(bool))
+            {
+                fieldDict[field.Name] = field;
+            }
+        }
+
+        var filePath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt");
+        if (!File.Exists(filePath)) return;
+
+        using var reader = new StreamReader(filePath);
+        while (reader.ReadLine() is { } line)
+        {
+            var parts = line.Split("=");
+            if (parts.Length == 2 && fieldDict.ContainsKey(parts[0]) && bool.TryParse(parts[1], out var value))
+            {
+                fieldDict[parts[0]].SetValue(null, value);
             }
         }
     }
