@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -25,14 +26,23 @@ public static class TextBoxTMP_Update
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.IsCharAllowed))]
 public static class TextBoxTMP_IsCharAllowed
 {
-    // Postfix patch of TextBoxTMP.IsCharAllowed to allow all characters
+    // Prefix patch of TextBoxTMP.IsCharAllowed to allow all characters
     public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
     {
-        if (!CheatToggles.chatJailbreak){
-            return true;
+        if (CheatToggles.chatJailbreak)
+        {
+            HashSet<char> blockedSymbols = new() { '\b', '\r' };
+
+            if (blockedSymbols.Contains(i))
+            {
+                __result = false;
+                return false;
+            }
+
+            __result = true;
+            return false;
         }
 
-        __result = !(i == '\b' || i == '>' || i == '<' || i == ']' || i == '[' || i == '\r'); // Some characters cause issues and must therefore be removed
-        return false;
+        return true;
     }
 }
