@@ -402,7 +402,8 @@ public static class Utils
         var player = AmongUsClient.Instance.GetClientFromPlayerInfo(playerInfo);
         var host = AmongUsClient.Instance.GetHost();
         var level = playerInfo.PlayerLevel + 1;
-        var platform = PlatformTypeToString(player.PlatformData.Platform);
+        var platform = "Unknown";
+        try { platform = PlatformTypeToString(player.PlatformData.Platform); } catch { }
         var roleColor = ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor);
 
         var hostString = player == host ? "Host - " : "";
