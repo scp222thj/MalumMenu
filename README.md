@@ -63,6 +63,7 @@ Changes from the original MalumMenu:
 - Fix SeeRoles nametags overlaying with colorblind text if it is enabled
 - Fix killing as impostor kicking you from the lobby
 - Fix detecting if the player is the lobby host
+- Fix not being able to input russian characters (and possibly others) in chat
 
 #### Additions
 - Added option to disable passives cheats (basically [this PR](https://github.com/scp222thj/MalumMenu/pull/164))
@@ -70,8 +71,11 @@ Changes from the original MalumMenu:
 - Added "Fake Revive" cheat (Player category)
 - Added "No Options Limits" cheat (Host-Only category)
 - Added new "Animations" category
-- Added "Panic Mode (Disable MalumMenu)" button (Passive category)
+- Added "Panic (Disable MalumMenu)" button (Passive category)
 - Added "Show Player Info" (ESP category)
+- Added "Save settings to file" and "Load settings from file" buttons (Config category)
+- Added new Viper and Detective roles to "Set Fake Role" cheat (Roles category)
+- Added "Spoof Date to April 1st" (Passive category)
 
 #### Other changes
 - Some refactoring and code style changes

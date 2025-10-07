@@ -94,6 +94,7 @@ public struct CheatToggles
     public static bool unlockFeatures;
     public static bool freeCosmetics;
     public static bool avoidBans;
+    public static bool spoofAprilFoolsDate;
     public static bool isPanicked;
 
     // Animations
