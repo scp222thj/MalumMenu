@@ -242,6 +242,22 @@ public static class MalumPPMCheats
 
                 }
 
+                // Viper role can only be used if it was already assigned at the start of the game
+                // This is done to prevent the anticheat from kicking players
+                if (oldRole == RoleTypes.Viper || Utils.isFreePlay){
+
+                    NetworkedPlayerInfo.PlayerOutfit viperOutfit = new NetworkedPlayerInfo.PlayerOutfit
+                    {
+                        ColorId = 0,
+                        SkinId = "skin_Hazmat-Greenskin",
+                        VisorId = "visor_animesunglassesVisor"
+                    };
+
+                    // Custom PPM choice for Viper role
+                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", viperOutfit, Utils.getBehaviourByRoleType(RoleTypes.Viper)));
+
+                }
+
                 // Impostor role can only be used if it was already assigned at the start of the game or as host
                 // This is done to prevent the anticheat from kicking players
                 if (oldRole == RoleTypes.Impostor || Utils.isFreePlay || Utils.isHost){
@@ -293,6 +309,16 @@ public static class MalumPPMCheats
 
                 // Custom PPM choice for Scientist role
                 playerDataList.Add(PlayerPickMenu.customPPMChoice("Scientist", scientistOutfit, Utils.getBehaviourByRoleType(RoleTypes.Scientist)));
+
+                NetworkedPlayerInfo.PlayerOutfit detectiveOutfit = new NetworkedPlayerInfo.PlayerOutfit
+                {
+                    ColorId = 10,
+                    HatId = "hat_pk05_Fedora",
+                    SkinId = "skin_SuitW"
+                };
+
+                // Custom PPM choice for Detective role
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Detective", detectiveOutfit, Utils.getBehaviourByRoleType(RoleTypes.Detective)));
 
                 NetworkedPlayerInfo.PlayerOutfit crewmateOutfit = new NetworkedPlayerInfo.PlayerOutfit
                 {
