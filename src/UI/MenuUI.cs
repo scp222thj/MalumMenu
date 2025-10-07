@@ -186,7 +186,8 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Free Cosmetics", () => CheatToggles.freeCosmetics, x => CheatToggles.freeCosmetics = x),
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
             new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
-            new ToggleInfo(" Panic Mode (Disable MalumMenu)", () => false, x => Utils.Panic())
+            new ToggleInfo(" Spoof Date to April 1st", () => CheatToggles.spoofAprilFoolsDate, x => CheatToggles.spoofAprilFoolsDate = x),
+            new ToggleInfo(" Panic (Disable MalumMenu)", () => false, x => Utils.Panic())
         ], []));
 
         groups.Add(new GroupInfo("Animations", false, [

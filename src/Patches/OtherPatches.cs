@@ -217,3 +217,16 @@ public static class Vent_CanUse
         __result = num;
     }
 }
+
+[HarmonyPatch(typeof(AmongUsDateTime), nameof(AmongUsDateTime.UtcNow), MethodType.Getter)]
+public static class AmongUsDateTime_UtcNow
+{
+    public static bool Prefix(ref Il2CppSystem.DateTime __result)
+    {
+        if (!CheatToggles.spoofAprilFoolsDate) return true;
+
+        var managedDate = new DateTime(DateTime.UtcNow.Year, 4, 2, 7, 1, 0, DateTimeKind.Utc);
+        __result = new Il2CppSystem.DateTime(managedDate.Ticks);
+        return false;
+    }
+}
