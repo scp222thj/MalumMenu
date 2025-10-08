@@ -76,6 +76,7 @@ Changes from the original MalumMenu:
 - Added "Save settings to file" and "Load settings from file" buttons (Config category)
 - Added new Viper and Detective roles to "Set Fake Role" cheat (Roles category)
 - Added "Spoof Date to April 1st" (Passive category)
+- Added "Protect Player" PPM (Host-Only category)
 
 #### Other changes
 - Some refactoring and code style changes
