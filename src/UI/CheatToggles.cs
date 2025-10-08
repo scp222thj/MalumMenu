@@ -17,6 +17,7 @@ public struct CheatToggles
     public static bool killAllCrew;
     public static bool killAllImps;
     public static bool revive;
+    public static bool protectPlayer;
 
     //Roles
     public static bool changeRole;
@@ -115,10 +116,11 @@ public struct CheatToggles
         spectate = variableToKeep == "spectate" && spectate;
         changeRole = variableToKeep == "changeRole" && changeRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
+        protectPlayer = variableToKeep == "protectPlayer" && protectPlayer;
     }
 
     public static bool shouldPPMClose(){
-        return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !protectPlayer;
     }
 
     /// <summary>

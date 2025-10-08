@@ -317,7 +317,7 @@ public static class MalumCheats
         catch{}
     }
 
-    public static void reviveCheat()
+    public static void ReviveCheat()
     {
         if (!CheatToggles.revive) return;
 

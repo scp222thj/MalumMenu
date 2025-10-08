@@ -15,6 +15,7 @@ using Debug = UnityEngine.Debug;
 using Object = UnityEngine.Object;
 
 namespace MalumMenu;
+
 public static class Utils
 {
     //Useful for getting full lists of all the Among Us cosmetics IDs
@@ -82,6 +83,20 @@ public static class Utils
         var fullRequirements = killAnyoneRequirements && !target.IsDead && !target.Object.inVent && !target.Object.inMovingPlat && target.Role.CanBeKilled;
 
         return CheatToggles.killAnyone ? killAnyoneRequirements : fullRequirements;
+    }
+
+    public static List<NetworkedPlayerInfo> GetAllPlayerData()
+    {
+        var playerDataList = new List<NetworkedPlayerInfo>();
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player != null && player.Data != null)
+            {
+                playerDataList.Add(player.Data);
+            }
+        }
+
+        return playerDataList;
     }
 
     // Adjusts HUD resolution

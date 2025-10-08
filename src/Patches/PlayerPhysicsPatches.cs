@@ -15,6 +15,7 @@ public static class PlayerPhysics_LateUpdate
         MalumCheats.noClipCheat();
         MalumCheats.speedBoostCheat();
         MalumCheats.reviveCheat();
+        MalumCheats.ReviveCheat();
         MalumCheats.killAllCheat();
         MalumCheats.killAllCrewCheat();
         MalumCheats.killAllImpsCheat();
@@ -27,6 +28,7 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.killPlayerPPM();
         //MalumPPMCheats.telekillPlayerPPM();
         MalumPPMCheats.teleportPlayerPPM();
+        MalumPPMCheats.ProtectPlayerPPM();
         MalumPPMCheats.changeRolePPM();
 
         //if (MalumPPMCheats.teleKillWaitFrames == 0){
