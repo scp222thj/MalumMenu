@@ -368,11 +368,11 @@ public static class MalumCheats
             ForcePlayAnimation((byte)TaskTypes.PrimeShields);
             CheatToggles.animShields = false;
         }
-        else if (CheatToggles.animAsteroids)
+        if (CheatToggles.animAsteroids)
         {
             ForcePlayAnimation((byte)TaskTypes.ClearAsteroids);
         }
-        else if (CheatToggles.animEmptyGarbage)
+        if (CheatToggles.animEmptyGarbage)
         {
             ForcePlayAnimation((byte)TaskTypes.EmptyGarbage);
             CheatToggles.animEmptyGarbage = false;
