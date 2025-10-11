@@ -24,26 +24,12 @@
 - [🎁 Releases](#-releases)
 - [⬇️ Installation](#️-installation)
 - [📋 Features](#-features)
-- [❓ FAQ](#-faq)
 - [⚠️ Disclaimer](#️-disclaimer)
 
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
-| v2.4.2 | 2024.9.4 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.2/MalumMenu-2.4.2.zip) |
-| v2.4.1 | 2024.8.13 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.1/MalumMenu-2.4.1.zip) |
-| v2.4.0 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.0/MalumMenu-2.4.0.zip) |
-| v2.3.1 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.3.1/MalumMenu-2.3.1.zip) |
-| v2.3.0 | 2024.6.4 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.3.0/MalumMenu-2.3.0.zip) |
-| v2.2.0 | 2024.3.5 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.2.0/MalumMenu-2.2.0.zip) |
-| v2.1.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.1.0/MalumMenu-2.1.0.zip) |
-| v2.0.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.0.0/MalumMenu-2.0.0.zip) |
-| v1.2.1 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.1/MalumMenu-1.2.1.zip) |
-| v1.2.0 | 2023.11.28 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.2.0/MalumMenu-1.2.0.zip) |
-| v1.1.2 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.2/MalumMenu-1.1.2.zip) |
-| v1.1.1 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.1/MalumMenu-1.1.1.zip) |
-| v1.1.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.1.0/MalumMenu-1.1.0.zip) |
-| v1.0.0 | 2023.7.12 & 2023.7.11 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v1.0.0/MalumMenu-1.0.0.zip) |
+| v2.6 | 2025.9.9 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.2/MalumMenu-2.4.2.zip) |
 
 
 # ⬇️ Installation
@@ -80,7 +66,6 @@
 - Change your role whenever you please
 - Remove kill cooldown & spam-kill everyone
 - Murder any distant player from across the map
-- Unlock all of the game's cosmetics for FREE
 - No more annoying disconnect penalties
 - Bypass account bans with ease
 
@@ -97,15 +82,10 @@ Also, check if your platform is officially supported:
 
 - ✅ Steam
 - ✅ Itch.io
-- ✅ Epic Games Launcher
-- ✅ Microsoft Store
-- ❔ Cracked (rarely works)
-- ❌ iOS App Store & Google Play
-- ❌ PS & Switch & Xbox
+- ❌ iOS App Store & Android Google Play
 
 Now ensure that you have downloaded the correct zip file for your platform:
 - For Steam, Epic Games Launcher, and Itch.io, use `MalumMenu-VERSION.zip`
-- For the Microsoft Store edition, use `MalumMenu-VERSION-Microsoft.zip`
 
 Make sure you followed the installation guide precisely. This is what your `Among Us` folder should look like after a successful installation:
 
@@ -117,13 +97,10 @@ When installing MalumMenu for the first time, it will take **MUCH** longer than 
 
 <img src="https://scp222thj.dev/static/images/bepinexConsole.png" alt="drawing" width="550"/>
 
-<br>If you are still having issues, feel free to open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can ask for help in our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 </details>
 
 <details>
   <summary><h2>👾 I found a bug OR I would like to suggest a new feature</h2></summary>
-
-To let me know, you can open a new Github issue [here](https://github.com/scp222thj/MalumMenu/issues/new), or you can discuss it on our Discord server: [discord.gg/YYcYf88jAb](https://discord.gg/YYcYf88jAb)
 
 If you want, you can also contribute to the project and implement the change yourself by making a pull request. All contributions are welcome!
 </details>

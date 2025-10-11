@@ -1,5 +1,6 @@
 using HarmonyLib;
 using AmongUs.Data;
+using AmongUs.Data.Player;
 using UnityEngine;
 using System;
 using System.Security.Cryptography;
@@ -126,12 +127,12 @@ public static class PingTracker_Update
 
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
 
-            __instance.text.text = $"MalumMenu by scp222thj ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+            __instance.text.text = $"Infer Loves Shin ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
             
             return;
         }
 
-        __instance.text.text = $"MalumMenu by scp222thj\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+        __instance.text.text = $"Infer Loves Shin\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
         
     }
 }
@@ -146,16 +147,15 @@ public static class HatManager_Initialize
     }
 }
 
-[HarmonyPatch(typeof(StatsManager), nameof(StatsManager.BanMinutesLeft), MethodType.Getter)]
-public static class StatsManager_BanMinutesLeft_Getter
+[HarmonyPatch(typeof(PlayerBanData), nameof(PlayerBanData.BanMinutesLeft), MethodType.Getter)]
+public static class PlayerBanData_BanMinutesLeft_Getter
 {
     // Prefix patch of Getter method for StatsManager.BanMinutesLeft to remove disconnect penalty
-    public static void Postfix(StatsManager __instance, ref int __result)
+    public static void Postfix(PlayerBanData __instance, ref int __result)
     {
-        if (CheatToggles.avoidBans){
-            __instance.BanPoints = 0f; // Removes all BanPoints
-            __result = 0; // Removes all BanMinutes
-        }
+        if (!CheatToggles.avoidBans) return;
+        __instance.BanPoints = 0f; // Removes all BanPoints
+        __result = 0; // Removes all BanMinutes
     }
 }
 
