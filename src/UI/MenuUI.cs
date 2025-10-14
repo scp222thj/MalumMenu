@@ -204,7 +204,8 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Open config file", () => false, x => Utils.OpenConfigFile()),
             new ToggleInfo(" Save settings to file", () => false, x => CheatToggles.SaveAllToFile()),
             new ToggleInfo(" Load settings from file", () => false, x => CheatToggles.LoadAllFromFile()),
-            new ToggleInfo(" RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)], []));
+            new ToggleInfo(" RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)
+        ], []));
     }
 
     private void Update(){

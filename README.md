@@ -36,6 +36,7 @@ For the lack of a better name, I call it **Astralum**.
 
 | Mod Version | Among Us - Version | Link                                  |
 |-------------|--------------------|---------------------------------------|
+| v2.6.1      | 2025.9.9 (17.0.0)  | [Download](../../releases/tag/v2.6.1) |
 | v2.5.3      | 2025.9.9 (17.0.0)  | [Download](../../releases/tag/v2.5.3) |
 | v2.5.2      | 2025.6.10 (16.1.0) | [Download](../../releases/tag/v2.5.2) |
 | v2.5.1      | 2025.6.10 (16.1.0) | [Download](../../releases/tag/v2.5.1) |
@@ -77,6 +78,7 @@ Changes from the original MalumMenu:
 - Added new Viper and Detective roles to "Set Fake Role" cheat (Roles category)
 - Added "Spoof Date to April 1st" (Passive category)
 - Added "Protect Player" PPM (Host-Only category)
+- Added "More Lobby Info" (ESP category)
 
 #### Other changes
 - Some refactoring and code style changes

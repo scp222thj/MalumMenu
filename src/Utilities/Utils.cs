@@ -419,6 +419,8 @@ public static class Utils
         var level = playerInfo.PlayerLevel + 1;
         var platform = "Unknown";
         try { platform = PlatformTypeToString(player.PlatformData.Platform); } catch { }
+        //var puid = player.ProductUserId;
+        //var friendcode = player.FriendCode;
         var roleColor = ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor);
 
         var hostString = player == host ? "Host - " : "";
@@ -489,9 +491,10 @@ public static class Utils
 
     // Show custom popup ingame
     // Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
-    public static void showPopup(string text){
+    public static void showPopup(string text)
+    {
         var popup = Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
-        
+
         var background = popup.transform.Find("Background").GetComponent<SpriteRenderer>();
         var size = background.size;
         size.x *= 2.5f;
@@ -499,6 +502,11 @@ public static class Utils
 
         popup.TextAreaTMP.fontSizeMin = 2;
         popup.Show(text);
+    }
+
+    public static void ShowNewPopup(string text)
+    {
+        DestroyableSingleton<DisconnectPopup>.Instance.ShowCustom(text);
     }
 
     // Load sprites and textures from manifest resources
