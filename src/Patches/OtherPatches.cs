@@ -3,7 +3,9 @@ using AmongUs.Data;
 using AmongUs.Data.Player;
 using UnityEngine;
 using System;
+using System.Linq;
 using System.Security.Cryptography;
+using InnerNet;
 
 namespace MalumMenu;
 
@@ -221,6 +223,12 @@ public static class Vent_CanUse
 [HarmonyPatch(typeof(AmongUsDateTime), nameof(AmongUsDateTime.UtcNow), MethodType.Getter)]
 public static class AmongUsDateTime_UtcNow
 {
+    /// <summary>
+    /// Prefix patch of AmongUsDateTime.UtcNow to spoof the date to April 2nd, 7:01 AM UTC.
+    /// This sets the map to dlekS ehT (The Skeld but flipped) when hosting a lobby.
+    /// </summary>
+    /// <param name="__result">Original return value of <c>DateTime</c>.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ref Il2CppSystem.DateTime __result)
     {
         if (!CheatToggles.spoofAprilFoolsDate) return true;
@@ -228,5 +236,47 @@ public static class AmongUsDateTime_UtcNow
         var managedDate = new DateTime(DateTime.UtcNow.Year, 4, 2, 7, 1, 0, DateTimeKind.Utc);
         __result = new Il2CppSystem.DateTime(managedDate.Ticks);
         return false;
+    }
+}
+
+// https://github.com/g0aty/SickoMenu/blob/main/hooks/LobbyBehaviour.cpp
+[HarmonyPatch(typeof(GameContainer), nameof(GameContainer.SetupGameInfo))]
+public static class GameContainer_SetupGameInfo
+{
+    /// <summary>
+    /// Show more information when finding a game:
+    /// host name (e.g. Astral), lobby code (e.g. KLHCEG), host platform (e.g. Epic), and lobby age in minutes (e.g. 4:20)
+    /// </summary>
+    /// <param name="__instance">The <c>GameContainer</c> instance.</param>
+    public static void Postfix(GameContainer __instance)
+    {
+        if (!CheatToggles.moreLobbyInfo) return;
+
+        var trueHostName = __instance.gameListing.TrueHostName;
+
+        // The Crewmate icon gets aligned properly with this
+        const string separator = "<#0000>000000000000000</color>";
+
+        var age = __instance.gameListing.Age;
+        var lobbyTime = $"Age: {age / 60}:{(age % 60 < 10 ? "0" : "")}{age % 60}";
+
+        var platformId = __instance.gameListing.Platform switch
+        {
+            Platforms.StandaloneEpicPC => "Epic",
+            Platforms.StandaloneSteamPC => "Steam",
+            Platforms.StandaloneMac => "Mac",
+            Platforms.StandaloneWin10 => "Microsoft Store",
+            Platforms.StandaloneItch => "Itch.io",
+            Platforms.IPhone => "iPhone / iPad",
+            Platforms.Android => "Android",
+            Platforms.Switch => "Nintendo Switch",
+            Platforms.Xbox => "Xbox",
+            Platforms.Playstation => "PlayStation",
+            _ => "Unknown"
+        };
+        // Set the text of the capacity field to include the new information
+        __instance.capacity.text = $"<size=40%>{separator}\n{trueHostName}\n{__instance.capacity.text}\n" +
+                                   $"<#fb0>{GameCode.IntToGameName(__instance.gameListing.GameId)}</color>\n" +
+                                   $"<#b0f>{platformId}</color>\n{lobbyTime}\n{separator}</size>";
     }
 }

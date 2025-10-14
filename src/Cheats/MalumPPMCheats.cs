@@ -191,7 +191,7 @@ public static class MalumPPMCheats
                     var targetPlayer = PlayerPickMenu.targetPlayerData.Object;
                     if (targetPlayer != null)
                     {
-                        int protectColorId = 0;
+                        int protectColorId = PlayerControl.LocalPlayer.cosmetics.ColorId;
                         PlayerControl.LocalPlayer.RpcProtectPlayer(targetPlayer, protectColorId);
                     }
                 }));
