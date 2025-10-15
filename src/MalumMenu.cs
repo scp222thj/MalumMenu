@@ -16,7 +16,7 @@ public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
     public static string malumVersion = "2.6.1";
-    public static List<string> supportedAU = ["2025.3.25", "2025.3.31", "2025.6.10", "2025.9.9"];
+    public static List<string> supportedAU = ["2025.3.25", "2025.3.31", "2025.6.10", "2025.9.9", "2025.10.14"];
     public static MenuUI menuUI;
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
@@ -99,7 +99,7 @@ public partial class MalumMenu : BasePlugin
 
                 //Warn about unsupported AU versions
                 if (!supportedAU.Contains(Application.version)){
-                    Utils.showPopup("\nThis version of MalumMenu and this version of Among Us are incompatible\n\nInstall the right version to avoid problems");
+                    //Utils.showPopup("\nThis version of MalumMenu and this version of Among Us are incompatible\n\nInstall the right version to avoid problems");
                 }
             }
         }));

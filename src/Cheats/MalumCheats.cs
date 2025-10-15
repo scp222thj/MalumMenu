@@ -168,12 +168,13 @@ public static class MalumCheats
         byte currentMapID = Utils.getCurrentMapID();
 
         // Handle all sabotage systems
-        MalumSabotageSystem.handleReactor(shipStatus, currentMapID);
-        MalumSabotageSystem.handleOxygen(shipStatus, currentMapID);
-        MalumSabotageSystem.handleComms(shipStatus, currentMapID);
-        MalumSabotageSystem.handleElectrical(shipStatus, currentMapID);
-        MalumSabotageSystem.handleMushMix(shipStatus, currentMapID);
-        MalumSabotageSystem.handleDoors(shipStatus);
+        MalumSabotageSystem.HandleReactor(shipStatus, currentMapID);
+        MalumSabotageSystem.HandleOxygen(shipStatus, currentMapID);
+        MalumSabotageSystem.HandleComms(shipStatus, currentMapID);
+        MalumSabotageSystem.HandleElectrical(shipStatus, currentMapID);
+        MalumSabotageSystem.HandleMushMix(shipStatus, currentMapID);
+        MalumSabotageSystem.HandleDoors(shipStatus);
+        MalumSabotageSystem.OpenSabotageMap();
     }
 
     public static void walkInVentCheat()

@@ -79,6 +79,7 @@ Changes from the original MalumMenu:
 - Added "Spoof Date to April 1st" (Passive category)
 - Added "Protect Player" PPM (Host-Only category)
 - Added "More Lobby Info" (ESP category)
+- Added "Open Sabotage Map" (Ship category)
 
 #### Other changes
 - Some refactoring and code style changes
