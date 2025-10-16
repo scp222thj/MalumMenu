@@ -308,14 +308,13 @@ public static class MalumCheats
             // If the speedBoost cheat is enabled, the default speed is multiplied by the speed multiplier
             // Otherwise the default speed is used by itself
 
-            float newSpeed = CheatToggles.speedBoost ? defaultSpeed * speedMultiplier : defaultSpeed;
+            var newSpeed = CheatToggles.speedBoost ? defaultSpeed * speedMultiplier : defaultSpeed;
 
-            float newGhostSpeed = CheatToggles.speedBoost ? defaultGhostSpeed * speedMultiplier : defaultGhostSpeed;
+            var newGhostSpeed = CheatToggles.speedBoost ? defaultGhostSpeed * speedMultiplier : defaultGhostSpeed;
 
             PlayerControl.LocalPlayer.MyPhysics.Speed = newSpeed;
             PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = newGhostSpeed;
-        }
-        catch{}
+        }catch{}
     }
 
     public static void ReviveCheat()
@@ -330,7 +329,7 @@ public static class MalumCheats
 
     private static void ForceSetScanner(PlayerControl player, bool toggle)
     {
-        byte count = ++player.scannerCount;
+        var count = ++player.scannerCount;
         player.SetScanner(toggle, count);
         RpcSetScannerMessage rpcMessage = new(player.NetId, toggle, count);
         AmongUsClient.Instance.LateBroadcastReliableMessage(Unsafe.As<IGameDataMessage>(rpcMessage));
@@ -364,25 +363,44 @@ public static class MalumCheats
 
     public static void AnimationCheat()
     {
+        var map = (MapNames)Utils.getCurrentMapID();
+
         if (CheatToggles.animShields)
         {
-            ForcePlayAnimation((byte)TaskTypes.PrimeShields);
+            if (map is MapNames.Skeld or MapNames.Dleks)
+            {
+                ForcePlayAnimation((byte)TaskTypes.PrimeShields);
+            }
             CheatToggles.animShields = false;
         }
         if (CheatToggles.animAsteroids)
         {
-            ForcePlayAnimation((byte)TaskTypes.ClearAsteroids);
+            if (map is MapNames.Skeld or MapNames.Dleks or MapNames.Polus)
+            {
+                ForcePlayAnimation((byte)TaskTypes.ClearAsteroids);
+            }
+            else
+            {
+                CheatToggles.animAsteroids = false;
+            }
         }
         if (CheatToggles.animEmptyGarbage)
         {
-            ForcePlayAnimation((byte)TaskTypes.EmptyGarbage);
+            if (map is MapNames.Skeld or MapNames.Dleks)
+            {
+                ForcePlayAnimation((byte)TaskTypes.EmptyGarbage);
+            }
             CheatToggles.animEmptyGarbage = false;
         }
 
         if (CheatToggles.animCamsInUse && !_hasUsedCamsCheatBefore)
         {
             // There is no cameras on Mira HQ and Fungle
-            if (!(Utils.MiraHQIsActive || Utils.FungleIsActive))
+            if (map is MapNames.MiraHQ or MapNames.Fungle)
+            {
+                CheatToggles.animCamsInUse = false;
+            }
+            else
             {
                 // ShipStatus.Instance.UpdateSystem(SystemTypes.Security, PlayerControl.LocalPlayer, (byte)(CheatToggles.animCamsInUse ? 1 : 0));
                 ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Security, 1);
