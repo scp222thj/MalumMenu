@@ -62,7 +62,7 @@ public partial class MalumMenu : BasePlugin
         spoofPlatform = Config.Bind("MalumMenu.Spoofing",
                                 "Platform",
                                 "",
-                                "A custom gaming platform to display to others in online lobbies to hide your actual platform. List of supported platforms: https://skeld.js.org/enums/constant.Platform.html");
+                                "A custom gaming platform to display to others in online lobbies to hide your actual platform. List of supported platforms: https://skeld.js.org/enums/_skeldjs_constant.Platform.html");
 
         spoofDeviceId = Config.Bind("MalumMenu.Privacy",
                                 "HideDeviceId",
@@ -81,6 +81,7 @@ public partial class MalumMenu : BasePlugin
 
         menuUI = AddComponent<MenuUI>();
         // consoleUI = AddComponent<ConsoleUI>();
+        AddComponent<CheatToggles.KeybindListener>().Plugin = this;
 
         // Disable Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value){

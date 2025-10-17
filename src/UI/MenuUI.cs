@@ -202,9 +202,10 @@ public class MenuUI : MonoBehaviour
         ], []));
 
         groups.Add(new GroupInfo("Config", false, [
-            new ToggleInfo(" Open config file", () => false, x => Utils.OpenConfigFile()),
-            new ToggleInfo(" Save settings to file", () => false, x => CheatToggles.SaveAllToFile()),
-            new ToggleInfo(" Load settings from file", () => false, x => CheatToggles.LoadAllFromFile()),
+            new ToggleInfo(" Open plugin config", () => false, x => Utils.OpenConfigFile()),
+            new ToggleInfo(" Reload plugin config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
+            new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
+            new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
             new ToggleInfo(" RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)
         ], []));
     }

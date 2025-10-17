@@ -74,7 +74,7 @@ Changes from the original MalumMenu:
 - Added new "Animations" category
 - Added "Panic (Disable MalumMenu)" button (Passive category)
 - Added "Show Player Info" (ESP category)
-- Added "Save settings to file" and "Load settings from file" buttons (Config category)
+- Added "Reload plugin config", "Save to Profile" and "Load from Profile" buttons (Config category)
 - Added new Viper and Detective roles to "Set Fake Role" cheat (Roles category)
 - Added "Spoof Date to April 1st" (Passive category)
 - Added "Protect Player" PPM (Host-Only category)
