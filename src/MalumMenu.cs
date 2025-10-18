@@ -21,6 +21,7 @@ public partial class MalumMenu : BasePlugin
     // public static ConsoleUI consoleUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
+    public static ConfigEntry<bool> useHorizontalUI;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
     public static ConfigEntry<bool> spoofDeviceId;
@@ -43,6 +44,11 @@ public partial class MalumMenu : BasePlugin
                                 "Color",
                                 "",
                                 "A custom color for your MalumMenu GUI. Supports html color codes");
+
+        useHorizontalUI = Config.Bind("MalumMenu.GUI",
+                                "UseHorizontalUI",
+                                false,
+                                "When enabled, use the (new) horizontal tab-based UI instead of the vertical one.");
 
         guestMode = Config.Bind("MalumMenu.GuestMode",
                                 "GuestMode",

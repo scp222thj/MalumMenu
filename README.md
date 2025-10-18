@@ -80,6 +80,7 @@ Changes from the original MalumMenu:
 - Added "Protect Player" PPM (Host-Only category)
 - Added "More Lobby Info" (ESP category)
 - Added "Open Sabotage Map" (Ship category)
+- Added a new horizontal tab-based UI config option
 
 #### Other changes
 - Some refactoring and code style changes

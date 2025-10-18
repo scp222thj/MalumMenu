@@ -9,9 +9,16 @@ public class MenuUI : MonoBehaviour
 
     public List<GroupInfo> groups = [];
     private bool isDragging = false;
-    private Rect windowRect = new Rect(10, 10, 300, 500);
+    private Rect windowRect = new(10, 10, 300, 500);
+    private Rect horizontalWindowRect = new(10, 10, 700, 550);
     private bool isGUIActive = false;
+    public int selectedTab;
+
+    // Styles
     private GUIStyle submenuButtonStyle;
+    public GUIStyle tabTitleStyle;
+    public GUIStyle tabSubtitleStyle;
+    public GUIStyle separatorStyle;
     private float hue; // For RGB mode
 
     // Create all groups (buttons) and their toggles on start
@@ -210,6 +217,52 @@ public class MenuUI : MonoBehaviour
         ], []));
     }
 
+    public void InitStyles()
+    {
+        if (!MalumMenu.useHorizontalUI.Value && GUI.skin.toggle.fontSize == 0)
+        {
+            //Debug.Log($"current style: {GUI.skin.button.fontSize}, {GUI.skin.toggle.fontSize}, {GUI.skin.button.normal.textColor}, {GUI.skin.button.normal.background}");
+
+            GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = 20;
+        }
+        else if (MalumMenu.useHorizontalUI.Value && GUI.skin.toggle.fontSize != 0)
+        {
+            GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = 0;
+        }
+
+        if (submenuButtonStyle != null) return;
+
+        submenuButtonStyle = new GUIStyle(GUI.skin.button)
+        {
+            normal = { textColor = Color.white, background = Texture2D.grayTexture },
+            fontSize = 18
+        };
+        submenuButtonStyle.normal.background.Apply();
+
+        tabTitleStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 20,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleLeft,
+        };
+
+        tabSubtitleStyle = new GUIStyle(GUI.skin.label)
+        {
+            fontSize = 15,
+            fontStyle = FontStyle.Bold,
+            alignment = TextAnchor.MiddleLeft,
+        };
+
+        // Style for the vertical separator line between tab selector buttons and the actual tab content
+        separatorStyle = new GUIStyle(GUI.skin.box)
+        {
+            normal = { background = Texture2D.whiteTexture },
+            margin = new RectOffset { top = 4, bottom = 4 },
+            padding = new RectOffset(),
+            border = new RectOffset()
+        };
+    }
+
     private void Update(){
 
         if (Input.GetKeyDown(Utils.stringToKeycode(MalumMenu.menuKeybind.Value)))
@@ -220,6 +273,7 @@ public class MenuUI : MonoBehaviour
             //Also teleport the window to the mouse for immediate use
             Vector2 mousePosition = Input.mousePosition;
             windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+            horizontalWindowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
         }
 
         if (CheatToggles.RGBMode)
@@ -255,24 +309,12 @@ public class MenuUI : MonoBehaviour
 
         if (!isGUIActive || CheatToggles.isPanicked) return;
 
-        if (submenuButtonStyle == null)
-        {
-            submenuButtonStyle = new GUIStyle(GUI.skin.button);
+        InitStyles();
 
-            submenuButtonStyle.normal.textColor = Color.white;
-
-            submenuButtonStyle.fontSize = 18;
-            GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = 20;
-
-            submenuButtonStyle.normal.background = Texture2D.grayTexture;
-            submenuButtonStyle.normal.background.Apply();
-        }
-
-        //Only change the window height while the user is not dragging it
-        //Or else dragging breaks
+        // Only change the window height while the user is not dragging it, or else dragging breaks
         if (!isDragging)
         {
-            int windowHeight = CalculateWindowHeight();
+            var windowHeight = CalculateWindowHeight();
             windowRect.height = windowHeight;
         }
 
@@ -282,11 +324,9 @@ public class MenuUI : MonoBehaviour
         }
         else
         {
-            Color uiColor;
+            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
 
-            string configHtmlColor = MalumMenu.menuHtmlColor.Value;
-
-            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out uiColor))
+            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
             {
                 if (!configHtmlColor.StartsWith("#"))
                 {
@@ -302,7 +342,14 @@ public class MenuUI : MonoBehaviour
             }
         }
 
-        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        if (MalumMenu.useHorizontalUI.Value)
+        {
+            horizontalWindowRect = GUI.Window(0, horizontalWindowRect, (GUI.WindowFunction)HorizontalWindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        }
+        else
+        {
+            windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        }
     }
 
     public void WindowFunction(int windowID)
@@ -368,15 +415,12 @@ public class MenuUI : MonoBehaviour
             }
         }
 
-        if (Event.current.type == EventType.MouseDrag)
+        isDragging = Event.current.type switch
         {
-            isDragging = true;
-        }
-
-        if (Event.current.type == EventType.MouseUp)
-        {
-            isDragging = false;
-        }
+            EventType.MouseDrag => true,
+            EventType.MouseUp => false,
+            _ => isDragging
+        };
 
         GUI.DragWindow(); //Allows dragging the GUI window with mouse
     }
@@ -433,6 +477,100 @@ public class MenuUI : MonoBehaviour
             var submenu = group.submenus[i];
             submenu.isExpanded = false;
             group.submenus[i] = submenu;
+        }
+    }
+
+    public void HorizontalWindowFunction(int windowID)
+    {
+        GUILayout.BeginHorizontal();
+
+        // Left tab selector (10% width)
+        GUILayout.BeginVertical(GUILayout.Width(750f * 0.15f));
+        for (var i = 0; i < groups.Count; i++)
+        {
+            if (GUILayout.Button(groups[i].name, GUILayout.Height(40)))
+                selectedTab = i;
+        }
+        GUILayout.EndVertical();
+
+        // Invisible vertical separator line to create some space between the tab selector and the content
+        GUILayout.Box("", separatorStyle, GUILayout.Width(1f), GUILayout.ExpandHeight(true));
+        GUILayout.Box("", GUIStyle.none, GUILayout.Width(10f), GUILayout.ExpandHeight(true));
+
+        // Right tab content and controls (90% width)
+        GUILayout.BeginVertical(GUILayout.Width(750f * 0.85f));
+
+        // Tab-specific content
+        if (selectedTab >= 0 && selectedTab < groups.Count)
+        {
+            GUILayout.Label(groups[selectedTab].name, tabTitleStyle);
+            HorizontalDrawContent(selectedTab);
+        }
+
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+
+        // Make the window draggable
+        GUI.DragWindow();
+    }
+
+    public void HorizontalDrawContent(int groupId)
+    {
+        var group = groups[groupId];
+
+        var count = group.submenus.Count;
+        if (count == 0)
+        {
+            HorizontalDrawToggles(group.toggles);
+            return;
+        }
+
+        GUILayout.BeginHorizontal();
+        GUILayout.BeginVertical();
+
+        HorizontalDrawToggles(group.toggles);
+
+        // Calculate total amount of toggles in current group
+        var totalToggles = group.submenus.Sum(submenu => submenu.toggles.Count) + group.toggles.Count;
+
+        // Set maxPerColumn based on totalToggles
+        var maxPerColumn = totalToggles > 15 ? 2 : 3;
+
+        var mid = Mathf.Min(maxPerColumn, count);
+
+        // Left column: first 3 submenus
+        var leftSubmenus = group.submenus.GetRange(0, mid);
+        foreach (var submenu in leftSubmenus)
+        {
+            GUILayout.Label(submenu.name, tabSubtitleStyle, GUILayout.Height(30));
+            HorizontalDrawToggles(submenu.toggles);
+        }
+        GUILayout.EndVertical();
+
+        // Right column: remaining submenus (if any)
+        GUILayout.BeginVertical();
+        if (count > mid)
+        {
+            var rightSubmenus = group.submenus.GetRange(mid, count - mid);
+            foreach (var submenu in rightSubmenus)
+            {
+                GUILayout.Label(submenu.name, tabSubtitleStyle, GUILayout.Height(30));
+                HorizontalDrawToggles(submenu.toggles);
+            }
+        }
+
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+    }
+
+    public void HorizontalDrawToggles(List<ToggleInfo> toggles)
+    {
+        foreach (var toggle in toggles)
+        {
+            var currentState = toggle.getState();
+            var newState = GUILayout.Toggle(currentState, toggle.label, GUILayout.Height(20));
+            if (newState != currentState)
+                toggle.setState(newState);
         }
     }
 }

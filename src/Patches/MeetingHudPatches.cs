@@ -51,10 +51,11 @@ public static class MeetingHud_Update
                 }
             }
 
-            /*if (__instance.SkippedVoting)
+            // This is required to see who skipped the voting
+            if (__instance.SkippedVoting)
             {
                 __instance.SkippedVoting.SetActive(CheatToggles.revealVotes);
-            }*/
+            }
         }
     }
 
