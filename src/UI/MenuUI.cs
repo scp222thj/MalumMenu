@@ -179,7 +179,7 @@ public class MenuUI : MonoBehaviour
             [
                 new SubmenuInfo("Murder", false, [
                     new ToggleInfo(" Kill Player", () => CheatToggles.killPlayer, x => CheatToggles.killPlayer = x),
-                    //new ToggleInfo(" Telekill Player", () => CheatToggles.telekillPlayer, x => CheatToggles.telekillPlayer = x),
+                    new ToggleInfo(" Telekill Player", () => CheatToggles.telekillPlayer, x => CheatToggles.telekillPlayer = x),
                     new ToggleInfo(" Kill All Crewmates", () => CheatToggles.killAllCrew,
                         x => CheatToggles.killAllCrew = x),
 

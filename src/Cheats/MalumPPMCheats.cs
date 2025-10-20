@@ -1,4 +1,5 @@
 using Il2CppSystem.Collections.Generic;
+using BepInEx.Unity.IL2CPP.Utils;
 using System;
 using AmongUs.GameOptions;
 using UnityEngine;
@@ -13,8 +14,6 @@ public static class MalumPPMCheats
     public static bool protectPlayerActive;
     public static bool reportBodyActive;
     public static bool changeRoleActive;
-    public static float teleKillWaitFrames = -1;
-    public static Vector2 teleKillPosition;
     public static RoleTypes? oldRole = null;
 
     public static void reportBodyPPM(){
@@ -112,9 +111,9 @@ public static class MalumPPMCheats
                 // Player pick menu made for killing any player by sending a successful MurderPlayer RPC call
                 PlayerPickMenu.openPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
                 {
-                    teleKillPosition = PlayerControl.LocalPlayer.GetTruePosition();
+                    var oldPos = PlayerControl.LocalPlayer.GetTruePosition();
                     Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
-                    teleKillWaitFrames = 40;
+                    AmongUsClient.Instance.StartCoroutine(DelayedTeleportBack(oldPos));
                 }));
 
                 telekillPlayerActive = true;
@@ -129,6 +128,17 @@ public static class MalumPPMCheats
         {
             telekillPlayerActive = false;
         }
+    }
+
+    /// <summary>
+    /// Coroutine to teleport the LocalPlayer back to their original position after a short delay.
+    /// </summary>
+    /// <param name="position">The position to teleport back to.</param>
+    /// <returns>An IEnumerator for the coroutine.</returns>
+    public static System.Collections.IEnumerator DelayedTeleportBack(Vector2 position)
+    {
+        yield return new WaitForSeconds(0.15f);
+        PlayerControl.LocalPlayer.NetTransform.SnapTo(position);
     }
 
     public static void teleportPlayerPPM()

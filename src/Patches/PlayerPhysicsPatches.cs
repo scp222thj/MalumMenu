@@ -25,17 +25,10 @@ public static class PlayerPhysics_LateUpdate
 
         MalumPPMCheats.spectatePPM();
         MalumPPMCheats.killPlayerPPM();
-        //MalumPPMCheats.telekillPlayerPPM();
+        MalumPPMCheats.telekillPlayerPPM();
         MalumPPMCheats.teleportPlayerPPM();
         MalumPPMCheats.ProtectPlayerPPM();
         MalumPPMCheats.changeRolePPM();
-
-        //if (MalumPPMCheats.teleKillWaitFrames == 0){
-        //    KillAnimation.SetMovement(PlayerControl.LocalPlayer, true);
-        //    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(MalumPPMCheats.teleKillPosition);
-        //}
-
-        //MalumPPMCheats.teleKillWaitFrames--;
 
         TracersHandler.drawPlayerTracer(__instance);
 

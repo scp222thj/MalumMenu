@@ -65,6 +65,7 @@ Changes from the original MalumMenu:
 - Fix killing as impostor kicking you from the lobby
 - Fix detecting if the player is the lobby host
 - Fix not being able to input russian characters (and possibly others) in chat
+- Fix and enable previously implemented but disabled Telekill cheat
 
 #### Additions
 - Added option to disable passives cheats (basically [this PR](https://github.com/scp222thj/MalumMenu/pull/164))
