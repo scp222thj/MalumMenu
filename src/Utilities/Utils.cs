@@ -315,6 +315,14 @@ public static class Utils
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
     }
 
+    // Get a list of all rooms that have doors
+    public static System.Collections.Generic.List<SystemTypes> GetDoorRooms()
+    {
+        if (!isShip || ShipStatus.Instance.AllDoors.Count <= 0) return [];
+
+        return ShipStatus.Instance.AllDoors.Select(d => d.Room).Distinct().ToList();
+    }
+
     // Fancy colored ping text
     public static string getColoredPingText(int ping){
 

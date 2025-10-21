@@ -82,6 +82,7 @@ Changes from the original MalumMenu:
 - Added "More Lobby Info" (ESP category)
 - Added "Open Sabotage Map" (Ship category)
 - Added a new horizontal tab-based UI config option
+- Added "Doors" submenu to close doors of each room individually (Ship category)
 
 #### Other changes
 - Some refactoring and code style changes
