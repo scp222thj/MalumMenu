@@ -484,8 +484,8 @@ public class MenuUI : MonoBehaviour
     {
         GUILayout.BeginHorizontal();
 
-        // Left tab selector (10% width)
-        GUILayout.BeginVertical(GUILayout.Width(750f * 0.15f));
+        // Left tab selector (15% width)
+        GUILayout.BeginVertical(GUILayout.Width(horizontalWindowRect.width * 0.15f));
         for (var i = 0; i < groups.Count; i++)
         {
             if (GUILayout.Button(groups[i].name, GUILayout.Height(40)))
@@ -497,8 +497,8 @@ public class MenuUI : MonoBehaviour
         GUILayout.Box("", separatorStyle, GUILayout.Width(1f), GUILayout.ExpandHeight(true));
         GUILayout.Box("", GUIStyle.none, GUILayout.Width(10f), GUILayout.ExpandHeight(true));
 
-        // Right tab content and controls (90% width)
-        GUILayout.BeginVertical(GUILayout.Width(750f * 0.85f));
+        // Right tab content and controls (85% width)
+        GUILayout.BeginVertical(GUILayout.Width(horizontalWindowRect.width * 0.85f));
 
         // Tab-specific content
         if (selectedTab >= 0 && selectedTab < groups.Count)
@@ -514,6 +514,29 @@ public class MenuUI : MonoBehaviour
         GUI.DragWindow();
     }
 
+    /// <summary>
+    /// Gets the hardcoded number of left column submenus for each tab
+    /// </summary>
+    /// <param name="groupId">The group (tab) index</param>
+    /// <returns>The number of left column submenus</returns>
+    private int GetLeftSubmenuCount(int groupId)
+    {
+        var name = groups[groupId].name;
+        return name switch
+        {
+            "Player" => 1,
+            "ESP" => 2,
+            "Roles" => 4,
+            "Ship" => 1,
+            "Chat" => 1,
+            "Host-Only" => 2,
+            "Passive" => 1,
+            "Animations" => 1,
+            "Config" => 1,
+            _ => 2
+        };
+    }
+
     public void HorizontalDrawContent(int groupId)
     {
         var group = groups[groupId];
@@ -526,20 +549,15 @@ public class MenuUI : MonoBehaviour
         }
 
         GUILayout.BeginHorizontal();
-        GUILayout.BeginVertical();
+        GUILayout.BeginVertical(GUILayout.Width(horizontalWindowRect.width * 0.425f));
 
         HorizontalDrawToggles(group.toggles);
 
-        // Calculate total amount of toggles in current group
-        var totalToggles = group.submenus.Sum(submenu => submenu.toggles.Count) + group.toggles.Count;
+        var desiredLeft = GetLeftSubmenuCount(groupId);
+        var leftCount = Mathf.Clamp(desiredLeft, 0, count);
 
-        // Set maxPerColumn based on totalToggles
-        var maxPerColumn = totalToggles > 15 ? 2 : 3;
-
-        var mid = Mathf.Min(maxPerColumn, count);
-
-        // Left column: first 3 submenus
-        var leftSubmenus = group.submenus.GetRange(0, mid);
+        // Left column submenus
+        var leftSubmenus = group.submenus.GetRange(0, leftCount);
         foreach (var submenu in leftSubmenus)
         {
             GUILayout.Label(submenu.name, tabSubtitleStyle, GUILayout.Height(30));
@@ -547,11 +565,11 @@ public class MenuUI : MonoBehaviour
         }
         GUILayout.EndVertical();
 
-        // Right column: remaining submenus (if any)
+        // Right column submenus (if any)
         GUILayout.BeginVertical();
-        if (count > mid)
+        if (count > leftCount)
         {
-            var rightSubmenus = group.submenus.GetRange(mid, count - mid);
+            var rightSubmenus = group.submenus.GetRange(leftCount, count - leftCount);
             foreach (var submenu in rightSubmenus)
             {
                 GUILayout.Label(submenu.name, tabSubtitleStyle, GUILayout.Height(30));
