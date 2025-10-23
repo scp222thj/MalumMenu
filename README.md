@@ -83,6 +83,8 @@ Changes from the original MalumMenu:
 - Added "Open Sabotage Map" (Ship category)
 - Added a new horizontal tab-based UI config option
 - Added "Doors" submenu to close doors of each room individually (Ship category)
+- Changed "SpeedHack" to be a slider instead of a toggle (Player category)
+- Added "Invert Controls" (Player category)
 
 #### Other changes
 - Some refactoring and code style changes

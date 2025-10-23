@@ -19,6 +19,7 @@ public struct CheatToggles
     public static bool killAllImps;
     public static bool revive;
     public static bool protectPlayer;
+    public static bool invertControls;
 
     //Roles
     public static bool changeRole;

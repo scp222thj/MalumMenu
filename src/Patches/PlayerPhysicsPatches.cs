@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using UnityEngine;
 
@@ -13,7 +14,6 @@ public static class PlayerPhysics_LateUpdate
         MalumESP.seeGhostsCheat(__instance);
 
         MalumCheats.noClipCheat();
-        MalumCheats.speedBoostCheat();
         MalumCheats.ReviveCheat();
         MalumCheats.killAllCheat();
         MalumCheats.killAllCrewCheat();
@@ -43,5 +43,20 @@ public static class PlayerPhysics_LateUpdate
                 }
             }
         }
+
+        try
+        {
+            if (CheatToggles.invertControls)
+            {
+                PlayerControl.LocalPlayer.MyPhysics.Speed = -Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed);
+                PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = -Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed);
+            }
+            else
+            {
+                PlayerControl.LocalPlayer.MyPhysics.Speed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed);
+                PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed);
+            }
+        }catch (NullReferenceException) {}
+
     }
 }

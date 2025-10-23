@@ -41,6 +41,39 @@ public static class Utils
     public static bool AirshipIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Airship;
     public static bool FungleIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Fungle;
 
+    public const float DefaultSpeed = 2.5f;
+    public const float DefaultGhostSpeed = 3f;
+
+    /// <summary>
+    /// Check if LocalPlayer's speed is the default
+    /// </summary>
+    /// <param name="forGhost">Check ghost speed instead of normal speed</param>
+    /// <returns>True if speed is the default, false otherwise</returns>
+    public static bool isSpeedDefault(bool forGhost = false)
+    {
+        return forGhost ? Mathf.Approximately(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed, DefaultGhostSpeed) :
+            Mathf.Approximately(PlayerControl.LocalPlayer.MyPhysics.Speed, DefaultSpeed);
+    }
+
+    /// <summary>
+    /// Snap LocalPlayer's speed to the default if within snapRange
+    /// </summary>
+    /// <param name="snapRange">The range within which to snap the speed</param>
+    /// <param name="forGhost">Snap ghost speed instead of normal speed</param>
+    public static void snapSpeedToDefault(float snapRange, bool forGhost = false)
+    {
+        if (forGhost)
+        {
+            PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed - DefaultGhostSpeed)
+                                                             < snapRange ? DefaultGhostSpeed : PlayerControl.LocalPlayer.MyPhysics.GhostSpeed;
+        }
+        else
+        {
+            PlayerControl.LocalPlayer.MyPhysics.Speed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed - DefaultSpeed)
+                                                        < snapRange ? DefaultSpeed : PlayerControl.LocalPlayer.MyPhysics.Speed;
+        }
+    }
+
     //Get ClientData by PlayerControl
     public static ClientData getClientByPlayer(PlayerControl player)
     {

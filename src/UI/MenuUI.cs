@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,8 @@ public class MenuUI : MonoBehaviour
     {
         groups.Add(new GroupInfo("Player", false, [
             new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
-            new ToggleInfo(" SpeedHack", () => CheatToggles.speedBoost, x => CheatToggles.speedBoost = x),
-            new ToggleInfo(" Fake Revive", () => CheatToggles.revive, x => CheatToggles.revive = x)
+            new ToggleInfo(" Fake Revive", () => CheatToggles.revive, x => CheatToggles.revive = x),
+            new ToggleInfo(" Invert Controls", () => CheatToggles.invertControls, x => CheatToggles.invertControls = x)
         ], [
             new SubmenuInfo("Teleport", false, [
                 new ToggleInfo(" to Cursor", () => CheatToggles.teleportCursor, x => CheatToggles.teleportCursor = x),
@@ -387,6 +388,27 @@ public class MenuUI : MonoBehaviour
                 currentYPosition += toggleSpacing;
             }
 
+            if (group.name == "Player")
+            {
+                try
+                {
+                    if (PlayerControl.LocalPlayer.Data.IsDead)
+                    {
+                        PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = GUI.HorizontalSlider(new Rect(20, currentYPosition, 250, 30), PlayerControl.LocalPlayer.MyPhysics.GhostSpeed, 0f, 20f);
+                        Utils.snapSpeedToDefault(0.05f, true);
+                        GUI.Label(new Rect(20, currentYPosition + 10, 250, 20), $"Current Speed: {PlayerControl.LocalPlayer?.MyPhysics.GhostSpeed} {(Utils.isSpeedDefault(true) ? "(Default)" : "")}");
+                        currentYPosition += toggleSpacing;
+                    }
+                    else
+                    {
+                        PlayerControl.LocalPlayer.MyPhysics.Speed = GUI.HorizontalSlider(new Rect(20, currentYPosition, 250, 30), PlayerControl.LocalPlayer.MyPhysics.Speed, 0f, 20f);
+                        Utils.snapSpeedToDefault(0.05f);
+                        GUI.Label(new Rect(20, currentYPosition + 10, 250, 20), $"Current Speed: {PlayerControl.LocalPlayer?.MyPhysics.Speed} {(Utils.isSpeedDefault() ? "(Default)" : "")}");
+                        currentYPosition += toggleSpacing;
+                    }
+                }catch (NullReferenceException) {}
+            }
+
             for (int submenuId = 0; submenuId < group.submenus.Count; submenuId++)
             {
                 var submenu = group.submenus[submenuId];
@@ -567,6 +589,25 @@ public class MenuUI : MonoBehaviour
         GUILayout.BeginVertical(GUILayout.Width(horizontalWindowRect.width * 0.425f));
 
         HorizontalDrawToggles(group.toggles);
+
+        if (group.name == "Player")
+        {
+            try
+            {
+                if (PlayerControl.LocalPlayer.Data.IsDead)
+                {
+                    PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = GUILayout.HorizontalSlider(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed, 0f, 20f, GUILayout.Width(250f));
+                    Utils.snapSpeedToDefault(0.05f, true);
+                    GUILayout.Label($"Current Speed: {PlayerControl.LocalPlayer?.MyPhysics.GhostSpeed} {(Utils.isSpeedDefault(true) ? "(Default)" : "")}");
+                }
+                else
+                {
+                    PlayerControl.LocalPlayer.MyPhysics.Speed = GUILayout.HorizontalSlider(PlayerControl.LocalPlayer.MyPhysics.Speed, 0f, 20f, GUILayout.Width(250f));
+                    Utils.snapSpeedToDefault(0.05f);
+                    GUILayout.Label($"Current Speed: {PlayerControl.LocalPlayer?.MyPhysics.Speed} {(Utils.isSpeedDefault() ? "(Default)" : "")}");
+                }
+            }catch (NullReferenceException) {}
+        }
 
         var desiredLeft = GetLeftSubmenuCount(groupId);
         var leftCount = Mathf.Clamp(desiredLeft, 0, count);

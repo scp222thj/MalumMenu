@@ -299,8 +299,6 @@ public static class MalumCheats
 
     public static void speedBoostCheat()
     {
-        const float defaultSpeed = 2.5f;
-        const float defaultGhostSpeed = 3f;
         const float speedMultiplier = 2.0f;
 
         try
@@ -308,9 +306,9 @@ public static class MalumCheats
             // If the speedBoost cheat is enabled, the default speed is multiplied by the speed multiplier
             // Otherwise the default speed is used by itself
 
-            var newSpeed = CheatToggles.speedBoost ? defaultSpeed * speedMultiplier : defaultSpeed;
+            var newSpeed = CheatToggles.speedBoost ? Utils.DefaultSpeed * speedMultiplier : Utils.DefaultSpeed;
 
-            var newGhostSpeed = CheatToggles.speedBoost ? defaultGhostSpeed * speedMultiplier : defaultGhostSpeed;
+            var newGhostSpeed = CheatToggles.speedBoost ? Utils.DefaultGhostSpeed * speedMultiplier : Utils.DefaultGhostSpeed;
 
             PlayerControl.LocalPlayer.MyPhysics.Speed = newSpeed;
             PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = newGhostSpeed;
