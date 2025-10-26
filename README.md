@@ -85,6 +85,7 @@ Changes from the original MalumMenu:
 - Added "Doors" submenu to close doors of each room individually (Ship category)
 - Changed "SpeedHack" to be a slider instead of a toggle (Player category)
 - Added "Invert Controls" (Player category)
+- Added "Meetings" submenu with "Skip Meeting" and "Eject Player" cheats (Host-Only category)
 
 #### Other changes
 - Some refactoring and code style changes

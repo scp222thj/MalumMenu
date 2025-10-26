@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using AmongUs.InnerNet.GameDataMessages;
 using Sentry.Internal.Extensions;
 using UnityEngine;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace MalumMenu;
 public static class MalumCheats
@@ -32,6 +33,18 @@ public static class MalumCheats
             
             CheatToggles.closeMeeting = false; // Button behaviour
         }
+    }
+
+    public static void skipMeetingCheat()
+    {
+        if (!CheatToggles.skipMeeting) return;
+
+        if (Utils.isMeeting)
+        {
+            MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), null, true);
+        }
+
+        CheatToggles.skipMeeting = false;
     }
 
     public static void noKillCdCheat(PlayerControl playerControl)

@@ -12,6 +12,7 @@ public struct CheatToggles
     public static bool teleportPlayer;
     public static bool teleportCursor;
     public static bool reportBody;
+    public static bool ejectPlayer;
     public static bool killPlayer;
     public static bool telekillPlayer;
     public static bool killAll;
@@ -93,6 +94,7 @@ public struct CheatToggles
     //public static bool godMode;
     //public static bool evilVote;
     //public static bool voteImmune;
+    public static bool skipMeeting;
     public static bool noOptionsLimits;
 
     //Passive
@@ -115,6 +117,7 @@ public struct CheatToggles
 
     public static void DisablePPMCheats(string variableToKeep)
     {
+        ejectPlayer = variableToKeep == "ejectPlayer" && ejectPlayer;
         reportBody = variableToKeep == "reportBody" && reportBody;
         killPlayer = variableToKeep == "killPlayer" && killPlayer;
         telekillPlayer = variableToKeep == "telekillPlayer" && telekillPlayer;
@@ -125,7 +128,7 @@ public struct CheatToggles
     }
 
     public static bool shouldPPMClose(){
-        return !changeRole && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !protectPlayer;
+        return !changeRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !protectPlayer;
     }
 
     /// <summary>

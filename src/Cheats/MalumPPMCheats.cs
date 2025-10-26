@@ -2,6 +2,7 @@ using Il2CppSystem.Collections.Generic;
 using BepInEx.Unity.IL2CPP.Utils;
 using System;
 using AmongUs.GameOptions;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -13,6 +14,7 @@ public static class MalumPPMCheats
     public static bool teleportPlayerActive;
     public static bool protectPlayerActive;
     public static bool reportBodyActive;
+    public static bool ejectPlayerActive;
     public static bool changeRoleActive;
     public static RoleTypes? oldRole = null;
 
@@ -47,6 +49,50 @@ public static class MalumPPMCheats
             if (reportBodyActive){
                 reportBodyActive = false;
             }
+        }
+    }
+
+    public static void ejectPlayerPPM()
+    {
+        if (CheatToggles.ejectPlayer)
+        {
+            if (!ejectPlayerActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("ejectPlayer");
+                }
+                if (!Utils.isMeeting)
+                {
+                    CheatToggles.ejectPlayer = false;
+                    return;
+                }
+
+                List<NetworkedPlayerInfo> val = new List<NetworkedPlayerInfo>();
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player.Data.IsDead && !player.Data.Disconnected)
+                    {
+                        val.Add(player.Data);
+                    }
+                }
+                PlayerPickMenu.openPlayerPickMenu(val, (Action)(() =>
+                {
+                    NetworkedPlayerInfo playerToEject = PlayerPickMenu.targetPlayerData;
+                    MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), playerToEject, false);
+                }));
+
+                ejectPlayerActive = true;
+            }
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.ejectPlayer = false;
+            }
+        }
+        else if (ejectPlayerActive)
+        {
+            ejectPlayerActive = false;
         }
     }
 
