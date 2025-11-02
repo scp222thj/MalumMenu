@@ -83,6 +83,7 @@ public struct CheatToggles
     public static bool reactorSab;
     public static bool oxygenSab;
     public static bool mushSab;
+    public static bool mushSpore;
 
     //Vents
     public static bool useVents;
@@ -95,6 +96,8 @@ public struct CheatToggles
     //public static bool evilVote;
     //public static bool voteImmune;
     public static bool skipMeeting;
+    public static bool forceStartGame;
+    public static bool noGameEnd;
     public static bool noOptionsLimits;
 
     //Passive

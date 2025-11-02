@@ -18,6 +18,7 @@ public static class PlayerPhysics_LateUpdate
         MalumCheats.killAllCheat();
         MalumCheats.killAllCrewCheat();
         MalumCheats.killAllImpsCheat();
+        MalumCheats.forceStartGameCheat();
         MalumCheats.teleportCursorCheat();
         MalumCheats.completeMyTasksCheat();
         MalumCheats.AnimationCheat();

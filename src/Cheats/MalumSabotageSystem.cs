@@ -214,7 +214,29 @@ public static class MalumSabotageSystem
             HudManager.Instance.Notifier.AddDisconnectMessage("Mushrooms not present on this map");
         }
 
+        // Repair (bugged)
+        // var mushSys = shipStatus.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
+        // mushSys.Deteriorate(mushSys.currentSecondsUntilHeal);
+
         CheatToggles.mushSab = false; //Button behaviour
+    }
+
+    public static void HandleSpores(FungleShipStatus shipStatus, byte mapId)
+    {
+        if (!CheatToggles.mushSpore) return;
+        if (mapId == 5)
+        {
+            foreach (var mushroom in shipStatus.sporeMushrooms.Values)
+            {
+                PlayerControl.LocalPlayer.CmdCheckSporeTrigger(mushroom);
+            }
+        }
+        else
+        {
+            HudManager.Instance.Notifier.AddDisconnectMessage("Mushrooms not present on this map");
+        }
+
+        CheatToggles.mushSpore = false;
     }
 
     public static void HandleDoors(ShipStatus shipStatus)

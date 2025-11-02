@@ -86,6 +86,8 @@ Changes from the original MalumMenu:
 - Changed "SpeedHack" to be a slider instead of a toggle (Player category)
 - Added "Invert Controls" (Player category)
 - Added "Meetings" submenu with "Skip Meeting" and "Eject Player" cheats (Host-Only category)
+- Added "Game State" submenu with "Force Start Game" and "No Game End" cheats (Host-Only category)
+- Added "Trigger Spores" (Ship category)
 
 #### Other changes
 - Some refactoring and code style changes

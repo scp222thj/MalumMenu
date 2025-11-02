@@ -47,6 +47,17 @@ public static class MalumCheats
         CheatToggles.skipMeeting = false;
     }
 
+    public static void forceStartGameCheat()
+    {
+        if (!CheatToggles.forceStartGame) return;
+        if (Utils.isHost && Utils.isLobby)
+        {
+            AmongUsClient.Instance.SendStartGame();
+        }
+
+        CheatToggles.forceStartGame = false;
+    }
+
     public static void noKillCdCheat(PlayerControl playerControl)
     {
         if (CheatToggles.zeroKillCd && playerControl.killTimer > 0f){
@@ -188,6 +199,13 @@ public static class MalumCheats
         MalumSabotageSystem.HandleMushMix(shipStatus, currentMapID);
         MalumSabotageSystem.HandleDoors(shipStatus);
         MalumSabotageSystem.OpenSabotageMap();
+    }
+
+    public static void fungleSabotageCheat(FungleShipStatus shipStatus)
+    {
+        var currentMapID = Utils.getCurrentMapID();
+
+        MalumSabotageSystem.HandleSpores(shipStatus, currentMapID);
     }
 
     public static void walkInVentCheat()

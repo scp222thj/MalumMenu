@@ -188,6 +188,60 @@ public static class InnerNet_InnerNetClient_JoinGame
     }
 }
 
+
+[HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
+public static class LogicGameFlowNormal_CheckEndCriteria
+{
+    public static bool Prefix()
+    {
+        return !CheatToggles.noGameEnd;
+    }
+}
+
+[HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.IsGameOverDueToDeath))]
+public static class LogicGameFlowNormal_IsGameOverDueToDeath
+{
+    public static void Postfix(ref bool __result)
+    {
+        if (CheatToggles.noGameEnd){
+            __result = false;
+        }
+
+    }
+}
+
+[HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
+public static class LogicGameFlowHnS_CheckEndCriteria
+{
+    public static bool Prefix()
+    {
+        return !CheatToggles.noGameEnd;
+    }
+}
+
+[HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.IsGameOverDueToDeath))]
+public static class LogicGameFlowHnS_IsGameOverDueToDeath
+{
+    public static void Postfix(ref bool __result)
+    {
+        if (CheatToggles.noGameEnd){
+            __result = false;
+        }
+
+    }
+}
+
+[HarmonyPatch(typeof(GameManager), nameof(GameManager.CheckTaskCompletion))]
+public static class GameManager_CheckTaskCompletion
+{
+    public static bool Prefix(ref bool __result)
+    {
+        if (!CheatToggles.noGameEnd) return true;
+        __result = false;
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(Mushroom), nameof(Mushroom.FixedUpdate))]
 public static class Mushroom_FixedUpdate
 {
