@@ -82,13 +82,13 @@ Changes from the original MalumMenu:
 - Added "More Lobby Info" (ESP category)
 - Added "Open Sabotage Map" (Ship category)
 - Added a new horizontal tab-based UI config option
-- Added "Doors" submenu to close doors of each room individually (Ship category)
 - Changed "SpeedHack" to be a slider instead of a toggle (Player category)
 - Added "Invert Controls" (Player category)
 - Added "Meetings" submenu with "Skip Meeting" and "Eject Player" cheats (Host-Only category)
 - Added "Game State" submenu with "Force Start Game" and "No Game End" cheats (Host-Only category, [#49](https://github.com/scp222thj/MalumMenu/pull/49))
 - Added "Trigger Spores" (Ship category, [#40](https://github.com/scp222thj/MalumMenu/pull/40))
 - Added "Auto-Open Doors On Use" (Ship category)
+- Added Doors Menu to close / open individual doors (Ship category)
 
 #### Other changes
 - Some refactoring and code style changes

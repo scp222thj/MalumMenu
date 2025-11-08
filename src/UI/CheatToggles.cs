@@ -76,7 +76,10 @@ public struct CheatToggles
     //Ship
     public static bool closeMeeting;
     public static bool sabotageMap;
-    public static bool doorsSab;
+    public static bool openAllDoors;
+    public static bool closeAllDoors;
+    public static bool spamOpenAllDoors;
+    public static bool spamCloseAllDoors;
     public static bool autoOpenDoorsOnUse;
     public static bool unfixableLights;
     public static bool commsSab;

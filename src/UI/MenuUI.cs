@@ -136,13 +136,10 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Oxygen", () => CheatToggles.oxygenSab, x => CheatToggles.oxygenSab = x),
                 new ToggleInfo(" Lights", () => CheatToggles.elecSab, x => CheatToggles.elecSab = x),
                 new ToggleInfo(" Comms", () => CheatToggles.commsSab, x => CheatToggles.commsSab = x),
+                new ToggleInfo(" Open Doors Menu", () => DoorsUI.isVisible, x =>DoorsUI.isVisible = x),
                 new ToggleInfo(" MushroomMixup", () => CheatToggles.mushSab, x => CheatToggles.mushSab = x),
                 new ToggleInfo(" Trigger Spores", () => CheatToggles.mushSpore, x => CheatToggles.mushSpore = x),
                 new ToggleInfo(" Open Sabotage Map", () => CheatToggles.sabotageMap, x => CheatToggles.sabotageMap = x)
-            ]),
-
-            new SubmenuInfo("Doors", false, [
-                new ToggleInfo(" Close All", () => CheatToggles.doorsSab, x => CheatToggles.doorsSab = x),
             ]),
 
             new SubmenuInfo("Vents", false, [
@@ -315,7 +312,7 @@ public class MenuUI : MonoBehaviour
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
         if(!Utils.isShip){
-            CheatToggles.revive = CheatToggles.sabotageMap = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.ejectPlayer = CheatToggles.closeMeeting = CheatToggles.skipMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.autoOpenDoorsOnUse = CheatToggles.mushSpore = CheatToggles.doorsSab = CheatToggles.animShields = CheatToggles.animAsteroids = CheatToggles.animEmptyGarbage = CheatToggles.animScan = CheatToggles.animCamsInUse = false;
+            CheatToggles.revive = CheatToggles.sabotageMap = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.ejectPlayer = CheatToggles.closeMeeting = CheatToggles.skipMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.closeAllDoors = CheatToggles.openAllDoors = CheatToggles.spamCloseAllDoors = CheatToggles.spamOpenAllDoors = CheatToggles.autoOpenDoorsOnUse = CheatToggles.mushSpore = CheatToggles.animShields = CheatToggles.animAsteroids = CheatToggles.animEmptyGarbage = CheatToggles.animScan = CheatToggles.animCamsInUse = false;
         }
     }
 
@@ -447,18 +444,6 @@ public class MenuUI : MonoBehaviour
                         toggle.setState(newState);
                     }
                     currentYPosition += toggleSpacing;
-                }
-
-                if (submenu.name == "Doors")
-                {
-                    foreach (var doorRoom in Utils.GetDoorRooms())
-                    {
-                        if (GUI.Toggle(new Rect(30, currentYPosition, 250, 30), false, $" Close {doorRoom.ToString()}"))
-                        {
-                            try { ShipStatus.Instance.RpcCloseDoorsOfType(doorRoom); } catch { }
-                        }
-                        currentYPosition += toggleSpacing;
-                    }
                 }
             }
         }
@@ -641,17 +626,6 @@ public class MenuUI : MonoBehaviour
             {
                 GUILayout.Label(submenu.name, tabSubtitleStyle, GUILayout.Height(30));
                 HorizontalDrawToggles(submenu.toggles);
-
-                if (submenu.name == "Doors")
-                {
-                    foreach (var doorRoom in Utils.GetDoorRooms())
-                    {
-                        if (GUILayout.Toggle(false, $" Close {doorRoom.ToString()}", GUILayout.Height(20)))
-                        {
-                            try { ShipStatus.Instance.RpcCloseDoorsOfType(doorRoom); } catch { }
-                        }
-                    }
-                }
             }
         }
 

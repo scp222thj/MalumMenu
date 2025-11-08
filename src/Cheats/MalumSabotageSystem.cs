@@ -241,14 +241,25 @@ public static class MalumSabotageSystem
 
     public static void HandleDoors(ShipStatus shipStatus)
     {
-        if (!CheatToggles.doorsSab) return;
-        //Loop through all rooms and close their doors
-        foreach (var openableDoor in ShipStatus.Instance.AllDoors)
+        if (CheatToggles.closeAllDoors)
         {
-            try{shipStatus.RpcCloseDoorsOfType(openableDoor.Room);}catch{}
+            DoorsHandler.CloseAllDoors();
+            CheatToggles.closeAllDoors = false;
+        }
+        if (CheatToggles.openAllDoors)
+        {
+            DoorsHandler.OpenAllDoors();
+            CheatToggles.openAllDoors = false;
         }
 
-        CheatToggles.doorsSab = false; //Button behaviour
+        if (CheatToggles.spamCloseAllDoors)
+        {
+            DoorsHandler.CloseAllDoors();
+        }
+        if (CheatToggles.spamOpenAllDoors)
+        {
+            DoorsHandler.OpenAllDoors();
+        }
     }
 
     public static void OpenSabotageMap()
