@@ -77,6 +77,7 @@ public struct CheatToggles
     public static bool closeMeeting;
     public static bool sabotageMap;
     public static bool doorsSab;
+    public static bool autoOpenDoorsOnUse;
     public static bool unfixableLights;
     public static bool commsSab;
     public static bool elecSab;

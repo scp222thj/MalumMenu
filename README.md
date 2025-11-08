@@ -68,7 +68,7 @@ Changes from the original MalumMenu:
 - Fix and enable previously implemented but disabled Telekill cheat
 
 #### Additions
-- Added option to disable passives cheats (basically [this PR](https://github.com/scp222thj/MalumMenu/pull/164))
+- Added option to disable cheats in Passive category ([#164](https://github.com/scp222thj/MalumMenu/pull/164))
 - Added a new "Config" category with "RGB Mode" and "Open Config File" options
 - Added "Fake Revive" cheat (Player category)
 - Added "No Options Limits" cheat (Host-Only category)
@@ -86,8 +86,9 @@ Changes from the original MalumMenu:
 - Changed "SpeedHack" to be a slider instead of a toggle (Player category)
 - Added "Invert Controls" (Player category)
 - Added "Meetings" submenu with "Skip Meeting" and "Eject Player" cheats (Host-Only category)
-- Added "Game State" submenu with "Force Start Game" and "No Game End" cheats (Host-Only category)
-- Added "Trigger Spores" (Ship category)
+- Added "Game State" submenu with "Force Start Game" and "No Game End" cheats (Host-Only category, [#49](https://github.com/scp222thj/MalumMenu/pull/49))
+- Added "Trigger Spores" (Ship category, [#40](https://github.com/scp222thj/MalumMenu/pull/40))
+- Added "Auto-Open Doors On Use" (Ship category)
 
 #### Other changes
 - Some refactoring and code style changes

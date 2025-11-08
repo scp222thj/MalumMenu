@@ -251,6 +251,46 @@ public static class Mushroom_FixedUpdate
     }
 }
 
+[HarmonyPatch(typeof(DoorBreakerGame), nameof(DoorBreakerGame.Start))]
+public static class DoorBreakerGame_Start
+{
+    public static bool Prefix(DoorBreakerGame __instance)
+    {
+        if (!CheatToggles.autoOpenDoorsOnUse) return true;
+
+        DoorsHandler.OpenDoor(__instance.MyDoor);
+        __instance.MyDoor.SetDoorway(true);
+        __instance.Close();
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(DoorCardSwipeGame), nameof(DoorCardSwipeGame.Begin))]
+public static class DoorCardSwipeGame_Begin
+{
+    public static bool Prefix(DoorCardSwipeGame __instance)
+    {
+        if (!CheatToggles.autoOpenDoorsOnUse) return true;
+
+        DoorsHandler.OpenDoor(__instance.MyDoor);
+        __instance.MyDoor.SetDoorway(true);
+        __instance.Close();
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(MushroomDoorSabotageMinigame), nameof(MushroomDoorSabotageMinigame.Begin))]
+public static class MushroomDoorSabotageMinigame_Begin
+{
+    public static bool Prefix(MushroomDoorSabotageMinigame __instance)
+    {
+        if (!CheatToggles.autoOpenDoorsOnUse) return true;
+
+        __instance.FixDoorAndCloseMinigame();
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
 public static class Vent_CanUse
 {
