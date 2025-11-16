@@ -80,12 +80,12 @@ public static class MalumCheats
 
             // Makes vent time so incredibly long (float.MaxValue) so that it never ends
             engineerRole.inVentTimeRemaining = float.MaxValue;
-        
+
         // Vent time is reset to normal value after the cheat is disabled
         }else if (engineerRole.inVentTimeRemaining > engineerRole.GetCooldown()){
-            
+
             engineerRole.inVentTimeRemaining = engineerRole.GetCooldown();
-        
+
         }
 
         if (CheatToggles.noVentCooldown){
@@ -131,9 +131,9 @@ public static class MalumCheats
 
         // Battery charge is reset to normal value after the cheat is disabled
         }else if (scientistRole.currentCharge > scientistRole.RoleCooldownValue){
-            
+
             scientistRole.currentCharge = scientistRole.RoleCooldownValue;
-        
+
         }
     }
 
@@ -189,7 +189,7 @@ public static class MalumCheats
 
     public static void sabotageCheat(ShipStatus shipStatus)
     {
-        byte currentMapID = Utils.getCurrentMapID();
+        var currentMapID = Utils.getCurrentMapID();
 
         // Handle all sabotage systems
         MalumSabotageSystem.HandleReactor(shipStatus, currentMapID);

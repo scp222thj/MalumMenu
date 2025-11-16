@@ -5,7 +5,7 @@ namespace MalumMenu;
 // https://github.com/astra1dev/AUnlocker/blob/main/src/OptionsPatches.cs
 
 [HarmonyPatch(typeof(NumberOption), nameof(NumberOption.Increase))]
-public static class IncreaseWithoutLimits_NumberOption_Increase_Prefix
+public static class NumberOption_Increase
 {
     /// <summary>
     /// Increase the value of a NumberOption without limits.
@@ -24,7 +24,7 @@ public static class IncreaseWithoutLimits_NumberOption_Increase_Prefix
 }
 
 [HarmonyPatch(typeof(NumberOption), nameof(NumberOption.Decrease))]
-public static class DecreaseWithoutLimits_NumberOption_Decrease_Prefix
+public static class NumberOption_Decrease
 {
     /// <summary>
     /// Decrease the value of a NumberOption without limits.
@@ -43,7 +43,7 @@ public static class DecreaseWithoutLimits_NumberOption_Decrease_Prefix
 }
 
 [HarmonyPatch(typeof(NumberOption), nameof(NumberOption.Initialize))]
-public static class UnlimitedRange_NumberOption_Initialize_Postfix
+public static class NumberOption_Initialize
 {
     /// <summary>
     /// Set the valid range of a NumberOption to be unlimited.

@@ -18,7 +18,7 @@ namespace MalumMenu;
 
 public static class Utils
 {
-    //Useful for getting full lists of all the Among Us cosmetics IDs
+    // Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
     public static bool isShip => ShipStatus.Instance;
     public static bool isLobby => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !isFreePlay;
@@ -74,7 +74,7 @@ public static class Utils
         }
     }
 
-    //Get ClientData by PlayerControl
+    // Get ClientData by PlayerControl
     public static ClientData getClientByPlayer(PlayerControl player)
     {
         try
@@ -159,7 +159,7 @@ public static class Utils
 
             PlayerControl.LocalPlayer.MurderPlayer(target, MurderResultFlags.Succeeded);
             return;
-        
+
         }
 
         foreach (var item in PlayerControl.AllPlayerControls)
@@ -179,7 +179,7 @@ public static class Utils
 
             PlayerControl.LocalPlayer.CmdReportDeadBody(playerData);
             return;
-        
+
         }
 
         var HostData = AmongUsClient.Instance.GetHost();
@@ -203,7 +203,7 @@ public static class Utils
                 PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
             }
             return;
-        
+
         }
 
         var HostData = AmongUsClient.Instance.GetHost();
@@ -259,7 +259,7 @@ public static class Utils
 
         lineRenderer.material = material;
         lineRenderer.SetColors(color, color);
-                
+
         lineRenderer.SetPosition(0, sourceObject.transform.position);
         lineRenderer.SetPosition(1, targetObject.transform.position);
     }
@@ -570,7 +570,7 @@ public static class Utils
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
             var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
             using MemoryStream ms = new();
-            
+
             stream.CopyTo(ms);
             ImageConversion.LoadImage(texture, ms.ToArray(), false);
             return texture;

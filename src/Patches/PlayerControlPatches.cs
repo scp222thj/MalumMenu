@@ -63,7 +63,7 @@ public static class PlayerControl_TurnOnProtection
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckShapeshift))]
-public static class ShapeshifterCheats_PlayerControl_CmdCheckShapeshift_Postfix
+public static class PlayerControl_CmdCheckShapeshift
 {
     // Prefix patch of PlayerControl.CmdCheckShapeshift to prevent SS animation
     public static void Prefix(ref bool shouldAnimate){
@@ -75,7 +75,7 @@ public static class ShapeshifterCheats_PlayerControl_CmdCheckShapeshift_Postfix
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckRevertShapeshift))]
-public static class ShapeshifterCheats_PlayerControl_CmdCheckRevertShapeshift_Postfix
+public static class PlayerControl_CmdCheckRevertShapeshift
 {
     // Prefix patch of PlayerControl.CmdCheckRevertShapeshift to prevent SS animation
     public static void Prefix(ref bool shouldAnimate){
@@ -87,7 +87,7 @@ public static class ShapeshifterCheats_PlayerControl_CmdCheckRevertShapeshift_Po
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
-public static class NoAntiCheat_PlayerControl_RpcSyncSettings_Prefix
+public static class PlayerControl_RpcSyncSettings
 {
     /// <summary>
     /// Prevent the anti-cheat from kicking you for some settings that are out of the "original" valid range.
