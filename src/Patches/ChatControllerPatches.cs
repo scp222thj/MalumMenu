@@ -8,8 +8,15 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
 public static class ChatController_AddChat
 {
-	// Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
-	// Basically does what the original method did with the required modifications
+	/// <summary>
+	/// Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
+	/// Basically does what the original method did with the required modifications
+	/// </summary>
+	/// <param name="sourcePlayer">The player who sent the chat message.</param>
+	/// <param name="chatText">The chat message text.</param>
+	/// <param name="censor">Whether to censor the chat message. False only if Quick Chat is used.</param>
+	/// <param name="__instance">The <c>ChatController</c> instance.</param>
+	/// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
     {
         if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead){
@@ -68,7 +75,7 @@ public static class ChatController_AddChat
 			ChatController.Logger.Error(message.ToString(), null);
 			__instance.chatBubblePool.Reclaim(pooledBubble);
 		}
-        
+
         return false; // Skips the original method completly
     }
 }
@@ -92,20 +99,24 @@ public static class ChatController_Update
         __instance.freeChatField.textArea.AllowSymbols = true; // Allow sending certain symbols
         __instance.freeChatField.textArea.AllowEmail = CheatToggles.chatJailbreak; // Allow sending email addresses when chatJailbreak is enabled
         //__instance.freeChatField.textArea.AllowPaste = CheatToggles.chatJailbreak; // Allow pasting from clipboard in chat when chatJailbreak is enabled
-        
+
         if (CheatToggles.chatJailbreak){
             __instance.freeChatField.textArea.characterLimit = 119; // Longer message length when chatJailbreak is enabled
         }else{
             __instance.freeChatField.textArea.characterLimit = 100;
         }
-        
+
     }
 }
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendFreeChat))]
 public static class ChatController_SendFreeChat
 {
-    // Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
+    /// <summary>
+    /// Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
+    /// </summary>
+    /// <param name="__instance">The <c>ChatController</c> instance.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ChatController __instance)
     {
         if (!CheatToggles.chatJailbreak){

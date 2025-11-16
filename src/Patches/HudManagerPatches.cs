@@ -6,7 +6,10 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
 public static class HudManager_Start
 {
-	// Prefix patch of HudManager.Start to give minimap access to impostors too
+	/// <summary>
+	/// Postfix patch of HudManager.Start to give minimap access to impostors too
+	/// </summary>
+	/// <param name="__instance">The <c>HudManager</c> instance.</param>
 	public static void Postfix(HudManager __instance)
 	{
 		__instance.MapButton.OnClick.RemoveAllListeners(); //Remove previous OnClick action
@@ -37,11 +40,11 @@ public static class HudManager_Update
 			Utils.closeChat();
 			__instance.Chat.gameObject.SetActive(false);
 		}
-		
+
 		MalumCheats.useVentCheat(__instance);
 		MalumESP.zoomOut(__instance);
 		MalumESP.freecamCheat();
-        
+
 		// Close PlayerPickMenu if there is no PPM cheat enabled
 		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.shouldPPMClose()){
             PlayerPickMenu.playerpickMenu.Close();

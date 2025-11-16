@@ -9,8 +9,10 @@ public static class MeetingHud_Update
 {
     public static List<int> votedPlayers = new List<int>();
 
-    // Prefix patch of MeetingHud.Update to constantly bloop new vote icons for
-    // each new vote being cast during the meeting
+    /// <summary>
+    /// Prefix patch of MeetingHud.Update to constantly bloop new vote icons for each new vote being cast during the meeting
+    /// </summary>
+    /// <param name="__instance">The <c>MeetingHud</c> instance.</param>
     public static void Prefix(MeetingHud __instance)
     {
         if (__instance.state < MeetingHud.VoteStates.Results)
@@ -71,7 +73,10 @@ public static class MeetingHud_Update
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.PopulateResults))]
 public static class MeetingHud_PopulateResults
 {
-    // Prefix patch of MeetingHud.PopulateResults to clear all vote icons before repopulating them for final results
+    /// <summary>
+    /// Prefix patch of MeetingHud.PopulateResults to clear all vote icons before repopulating them for final results
+    /// </summary>
+    /// <param name="__instance">The <c>MeetingHud</c> instance.</param>
     public static void Prefix(MeetingHud __instance)
     {
         foreach (var votedForArea in __instance.playerStates)

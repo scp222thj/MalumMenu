@@ -8,7 +8,11 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
 public static class ShapeshifterMinigame_Begin
 {
-    // Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
+    /// <summary>
+    /// Prefix patch of ShapeshifterMinigame.Begin to implement player pick menu logic
+    /// </summary>
+    /// <param name="__instance">The <c>ShapeshifterMinigame</c> instance.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ShapeshifterMinigame __instance)
     {
         if (!PlayerPickMenu.IsActive) return true; // Open normal shapeshifter menu if not active
@@ -74,7 +78,14 @@ public static class ShapeshifterMinigame_Begin
 [HarmonyPatch(typeof(ShapeshifterPanel), nameof(ShapeshifterPanel.SetPlayer))]
 public static class ShapeshifterPanel_SetPlayer
 {
-    // Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
+    /// <summary>
+    /// Prefix patch of ShapeshifterPanel.SetPlayer to allow usage of PlayerPickMenu in lobbies
+    /// </summary>
+    /// <param name="__instance">The <c>ShapeshifterPanel</c> instance.</param>
+    /// <param name="index">The index of the player in the list of all PlayerControls.</param>
+    /// <param name="playerInfo">The player info for displaying the name and level of the player.</param>
+    /// <param name="onShift">The action to perform on selecting a player.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ShapeshifterPanel __instance, int index, NetworkedPlayerInfo playerInfo, Il2CppSystem.Action onShift)
     {
         if (!PlayerPickMenu.IsActive) return true; // Open normal shapeshifter menu if not active

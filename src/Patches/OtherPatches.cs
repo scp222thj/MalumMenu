@@ -94,7 +94,10 @@ public static class AmongUsClient_Update
 [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
 public static class VersionShower_Start
 {
-    // Postfix patch of VersionShower.Start to show MalumMenu version
+    /// <summary>
+    /// Postfix patch of VersionShower.Start to show MalumMenu version
+    /// </summary>
+    /// <param name="__instance">The <c>VersionShower</c> instance.</param>
     public static void Postfix(VersionShower __instance)
     {
         if (MalumMenu.supportedAU.Contains(Application.version)){ // Checks if Among Us version is supported
@@ -112,7 +115,10 @@ public static class VersionShower_Start
 [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
 public static class PingTracker_Update
 {
-    // Postfix patch of PingTracker.Update to show mod name & ping
+    /// <summary>
+    /// Postfix patch of PingTracker.Update to show MalumMenu author and colored ping text
+    /// </summary>
+    /// <param name="__instance">The <c>PingTracker</c> instance.</param>
     public static void Postfix(PingTracker __instance)
     {
         __instance.text.alignment = TMPro.TextAlignmentOptions.Center;
@@ -121,12 +127,12 @@ public static class PingTracker_Update
 
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
 
-            __instance.text.text = $"MalumMenu by scp222thj ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+            __instance.text.text = $"MalumMenu by scp222thj & Astral ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
 
             return;
         }
 
-        __instance.text.text = $"MalumMenu by scp222thj\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+        __instance.text.text = $"MalumMenu by scp222thj & Astral\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
 
     }
 }
@@ -144,7 +150,11 @@ public static class HatManager_Initialize
 [HarmonyPatch(typeof(PlayerBanData), nameof(PlayerBanData.BanMinutesLeft), MethodType.Getter)]
 public static class PlayerBanData_BanMinutesLeft_Getter
 {
-    // Prefix patch of Getter method for StatsManager.BanMinutesLeft to remove disconnect penalty
+    /// <summary>
+    /// Postfix patch of PlayerBanData.BanMinutesLeft Getter method to remove disconnect penalty
+    /// </summary>
+    /// <param name="__instance">The <c>PlayerBanData</c> instance.</param>
+    /// <param name="__result">Original return value of <c>BanMinutesLeft</c>.</param>
     public static void Postfix(PlayerBanData __instance, ref int __result)
     {
         if (!CheatToggles.avoidBans) return;
@@ -156,7 +166,10 @@ public static class PlayerBanData_BanMinutesLeft_Getter
 [HarmonyPatch(typeof(FullAccount), nameof(FullAccount.CanSetCustomName))]
 public static class FullAccount_CanSetCustomName
 {
-    // Prefix patch of FullAccount.CanSetCustomName to allow the usage of custom names
+    /// <summary>
+    /// Prefix patch of FullAccount.CanSetCustomName to allow the usage of custom names
+    /// </summary>
+    /// <param name="canSetName">Whether the button to edit the name should be visible and enabled.</param>
     public static void Prefix(ref bool canSetName)
     {
         if (CheatToggles.unlockFeatures){
@@ -193,6 +206,10 @@ public static class InnerNet_InnerNetClient_JoinGame
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.CheckEndCriteria))]
 public static class LogicGameFlowNormal_CheckEndCriteria
 {
+    /// <summary>
+    /// Prefix patch of LogicGameFlowNormal.CheckEndCriteria to prevent the game from ending
+    /// </summary>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix()
     {
         return !CheatToggles.noGameEnd;
@@ -202,6 +219,10 @@ public static class LogicGameFlowNormal_CheckEndCriteria
 [HarmonyPatch(typeof(LogicGameFlowNormal), nameof(LogicGameFlowNormal.IsGameOverDueToDeath))]
 public static class LogicGameFlowNormal_IsGameOverDueToDeath
 {
+    /// <summary>
+    /// Postfix patch of LogicGameFlowNormal.IsGameOverDueToDeath to prevent the game from ending
+    /// </summary>
+    /// <param name="__result">Original return value of <c>IsGameOverDueToDeath</c>.</param>
     public static void Postfix(ref bool __result)
     {
         if (CheatToggles.noGameEnd){
@@ -214,6 +235,10 @@ public static class LogicGameFlowNormal_IsGameOverDueToDeath
 [HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.CheckEndCriteria))]
 public static class LogicGameFlowHnS_CheckEndCriteria
 {
+    /// <summary>
+    /// Prefix patch of LogicGameFlowHnS.CheckEndCriteria to prevent the game from ending
+    /// </summary>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix()
     {
         return !CheatToggles.noGameEnd;
@@ -223,6 +248,10 @@ public static class LogicGameFlowHnS_CheckEndCriteria
 [HarmonyPatch(typeof(LogicGameFlowHnS), nameof(LogicGameFlowHnS.IsGameOverDueToDeath))]
 public static class LogicGameFlowHnS_IsGameOverDueToDeath
 {
+    /// <summary>
+    /// Postfix patch of LogicGameFlowHnS.IsGameOverDueToDeath to prevent the game from ending
+    /// </summary>
+    /// <param name="__result">Original return value of <c>IsGameOverDueToDeath</c>.</param>
     public static void Postfix(ref bool __result)
     {
         if (CheatToggles.noGameEnd){
@@ -235,6 +264,11 @@ public static class LogicGameFlowHnS_IsGameOverDueToDeath
 [HarmonyPatch(typeof(GameManager), nameof(GameManager.CheckTaskCompletion))]
 public static class GameManager_CheckTaskCompletion
 {
+    /// <summary>
+    /// Prefix patch of GameManager.CheckTaskCompletion to prevent the game from ending
+    /// </summary>
+    /// <param name="__result">Original return value of <c>CheckTaskCompletion</c>.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ref bool __result)
     {
         if (!CheatToggles.noGameEnd) return true;
@@ -252,9 +286,15 @@ public static class Mushroom_FixedUpdate
     }
 }
 
+// https://github.com/g0aty/SickoMenu/blob/main/hooks/PlainDoor.cpp
 [HarmonyPatch(typeof(DoorBreakerGame), nameof(DoorBreakerGame.Start))]
 public static class DoorBreakerGame_Start
 {
+    /// <summary>
+    /// Prefix patch of DoorBreakerGame.Start to automatically open a door when the player interacts with it
+    /// </summary>
+    /// <param name="__instance">The <c>DoorBreakerGame</c> instance.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(DoorBreakerGame __instance)
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
@@ -269,6 +309,11 @@ public static class DoorBreakerGame_Start
 [HarmonyPatch(typeof(DoorCardSwipeGame), nameof(DoorCardSwipeGame.Begin))]
 public static class DoorCardSwipeGame_Begin
 {
+    /// <summary>
+    /// Prefix patch of DoorCardSwipeGame.Begin to automatically open a door when the player interacts with it
+    /// </summary>
+    /// <param name="__instance">The <c>DoorCardSwipeGame</c> instance.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(DoorCardSwipeGame __instance)
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
@@ -283,6 +328,11 @@ public static class DoorCardSwipeGame_Begin
 [HarmonyPatch(typeof(MushroomDoorSabotageMinigame), nameof(MushroomDoorSabotageMinigame.Begin))]
 public static class MushroomDoorSabotageMinigame_Begin
 {
+    /// <summary>
+    /// Prefix patch of MushroomDoorSabotageMinigame.Begin to automatically open a door when the player interacts with it
+    /// </summary>
+    /// <param name="__instance">The <c>MushroomDoorSabotageMinigame</c> instance.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(MushroomDoorSabotageMinigame __instance)
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
@@ -322,7 +372,7 @@ public static class AmongUsDateTime_UtcNow
     /// Prefix patch of AmongUsDateTime.UtcNow to spoof the date to April 2nd, 7:01 AM UTC.
     /// This sets the map to dlekS ehT (The Skeld but flipped) when hosting a lobby.
     /// </summary>
-    /// <param name="__result">Original return value of <c>DateTime</c>.</param>
+    /// <param name="__result">Original return value of <c>UtcNow</c>.</param>
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ref Il2CppSystem.DateTime __result)
     {
@@ -339,7 +389,7 @@ public static class AmongUsDateTime_UtcNow
 public static class GameContainer_SetupGameInfo
 {
     /// <summary>
-    /// Show more information when finding a game:
+    /// Postfix patch of GameContainer.SetupGameInfo to show more information when finding a game:
     /// host name (e.g. Astral), lobby code (e.g. KLHCEG), host platform (e.g. Epic), and lobby age in minutes (e.g. 4:20)
     /// </summary>
     /// <param name="__instance">The <c>GameContainer</c> instance.</param>

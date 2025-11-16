@@ -17,7 +17,12 @@ public static class PlayerControl_FixedUpdate
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckMurder))]
 public static class PlayerControl_CmdCheckMurder
 {
-    // Prefix patch of PlayerControl.CmdCheckMurder to always bypass checks when killing players
+    /// <summary>
+    /// Prefix patch of PlayerControl.CmdCheckMurder to always bypass checks when killing players
+    /// </summary>
+    /// <param name="__instance">The <c>PlayerControl</c> instance.</param>
+    /// <param name="target">The target player to be killed.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(PlayerControl __instance, PlayerControl target)
     {
         /*if (Utils.isLobby){
@@ -54,7 +59,10 @@ public static class PlayerControl_CmdCheckMurder
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.TurnOnProtection))]
 public static class PlayerControl_TurnOnProtection
 {
-	// Prefix patch of PlayerControl.ProtectPlayer to render all protections visible if CheatToggles.seeGhosts is enabled
+    /// <summary>
+    /// Prefix patch of PlayerControl.TurnOnProtection to render all protections visible if CheatToggles.seeGhosts is enabled
+    /// </summary>
+    /// <param name="visible">Whether the protection should be visible.</param>
     public static void Prefix(ref bool visible){
 		if (CheatToggles.seeGhosts){
             visible = true;
@@ -65,7 +73,10 @@ public static class PlayerControl_TurnOnProtection
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckShapeshift))]
 public static class PlayerControl_CmdCheckShapeshift
 {
-    // Prefix patch of PlayerControl.CmdCheckShapeshift to prevent SS animation
+    /// <summary>
+    /// Prefix patch of PlayerControl.CmdCheckShapeshift to prevent SS animation
+    /// </summary>
+    /// <param name="shouldAnimate">Whether the shapeshift animation should play.</param>
     public static void Prefix(ref bool shouldAnimate){
 
         if (shouldAnimate && CheatToggles.noShapeshiftAnim){
@@ -77,7 +88,10 @@ public static class PlayerControl_CmdCheckShapeshift
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckRevertShapeshift))]
 public static class PlayerControl_CmdCheckRevertShapeshift
 {
-    // Prefix patch of PlayerControl.CmdCheckRevertShapeshift to prevent SS animation
+    /// <summary>
+    /// Prefix patch of PlayerControl.CmdCheckRevertShapeshift to prevent SS animation
+    /// </summary>
+    /// <param name="shouldAnimate">Whether the revert shapeshift animation should play.</param>
     public static void Prefix(ref bool shouldAnimate){
 
         if (shouldAnimate && CheatToggles.noShapeshiftAnim){
@@ -90,7 +104,8 @@ public static class PlayerControl_CmdCheckRevertShapeshift
 public static class PlayerControl_RpcSyncSettings
 {
     /// <summary>
-    /// Prevent the anti-cheat from kicking you for some settings that are out of the "original" valid range.
+    /// Prefix patch of PlayerControl.RpcSyncSettings to prevent the anti-cheat from kicking you
+    /// for some settings that are out of the "original" valid range.
     /// </summary>
     /// <param name="__instance">The <c>PlayerControl</c> instance.</param>
     /// <param name="optionsByteArray">The byte array containing the options to sync.</param>
