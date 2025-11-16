@@ -374,3 +374,22 @@ public static class GameContainer_SetupGameInfo
                                    $"<#b0f>{platformId}</color>\n{lobbyTime}\n{separator}</size>";
     }
 }
+
+
+[HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+public static class IGameOptionsExtensions_GetAdjustedNumImpostors
+{
+    /// <summary>
+    /// Prefix patch of IGameOptionsExtensions.GetAdjustedNumImpostors to remove impostor limits.
+    /// </summary>
+    /// <param name="__instance">The <c>IGameOptions</c> instance.</param>
+    /// <param name="playerCount">The current player count. Unused even in the original method.</param>
+    /// <param name="__result">Original return value of <c>GetAdjustedNumImpostors</c>.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
+    public static bool Prefix(IGameOptions __instance, int playerCount, ref int __result)
+    {
+        if (!CheatToggles.noOptionsLimits) return true;
+        __result = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+        return false;
+    }
+}
