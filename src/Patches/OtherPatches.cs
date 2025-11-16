@@ -1,6 +1,7 @@
 using HarmonyLib;
 using AmongUs.Data;
 using AmongUs.Data.Player;
+using AmongUs.GameOptions;
 using UnityEngine;
 using System;
 using System.Linq;
