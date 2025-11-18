@@ -89,6 +89,7 @@ Changes from the original MalumMenu:
 - Added "Trigger Spores" (Ship category, [#40](https://github.com/scp222thj/MalumMenu/pull/40))
 - Added "Auto-Open Doors On Use" (Ship category)
 - Added Doors Menu to close / open individual doors (Ship category)
+- Added Tasks Menu to complete individual tasks and see other players' tasks (Roles category)
 
 #### Other changes
 - Some refactoring and code style changes

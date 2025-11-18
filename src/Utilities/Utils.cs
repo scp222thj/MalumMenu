@@ -20,6 +20,7 @@ public static class Utils
 {
     // Useful for getting full lists of all the Among Us cosmetics IDs
     public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
+    public static SabotageSystemType SabotageSystem => ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
     public static bool isShip => ShipStatus.Instance;
     public static bool isLobby => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !isFreePlay;
     public static bool isOnlineGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
@@ -32,6 +33,7 @@ public static class Utils
     public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
     public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
     public static bool isExiling => ExileController.Instance && !(AirshipIsActive && SpawnInMinigame.Instance.isActiveAndEnabled);
+    public static bool isAnySabotageActive => ShipStatus.Instance && SabotageSystem.AnyActive;
     public static bool isNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
     public static bool isHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
     public static bool SkeldIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Skeld;
@@ -198,7 +200,7 @@ public static class Utils
 
         if (isFreePlay){
 
-            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+            foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
                 PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
             }
@@ -206,22 +208,39 @@ public static class Utils
 
         }
 
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
+        var hostData = AmongUsClient.Instance.GetHost();
+        if (hostData == null || hostData.Character.Data.Disconnected) return;
         {
-            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
+            foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
-                if (!task.IsComplete){
-
-                    foreach (var item in PlayerControl.AllPlayerControls)
-                    {
-                        MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                        messageWriter.WritePacked(task.Id);
-                        AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
-                    }
-
+                if (task.IsComplete) continue;
+                foreach (var item in PlayerControl.AllPlayerControls)
+                {
+                    var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+                    messageWriter.WritePacked(task.Id);
+                    AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
                 }
             }
+        }
+    }
+
+    public static void completeTask(PlayerTask task)
+    {
+        if (isFreePlay)
+        {
+            PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
+            return;
+        }
+
+        var hostData = AmongUsClient.Instance.GetHost();
+        if (hostData == null || hostData.Character.Data.Disconnected) return;
+
+        if (task.IsComplete) return;
+        foreach (var item in PlayerControl.AllPlayerControls)
+        {
+            var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
+            messageWriter.WritePacked(task.Id);
+            AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
         }
     }
 

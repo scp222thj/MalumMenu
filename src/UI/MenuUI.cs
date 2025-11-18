@@ -88,8 +88,7 @@ public class MenuUI : MonoBehaviour
                 ]),
 
                 new SubmenuInfo("Crewmate", false, [
-                    new ToggleInfo(" Complete My Tasks", () => CheatToggles.completeMyTasks,
-                        x => CheatToggles.completeMyTasks = x)
+                    new ToggleInfo(" Open Tasks Menu", () => TasksUI.isVisible, x => TasksUI.isVisible = x)
                 ]),
 
                 new SubmenuInfo("Tracker", false, [
