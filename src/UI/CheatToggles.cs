@@ -25,6 +25,7 @@ public struct CheatToggles
     //Roles
     public static bool changeRole;
     public static bool zeroKillCd;
+    public static bool showTasksMenu;
     public static bool completeMyTasks;
     public static bool killReach;
     public static bool killAnyone;
@@ -88,6 +89,7 @@ public struct CheatToggles
     public static bool oxygenSab;
     public static bool mushSab;
     public static bool mushSpore;
+    public static bool showDoorsMenu;
 
     //Vents
     public static bool useVents;

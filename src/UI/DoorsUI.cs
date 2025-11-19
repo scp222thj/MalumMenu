@@ -5,7 +5,6 @@ namespace MalumMenu;
 
 public class DoorsUI : MonoBehaviour
 {
-    public static bool isVisible = false;
     private Rect _windowRect = new(320, 10, 530, 280);
     private GUIStyle _separatorStyle;
     private List<SystemTypes> doorsToSpamOpen = new();
@@ -13,7 +12,7 @@ public class DoorsUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!isVisible) return;
+        if (!CheatToggles.showDoorsMenu) return;
 
         _separatorStyle ??= new GUIStyle(GUI.skin.box)
         {
@@ -55,7 +54,7 @@ public class DoorsUI : MonoBehaviour
             GUILayout.Label($"{doorRoom.ToString()}", GUILayout.Width(120f));
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"Status: {DoorsHandler.GetStatusOfDoorsInRoom(doorRoom)}");
+            GUILayout.Label($"Status: {DoorsHandler.GetStatusOfDoorsInRoom(doorRoom, true)}");
 
             GUILayout.FlexibleSpace();
 

@@ -33,14 +33,15 @@ public static class DoorsHandler
     /// Gets the status of doors in a specified room.
     /// </summary>
     /// <param name="room">The room to check door status for.</param>
+    /// <param name="colorize">Whether to colorize the status string.</param>
     /// <returns>A string representing the status: "Open", "Closed", "Mixed", or "N/A".</returns>
-    public static string GetStatusOfDoorsInRoom(SystemTypes room)
+    public static string GetStatusOfDoorsInRoom(SystemTypes room, bool colorize)
     {
         var doorsInRoom = GetDoorsInRoom(room);
         if (doorsInRoom.Count <= 0) return "N/A";
-        if (doorsInRoom.All(d => d.IsOpen)) return "Open";
-        if (doorsInRoom.All(d => !d.IsOpen)) return "Closed";
-        return "Mixed";
+        if (doorsInRoom.All(d => d.IsOpen)) return colorize ? "<color=#00FF00>Open</color>" : "Open";
+        if (doorsInRoom.All(d => !d.IsOpen)) return colorize ? "<color=#FF0000>Closed</color>" : "Closed";
+        return colorize ? "<color=#FFFF00>Mixed</color>" : "Mixed";
     }
 
     /// <summary>

@@ -5,7 +5,6 @@ namespace MalumMenu;
 
 public class TasksUI : MonoBehaviour
 {
-    public static bool isVisible = false;
     private Vector2 _scrollPosition = Vector2.zero;
     private Rect _windowRect = new(320, 10, 500, 300);
     private GUIStyle _playerHeaderStyle;
@@ -14,7 +13,7 @@ public class TasksUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!isVisible) return;
+        if (!CheatToggles.showTasksMenu) return;
 
         _playerHeaderStyle ??= new GUIStyle(GUI.skin.button)
         {
@@ -36,7 +35,7 @@ public class TasksUI : MonoBehaviour
 
         foreach (var pc in PlayerControl.AllPlayerControls)
         {
-            if (!pc.Data || !pc.Data.Role) continue;
+            if (!pc.Data || !pc.Data.Role || string.IsNullOrEmpty(pc.Data.PlayerName)) continue;
 
             GUILayout.BeginVertical();
 
@@ -60,7 +59,7 @@ public class TasksUI : MonoBehaviour
                 taskCount -= 1;
             }
 
-            if (GUILayout.Button($"{arrow} [{completeCount}/{taskCount}] {nameKey}", _playerHeaderStyle))
+            if (GUILayout.Button($"{arrow} [{completeCount}/{taskCount}] <color=#{ColorUtility.ToHtmlStringRGB(pc.Data.Color)}>{nameKey}</color>", _playerHeaderStyle))
             {
                 _expandedPlayers[nameKey] = !expanded;
                 expanded = !expanded;

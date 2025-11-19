@@ -88,7 +88,7 @@ public class MenuUI : MonoBehaviour
                 ]),
 
                 new SubmenuInfo("Crewmate", false, [
-                    new ToggleInfo(" Open Tasks Menu", () => TasksUI.isVisible, x => TasksUI.isVisible = x)
+                    new ToggleInfo(" Show Tasks Menu", () => CheatToggles.showTasksMenu, x => CheatToggles.showTasksMenu = x)
                 ]),
 
                 new SubmenuInfo("Tracker", false, [
@@ -135,7 +135,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Oxygen", () => CheatToggles.oxygenSab, x => CheatToggles.oxygenSab = x),
                 new ToggleInfo(" Lights", () => CheatToggles.elecSab, x => CheatToggles.elecSab = x),
                 new ToggleInfo(" Comms", () => CheatToggles.commsSab, x => CheatToggles.commsSab = x),
-                new ToggleInfo(" Open Doors Menu", () => DoorsUI.isVisible, x =>DoorsUI.isVisible = x),
+                new ToggleInfo(" Show Doors Menu", () => CheatToggles.showDoorsMenu, x => CheatToggles.showDoorsMenu = x),
                 new ToggleInfo(" MushroomMixup", () => CheatToggles.mushSab, x => CheatToggles.mushSab = x),
                 new ToggleInfo(" Trigger Spores", () => CheatToggles.mushSpore, x => CheatToggles.mushSpore = x),
                 new ToggleInfo(" Open Sabotage Map", () => CheatToggles.sabotageMap, x => CheatToggles.sabotageMap = x)
