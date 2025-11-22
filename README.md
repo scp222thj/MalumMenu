@@ -30,6 +30,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v2.6.2 | 2025.11.18 | [Download](https://github.com/ZMA-OM/MalumMenu/releases/tag/v2.6.2) |
 | v2.4.2 | 2024.9.4 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.2/MalumMenu-2.4.2.zip) |
 | v2.4.1 | 2024.8.13 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.1/MalumMenu-2.4.1.zip) |
 | v2.4.0 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.0/MalumMenu-2.4.0.zip) |
