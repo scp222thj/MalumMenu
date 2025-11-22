@@ -183,8 +183,8 @@ public static class MalumPPMCheats
     /// <returns>An IEnumerator for the coroutine.</returns>
     public static System.Collections.IEnumerator DelayedTeleportBack(Vector2 position)
     {
-        yield return new WaitForSeconds(0.15f);
-        PlayerControl.LocalPlayer.NetTransform.SnapTo(position);
+        yield return new WaitForSeconds(0.25f);
+        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(position);
     }
 
     public static void teleportPlayerPPM()
