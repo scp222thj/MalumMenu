@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using AmongUs.GameOptions;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -111,9 +113,9 @@ public struct CheatToggles
     public static bool freeCosmetics;
     public static bool avoidBans;
     public static bool spoofAprilFoolsDate;
-    public static bool isPanicked;
+    public static bool panic;
 
-    // Animations
+    //Animations
     public static bool animShields;
     public static bool animAsteroids;
     public static bool animEmptyGarbage;
@@ -123,6 +125,26 @@ public struct CheatToggles
     //Config
     public static bool reloadConfig;
     public static bool RGBMode;
+
+    // Keybind storage: toggle name -> KeyCode (KeyCode.None == no key)
+    public static readonly Dictionary<string, KeyCode> Keybinds = new();
+
+    // Internal map for reflection access: toggle name -> FieldInfo
+    private static readonly Dictionary<string, FieldInfo> ToggleFields = new();
+
+    public static readonly string ProfilePath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt");
+
+    static CheatToggles()
+    {
+        // Populate reflection map once at startup and initialize Keybinds with KeyCode.None
+        var fields = typeof(CheatToggles).GetFields(BindingFlags.Static | BindingFlags.Public);
+        foreach (var field in fields)
+        {
+            if (field.FieldType != typeof(bool)) continue;
+            ToggleFields[field.Name] = field;
+            Keybinds[field.Name] = KeyCode.None;
+        }
+    }
 
     public static void DisablePPMCheats(string variableToKeep)
     {
@@ -141,64 +163,79 @@ public struct CheatToggles
     }
 
     /// <summary>
-    /// Disables all cheat toggles by setting all boolean fields to false using reflection.
+    /// Disables all cheat toggles by setting all boolean fields to false using the cached ToggleFields.
     /// </summary>
     public static void DisableAll()
     {
-        var fields = typeof(CheatToggles).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-        foreach (var field in fields)
+        foreach (var field in ToggleFields.Values)
         {
-            if (field.FieldType == typeof(bool))
-            {
-                field.SetValue(null, false);
-            }
+            field.SetValue(null, false);
         }
     }
 
     /// <summary>
-    /// Saves all cheat toggles to a file named "MalumProfile.txt" in the BepInEx config directory.
-    /// Each line in the file contains a toggle name and its value in the format "ToggleName=true/false".
+    /// Saves cheat toggles and their keybinds to "MalumProfile.txt". Format per line: <c>ToggleName = True/False = KeyCode.Foo</c>
     /// </summary>
     public static void SaveTogglesToProfile()
     {
-        var fields = typeof(CheatToggles).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-        using var writer = new StreamWriter(Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt"));
-        foreach (var field in fields)
+        using var writer = new StreamWriter(ProfilePath);
+
+        writer.WriteLine("# MalumProfile");
+        writer.WriteLine("# Format: ToggleName = True/False = KeyCode.Foo");
+        writer.WriteLine("# - List of keycodes: https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html");
+        writer.WriteLine("# - KeyCode part is optional; use KeyCode.None for no key");
+        writer.WriteLine("# - Multiple toggles may have the same key, but multiple keys per toggle are NOT supported");
+        writer.WriteLine("# - Keybinds are only applied after loading this profile by pressing 'Load from Profile' (Config category)");
+        writer.WriteLine();
+
+        foreach (var field in ToggleFields.Values)
         {
-            if (field.FieldType == typeof(bool))
-            {
-                writer.WriteLine($"{field.Name}={field.GetValue(null)}");
-            }
+            Keybinds.TryGetValue(field.Name, out var key);  // If no key is set, write KeyCode.None
+            writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");
         }
     }
 
     /// <summary>
-    /// Loads cheat toggles from a file named "MalumProfile.txt" in the BepInEx config directory.
-    /// Each line in the file contains a toggle name and its value in the format "ToggleName=true/false".
+    /// Loads cheat toggles and their keybinds from "MalumProfile.txt". Format per line: <c>ToggleName = True/False = KeyCode</c>
     /// </summary>
     public static void LoadTogglesFromProfile()
     {
-        var fields = typeof(CheatToggles).GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-        var fieldDict = new Dictionary<string, System.Reflection.FieldInfo>();
-        foreach (var field in fields)
-        {
-            if (field.FieldType == typeof(bool))
-            {
-                fieldDict[field.Name] = field;
-            }
-        }
+        if (!File.Exists(ProfilePath)) return;
 
-        var filePath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt");
-        if (!File.Exists(filePath)) return;
-
-        using var reader = new StreamReader(filePath);
+        using var reader = new StreamReader(ProfilePath);
         while (reader.ReadLine() is { } line)
         {
-            var parts = line.Split("=");
-            if (parts.Length == 2 && fieldDict.ContainsKey(parts[0]) && bool.TryParse(parts[1], out var value))
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            line = line.Trim();
+            if (line.StartsWith("#")) continue;
+
+            var parts = line.Split('=', 3);
+            if (parts.Length < 2) continue;
+
+            var name = parts[0].Trim();
+            if (!ToggleFields.TryGetValue(name, out var field)) continue;
+
+            if (bool.TryParse(parts[1].Trim(), out var boolVal))
             {
-                fieldDict[parts[0]].SetValue(null, value);
+                field.SetValue(null, boolVal);
             }
+
+            KeyCode key = KeyCode.None;
+            if (parts.Length >= 3)
+            {
+                var keyPart = parts[2].Trim();
+                if (keyPart.StartsWith("KeyCode."))
+                {
+                    keyPart = keyPart["KeyCode.".Length..];
+                }
+
+                if (!string.IsNullOrEmpty(keyPart) && System.Enum.TryParse<KeyCode>(keyPart, true, out var parsed))
+                {
+                    key = parsed;
+                }
+            }
+
+            Keybinds[name] = key;
         }
     }
 
@@ -208,11 +245,24 @@ public struct CheatToggles
 
         public void Update()
         {
+            if (MenuUI.isPanicked) return;
+
             if (reloadConfig)
             {
                 Plugin.Config.Reload();
                 Plugin.Log.LogInfo("Plugin config reloaded.");
                 reloadConfig = false;
+            }
+
+            // Check for keybind presses and toggle corresponding cheats
+            foreach (var (name, key) in Keybinds)
+            {
+                if (key == KeyCode.None) continue;
+                if (!Input.GetKeyDown(key)) continue;
+
+                if (!ToggleFields.TryGetValue(name, out var field)) continue;
+                var current = (bool)field.GetValue(null);
+                field.SetValue(null, !current);
             }
         }
     }

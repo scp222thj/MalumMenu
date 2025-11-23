@@ -90,6 +90,7 @@ Changes from the original MalumMenu:
 - Added "Auto-Open Doors On Use" (Ship category)
 - Added Doors Menu to close / open individual doors (Ship category)
 - Added Tasks Menu to complete individual tasks and see other players' tasks (Roles category)
+- Added a keybind system to bind cheats to keyboard keys (defined in MalumProfile.txt)
 
 #### Other changes
 - Some refactoring and code style changes

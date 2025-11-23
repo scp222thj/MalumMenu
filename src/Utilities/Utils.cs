@@ -650,7 +650,7 @@ public static class Utils
     {
         CheatToggles.DisableAll();
         ModManager.Instance.ModStamp.enabled = false;
-        CheatToggles.isPanicked = true;
+        MenuUI.isPanicked = true;
 
         // Create a PanicCleaner to unpatch Harmony in the next frame
         // This allows some patches to run for a last time and finish properly

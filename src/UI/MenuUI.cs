@@ -13,6 +13,7 @@ public class MenuUI : MonoBehaviour
     private Rect windowRect = new(10, 10, 300, 500);
     private Rect horizontalWindowRect = new(10, 10, 700, 550);
     private bool isGUIActive = false;
+    public static bool isPanicked = false;
     public int selectedTab;
 
     // Styles
@@ -208,7 +209,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
             new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
             new ToggleInfo(" Spoof Date to April 1st", () => CheatToggles.spoofAprilFoolsDate, x => CheatToggles.spoofAprilFoolsDate = x),
-            new ToggleInfo(" Panic (Disable MalumMenu)", () => false, x => Utils.Panic())
+            new ToggleInfo(" Panic (Disable MalumMenu)", () => CheatToggles.panic, x => CheatToggles.panic = x)
         ], []));
 
         groups.Add(new GroupInfo("Animations", false, [
@@ -293,6 +294,12 @@ public class MenuUI : MonoBehaviour
             if (hue > 1f) hue -= 1f; // Loop hue back to 0 when it exceeds 1
         }
 
+        if (CheatToggles.panic)
+        {
+            Utils.Panic();
+            CheatToggles.panic = false;
+        }
+
         //Passive cheats are always on to avoid problems
         //CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
@@ -318,7 +325,7 @@ public class MenuUI : MonoBehaviour
     public void OnGUI()
     {
 
-        if (!isGUIActive || CheatToggles.isPanicked) return;
+        if (!isGUIActive || isPanicked) return;
 
         InitStyles();
 
