@@ -23,6 +23,7 @@ public struct CheatToggles
     public static bool revive;
     public static bool protectPlayer;
     public static bool invertControls;
+    public static bool moonwalk;
 
     //Roles
     public static bool changeRole;
