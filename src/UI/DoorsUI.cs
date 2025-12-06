@@ -71,21 +71,33 @@ public class DoorsUI : MonoBehaviour
                 }
             }
 
-            var spamClose = doorsToSpamClose.Contains(doorRoom);
-            spamClose = GUILayout.Toggle(spamClose, "Spam Close");
-            if (spamClose && !doorsToSpamClose.Contains(doorRoom))
-                doorsToSpamClose.Add(doorRoom);
-            else if (!spamClose && doorsToSpamClose.Contains(doorRoom))
-                doorsToSpamClose.Remove(doorRoom);
-
-            if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
+            if (Utils.isHost)
             {
-                var spamOpen = doorsToSpamOpen.Contains(doorRoom);
-                spamOpen = GUILayout.Toggle(spamOpen, "Spam Open");
-                if (spamOpen && !doorsToSpamOpen.Contains(doorRoom))
-                    doorsToSpamOpen.Add(doorRoom);
-                else if (!spamOpen && doorsToSpamOpen.Contains(doorRoom))
-                    doorsToSpamOpen.Remove(doorRoom);
+                var spamClose = doorsToSpamClose.Contains(doorRoom);
+                spamClose = GUILayout.Toggle(spamClose, "Spam Close");
+                if (spamClose && !doorsToSpamClose.Contains(doorRoom))
+                    doorsToSpamClose.Add(doorRoom);
+                else if (!spamClose && doorsToSpamClose.Contains(doorRoom))
+                    doorsToSpamClose.Remove(doorRoom);
+
+                if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
+                {
+                    var spamOpen = doorsToSpamOpen.Contains(doorRoom);
+                    spamOpen = GUILayout.Toggle(spamOpen, "Spam Open");
+                    if (spamOpen && !doorsToSpamOpen.Contains(doorRoom))
+                        doorsToSpamOpen.Add(doorRoom);
+                    else if (!spamOpen && doorsToSpamOpen.Contains(doorRoom))
+                        doorsToSpamOpen.Remove(doorRoom);
+                }
+            }
+            else
+            {
+                // Clear spam lists if not host
+                if (doorsToSpamClose.Count != 0 || doorsToSpamOpen.Count != 0)
+                {
+                    doorsToSpamClose.Clear();
+                    doorsToSpamOpen.Clear();
+                }
             }
 
             GUILayout.EndHorizontal();
@@ -113,11 +125,18 @@ public class DoorsUI : MonoBehaviour
 
         GUILayout.FlexibleSpace();
 
-        CheatToggles.spamCloseAllDoors = GUILayout.Toggle(CheatToggles.spamCloseAllDoors, "Spam Close All");
-
-        if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
+        if (Utils.isHost)
         {
-            CheatToggles.spamOpenAllDoors = GUILayout.Toggle(CheatToggles.spamOpenAllDoors, "Spam Open All");
+            CheatToggles.spamCloseAllDoors = GUILayout.Toggle(CheatToggles.spamCloseAllDoors, "Spam Close All");
+
+            if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
+            {
+                CheatToggles.spamOpenAllDoors = GUILayout.Toggle(CheatToggles.spamOpenAllDoors, "Spam Open All");
+            }
+        }
+        else
+        {
+            CheatToggles.spamCloseAllDoors = CheatToggles.spamOpenAllDoors = false;
         }
 
         GUILayout.EndHorizontal();
