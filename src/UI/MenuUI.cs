@@ -232,15 +232,15 @@ public class MenuUI : MonoBehaviour
 
     public void InitStyles()
     {
-        if (!MalumMenu.useHorizontalUI.Value && GUI.skin.toggle.fontSize == 0)
+        if (!MalumMenu.useHorizontalUI.Value && (GUI.skin.toggle.fontSize == 13 || GUI.skin.toggle.fontSize == 0))
         {
             //Debug.Log($"current style: {GUI.skin.button.fontSize}, {GUI.skin.toggle.fontSize}, {GUI.skin.button.normal.textColor}, {GUI.skin.button.normal.background}");
 
             GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = 20;
         }
-        else if (MalumMenu.useHorizontalUI.Value && GUI.skin.toggle.fontSize != 0)
+        else if (MalumMenu.useHorizontalUI.Value && GUI.skin.toggle.fontSize != 13)
         {
-            GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = 0;
+            GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = GUI.skin.label.fontSize = 13;
         }
 
         if (submenuButtonStyle != null) return;
