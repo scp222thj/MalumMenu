@@ -247,6 +247,7 @@ public struct CheatToggles
         public void Update()
         {
             if (MenuUI.isPanicked) return;
+            if (!HudManager.InstanceExists || !HudManager.Instance.Chat || HudManager.Instance.Chat.IsOpenOrOpening) return;
 
             if (reloadConfig)
             {
