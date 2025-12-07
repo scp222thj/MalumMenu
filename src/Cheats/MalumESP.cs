@@ -30,7 +30,10 @@ public static class MalumESP
 
     public static void zoomOut(HudManager hudManager)
     {
-        if(CheatToggles.zoomOut){
+        if (CheatToggles.zoomOut)
+        {
+            if (hudManager.Chat.IsOpenOrOpening || PlayerCustomizationMenu.Instance || (Utils.isLobby &&
+                (GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active || GameStartManager.Instance.RulesEditPanel))) return;
 
             resolutionchangeNeeded = true;
 
