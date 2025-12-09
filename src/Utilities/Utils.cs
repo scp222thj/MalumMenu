@@ -143,15 +143,7 @@ public static class Utils
     // Get RoleBehaviour from a RoleType
     public static RoleBehaviour getBehaviourByRoleType(RoleTypes roleType)
     {
-        List<RoleBehaviour> allRoles = RoleManager.Instance.AllRoles;
-        if (allRoles == null) return null;
-
-        foreach (RoleBehaviour role in allRoles)
-        {
-            if (role && role.Role == roleType) return role;
-        }
-
-        return null;
+        return RoleManager.Instance.AllRoles.ToArray().First(r => r.Role == roleType);
     }
 
     // Kill any player using RPC calls
@@ -185,12 +177,10 @@ public static class Utils
         }
 
         var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData != null && !HostData.Character.Data.Disconnected)
-        {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, HostData.Id);
-            writer.Write(playerData.PlayerId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
+        if (HostData == null || HostData.Character.Data.Disconnected) return;
+        var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, HostData.Id);
+        writer.Write(playerData.PlayerId);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
 
@@ -262,11 +252,10 @@ public static class Utils
     // Draw a tracer line between two 2 GameObjects
     public static void drawTracer(GameObject sourceObject, GameObject targetObject, Color color)
     {
-        LineRenderer lineRenderer;
+        var lineRenderer = sourceObject.GetComponent<LineRenderer>();
 
-        lineRenderer = sourceObject.GetComponent<LineRenderer>();
-
-        if(!lineRenderer){
+        if (!lineRenderer)
+        {
             lineRenderer = sourceObject.AddComponent<LineRenderer>();
         }
 
@@ -299,12 +288,11 @@ public static class Utils
         if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
             DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
         }
-
     }
 
     // Get the distance between two players as a float
     public static float getDistanceFrom(PlayerControl target, PlayerControl source = null){
-        
+
         if (source.IsNull()){
             source = PlayerControl.LocalPlayer;
         }
@@ -318,7 +306,7 @@ public static class Utils
 
     // Returns a list of all the players in the game ordered from closest to farthest (from LocalPlayer by default)
     public static System.Collections.Generic.List<PlayerControl> getPlayersSortedByDistance(PlayerControl source = null){
-        
+
         if (source.IsNull()){
             source = PlayerControl.LocalPlayer;
         }
@@ -327,25 +315,19 @@ public static class Utils
 
         outputList.Clear();
 
-        List<NetworkedPlayerInfo> allPlayers = GameData.Instance.AllPlayers;
-        for (int i = 0; i < allPlayers.Count; i++)
+        var allPlayers = GameData.Instance.AllPlayers;
+        foreach (var t in allPlayers)
         {
-            PlayerControl player = allPlayers[i].Object;
+            var player = t.Object;
             if (player)
             {
                 outputList.Add(player);
             }
         }
-        
+
         outputList = outputList.OrderBy(target => getDistanceFrom(target, source)).ToList();
-        
-        if (outputList.Count <= 0)
-        {
-            return null;
-        }
 
-        return outputList;
-
+        return outputList.Count <= 0 ? null : outputList;
     }
 
     // Gets current map ID
@@ -353,13 +335,12 @@ public static class Utils
     {
         // If playing the tutorial
         if (isFreePlay)
-	    {
+        {
             return (byte)AmongUsClient.Instance.TutorialMapId;
-
-	    }else{
-            // Works for local/online games
-            return GameOptionsManager.Instance.currentGameOptions.MapId;
         }
+
+        // Works for local/online games
+        return GameOptionsManager.Instance.currentGameOptions.MapId;
     }
 
     // Get SystemType of the room the player is currently in
@@ -368,55 +349,45 @@ public static class Utils
     }
 
     // Fancy colored ping text
-    public static string getColoredPingText(int ping){
-
-        if (ping <= 100){ // Green for ping < 100
-
-            return $"<color=#00ff00ff>PING: {ping} ms</color>";
-
-        } else if (ping < 400){ // Yellow for 100 < ping < 400
-
-            return $"<color=#ffff00ff>PING: {ping} ms</color>";
-
-        } else{ // Red for ping > 400
-
-            return $"<color=#ff0000ff>PING: {ping} ms</color>";
-        }
+    public static string getColoredPingText(int ping)
+    {
+        return ping switch
+        {
+            <= 100 => $"<color=#00ff00ff>PING: {ping} ms</color>",
+            < 400 => $"<color=#ffff00ff>PING: {ping} ms</color>",
+            _ => $"<color=#ff0000ff>PING: {ping} ms</color>"
+        };
     }
 
     // Get a UnityEngine.KeyCode from a string
     public static KeyCode stringToKeycode(string keyCodeStr){
 
-        if(!string.IsNullOrEmpty(keyCodeStr)){ // Empty strings are automatically invalid
-
-            try{
-                
+        if(!string.IsNullOrEmpty(keyCodeStr)) // Empty strings are automatically invalid
+        {
+            try
+            {
                 // Case-insensitive parse of UnityEngine.KeyCode to check if string is validssss
                 KeyCode keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyCodeStr, true);
-                
-                return keyCode;
 
+                return keyCode;
             }catch{}
-        
         }
 
         return KeyCode.Delete; // If string is invalid, return Delete as the default key
     }
 
     // Get a platform type from a string
-    public static bool stringToPlatformType(string platformStr, out Platforms? platform){
-
-        if(!string.IsNullOrEmpty(platformStr)){ // Empty strings are automatically invalid
-
-            try{
-                
+    public static bool stringToPlatformType(string platformStr, out Platforms? platform)
+    {
+        if (!string.IsNullOrEmpty(platformStr)) // Empty strings are automatically invalid
+        {
+            try
+            {
                 // Case-insensitive parse of Platforms from string (if it valid)
-                platform = (Platforms)System.Enum.Parse(typeof(Platforms), platformStr, true);
-                
-                return true; // If platform type is valid, return false
+                platform = (Platforms)Enum.Parse(typeof(Platforms), platformStr, true);
 
+                return true; // If platform type is valid, return false
             }catch{}
-        
         }
 
         platform = null;
@@ -446,15 +417,16 @@ public static class Utils
     public static string getRoleName(NetworkedPlayerInfo playerData)
     {
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
-        if (translatedRole == "STRMISS")
+        if (translatedRole != "STRMISS") return translatedRole;
+        if (playerData.RoleWhenAlive.HasValue)
         {
-            if (playerData.RoleWhenAlive.HasValue)
-            {
-                translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(getBehaviourByRoleType(playerData.RoleWhenAlive.Value).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
-            } else {
-                translatedRole = "Ghost";
-            }
+            translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(getBehaviourByRoleType(playerData.RoleWhenAlive.Value).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         }
+        else
+        {
+            translatedRole = "Ghost";
+        }
+
         return translatedRole;
     }
 
@@ -539,6 +511,14 @@ public static class Utils
         }
 
         return nameTag;
+    }
+
+    public static string GetRandomName()
+    {
+        // Randomize 1-12 characters long names
+        var length = UnityEngine.Random.Range(1, 13);
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        return new string(Enumerable.Repeat(chars, length).Select(s => s[UnityEngine.Random.Range(0, s.Length)]).ToArray());
     }
 
     // Show custom popup ingame
@@ -650,7 +630,6 @@ public static class Utils
     {
         CheatToggles.DisableAll();
         ModManager.Instance.ModStamp.enabled = false;
-        MenuUI.isPanicked = true;
 
         // Create a PanicCleaner to unpatch Harmony in the next frame
         // This allows some patches to run for a last time and finish properly

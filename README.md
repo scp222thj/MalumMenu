@@ -14,8 +14,8 @@
     <img src="https://img.shields.io/badge/Support-me-ff5f5f?style=flat&logo=github-sponsors">
   </a>
 
-  <a href="https://github.com/astra1dev/MalumMenu/blob/astralum/.github/workflows/main.yml">
-    <img src="https://github.com/astra1dev/MalumMenu/blob/astralum/.github/workflows/main.yml/badge.svg?event=push&style=plastic">
+  <a href="https://github.com/astra1dev/MalumMenu/actions/workflows/main.yml">
+    <img src="https://github.com/astra1dev/MalumMenu/actions/workflows/main.yml/badge.svg?event=push&style=plastic">
   </a>
 
   <a href="../../releases">

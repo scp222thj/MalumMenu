@@ -298,6 +298,7 @@ public class MenuUI : MonoBehaviour
         if (CheatToggles.panic)
         {
             Utils.Panic();
+            isPanicked = true;
             CheatToggles.panic = false;
         }
 

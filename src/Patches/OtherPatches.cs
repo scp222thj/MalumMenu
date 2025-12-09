@@ -190,10 +190,10 @@ public static class AccountManager_CanPlayOnline
     }
 }
 
-[HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.JoinGame))]
-public static class InnerNet_InnerNetClient_JoinGame
+[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.JoinGame))]
+public static class InnerNetClient_JoinGame
 {
-    // Prefix patch of InnerNet.InnerNetClient.JoinGame to allow online games
+    // Prefix patch of InnerNetClient.JoinGame to allow online games
     public static void Prefix()
     {
         if (CheatToggles.unlockFeatures){
@@ -290,14 +290,14 @@ public static class Vent_CanUse
     // Basically does what the original method did with the required modifications
     public static void Postfix(Vent __instance, NetworkedPlayerInfo pc, ref bool canUse, ref bool couldUse, ref float __result)
     {
+        if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data) return;
         if (PlayerControl.LocalPlayer.Data.Role.CanVent || PlayerControl.LocalPlayer.Data.IsDead) return;
         if (!CheatToggles.useVents) return;
-        var num = float.MaxValue;
         var @object = pc.Object;
 
         var center = @object.Collider.bounds.center;
         var position = __instance.transform.position;
-        num = Vector2.Distance(center, position);
+        var num = Vector2.Distance(center, position);
 
         // Allow usage of vents unless the vent is too far or there are objects blocking the player's path
         canUse = num <= __instance.UsableDistance && !PhysicsHelpers.AnythingBetween(@object.Collider, center, position, Constants.ShipOnlyMask, false);

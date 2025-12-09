@@ -10,29 +10,28 @@ public static class MalumCheats
 {
     public static void closeMeetingCheat()
     {
-        if(CheatToggles.closeMeeting){
-            
-            if (MeetingHud.Instance){ // Closes MeetingHud window if it's open
+        if (!CheatToggles.closeMeeting) return;
 
-                // Destroy MeetingHud window gameobject
-                MeetingHud.Instance.DespawnOnDestroy = false;
-                Object.Destroy(MeetingHud.Instance.gameObject);
+        if (Utils.isMeeting){ // Closes MeetingHud window if it's open
 
-                // Gameplay must be reenabled
-                DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear, 0.2f, false));
-                PlayerControl.LocalPlayer.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown());
-                ShipStatus.Instance.EmergencyCooldown = GameManager.Instance.LogicOptions.GetEmergencyCooldown();
-                Camera.main.GetComponent<FollowerCamera>().Locked = false;
-                DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
-                ControllerManager.Instance.CloseAndResetAll();
+            // Destroy MeetingHud window gameobject
+            MeetingHud.Instance.DespawnOnDestroy = false;
+            Object.Destroy(MeetingHud.Instance.gameObject);
 
-            }else if (ExileController.Instance != null){ // Ends exile cutscene if it's playing
-                ExileController.Instance.ReEnableGameplay();
-                ExileController.Instance.WrapUp();
-            }
-            
-            CheatToggles.closeMeeting = false; // Button behaviour
+            // Gameplay must be reenabled
+            DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear, 0.2f, false));
+            PlayerControl.LocalPlayer.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown());
+            ShipStatus.Instance.EmergencyCooldown = GameManager.Instance.LogicOptions.GetEmergencyCooldown();
+            Camera.main.GetComponent<FollowerCamera>().Locked = false;
+            DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
+            ControllerManager.Instance.CloseAndResetAll();
+
+        }else if (ExileController.Instance){ // Ends exile cutscene if it's playing
+            ExileController.Instance.ReEnableGameplay();
+            ExileController.Instance.WrapUp();
         }
+
+        CheatToggles.closeMeeting = false; // Button behaviour
     }
 
     public static void skipMeetingCheat()
@@ -167,6 +166,7 @@ public static class MalumCheats
 
         }
     }
+
     public static void phantomCheats(PhantomRole phantomRole)
     {
         return;
@@ -210,112 +210,99 @@ public static class MalumCheats
 
     public static void walkInVentCheat()
     {
-        try{
+        try
+        {
+            if (!CheatToggles.walkVent) return;
 
-            if (CheatToggles.walkVent){
-                PlayerControl.LocalPlayer.inVent = false;
-                PlayerControl.LocalPlayer.moveable = true;
-            }
-
+            PlayerControl.LocalPlayer.inVent = false;
+            PlayerControl.LocalPlayer.moveable = true;
         }catch{}
     }
 
     public static void kickVentsCheat()
     {
-        if (CheatToggles.kickVents){
+        if (!CheatToggles.kickVents) return;
 
-            foreach(var vent in ShipStatus.Instance.AllVents){
-
-                VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
-
-            }
-
-            CheatToggles.kickVents = false; // Button behaviour
+        foreach(var vent in ShipStatus.Instance.AllVents)
+        {
+            VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
         }
+
+        CheatToggles.kickVents = false; // Button behaviour
     }
 
     public static void killAllCheat()
     {
-        if (CheatToggles.killAll){
+        if (!CheatToggles.killAll) return;
 
-            if (Utils.isLobby){
-
-                HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
-
-            }else{
-
-                // Kill all players by sending a successful MurderPlayer RPC call
-                foreach (var player in PlayerControl.AllPlayerControls)
-                {
-                    Utils.murderPlayer(player, MurderResultFlags.Succeeded);
-                }
-
-            }
-
-            CheatToggles.killAll = false;
-
+        if (Utils.isLobby)
+        {
+            HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
         }
+        else
+        {
+            // Kill all players by sending a successful MurderPlayer RPC call
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                Utils.murderPlayer(player, MurderResultFlags.Succeeded);
+            }
+        }
+
+        CheatToggles.killAll = false;
     }
 
     public static void killAllCrewCheat()
     {
-        if (CheatToggles.killAllCrew){
+        if (!CheatToggles.killAllCrew) return;
 
-            if (Utils.isLobby){
-
-                HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
-
-            }else{
-
-                // Kill all players by sending a successful MurderPlayer RPC call
-                foreach (var player in PlayerControl.AllPlayerControls)
-                {
-                    if (player.Data.Role.TeamType == RoleTeamTypes.Crewmate){
-                        Utils.murderPlayer(player, MurderResultFlags.Succeeded);
-                    }
-                }
-
-            }
-
-            CheatToggles.killAllCrew = false;
-
+        if (Utils.isLobby)
+        {
+            HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
         }
+        else
+        {
+            // Kill all players by sending a successful MurderPlayer RPC call
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player.Data.Role.TeamType == RoleTeamTypes.Crewmate){
+                    Utils.murderPlayer(player, MurderResultFlags.Succeeded);
+                }
+            }
+        }
+
+        CheatToggles.killAllCrew = false;
     }
 
     public static void killAllImpsCheat()
     {
-        if (CheatToggles.killAllImps){
+        if (!CheatToggles.killAllImps) return;
 
-            if (Utils.isLobby){
-
-                HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
-
-            }else{
-
-                // Kill all players by sending a successful MurderPlayer RPC call
-                foreach (var player in PlayerControl.AllPlayerControls)
-                {
-                    if (player.Data.Role.TeamType == RoleTeamTypes.Impostor){
-                        Utils.murderPlayer(player, MurderResultFlags.Succeeded);
-                    }
-                }
-
-            }
-
-            CheatToggles.killAllImps = false;
-
+        if (Utils.isLobby)
+        {
+            HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
         }
+        else
+        {
+            // Kill all players by sending a successful MurderPlayer RPC call
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player.Data.Role.TeamType == RoleTeamTypes.Impostor){
+                    Utils.murderPlayer(player, MurderResultFlags.Succeeded);
+                }
+            }
+        }
+
+        CheatToggles.killAllImps = false;
     }
 
     public static void teleportCursorCheat()
     {
-        if (CheatToggles.teleportCursor)
+        if (!CheatToggles.teleportCursor) return;
+
+        // Teleport player to cursor's in-world position on right-click
+        if (Input.GetMouseButtonDown(1))
         {
-            // Teleport player to cursor's in-world position on right-click
-            if (Input.GetMouseButtonDown(1)) 
-            {
-                PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            }
+            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
     }
 
