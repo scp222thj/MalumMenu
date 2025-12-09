@@ -10,8 +10,12 @@
     <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
   </a>
   
-  <a href="https://ko-fi.com/scp222thj">
-    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
+  <a href="https://github.com/astra1dev#%EF%B8%8F-support-me">
+    <img src="https://img.shields.io/badge/Support-me-ff5f5f?style=flat&logo=github-sponsors">
+  </a>
+
+  <a href="https://github.com/astra1dev/MalumMenu/blob/astralum/.github/workflows/main.yml">
+    <img src="https://github.com/astra1dev/MalumMenu/blob/astralum/.github/workflows/main.yml/badge.svg?event=push&style=plastic">
   </a>
 
   <a href="../../releases">
@@ -55,6 +59,8 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
 
 # 📋 Features
 
+![](https://github.com/user-attachments/assets/e7342201-aa01-4435-8c9e-d543712842e0)
+
 [Original MalumMenu features](https://github.com/scp222thj/MalumMenu?tab=readme-ov-file#-features)
 
 Changes from the original MalumMenu:
@@ -97,6 +103,20 @@ Changes from the original MalumMenu:
 - BepInEx version bump and CI updates
 
 Full Changelog [here](https://github.com/scp222thj/MalumMenu/compare/main...astra1dev:MalumMenu:astralum).
+
+<hr>
+
+<details>
+  <summary>Known Issues, won't be fixed</summary>
+
+  - Current Room Name doesn't show when NoClip is enabled
+  - No "slide-in" animation plays when a PPM is opened
+  - If the player opens any PPM while the shapeshift menu is open, the menus will overlay on each other
+  - If the player opens any PPM while walking, the player will keep walking until the PPM is closed
+  - "Complete all tasks" sometimes doesn't complete all tasks
+  - NameTag ESP-related features (e.g. "Show Player Info") don't apply to previous chat messages when toggled
+  - Some cheats automatically get turned off when the player leaves a game (e.g. NoClip)
+</details>
 
 # ⚠️ Disclaimer
 
