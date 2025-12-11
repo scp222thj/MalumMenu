@@ -155,15 +155,6 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Unlock Textbox", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
         ], []));
 
-        // Host-Only cheats are temporarly disabled because of some bugs
-
-        //groups.Add(new GroupInfo("Host-Only", false, new List<ToggleInfo>() {
-        //    new ToggleInfo(" ImpostorHack", () => CheatSettings.impostorHack, x => CheatSettings.impostorHack = x),
-        //    new ToggleInfo(" Godmode", () => CheatSettings.godMode, x => CheatSettings.godMode = x),
-        //    new ToggleInfo(" EvilVote", () => CheatSettings.evilVote, x => CheatSettings.evilVote = x),
-        //    new ToggleInfo(" VoteImmune", () => CheatSettings.voteImmune, x => CheatSettings.voteImmune = x)
-        //}, new List<SubmenuInfo>()));
-
         // Console is temporarly disabled until we implement some features for it
 
         //groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
@@ -201,6 +192,7 @@ public class MenuUI : MonoBehaviour
                 new SubmenuInfo("Meetings", false, [
                     new ToggleInfo(" Call Meeting", () => CheatToggles.callMeeting, x => CheatToggles.callMeeting = x),
                     new ToggleInfo(" Skip Meeting", () => CheatToggles.skipMeeting, x => CheatToggles.skipMeeting = x),
+                    new ToggleInfo(" VoteImmune", () => CheatToggles.voteImmune, x => CheatToggles.voteImmune = x),
                     new ToggleInfo(" Eject Player", () => CheatToggles.ejectPlayer, x => CheatToggles.ejectPlayer = x),
                 ])
             ]));

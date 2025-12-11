@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using Object = UnityEngine.Object;
 
 namespace MalumMenu;
 
@@ -102,5 +103,43 @@ public static class MeetingHud_PopulateResults
             voteSpreader.Votes.Clear();
         }
         MeetingHud_Update.votedPlayers.Clear();
+    }
+}
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CheckForEndVoting))]
+public static class MeetingHud_CheckForEndVoting
+{
+    /// <summary>
+    /// Prefix patch of MeetingHud.CheckForEndVoting to make the local player immune to being voted out
+    /// </summary>
+    /// <param name="__instance">The <c>MeetingHud</c> instance.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
+    public static bool Prefix(MeetingHud __instance)
+    {
+        if (!CheatToggles.voteImmune) return true; // We don't need to check whether we are host because this method only runs on the host's side
+
+        if (!__instance.playerStates.All(ps => ps.AmDead || ps.DidVote)) return true;
+        var max = __instance.CalculateVotes().MaxPair(out var tie);
+        var exiled = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(v => !tie && v.PlayerId == max.Key);
+
+        // This is the only change from the original method - make sure local player is not exiled
+        if (exiled != null && exiled == PlayerControl.LocalPlayer.Data)
+        {
+            exiled = null;
+        }
+
+        var states = new MeetingHud.VoterState[__instance.playerStates.Length];
+        for (var index = 0; index < __instance.playerStates.Length; ++index)
+        {
+            var playerState = __instance.playerStates[index];
+            states[index] = new MeetingHud.VoterState
+            {
+                VoterId = playerState.TargetPlayerId,
+                VotedForId = playerState.VotedFor
+            };
+        }
+        __instance.RpcVotingComplete(states, exiled, tie);
+
+        return false;
     }
 }

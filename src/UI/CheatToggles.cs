@@ -103,7 +103,7 @@ public struct CheatToggles
     //public static bool impostorHack;
     //public static bool godMode;
     //public static bool evilVote;
-    //public static bool voteImmune;
+    public static bool voteImmune;
     public static bool skipMeeting;
     public static bool callMeeting;
     public static bool forceStartGame;
