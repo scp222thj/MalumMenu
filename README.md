@@ -97,6 +97,7 @@ Changes from the original MalumMenu:
 - Added Doors Menu to close / open individual doors (Ship category)
 - Added Tasks Menu to complete individual tasks and see other players' tasks (Roles category)
 - Added a keybind system to bind cheats to keyboard keys (defined in MalumProfile.txt)
+- Added pasting and cutting text between the chatbox and the device's clipboard
 
 #### Other changes
 - Some refactoring and code style changes
