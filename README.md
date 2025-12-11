@@ -98,6 +98,7 @@ Changes from the original MalumMenu:
 - Added Tasks Menu to complete individual tasks and see other players' tasks (Roles category)
 - Added a keybind system to bind cheats to keyboard keys (defined in MalumProfile.txt)
 - Added pasting and cutting text between the chatbox and the device's clipboard
+- Changed "ZoomOut" to disable while Chat, Friends List or Game Settings Panel is open
 
 #### Other changes
 - Some refactoring and code style changes
