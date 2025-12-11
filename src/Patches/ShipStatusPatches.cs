@@ -10,6 +10,7 @@ public static class ShipStatus_FixedUpdate
         MalumCheats.sabotageCheat(__instance);
         MalumCheats.closeMeetingCheat();
         MalumCheats.skipMeetingCheat();
+        MalumCheats.callMeetingCheat();
         MalumCheats.walkInVentCheat();
         MalumCheats.kickVentsCheat();
 

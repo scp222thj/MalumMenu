@@ -46,6 +46,17 @@ public static class MalumCheats
         CheatToggles.skipMeeting = false;
     }
 
+    public static void callMeetingCheat()
+    {
+        if (!CheatToggles.callMeeting) return;
+
+        MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
+        DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+        PlayerControl.LocalPlayer.RpcStartMeeting(null);
+
+        CheatToggles.callMeeting = false;
+    }
+
     public static void forceStartGameCheat()
     {
         if (!CheatToggles.forceStartGame) return;
