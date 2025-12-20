@@ -1,0 +1,5 @@
+root = true
+[*]
+
+# For Harmony attributes
+resharper_inconsistent_naming_highlighting=hint
