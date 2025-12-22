@@ -68,6 +68,7 @@ public static class ChatController_AddChat
 			if (!flag)
 			{
 				SoundManager.Instance.PlaySound(__instance.messageSound, false, 1f, null).pitch = 0.5f + (float)sourcePlayer.PlayerId / 15f;
+				__instance.chatNotification.SetUp(sourcePlayer, chatText);
 			}
 		}
 		catch (Exception message)
