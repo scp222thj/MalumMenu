@@ -51,6 +51,7 @@ public struct CheatToggles
     public static bool seeRoles;
     public static bool showPlayerInfo;
     public static bool seeDisguises;
+    public static bool showTaskArrows;
     public static bool revealVotes;
     public static bool moreLobbyInfo;
 
