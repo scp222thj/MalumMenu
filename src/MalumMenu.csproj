@@ -5,8 +5,8 @@
         <DebugType>embedded</DebugType>
 
         <VersionPrefix>2.6.1</VersionPrefix>
-        <Description>all play and no cheats makes among us a dull game</Description>
-        <Authors>scp222thj</Authors>
+        <Description>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules</Description>
+        <Authors>scp222thj, astra1dev</Authors>
     </PropertyGroup>
 
     <!--<ItemGroup>

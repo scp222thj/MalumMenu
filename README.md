@@ -1,15 +1,15 @@
 
 <p align="center">
-  ~~~ astralum ~~~
+  <img width="1028" height="441" alt="banner" src="./logo.png" />
 </p>
 
 
 <p align="center">
-  
+
   <a href="https://discord.gg/YYcYf88jAb">
     <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
   </a>
-  
+
   <a href="https://github.com/astra1dev#%EF%B8%8F-support-me">
     <img src="https://img.shields.io/badge/Support-me-ff5f5f?style=flat&logo=github-sponsors">
   </a>
@@ -25,7 +25,7 @@
   <a href="../../releases/latest">
     <img src="https://img.shields.io/github/downloads/astra1dev/MalumMenu/latest/total?style=plastic">
   </a>
-  
+
 </p>
 
 <p align="center">
@@ -35,8 +35,7 @@
 # 🎁 Releases
 
 **PLEASE READ**:
-This branch is my personal fork of the original MalumMenu project. 
-For the lack of a better name, I call it **Astralum**.
+This repository (more specifically, the `reloaded` branch) is my personal fork of the original MalumMenu project.
 
 | Mod Version | Among Us - Version | Link                                  |
 |-------------|--------------------|---------------------------------------|
@@ -51,7 +50,7 @@ For older (official) versions, please refer to the [original MalumMenu repositor
 
 The installation process is the same as for the original MalumMenu (see [here](https://github.com/scp222thj/MalumMenu?tab=readme-ov-file#%EF%B8%8F-installation)).
 
-Instead of downloading the latest ZIP or DLL release from the original repository, download it from this fork's releases section.
+Instead of downloading the latest ZIP or DLL release from the original repository, download it from the table above (or get the CI build artifact from the latest commit for more bleeding-edge features).
 
 If you are using the DLL, make sure you have BepInEx 6.0.0-BE-735 installed. Older ones will not work.
 
@@ -124,6 +123,6 @@ Full Changelog [here](https://github.com/scp222thj/MalumMenu/compare/main...astr
 
 # ⚠️ Disclaimer
 
-This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. 
+This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC.
 
 Usage of this mod can violate the terms of service of Among Us, which may lead to punitive action including temporary or permanent bans from the game. The creator is not responsible for any consequences you may face due to usage. Use at your own risk.
