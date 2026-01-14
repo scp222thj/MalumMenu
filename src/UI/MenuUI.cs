@@ -94,15 +94,10 @@ public class MenuUI : MonoBehaviour
                 ]),
 
                 new SubmenuInfo("Tracker", false, [
-                    new ToggleInfo(" Endless Tracking", () => CheatToggles.endlessTracking,
-                        x => CheatToggles.endlessTracking = x),
-
-                    new ToggleInfo(" No Track Delay", () => CheatToggles.noTrackingDelay,
-                        x => CheatToggles.noTrackingDelay = x),
-
-                    new ToggleInfo(" No Track Cooldown", () => CheatToggles.noTrackingCooldown,
-                        x => CheatToggles.noTrackingCooldown = x)
-
+                    new ToggleInfo(" Endless Tracking", () => CheatToggles.endlessTracking, x => CheatToggles.endlessTracking = x),
+                    new ToggleInfo(" No Track Delay", () => CheatToggles.noTrackingDelay, x => CheatToggles.noTrackingDelay = x),
+                    new ToggleInfo(" No Track Cooldown", () => CheatToggles.noTrackingCooldown, x => CheatToggles.noTrackingCooldown = x),
+                    new ToggleInfo(" Track Reach", () => CheatToggles.trackReach, x => CheatToggles.trackReach = x)
                 ]),
 
                 new SubmenuInfo("Engineer", false, [

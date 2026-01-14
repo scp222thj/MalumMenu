@@ -100,6 +100,7 @@ Changes from the original MalumMenu:
 - Changed "ZoomOut" to disable while Chat, Friends List or Game Settings Panel is open
 - Added being able to kick players while in-game as host (no 3 votes required to kick)
 - Added "Show Task Arrows" (ESP category)
+- Added "Track Reach" (Roles category)
 
 #### Other changes
 - Some refactoring and code style changes
