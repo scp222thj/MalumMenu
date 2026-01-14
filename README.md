@@ -101,6 +101,7 @@ Changes from the original MalumMenu:
 - Added being able to kick players while in-game as host (no 3 votes required to kick)
 - Added "Show Task Arrows" (ESP category)
 - Added "Track Reach" (Roles category)
+- Added "Interrogate Reach" (Roles category)
 
 #### Other changes
 - Some refactoring and code style changes

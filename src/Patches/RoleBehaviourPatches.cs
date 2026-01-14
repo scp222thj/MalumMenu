@@ -123,6 +123,26 @@ public static class ImpostorRole_FindClosestTarget
     }
 }
 
+[HarmonyPatch(typeof(DetectiveRole), nameof(DetectiveRole.FindClosestTarget))]
+public static class DetectiveRole_FindClosestTarget
+{
+    /// <summary>
+    /// Prefix patch of DetectiveRole.FindClosestTarget to allow for infinite interrogate reach
+    /// </summary>
+    /// <param name="__instance">The <c>DetectiveRole</c> instance.</param>
+    /// <param name="__result">The closest valid target.</param>
+    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
+    public static bool Prefix(DetectiveRole __instance, ref PlayerControl __result)
+    {
+        if (!CheatToggles.interrogateReach) return true;
+        var playerList = Utils.getPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+
+        __result = playerList[0];
+
+        return false;
+    }
+}
+
 [HarmonyPatch(typeof(TrackerRole), nameof(TrackerRole.FindClosestTarget))]
 public static class TrackerRole_FindClosestTarget
 {

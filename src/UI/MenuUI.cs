@@ -101,21 +101,17 @@ public class MenuUI : MonoBehaviour
                 ]),
 
                 new SubmenuInfo("Engineer", false, [
-                    new ToggleInfo(" Endless Vent Time", () => CheatToggles.endlessVentTime,
-                        x => CheatToggles.endlessVentTime = x),
-
-                    new ToggleInfo(" No Vent Cooldown", () => CheatToggles.noVentCooldown,
-                        x => CheatToggles.noVentCooldown = x)
-
+                    new ToggleInfo(" Endless Vent Time", () => CheatToggles.endlessVentTime, x => CheatToggles.endlessVentTime = x),
+                    new ToggleInfo(" No Vent Cooldown", () => CheatToggles.noVentCooldown, x => CheatToggles.noVentCooldown = x)
                 ]),
 
                 new SubmenuInfo("Scientist", false, [
-                    new ToggleInfo(" Endless Battery", () => CheatToggles.endlessBattery,
-                        x => CheatToggles.endlessBattery = x),
+                    new ToggleInfo(" Endless Battery", () => CheatToggles.endlessBattery, x => CheatToggles.endlessBattery = x),
+                    new ToggleInfo(" No Vitals Cooldown", () => CheatToggles.noVitalsCooldown, x => CheatToggles.noVitalsCooldown = x)
+                ]),
 
-                    new ToggleInfo(" No Vitals Cooldown", () => CheatToggles.noVitalsCooldown,
-                        x => CheatToggles.noVitalsCooldown = x)
-
+                new SubmenuInfo("Detective", false, [
+                    new ToggleInfo(" Interrogate Reach", () => CheatToggles.interrogateReach, x => CheatToggles.interrogateReach = x)
                 ])
 
             ]));
