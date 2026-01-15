@@ -408,6 +408,7 @@ public static class Utils
             Platforms.Switch => "Nintendo Switch",
             Platforms.Xbox => "Xbox",
             Platforms.Playstation => "PlayStation",
+            (Platforms)112 => "Starlight",
             _ => "Unknown"
         };
     }
