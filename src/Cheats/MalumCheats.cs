@@ -159,10 +159,9 @@ public static class MalumCheats
 
         }
 
-        if (CheatToggles.noTrackingDelay){
-
-            MapBehaviour.Instance.trackedPointDelayTime = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDelay);
-
+        if (CheatToggles.noTrackingDelay)
+        {
+            MapBehaviour.Instance?.trackedPointDelayTime = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDelay);
         }
 
         if (CheatToggles.endlessTracking){
