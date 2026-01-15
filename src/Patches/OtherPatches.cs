@@ -122,7 +122,11 @@ public static class PingTracker_Update
     /// <param name="__instance">The <c>PingTracker</c> instance.</param>
     public static void Postfix(PingTracker __instance)
     {
-        if (CheatToggles.stealthMode) return;
+        if (CheatToggles.stealthMode)
+        {
+            __instance.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            return;
+        }
 
         __instance.text.alignment = TMPro.TextAlignmentOptions.Center;
 
@@ -341,32 +345,18 @@ public static class GameContainer_SetupGameInfo
     {
         if (!CheatToggles.moreLobbyInfo) return;
 
-        var trueHostName = __instance.gameListing.TrueHostName;
-
         // The Crewmate icon gets aligned properly with this
         const string separator = "<#0000>000000000000000</color>";
 
+        var trueHostName = __instance.gameListing.TrueHostName;
         var age = __instance.gameListing.Age;
         var lobbyTime = $"Age: {age / 60}:{(age % 60 < 10 ? "0" : "")}{age % 60}";
+        var platform = Utils.PlatformTypeToString(__instance.gameListing.Platform);
 
-        var platformId = __instance.gameListing.Platform switch
-        {
-            Platforms.StandaloneEpicPC => "Epic",
-            Platforms.StandaloneSteamPC => "Steam",
-            Platforms.StandaloneMac => "Mac",
-            Platforms.StandaloneWin10 => "Microsoft Store",
-            Platforms.StandaloneItch => "Itch.io",
-            Platforms.IPhone => "iPhone / iPad",
-            Platforms.Android => "Android",
-            Platforms.Switch => "Nintendo Switch",
-            Platforms.Xbox => "Xbox",
-            Platforms.Playstation => "PlayStation",
-            _ => "Unknown"
-        };
         // Set the text of the capacity field to include the new information
         __instance.capacity.text = $"<size=40%>{separator}\n{trueHostName}\n{__instance.capacity.text}\n" +
                                    $"<#fb0>{GameCode.IntToGameName(__instance.gameListing.GameId)}</color>\n" +
-                                   $"<#b0f>{platformId}</color>\n{lobbyTime}\n{separator}</size>";
+                                   $"<#b0f>{platform}</color>\n{lobbyTime}\n{separator}</size>";
     }
 }
 
@@ -413,7 +403,7 @@ public static class BanMenu_SetVisible
     /// Prefix patch of BanMenu.SetVisible to always show kick and ban buttons as host
     /// </summary>
     /// <param name="__instance">The <c>BanMenu</c> instance.</param>
-    /// <param name="show">Whether to show the ban menu.</param>
+    /// <param name="show">Whether to show the button that opens the ban menu.</param>
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(BanMenu __instance, bool show)
     {
