@@ -194,6 +194,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Avoid Penalties", () => CheatToggles.avoidBans, x => CheatToggles.avoidBans = x),
             new ToggleInfo(" Unlock Extra Features", () => CheatToggles.unlockFeatures, x => CheatToggles.unlockFeatures = x),
             new ToggleInfo(" Spoof Date to April 1st", () => CheatToggles.spoofAprilFoolsDate, x => CheatToggles.spoofAprilFoolsDate = x),
+            new ToggleInfo(" Stealth Mode", () => CheatToggles.stealthMode, x => CheatToggles.stealthMode = x),
             new ToggleInfo(" Panic (Disable MalumMenu)", () => CheatToggles.panic, x => CheatToggles.panic = x)
         ], []));
 
@@ -278,6 +279,15 @@ public class MenuUI : MonoBehaviour
         {
             hue += Time.deltaTime * 0.3f; // Adjust speed of color change, higher multiplier = faster
             if (hue > 1f) hue -= 1f; // Loop hue back to 0 when it exceeds 1
+        }
+
+        if (CheatToggles.stealthMode && ModManager.Instance.ModStamp.enabled)
+        {
+            ModManager.Instance.ModStamp.enabled = false;
+        }
+        else if (!CheatToggles.stealthMode && !ModManager.Instance.ModStamp.enabled)
+        {
+            ModManager.Instance.ShowModStamp();
         }
 
         if (CheatToggles.panic)

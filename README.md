@@ -102,6 +102,7 @@ Changes from the original MalumMenu:
 - Added "Show Task Arrows" (ESP category)
 - Added "Track Reach" (Roles category)
 - Added "Interrogate Reach" (Roles category)
+- Added "Stealth Mode" (Passive category)
 
 #### Other changes
 - Some refactoring and code style changes

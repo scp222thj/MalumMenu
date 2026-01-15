@@ -100,14 +100,15 @@ public static class VersionShower_Start
     /// <param name="__instance">The <c>VersionShower</c> instance.</param>
     public static void Postfix(VersionShower __instance)
     {
-        if (MalumMenu.supportedAU.Contains(Application.version)){ // Checks if Among Us version is supported
+        if (CheatToggles.stealthMode) return;
 
+        if (MalumMenu.supportedAU.Contains(Application.version)) // Checks if Among Us version is supported
+        {
             __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
-
-        }else{
-
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; //Unsupported
-
+        }
+        else
+        {
+            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
         }
     }
 }
@@ -121,6 +122,8 @@ public static class PingTracker_Update
     /// <param name="__instance">The <c>PingTracker</c> instance.</param>
     public static void Postfix(PingTracker __instance)
     {
+        if (CheatToggles.stealthMode) return;
+
         __instance.text.alignment = TMPro.TextAlignmentOptions.Center;
 
         if (AmongUsClient.Instance.IsGameStarted){
