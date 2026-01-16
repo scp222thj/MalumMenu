@@ -103,6 +103,7 @@ Changes from the original MalumMenu:
 - Added "Track Reach" (Roles category)
 - Added "Interrogate Reach" (Roles category)
 - Added "Stealth Mode" (Passive category)
+- Added "TeleportMenuToMouse" config option
 
 #### Other changes
 - Some refactoring and code style changes

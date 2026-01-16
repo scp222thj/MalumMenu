@@ -269,10 +269,13 @@ public class MenuUI : MonoBehaviour
             //Enable-disable GUI with DELETE key
             isGUIActive = !isGUIActive;
 
-            //Also teleport the window to the mouse for immediate use
-            Vector2 mousePosition = Input.mousePosition;
-            windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
-            horizontalWindowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+            if (MalumMenu.teleportMenuToMouse.Value)
+            {
+                // Teleport the window to the mouse for immediate use
+                Vector2 mousePosition = Input.mousePosition;
+                windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+                horizontalWindowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+            }
         }
 
         if (CheatToggles.RGBMode)

@@ -23,6 +23,7 @@ public partial class MalumMenu : BasePlugin
     public static TasksUI tasksUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
+    public static ConfigEntry<bool> teleportMenuToMouse;
     public static ConfigEntry<bool> useHorizontalUI;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
@@ -46,6 +47,11 @@ public partial class MalumMenu : BasePlugin
                                 "Color",
                                 "",
                                 "A custom color for your MalumMenu GUI. Supports html color codes");
+
+        teleportMenuToMouse = Config.Bind("MalumMenu.GUI",
+                                "TeleportMenuToMouse",
+                                true,
+                                "When enabled, the menu will always open at the current mouse position.");
 
         useHorizontalUI = Config.Bind("MalumMenu.GUI",
                                 "UseHorizontalUI",
