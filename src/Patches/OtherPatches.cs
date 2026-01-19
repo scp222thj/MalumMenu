@@ -71,26 +71,6 @@ public static class SystemInfo_deviceUniqueIdentifier_Getter
     }
 }
 
-[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Update))]
-public static class AmongUsClient_Update
-{
-    public static void Postfix()
-    {
-        MalumSpoof.spoofLevel();
-
-        // Code to treat temp accounts the same as full accounts, including access to friend codes
-        if (!EOSManager.Instance.loginFlowFinished || !MalumMenu.guestMode.Value) return;
-        DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
-
-        if (!string.IsNullOrWhiteSpace(EOSManager.Instance.FriendCode)) return;
-        var friendCode = MalumSpoof.spoofFriendCode();
-        var editUsername = EOSManager.Instance.editAccountUsername;
-        editUsername.UsernameText.SetText(friendCode);
-        editUsername.SaveUsername();
-        EOSManager.Instance.FriendCode = friendCode;
-    }
-}
-
 [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
 public static class VersionShower_Start
 {
@@ -141,6 +121,21 @@ public static class PingTracker_Update
 
         __instance.text.text = $"MalumMenu by scp222thj & Astral\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
 
+    }
+}
+
+[HarmonyPatch(typeof(DisconnectPopup), nameof(DisconnectPopup.DoShow))]
+public static class DisconnectPopup_DoShow
+{
+    /// <summary>
+    /// Postfix patch of DisconnectPopup.DoShow to copy lobby code to clipboard on disconnect
+    /// </summary>
+    /// <param name="__instance">The <c>DisconnectPopup</c> instance.</param>
+    public static void Postfix(DisconnectPopup __instance)
+    {
+        if (!CheatToggles.copyLobbyCodeOnDisconnect) return;
+        GUIUtility.systemCopyBuffer = AmongUsClient_OnGameJoined.lastGameIdString;
+        __instance.SetText(__instance._textArea.text + "\n\nLobby code has been copied to the clipboard.");
     }
 }
 

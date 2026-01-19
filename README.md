@@ -104,12 +104,13 @@ Changes from the original MalumMenu:
 - Added "Interrogate Reach" (Roles category)
 - Added "Stealth Mode" (Passive category)
 - Added "TeleportMenuToMouse" config option
+- Added "Copy Lobby Code on Disconnect" (Passive category)
 
 #### Other changes
 - Some refactoring and code style changes
 - BepInEx version bump and CI updates
 
-Full Changelog [here](https://github.com/scp222thj/MalumMenu/compare/main...astra1dev:MalumMenu:astralum).
+Full Changelog [here](https://github.com/scp222thj/MalumMenu/compare/main...astra1dev:MalumMenu:reloaded).
 
 <hr>
 
