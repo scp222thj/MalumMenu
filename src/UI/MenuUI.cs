@@ -5,9 +5,9 @@ using System.Linq;
 using HarmonyLib;
 
 namespace MalumMenu;
+
 public class MenuUI : MonoBehaviour
 {
-
     public List<GroupInfo> groups = [];
     private bool isDragging = false;
     private Rect windowRect = new(10, 10, 300, 500);
@@ -58,9 +58,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Impostors", () => CheatToggles.tracersImps, x => CheatToggles.tracersImps = x),
                 new ToggleInfo(" Ghosts", () => CheatToggles.tracersGhosts, x => CheatToggles.tracersGhosts = x),
                 new ToggleInfo(" Dead Bodies", () => CheatToggles.tracersBodies, x => CheatToggles.tracersBodies = x),
-                new ToggleInfo(" Color-based", () => CheatToggles.colorBasedTracers,
-                    x => CheatToggles.colorBasedTracers = x)
-
+                new ToggleInfo(" Color-based", () => CheatToggles.colorBasedTracers, x => CheatToggles.colorBasedTracers = x)
             ]),
 
             new SubmenuInfo("Minimap", false, [
@@ -81,12 +79,8 @@ public class MenuUI : MonoBehaviour
                 ]),
 
                 new SubmenuInfo("Shapeshifter", false, [
-                    new ToggleInfo(" No Ss Animation", () => CheatToggles.noShapeshiftAnim,
-                        x => CheatToggles.noShapeshiftAnim = x),
-
-                    new ToggleInfo(" Endless Ss Duration", () => CheatToggles.endlessSsDuration,
-                        x => CheatToggles.endlessSsDuration = x)
-
+                    new ToggleInfo(" No Ss Animation", () => CheatToggles.noShapeshiftAnim, x => CheatToggles.noShapeshiftAnim = x),
+                    new ToggleInfo(" Endless Ss Duration", () => CheatToggles.endlessSsDuration, x => CheatToggles.endlessSsDuration = x)
                 ]),
 
                 new SubmenuInfo("Crewmate", false, [
@@ -117,8 +111,7 @@ public class MenuUI : MonoBehaviour
             ]));
 
         groups.Add(new GroupInfo("Ship", false, [
-            new ToggleInfo(" Unfixable Lights", () => CheatToggles.unfixableLights,
-                x => CheatToggles.unfixableLights = x),
+            new ToggleInfo(" Unfixable Lights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
             new ToggleInfo(" Report Body", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
             new ToggleInfo(" Close Meeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
             new ToggleInfo(" Auto-Open Doors On Use", () => CheatToggles.autoOpenDoorsOnUse, x => CheatToggles.autoOpenDoorsOnUse = x)
@@ -155,8 +148,7 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Host-Only", false,
             [
-                new ToggleInfo(" Kill While Vanished", () => CheatToggles.killVanished,
-                    x => CheatToggles.killVanished = x),
+                new ToggleInfo(" Kill While Vanished", () => CheatToggles.killVanished, x => CheatToggles.killVanished = x),
                 new ToggleInfo(" Kill Anyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
                 new ToggleInfo(" No Kill Cooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                 new ToggleInfo(" Protect Player", () => CheatToggles.protectPlayer, x => CheatToggles.protectPlayer = x),
@@ -166,14 +158,9 @@ public class MenuUI : MonoBehaviour
                 new SubmenuInfo("Murder", false, [
                     new ToggleInfo(" Kill Player", () => CheatToggles.killPlayer, x => CheatToggles.killPlayer = x),
                     new ToggleInfo(" Telekill Player", () => CheatToggles.telekillPlayer, x => CheatToggles.telekillPlayer = x),
-                    new ToggleInfo(" Kill All Crewmates", () => CheatToggles.killAllCrew,
-                        x => CheatToggles.killAllCrew = x),
-
-                    new ToggleInfo(" Kill All Impostors", () => CheatToggles.killAllImps,
-                        x => CheatToggles.killAllImps = x),
-
+                    new ToggleInfo(" Kill All Crewmates", () => CheatToggles.killAllCrew, x => CheatToggles.killAllCrew = x),
+                    new ToggleInfo(" Kill All Impostors", () => CheatToggles.killAllImps, x => CheatToggles.killAllImps = x),
                     new ToggleInfo(" Kill Everyone", () => CheatToggles.killAll, x => CheatToggles.killAll = x)
-
                 ]),
 
                 new SubmenuInfo("Game State", false, [
@@ -285,11 +272,11 @@ public class MenuUI : MonoBehaviour
             if (hue > 1f) hue -= 1f; // Loop hue back to 0 when it exceeds 1
         }
 
-        if (CheatToggles.stealthMode && ModManager.Instance.ModStamp.enabled)
+        if (CheatToggles.stealthMode && ModManager.Instance.ModStamp && ModManager.Instance.ModStamp.enabled)
         {
             ModManager.Instance.ModStamp.enabled = false;
         }
-        else if (!CheatToggles.stealthMode && !ModManager.Instance.ModStamp.enabled)
+        else if (!CheatToggles.stealthMode && ModManager.Instance.ModStamp && !ModManager.Instance.ModStamp.enabled)
         {
             ModManager.Instance.ShowModStamp();
         }
