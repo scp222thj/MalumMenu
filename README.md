@@ -60,10 +60,10 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
 
 ![](https://github.com/user-attachments/assets/e7342201-aa01-4435-8c9e-d543712842e0)
 
-[Original MalumMenu features](https://github.com/scp222thj/MalumMenu?tab=readme-ov-file#-features)
-
-Changes from the original MalumMenu:
-#### Fixes
+## Changes compared to the original MalumMenu
+- [Full Changelog](https://github.com/scp222thj/MalumMenu/compare/main...astra1dev:MalumMenu:reloaded)
+- [Original MalumMenu feature list](https://github.com/scp222thj/MalumMenu?tab=readme-ov-file#-features)
+### Fixes
 - v16.0.0 fix where the menu wouldn't load at all
 - v17.0.0 fix where PPM and SeeRoles wouldn't work
 - Fix SeeRoles nametags overlaying with colorblind text if it is enabled
@@ -72,7 +72,8 @@ Changes from the original MalumMenu:
 - Fix not being able to input russian characters (and possibly others) in chat
 - Fix and enable previously implemented but disabled Telekill cheat
 
-#### Additions
+### Additions
+#### New cheats
 - **Player**: Fake Revive, Invert Controls
 - **ESP**: Show Player Info, More Lobby Info, Show Task Arrows
 - **Roles**: Tasks Menu (to complete individual tasks and see other players' tasks), Track Reach, Interrogate Reach
@@ -83,8 +84,7 @@ Changes from the original MalumMenu:
 - **Passive**: Spoof Date to April 1st, Stealth Mode, Panic (Disable MalumMenu), Copy Lobby Code on Disconnect
 - **Animations**: (NEW!): Shields, Asteroids, Empty Garbage, Medbay Scan, Fake Cams In Use, Moonwalk
 - **Config** (NEW!): Open plugin config, Reload plugin config, Save to Profile, Load from Profile, RGB Mode
-
-
+#### New features and QoL improvements
 - Added option to disable cheats in Passive category ([#164](https://github.com/scp222thj/MalumMenu/pull/164))
 - Added new Viper and Detective roles to "Set Fake Role" cheat (Roles category)
 - Added a new horizontal tab-based UI config option
@@ -95,11 +95,9 @@ Changes from the original MalumMenu:
 - Added being able to kick players while in-game as host (no 3 votes required to kick)
 - Added "TeleportMenuToMouse" config option
 
-#### Other changes
+### Other changes
 - Some refactoring and code style changes
 - BepInEx version bump and CI updates
-
-Full Changelog [here](https://github.com/scp222thj/MalumMenu/compare/main...astra1dev:MalumMenu:reloaded).
 
 <hr>
 

@@ -18,6 +18,7 @@ public class MenuUI : MonoBehaviour
 
     // Styles
     private GUIStyle submenuButtonStyle;
+    private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
     public GUIStyle separatorStyle;
@@ -225,6 +226,12 @@ public class MenuUI : MonoBehaviour
             fontSize = 18
         };
         submenuButtonStyle.normal.background.Apply();
+
+        tabButtonStyle = new GUIStyle(GUI.skin.button)
+        {
+            fontSize = 18,
+            fontStyle = FontStyle.Bold,
+        };
 
         tabTitleStyle = new GUIStyle(GUI.skin.label)
         {
@@ -515,7 +522,7 @@ public class MenuUI : MonoBehaviour
         GUILayout.BeginVertical(GUILayout.Width(horizontalWindowRect.width * 0.15f));
         for (var i = 0; i < groups.Count; i++)
         {
-            if (GUILayout.Button(groups[i].name, GUILayout.Height(40)))
+            if (GUILayout.Button(groups[i].name, tabButtonStyle, GUILayout.Height(35)))
                 selectedTab = i;
         }
         GUILayout.EndVertical();
