@@ -73,38 +73,27 @@ Changes from the original MalumMenu:
 - Fix and enable previously implemented but disabled Telekill cheat
 
 #### Additions
+- **Player**: Fake Revive, Invert Controls
+- **ESP**: Show Player Info, More Lobby Info, Show Task Arrows
+- **Roles**: Tasks Menu (to complete individual tasks and see other players' tasks), Track Reach, Interrogate Reach
+- **Ship**: Open Sabotage Map, Trigger Spores ([#40](https://github.com/scp222thj/MalumMenu/pull/40)), Auto-Open Doors On Use, Doors Menu (to close / open individual doors)
+- **Host-Only**: No Options Limits, Protect Player PPM
+  - **Meetings** (NEW!): Call Meeting, Skip Meeting, VoteImmune, Eject Player
+  - **Game State** (NEW!) ([#49](https://github.com/scp222thj/MalumMenu/pull/49)): Force Start Game, No Game End
+- **Passive**: Spoof Date to April 1st, Stealth Mode, Panic (Disable MalumMenu), Copy Lobby Code on Disconnect
+- **Animations**: (NEW!): Shields, Asteroids, Empty Garbage, Medbay Scan, Fake Cams In Use, Moonwalk
+- **Config** (NEW!): Open plugin config, Reload plugin config, Save to Profile, Load from Profile, RGB Mode
+
+
 - Added option to disable cheats in Passive category ([#164](https://github.com/scp222thj/MalumMenu/pull/164))
-- Added a new "Config" category with "RGB Mode" and "Open Config File" options
-- Added "Fake Revive" cheat (Player category)
-- Added "No Options Limits" cheat (Host-Only category)
-- Added new "Animations" category
-- Added "Panic (Disable MalumMenu)" button (Passive category)
-- Added "Show Player Info" (ESP category)
-- Added "Reload plugin config", "Save to Profile" and "Load from Profile" buttons (Config category)
 - Added new Viper and Detective roles to "Set Fake Role" cheat (Roles category)
-- Added "Spoof Date to April 1st" (Passive category)
-- Added "Protect Player" PPM (Host-Only category)
-- Added "More Lobby Info" (ESP category)
-- Added "Open Sabotage Map" (Ship category)
 - Added a new horizontal tab-based UI config option
 - Changed "SpeedHack" to be a slider instead of a toggle (Player category)
-- Added "Invert Controls" (Player category)
-- Added "Meetings" submenu with "Call Meeting", "Skip Meeting", "VoteImmune" and "Eject Player" cheats (Host-Only category)
-- Added "Game State" submenu with "Force Start Game" and "No Game End" cheats (Host-Only category, [#49](https://github.com/scp222thj/MalumMenu/pull/49))
-- Added "Trigger Spores" (Ship category, [#40](https://github.com/scp222thj/MalumMenu/pull/40))
-- Added "Auto-Open Doors On Use" (Ship category)
-- Added Doors Menu to close / open individual doors (Ship category)
-- Added Tasks Menu to complete individual tasks and see other players' tasks (Roles category)
 - Added a keybind system to bind cheats to keyboard keys (defined in MalumProfile.txt)
 - Added pasting and cutting text between the chatbox and the device's clipboard
 - Changed "ZoomOut" to disable while Chat, Friends List or Game Settings Panel is open
 - Added being able to kick players while in-game as host (no 3 votes required to kick)
-- Added "Show Task Arrows" (ESP category)
-- Added "Track Reach" (Roles category)
-- Added "Interrogate Reach" (Roles category)
-- Added "Stealth Mode" (Passive category)
 - Added "TeleportMenuToMouse" config option
-- Added "Copy Lobby Code on Disconnect" (Passive category)
 
 #### Other changes
 - Some refactoring and code style changes
