@@ -258,7 +258,7 @@ public struct CheatToggles
             if (reloadConfig)
             {
                 Plugin.Config.Reload();
-                Plugin.Log.LogInfo("Plugin config reloaded.");
+                MalumMenu.Log.LogInfo("Plugin config reloaded.");
                 reloadConfig = false;
             }
 

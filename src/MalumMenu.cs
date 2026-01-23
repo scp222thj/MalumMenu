@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using System.Collections.Generic;
 using BepInEx.Configuration;
+using BepInEx.Logging;
 using HarmonyLib;
 
 namespace MalumMenu;
@@ -15,6 +16,7 @@ namespace MalumMenu;
 public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
+    public new static ManualLogSource Log;
     public static string malumVersion = "2.6.1";
     public static List<string> supportedAU = ["2025.9.9", "2025.10.14", "2025.11.18"];
     public static MenuUI menuUI;
@@ -37,6 +39,8 @@ public partial class MalumMenu : BasePlugin
 
     public override void Load()
     {
+        Log = base.Log;
+
         //Load config settings
         menuKeybind = Config.Bind("MalumMenu.GUI",
                                 "Keybind",
