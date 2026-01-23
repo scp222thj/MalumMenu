@@ -65,9 +65,9 @@ public static class ChatController_AddChat
 			{
 				__instance.notificationRoutine = __instance.StartCoroutine(__instance.BounceDot());
 			}
-			if (!flag)
+			if (!flag && !__instance.IsOpenOrOpening)
 			{
-				SoundManager.Instance.PlaySound(__instance.messageSound, false, 1f, null).pitch = 0.5f + (float)sourcePlayer.PlayerId / 15f;
+				SoundManager.Instance.PlaySound(__instance.messageSound, false).pitch = 0.5f + sourcePlayer.PlayerId / 15f;
 				__instance.chatNotification.SetUp(sourcePlayer, chatText);
 			}
 		}
