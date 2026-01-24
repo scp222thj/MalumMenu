@@ -8,7 +8,6 @@ public class TasksUI : MonoBehaviour
     private Vector2 _scrollPosition = Vector2.zero;
     private Rect _windowRect = new(320, 10, 500, 300);
     private GUIStyle _playerHeaderStyle;
-    private GUIStyle _normalButtonStyle;
     private Il2CppSystem.Text.StringBuilder _tasksString = new();
     private readonly System.Collections.Generic.Dictionary<string, bool> _expandedPlayers = new();
 
@@ -20,10 +19,6 @@ public class TasksUI : MonoBehaviour
         {
             fontSize = 18,
             alignment = TextAnchor.MiddleLeft
-        };
-        _normalButtonStyle ??= new GUIStyle(GUI.skin.button)
-        {
-            fontSize = 13
         };
 
         if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor)){
@@ -97,7 +92,7 @@ public class TasksUI : MonoBehaviour
                     {
                         if (pc == PlayerControl.LocalPlayer)
                         {
-                            if (GUILayout.Button("Complete", _normalButtonStyle))
+                            if (GUILayout.Button("Complete", GUIStyles.NormalButtonStyle))
                             {
                                 Utils.completeTask(task);
                             }
@@ -114,7 +109,7 @@ public class TasksUI : MonoBehaviour
 
         GUILayout.EndScrollView();
 
-        if (GUILayout.Button("Complete My Tasks", _normalButtonStyle))
+        if (GUILayout.Button("Complete My Tasks", GUIStyles.NormalButtonStyle))
         {
             CheatToggles.completeMyTasks = true;
         }

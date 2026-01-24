@@ -21,7 +21,6 @@ public class MenuUI : MonoBehaviour
     private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
-    public GUIStyle separatorStyle;
     private float hue; // For RGB mode
 
     // Create all groups (buttons) and their toggles on start
@@ -245,15 +244,6 @@ public class MenuUI : MonoBehaviour
             fontSize = 15,
             fontStyle = FontStyle.Bold,
             alignment = TextAnchor.MiddleLeft,
-        };
-
-        // Style for the vertical separator line between tab selector buttons and the actual tab content
-        separatorStyle = new GUIStyle(GUI.skin.box)
-        {
-            normal = { background = Texture2D.whiteTexture },
-            margin = new RectOffset { top = 4, bottom = 4 },
-            padding = new RectOffset(),
-            border = new RectOffset()
         };
     }
 
@@ -528,7 +518,7 @@ public class MenuUI : MonoBehaviour
         GUILayout.EndVertical();
 
         // Invisible vertical separator line to create some space between the tab selector and the content
-        GUILayout.Box("", separatorStyle, GUILayout.Width(1f), GUILayout.ExpandHeight(true));
+        GUILayout.Box("", GUIStyles.SeparatorStyle, GUILayout.Width(1f), GUILayout.ExpandHeight(true));
         GUILayout.Box("", GUIStyle.none, GUILayout.Width(10f), GUILayout.ExpandHeight(true));
 
         // Right tab content and controls (85% width)
