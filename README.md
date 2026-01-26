@@ -77,9 +77,9 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
 - **Player**: Fake Revive, Invert Controls
 - **ESP**: Show Player Info, More Lobby Info, Show Task Arrows
 - **Roles**: Tasks Menu (to complete individual tasks and see other players' tasks), Track Reach, Interrogate Reach
-- **Ship**: Open Sabotage Map, Trigger Spores ([#40](https://github.com/scp222thj/MalumMenu/pull/40)), Auto-Open Doors On Use, Doors Menu (to close / open individual doors)
+- **Ship**: Call Meeting, Open Sabotage Map, Trigger Spores ([#40](https://github.com/scp222thj/MalumMenu/pull/40)), Auto-Open Doors On Use, Doors Menu (to close / open individual doors)
 - **Host-Only**: No Options Limits, Protect Player PPM
-  - **Meetings** (NEW!): Call Meeting, Skip Meeting, VoteImmune, Eject Player
+  - **Meetings** (NEW!): Skip Meeting, VoteImmune, Eject Player
   - **Game State** (NEW!) ([#49](https://github.com/scp222thj/MalumMenu/pull/49)): Force Start Game, No Game End
 - **Passive**: Spoof Date to April 1st, Stealth Mode, Panic (Disable MalumMenu), Copy Lobby Code on Disconnect
 - **Animations**: (NEW!): Shields, Asteroids, Empty Garbage, Medbay Scan, Fake Cams In Use, Moonwalk

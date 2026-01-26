@@ -50,10 +50,17 @@ public static class MalumCheats
     {
         if (!CheatToggles.callMeeting) return;
 
-        // Same as PlayerControl.ReportDeadBody but without additional checks
-        MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
-        DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
-        PlayerControl.LocalPlayer.RpcStartMeeting(null);
+        if (Utils.isHost)
+        {
+            // Same as PlayerControl.ReportDeadBody but without additional checks
+            MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
+            DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+            PlayerControl.LocalPlayer.RpcStartMeeting(null);
+        }
+        else
+        {
+            PlayerControl.LocalPlayer.CmdReportDeadBody(null);
+        }
 
         CheatToggles.callMeeting = false;
     }
