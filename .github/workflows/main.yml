@@ -22,7 +22,7 @@ jobs:
           verbosity: Diagnostic
 
       - name: Upload MalumMenu.dll artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: MalumMenu.dll
           path: /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll
@@ -42,13 +42,13 @@ jobs:
           cp /home/runner/work/MalumMenu/MalumMenu/src/bin/Release/net6.0/MalumMenu.dll BepInEx_x64/BepInEx/plugins/
 
       - name: Upload MalumMenu_Steam_Itch.zip artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: MalumMenu_Steam_Itch
           path: BepInEx_x86
 
       - name: Upload MalumMenu_EpicGames_MicrosoftStore_XboxApp.zip artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: MalumMenu_EpicGames_MicrosoftStore_XboxApp
           path: BepInEx_x64
