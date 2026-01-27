@@ -76,7 +76,7 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
 #### New cheats
 - **Player**: Fake Revive, Invert Controls
 - **ESP**: Show Player Info, More Lobby Info, Show Task Arrows
-- **Roles**: Tasks Menu (to complete individual tasks and see other players' tasks), Track Reach, Interrogate Reach
+- **Roles**: Do Tasks as Impostor, Tasks Menu (to complete individual tasks and see other players' tasks), Track Reach, Interrogate Reach
 - **Ship**: Call Meeting, Open Sabotage Map, Trigger Spores ([#40](https://github.com/scp222thj/MalumMenu/pull/40)), Auto-Open Doors On Use, Doors Menu (to close / open individual doors)
 - **Host-Only**: No Options Limits, Protect Player PPM
   - **Meetings** (NEW!): Skip Meeting, VoteImmune, Eject Player

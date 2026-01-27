@@ -285,6 +285,19 @@ public static class MushroomDoorSabotageMinigame_Begin
     }
 }
 
+[HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
+public static class Console_CanUse
+{
+    /// <summary>
+    /// Prefix patch of Console.CanUse to allow impostors to do tasks
+    /// </summary>
+    /// <param name="__instance">The <c>Console</c> instance.</param>
+    public static void Prefix(Console __instance)
+    {
+        __instance.AllowImpostor = CheatToggles.impostorTasks;
+    }
+}
+
 [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
 public static class Vent_CanUse
 {

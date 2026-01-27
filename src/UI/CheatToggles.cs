@@ -30,6 +30,7 @@ public struct CheatToggles
     public static bool zeroKillCd;
     public static bool showTasksMenu;
     public static bool completeMyTasks;
+    public static bool impostorTasks;
     public static bool killReach;
     public static bool killAnyone;
     public static bool endlessSsDuration;

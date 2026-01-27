@@ -75,7 +75,8 @@ public class MenuUI : MonoBehaviour
             ],
             [
                 new SubmenuInfo("Impostor", false, [
-                    new ToggleInfo(" Kill Reach", () => CheatToggles.killReach, x => CheatToggles.killReach = x)
+                    new ToggleInfo(" Kill Reach", () => CheatToggles.killReach, x => CheatToggles.killReach = x),
+                    new ToggleInfo(" Do Tasks", () => CheatToggles.impostorTasks, x => CheatToggles.impostorTasks = x)
                 ]),
 
                 new SubmenuInfo("Shapeshifter", false, [
