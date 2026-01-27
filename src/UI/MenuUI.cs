@@ -193,8 +193,11 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Empty Garbage", () => CheatToggles.animEmptyGarbage, x => CheatToggles.animEmptyGarbage = x),
             new ToggleInfo(" Medbay Scan", () => CheatToggles.animScan, x => CheatToggles.animScan = x),
             new ToggleInfo(" Fake Cams In Use", () => CheatToggles.animCamsInUse, x => CheatToggles.animCamsInUse = x),
-            new ToggleInfo(" Moonwalk", () => CheatToggles.moonwalk, x => CheatToggles.moonwalk = x)
-        ], []));
+        ], [
+            new SubmenuInfo("Client-Sided", false, [
+                new ToggleInfo(" Moonwalk", () => CheatToggles.moonwalk, x => CheatToggles.moonwalk = x)
+            ])
+        ]));
 
         groups.Add(new GroupInfo("Config", false, [
             new ToggleInfo(" Open plugin config", () => false, x => Utils.OpenConfigFile()),
@@ -546,8 +549,7 @@ public class MenuUI : MonoBehaviour
     /// <returns>The number of left column submenus</returns>
     private int GetLeftSubmenuCount(int groupId)
     {
-        var name = groups[groupId].name;
-        return name switch
+        return groups[groupId].name switch
         {
             "Player" => 1,
             "ESP" => 2,
@@ -566,12 +568,7 @@ public class MenuUI : MonoBehaviour
     {
         var group = groups[groupId];
 
-        var count = group.submenus.Count;
-        if (count == 0)
-        {
-            HorizontalDrawToggles(group.toggles);
-            return;
-        }
+        var submenuCount = group.submenus.Count;
 
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical(GUILayout.Width(horizontalWindowRect.width * 0.425f));
@@ -598,7 +595,7 @@ public class MenuUI : MonoBehaviour
         }
 
         var desiredLeft = GetLeftSubmenuCount(groupId);
-        var leftCount = Mathf.Clamp(desiredLeft, 0, count);
+        var leftCount = Mathf.Clamp(desiredLeft, 0, submenuCount);
 
         // Left column submenus
         var leftSubmenus = group.submenus.GetRange(0, leftCount);
@@ -611,9 +608,9 @@ public class MenuUI : MonoBehaviour
 
         // Right column submenus (if any)
         GUILayout.BeginVertical();
-        if (count > leftCount)
+        if (submenuCount > leftCount)
         {
-            var rightSubmenus = group.submenus.GetRange(leftCount, count - leftCount);
+            var rightSubmenus = group.submenus.GetRange(leftCount, submenuCount - leftCount);
             foreach (var submenu in rightSubmenus)
             {
                 GUILayout.Label(submenu.name, tabSubtitleStyle, GUILayout.Height(30));
