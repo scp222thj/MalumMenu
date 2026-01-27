@@ -32,9 +32,7 @@ public static class MalumPPMCheats
                 // Player pick menu to choose any body (alive or dead) and report it
                 PlayerPickMenu.openPlayerPickMenu(Utils.GetAllPlayerData(), (Action) (() =>
                 {
-
-                    Utils.reportDeadBody(PlayerPickMenu.targetPlayerData);
-
+                    PlayerControl.LocalPlayer.CmdReportDeadBody(PlayerPickMenu.targetPlayerData);
                 }));
 
                 reportBodyActive = true;

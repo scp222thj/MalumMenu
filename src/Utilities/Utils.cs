@@ -165,25 +165,6 @@ public static class Utils
         }
     }
 
-    // Report bodies using RPC calls
-    public static void reportDeadBody(NetworkedPlayerInfo playerData)
-    {
-
-        if (isFreePlay){
-
-            PlayerControl.LocalPlayer.CmdReportDeadBody(playerData);
-            return;
-
-        }
-
-        var HostData = AmongUsClient.Instance.GetHost();
-        if (HostData == null || HostData.Character.Data.Disconnected) return;
-        var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.ReportDeadBody, SendOption.None, HostData.Id);
-        writer.Write(playerData.PlayerId);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-    }
-
-
     // Complete all of LocalPlayer's tasks using RPC calls
     public static void completeMyTasks()
     {
