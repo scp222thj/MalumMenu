@@ -22,7 +22,7 @@
 
         <!-- Analyzers -->
         <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" />
-        <PackageReference Include="Harmonize" Version="1.0.5" />
+        <PackageReference Include="Harmonize" Version="1.0.6" />
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
