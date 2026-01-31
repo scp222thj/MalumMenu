@@ -5,7 +5,7 @@ namespace MalumMenu;
 
 public class DoorsUI : MonoBehaviour
 {
-    private Rect _windowRect = new(320, 10, 530, 280);
+    private Rect _windowRect = new(320, 10, 480, 270);
     private List<SystemTypes> doorsToSpamOpen = new();
     private List<SystemTypes> doorsToSpamClose = new();
 
@@ -42,10 +42,10 @@ public class DoorsUI : MonoBehaviour
         foreach (var doorRoom in DoorsHandler.GetDoorRooms())
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"{doorRoom.ToString()}", GUILayout.Width(120f));
+            GUILayout.Label($"{doorRoom.ToString()}", GUILayout.Width(110f));
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"Status: {DoorsHandler.GetStatusOfDoorsInRoom(doorRoom, true)}");
+            GUILayout.Label($"{DoorsHandler.GetStatusOfDoorsInRoom(doorRoom, true)}");
 
             GUILayout.FlexibleSpace();
 
