@@ -12,7 +12,6 @@ public static class MalumPPMCheats
     public static bool killPlayerActive;
     public static bool spectateActive;
     public static bool teleportPlayerActive;
-    public static bool protectPlayerActive;
     public static bool reportBodyActive;
     public static bool ejectPlayerActive;
     public static bool changeRoleActive;
@@ -225,42 +224,6 @@ public static class MalumPPMCheats
         else if (teleportPlayerActive)
         {
             teleportPlayerActive = false;
-        }
-    }
-
-    public static void ProtectPlayerPPM()
-    {
-        if (CheatToggles.protectPlayer)
-        {
-            if (!protectPlayerActive && !Utils.isLobby)
-            {
-                if (PlayerPickMenu.playerpickMenu != null)
-                {
-                    PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("protectPlayer");
-                }
-
-                PlayerPickMenu.openPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
-                {
-                    var targetPlayer = PlayerPickMenu.targetPlayerData.Object;
-                    if (targetPlayer != null)
-                    {
-                        int protectColorId = PlayerControl.LocalPlayer.cosmetics.ColorId;
-                        PlayerControl.LocalPlayer.RpcProtectPlayer(targetPlayer, protectColorId);
-                    }
-                }));
-
-                protectPlayerActive = true;
-            }
-
-            if (PlayerPickMenu.playerpickMenu == null)
-            {
-                CheatToggles.protectPlayer = false;
-            }
-        }
-        else if (protectPlayerActive)
-        {
-            protectPlayerActive = false;
         }
     }
 

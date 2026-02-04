@@ -15,6 +15,7 @@ public static class PlayerPhysics_LateUpdate
 
         MalumCheats.noClipCheat();
         MalumCheats.ReviveCheat();
+        MalumCheats.ProtectCheat();
         MalumCheats.killAllCheat();
         MalumCheats.killAllCrewCheat();
         MalumCheats.killAllImpsCheat();
@@ -29,7 +30,6 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.killPlayerPPM();
         MalumPPMCheats.telekillPlayerPPM();
         MalumPPMCheats.teleportPlayerPPM();
-        MalumPPMCheats.ProtectPlayerPPM();
         MalumPPMCheats.changeRolePPM();
 
         TracersHandler.drawPlayerTracer(__instance);

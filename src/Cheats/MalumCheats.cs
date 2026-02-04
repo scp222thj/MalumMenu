@@ -313,6 +313,19 @@ public static class MalumCheats
         CheatToggles.killAllImps = false;
     }
 
+    public static void ProtectCheat()
+    {
+        if (!Utils.isHost || Utils.isLobby) return;
+        foreach (var pc in ProtectUI.playersToProtect)
+        {
+            if (pc.protectedByGuardianId == -1) // -1 means no protection is currently active
+            {
+                //PlayerControl.LocalPlayer.TurnOnProtection(true, PlayerControl.LocalPlayer.cosmetics.ColorId, PlayerControl.LocalPlayer.PlayerId);
+                PlayerControl.LocalPlayer.RpcProtectPlayer(pc, PlayerControl.LocalPlayer.cosmetics.ColorId);
+            }
+        }
+    }
+
     public static void teleportCursorCheat()
     {
         if (!CheatToggles.teleportCursor) return;

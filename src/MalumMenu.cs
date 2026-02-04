@@ -23,6 +23,7 @@ public partial class MalumMenu : BasePlugin
     // public static ConsoleUI consoleUI;
     public static DoorsUI doorsUI;
     public static TasksUI tasksUI;
+    public static ProtectUI protectUI;
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<bool> teleportMenuToMouse;
@@ -101,6 +102,7 @@ public partial class MalumMenu : BasePlugin
         // consoleUI = AddComponent<ConsoleUI>();
         doorsUI = AddComponent<DoorsUI>();
         tasksUI = AddComponent <TasksUI>();
+        protectUI = AddComponent<ProtectUI>();
         AddComponent<CheatToggles.KeybindListener>().Plugin = this;
 
         // Disable Telemetry (haven't fully tested if it works, but according to Unity docs it should)
