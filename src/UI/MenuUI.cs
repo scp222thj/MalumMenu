@@ -193,6 +193,7 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Empty Garbage", () => CheatToggles.animEmptyGarbage, x => CheatToggles.animEmptyGarbage = x),
             new ToggleInfo(" Medbay Scan", () => CheatToggles.animScan, x => CheatToggles.animScan = x),
             new ToggleInfo(" Fake Cams In Use", () => CheatToggles.animCamsInUse, x => CheatToggles.animCamsInUse = x),
+            new ToggleInfo(" Pet", () => CheatToggles.animPet, x => CheatToggles.animPet = x)
         ], [
             new SubmenuInfo("Client-Sided", false, [
                 new ToggleInfo(" Moonwalk", () => CheatToggles.moonwalk, x => CheatToggles.moonwalk = x)

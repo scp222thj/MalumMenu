@@ -461,5 +461,13 @@ public static class MalumCheats
             _hasUsedCamsCheatBefore = false;
         }
 
+        if (CheatToggles.animPet && Utils.isPlayer && PlayerControl.LocalPlayer.cosmetics != null && PlayerControl.LocalPlayer.cosmetics.CurrentPet != null)
+        {
+            // Don't move the local player, just send the RPC so others see the petting animation.
+            RpcPetMessage rpcMessage = new(PlayerControl.LocalPlayer.MyPhysics.NetId,
+                PlayerControl.LocalPlayer.cosmetics.CurrentPet.PettingPlayerPosition,
+                PlayerControl.LocalPlayer.cosmetics.CurrentPet.transform.position);
+            AmongUsClient.Instance.LateBroadcastReliableMessage(Unsafe.As<IGameDataMessage>(rpcMessage));
+        }
     }
 }

@@ -129,6 +129,7 @@ public struct CheatToggles
     public static bool animEmptyGarbage;
     public static bool animScan;
     public static bool animCamsInUse;
+    public static bool animPet;
 
     //Config
     public static bool reloadConfig;

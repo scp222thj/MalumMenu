@@ -82,7 +82,7 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
   - **Meetings** (NEW!): Skip Meeting, VoteImmune, Eject Player
   - **Game State** (NEW!) ([#49](https://github.com/scp222thj/MalumMenu/pull/49)): Force Start Game, No Game End
 - **Passive**: Spoof Date to April 1st, Stealth Mode, Panic (Disable MalumMenu), Copy Lobby Code on Disconnect
-- **Animations**: (NEW!): Shields, Asteroids, Empty Garbage, Medbay Scan, Fake Cams In Use, Moonwalk
+- **Animations**: (NEW!): Shields, Asteroids, Empty Garbage, Medbay Scan, Fake Cams In Use, Pet, Moonwalk
 - **Config** (NEW!): Open plugin config, Reload plugin config, Save to Profile, Load from Profile, RGB Mode
 #### New features and QoL improvements
 - Added option to disable cheats in Passive category ([#164](https://github.com/scp222thj/MalumMenu/pull/164))
