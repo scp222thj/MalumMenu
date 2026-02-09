@@ -154,6 +154,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Kill Anyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
                 new ToggleInfo(" No Kill Cooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                 new ToggleInfo(" Show Protect Menu", () => CheatToggles.showProtectMenu, x => CheatToggles.showProtectMenu = x),
+                new ToggleInfo(" Force Role", () => CheatToggles.showRolesMenu, x => CheatToggles.showRolesMenu = x),
                 new ToggleInfo(" No Options Limits", () => CheatToggles.noOptionsLimits, x => CheatToggles.noOptionsLimits = x)
             ],
             [

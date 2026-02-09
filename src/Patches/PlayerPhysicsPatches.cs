@@ -31,6 +31,7 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.telekillPlayerPPM();
         MalumPPMCheats.teleportPlayerPPM();
         MalumPPMCheats.changeRolePPM();
+        MalumPPMCheats.forceRolePPM();
 
         TracersHandler.drawPlayerTracer(__instance);
 

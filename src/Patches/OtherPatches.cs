@@ -321,6 +321,43 @@ public static class Vent_CanUse
     }
 }
 
+[HarmonyPatch(typeof(IntroCutscene), "CoBegin")]
+public static class IntroCutscene_CoBegin
+{
+    /// <summary>
+    /// Prefix patch of IntroCutscene.CoBegin to force the local player's role to a specified role.
+    /// </summary>
+    public static void Prefix()
+    {
+        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue)
+        {
+            return;
+        }
+
+        var forcedRole = CheatToggles.forcedRole.Value;
+        // If the local player already has the forced role, do nothing
+        if (PlayerControl.LocalPlayer.Data.RoleType == forcedRole)
+        {
+            return;
+        }
+
+        PlayerControl roleSwapTarget = null;
+        // Find a player with the forced role to swap roles with
+        foreach (var pc in PlayerControl.AllPlayerControls)
+        {
+            if (pc.Data.RoleType != forcedRole) continue;
+            roleSwapTarget = pc;
+            break;
+        }
+
+        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, forcedRole);
+        if (roleSwapTarget != null)
+        {
+            DestroyableSingleton<RoleManager>.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
+        }
+    }
+}
+
 [HarmonyPatch(typeof(AmongUsDateTime), nameof(AmongUsDateTime.UtcNow), MethodType.Getter)]
 public static class AmongUsDateTime_UtcNow
 {

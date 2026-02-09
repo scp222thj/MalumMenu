@@ -15,6 +15,7 @@ public static class MalumPPMCheats
     public static bool reportBodyActive;
     public static bool ejectPlayerActive;
     public static bool changeRoleActive;
+    public static bool forceRoleActive;
     public static RoleTypes? oldRole = null;
 
     public static void reportBodyPPM(){
@@ -329,6 +330,56 @@ public static class MalumPPMCheats
         }else{
             if (changeRoleActive){
                 changeRoleActive = false;
+            }
+        }
+    }
+
+    public static void forceRolePPM()
+    {
+        if (CheatToggles.forceRole)
+        {
+            if (!forceRoleActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("forceRole");
+                }
+
+                List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
+
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", Outfits.shapeshifter, Utils.getBehaviourByRoleType(RoleTypes.Shapeshifter)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", Outfits.phantom, Utils.getBehaviourByRoleType(RoleTypes.Phantom)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", Outfits.viper, Utils.getBehaviourByRoleType(RoleTypes.Viper)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", Outfits.impostor, Utils.getBehaviourByRoleType(RoleTypes.Impostor)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Tracker", Outfits.tracker, Utils.getBehaviourByRoleType(RoleTypes.Tracker)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Noisemaker", Outfits.noisemaker, Utils.getBehaviourByRoleType(RoleTypes.Noisemaker)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Engineer", Outfits.engineer, Utils.getBehaviourByRoleType(RoleTypes.Engineer)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Scientist", Outfits.scientist, Utils.getBehaviourByRoleType(RoleTypes.Scientist)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Detective", Outfits.detective, Utils.getBehaviourByRoleType(RoleTypes.Detective)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Crewmate", Outfits.crewmate, Utils.getBehaviourByRoleType(RoleTypes.Crewmate)));
+
+                // Player pick menu made for forcing a role onto another player
+                PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>
+                {
+                    CheatToggles.forcedRole = PlayerPickMenu.targetPlayerData.Role.Role;
+                }));
+
+                forceRoleActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.forceRole = false;
+            }
+
+        }
+        else
+        {
+            if (forceRoleActive)
+            {
+                forceRoleActive = false;
             }
         }
     }

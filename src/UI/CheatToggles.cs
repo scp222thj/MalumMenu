@@ -107,6 +107,9 @@ public struct CheatToggles
     //public static bool godMode;
     //public static bool evilVote;
     public static bool voteImmune;
+    public static bool forceRole;
+    public static RoleTypes? forcedRole;
+    public static bool showRolesMenu;
     public static bool skipMeeting;
     public static bool callMeeting;
     public static bool forceStartGame;
@@ -163,11 +166,12 @@ public struct CheatToggles
         telekillPlayer = variableToKeep == "telekillPlayer" && telekillPlayer;
         spectate = variableToKeep == "spectate" && spectate;
         changeRole = variableToKeep == "changeRole" && changeRole;
+        forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
     }
 
     public static bool shouldPPMClose(){
-        return !changeRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !changeRole && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
     }
 
     /// <summary>
