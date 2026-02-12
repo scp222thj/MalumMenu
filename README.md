@@ -75,7 +75,7 @@ Make sure you are only having one version of MalumMenu installed at a time, as h
 ### Additions
 #### New cheats
 - **Player**: Fake Revive, Invert Controls
-- **ESP**: Show Player Info, More Lobby Info, Show Task Arrows
+- **ESP**: Show Player Info, More Lobby Info, Show Task Arrows, Distance-based tracers
 - **Roles**: Do Tasks as Impostor, Tasks Menu (to complete individual tasks and see other players' tasks), Track Reach, Interrogate Reach
 - **Ship**: Call Meeting, Open Sabotage Map, Trigger Spores ([#40](https://github.com/scp222thj/MalumMenu/pull/40)), Auto-Open Doors On Use, Doors Menu (to close / open individual doors)
 - **Console** (NEW!): Show Console, Log Deaths, Log Shapeshifts, Log Vents
