@@ -9,7 +9,6 @@ public static class PlayerPhysics_LateUpdate
 {
     public static void Postfix(PlayerPhysics __instance)
     {
-
         MalumESP.PlayerNametags(__instance);
         MalumESP.seeGhostsCheat(__instance);
 
@@ -33,18 +32,15 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.changeRolePPM();
         MalumPPMCheats.forceRolePPM();
 
-        TracersHandler.drawPlayerTracer(__instance);
+        TracersHandler.DrawPlayerTracer(__instance);
 
         GameObject[] bodyObjects = GameObject.FindGameObjectsWithTag("DeadBody");
         foreach(GameObject bodyObject in bodyObjects) // Finds and loops through all dead bodies
         {
             DeadBody deadBody = bodyObject.GetComponent<DeadBody>();
 
-            if (deadBody){
-                if (!deadBody.Reported){ // Only draw tracers for unreported dead bodies
-                    TracersHandler.drawBodyTracer(deadBody);
-                }
-            }
+            if (!deadBody || deadBody.Reported) continue;  // Only draw tracers for unreported dead bodies
+            TracersHandler.DrawBodyTracer(deadBody);
         }
 
         try
@@ -60,7 +56,6 @@ public static class PlayerPhysics_LateUpdate
                 PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed);
             }
         }catch (NullReferenceException) {}
-
     }
 }
 

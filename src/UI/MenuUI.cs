@@ -58,7 +58,8 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Impostors", () => CheatToggles.tracersImps, x => CheatToggles.tracersImps = x),
                 new ToggleInfo(" Ghosts", () => CheatToggles.tracersGhosts, x => CheatToggles.tracersGhosts = x),
                 new ToggleInfo(" Dead Bodies", () => CheatToggles.tracersBodies, x => CheatToggles.tracersBodies = x),
-                new ToggleInfo(" Color-based", () => CheatToggles.colorBasedTracers, x => CheatToggles.colorBasedTracers = x)
+                new ToggleInfo(" Color-based", () => CheatToggles.colorBasedTracers, x => CheatToggles.colorBasedTracers = x),
+                new ToggleInfo(" Distance-based", () => CheatToggles.distanceBasedTracers, x => CheatToggles.distanceBasedTracers = x)
             ]),
 
             new SubmenuInfo("Minimap", false, [
