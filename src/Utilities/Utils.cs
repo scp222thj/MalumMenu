@@ -98,6 +98,22 @@ public static class Utils
         return client == null ? -1 : client.Id;
     }
 
+    /// <summary>
+    /// Get a player's real name, display name, and whether they are disguised or not.
+    /// </summary>
+    /// <param name="player">The PlayerControl of the player to get the identity of.</param>
+    /// <returns>A tuple containing the player's real name, display name, and whether they are disguised or not.</returns>
+    public static (string realName, string displayName, bool isDisguised) GetPlayerIdentity(PlayerControl player)
+    {
+        if (player == null || player.Data == null) return ("", "", false);
+
+        var realName = $"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Color)}>{player.Data.PlayerName}</color>";
+        var displayName = $"<color=#{ColorUtility.ToHtmlStringRGB(Palette.PlayerColors[player.CurrentOutfit.ColorId])}>{player.CurrentOutfit.PlayerName}</color>";
+        var isDisguised = player.CurrentOutfit.PlayerName != player.Data.PlayerName;
+
+        return (realName, displayName, isDisguised);
+    }
+
     // Check if player is currently vanished
     public static bool isVanished(NetworkedPlayerInfo playerInfo)
     {
@@ -327,6 +343,17 @@ public static class Utils
     // Get SystemType of the room the player is currently in
     public static SystemTypes getCurrentRoom(){
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
+    }
+
+    /// <summary>
+    /// Get the PlainShipRoom from a Vector2 position.
+    /// </summary>
+    /// <param name="position">The position to check for the room.</param>
+    /// <returns>The PlainShipRoom at the given position, or null if none found.</returns>
+    public static PlainShipRoom GetRoomFromPosition(Vector2 position)
+    {
+        return ShipStatus.Instance == null ? null : ShipStatus.Instance.AllRooms.FirstOrDefault(
+            room => room != null && room.roomArea != null && room.roomArea.OverlapPoint(position));
     }
 
     // Fancy colored ping text

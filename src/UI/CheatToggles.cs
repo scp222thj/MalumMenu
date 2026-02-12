@@ -80,6 +80,12 @@ public struct CheatToggles
     public static bool alwaysChat;
     public static bool chatJailbreak;
 
+    // Console
+    public static bool showConsole;
+    public static bool logDeaths;
+    public static bool logShapeshifts;
+    public static bool logVents;
+
     //Ship
     public static bool closeMeeting;
     public static bool sabotageMap;

@@ -1,4 +1,5 @@
 using HarmonyLib;
+using UnityEngine;
 
 namespace MalumMenu;
 
@@ -56,6 +57,37 @@ public static class PlayerControl_CmdCheckMurder
     }
 }
 
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MurderPlayer))]
+public static class PlayerControl_MurderPlayer
+{
+    /// <summary>
+    /// Prefix patch of PlayerControl.MurderPlayer to log when a player tries to kill another player, who the killer and target are,
+    /// and where the kill happened. Also logs when a kill gets saved by a guardian angel.
+    /// </summary>
+    /// <param name="__instance">The <c>PlayerControl</c> instance.</param>
+    /// <param name="target">The player being killed.</param>
+    public static void Prefix(PlayerControl __instance, PlayerControl target)
+    {
+        if (!CheatToggles.logDeaths || target == null) return;
+
+        var (realKillerName, displayKillerName, isDisguised) = Utils.GetPlayerIdentity(__instance);
+        var targetName = $"<color=#{ColorUtility.ToHtmlStringRGB(target.Data.Color)}>{target.CurrentOutfit.PlayerName}</color>";
+        var room = Utils.GetRoomFromPosition(target.GetTruePosition());
+        var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
+
+        if (target.protectedByGuardianId != -1)
+        {
+            ConsoleUI.Log(isDisguised ? $"{realKillerName} (as {displayKillerName}) tried to kill {targetName} in {roomName} (Saved)"
+                : $"{realKillerName} tried to kill {targetName} in {roomName} (Saved)");
+        }
+        else
+        {
+            ConsoleUI.Log(isDisguised ? $"{realKillerName} (as {displayKillerName}) killed {targetName} in {roomName}"
+                : $"{realKillerName} killed {targetName} in {roomName}");
+        }
+    }
+}
+
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.TurnOnProtection))]
 public static class PlayerControl_TurnOnProtection
 {
@@ -96,6 +128,37 @@ public static class PlayerControl_CmdCheckRevertShapeshift
 
         if (shouldAnimate && CheatToggles.noShapeshiftAnim){
             shouldAnimate = false;
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
+public static class PlayerControl_Shapeshift
+{
+    /// <summary>
+    /// Postfix patch of PlayerControl.Shapeshift to log when a player shapeshifts into another player,
+    /// and who they shapeshifted into. Also logs when a shapeshift gets reverted.
+    /// </summary>
+    /// <param name="__instance">The <c>PlayerControl</c> instance.</param>
+    /// <param name="targetPlayer">The player that is being shapeshifted into.</param>
+    /// <param name="animate">Used in the original method to determine whether the shapeshift animation should play.</param>
+    public static void Postfix(PlayerControl __instance, PlayerControl targetPlayer, bool animate)
+    {
+        if (!CheatToggles.logShapeshifts) return;
+
+        if (__instance.CurrentOutfitType == PlayerOutfitType.MushroomMixup) return;
+        var targetPlayerInfo = targetPlayer.Data;
+        if (targetPlayerInfo.PlayerId == __instance.Data.PlayerId)
+        {
+            ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
+                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> Shapeshift was reverted");
+        }
+        else
+        {
+            ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
+                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> shapeshifted into " +
+                          $"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId).Color)}>" +
+                          $"{GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId)._object.Data.PlayerName}</color>");
         }
     }
 }

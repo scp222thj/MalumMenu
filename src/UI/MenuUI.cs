@@ -142,11 +142,12 @@ public class MenuUI : MonoBehaviour
             new ToggleInfo(" Unlock Textbox", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
         ], []));
 
-        // Console is temporarly disabled until we implement some features for it
-
-        //groups.Add(new GroupInfo("Console", false, new List<ToggleInfo>() {
-        //    new ToggleInfo(" ConsoleUI", () => MalumMenu.consoleUI.isVisible, x => MalumMenu.consoleUI.isVisible = x),
-        //}, new List<SubmenuInfo>()));
+        groups.Add(new GroupInfo("Console", false, [
+            new ToggleInfo(" Show Console", () => CheatToggles.showConsole, x => CheatToggles.showConsole = x),
+            new ToggleInfo(" Log Deaths", () => CheatToggles.logDeaths, x => CheatToggles.logDeaths = x),
+            new ToggleInfo(" Log Shapeshifts", () => CheatToggles.logShapeshifts, x => CheatToggles.logShapeshifts = x),
+            new ToggleInfo(" Log Vents", () => CheatToggles.logVents, x => CheatToggles.logVents = x),
+        ], []));
 
         groups.Add(new GroupInfo("Host-Only", false,
             [
