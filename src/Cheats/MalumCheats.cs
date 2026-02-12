@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using AmongUs.GameOptions;
 using AmongUs.InnerNet.GameDataMessages;
-using Sentry.Internal.Extensions;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 

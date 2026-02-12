@@ -1,5 +1,3 @@
-using AmongUs.Data.Player;
-using BepInEx;
 using HarmonyLib;
 
 namespace MalumMenu;

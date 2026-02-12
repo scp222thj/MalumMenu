@@ -4,7 +4,6 @@ using AmongUs.Data.Player;
 using AmongUs.GameOptions;
 using UnityEngine;
 using System;
-using System.Linq;
 using System.Security.Cryptography;
 using InnerNet;
 
