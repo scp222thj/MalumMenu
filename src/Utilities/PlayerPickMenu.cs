@@ -27,10 +27,9 @@ public static class PlayerPickMenu
         customAction = action;
 
         //The menu is based off the shapeshifting menu
-        playerpickMenu = Object.Instantiate(getShapeshifterMenu());
-			    
-        playerpickMenu.transform.SetParent(Camera.main.transform, false);
-		playerpickMenu.transform.localPosition = new Vector3(0f, 0f, -50f);
+        playerpickMenu = Object.Instantiate(getShapeshifterMenu(), Camera.main.transform, false);
+
+        playerpickMenu.transform.localPosition = new Vector3(0f, 0f, -50f);
 		playerpickMenu.Begin(null);
     }
 
@@ -49,4 +48,4 @@ public static class PlayerPickMenu
 
         return customChoice;
     }
-}   
+}
