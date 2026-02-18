@@ -1,6 +1,6 @@
 namespace MalumMenu;
 
-public static class Outfit
+public static class OutfitPreset
 {
     public static NetworkedPlayerInfo.PlayerOutfit Shapeshifter = new()
     {
