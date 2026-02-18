@@ -70,6 +70,6 @@ public static class PlayerPhysics_HandleAnimation
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(PlayerPhysics __instance, ref bool amDead)
     {
-        return !(CheatToggles.moonwalk && __instance.AmOwner);
+        return !(CheatToggles.moonWalk && __instance.AmOwner);
     }
 }

@@ -22,7 +22,7 @@ public struct CheatToggles
     public static bool killAllImps;
     public static bool revive;
     public static bool invertControls;
-    public static bool moonwalk;
+    public static bool moonWalk;
 
     //Roles
     public static bool changeRole;

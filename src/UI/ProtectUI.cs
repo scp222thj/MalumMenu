@@ -49,13 +49,13 @@ public class ProtectUI : MonoBehaviour
             GUILayout.BeginHorizontal();
             GUILayout.Label($"<color=#{ColorUtility.ToHtmlStringRGB(pc.Data.Color)}>{pc.Data.PlayerName}</color>", GUILayout.Width(140f));
             GUILayout.Label($"{(pc.protectedByGuardianId != -1 ? $"<color=#00FF00>Protected</color> by <color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById((byte)pc.protectedByGuardianId).Color)}>{GameData.Instance.GetPlayerById((byte)pc.protectedByGuardianId)._object.Data.PlayerName}</color>" : "<color=#FF0000>Unprotected</color>")}", GUILayout.Width(135));
-            if (GUILayout.Button("Protect", GUIStyles.NormalButtonStyle) && Utils.isHost && !Utils.isLobby)
+            if (GUILayout.Button("Protect", GUIStylePreset.NormalButton) && Utils.isHost && !Utils.isLobby)
             {
                 PlayerControl.LocalPlayer.RpcProtectPlayer(pc, pc.cosmetics.ColorId);
             }
 
             var keepProtected = playersToProtect.Contains(pc);
-            keepProtected = GUILayout.Toggle(keepProtected, "Keep protected", GUIStyles.NormalToggleStyle);
+            keepProtected = GUILayout.Toggle(keepProtected, "Keep protected", GUIStylePreset.NormalToggle);
             if (keepProtected && !playersToProtect.Contains(pc))
                 playersToProtect.Add(pc);
             else if (!keepProtected && playersToProtect.Contains(pc))

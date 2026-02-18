@@ -11,7 +11,7 @@ public static class DoorsHandler
     /// <returns>List of SystemTypes representing rooms with doors.</returns>
     public static List<SystemTypes> GetDoorRooms()
     {
-        if (!Utils.isShip || ShipStatus.Instance.AllDoors.Count <= 0) return [];
+        if (!Utils.isShip || ShipStatus.Instance.AllDoors.Count <= 0) return new List<SystemTypes>();
 
         return ShipStatus.Instance.AllDoors.Select(d => d.Room).Distinct().ToList();
     }
@@ -23,7 +23,7 @@ public static class DoorsHandler
     /// <returns>List of OpenableDoor objects in the specified room.</returns>
     public static List<OpenableDoor> GetDoorsInRoom(SystemTypes room)
     {
-        if (!Utils.isShip || ShipStatus.Instance.AllDoors.Count <= 0) return [];
+        if (!Utils.isShip || ShipStatus.Instance.AllDoors.Count <= 0) return new List<OpenableDoor>();
 
         return ShipStatus.Instance.AllDoors.Where(d => d.Room == room).ToList();
     }

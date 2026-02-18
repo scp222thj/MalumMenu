@@ -27,7 +27,13 @@ public static class ArrowHandler
     {
         if (_cachedArrowTemplate != null) return;
 
-        NormalPlayerTask[][] allTasksArrays = [ShipStatus.Instance.CommonTasks, ShipStatus.Instance.LongTasks, ShipStatus.Instance.ShortTasks];
+        NormalPlayerTask[][] allTasksArrays = new NormalPlayerTask[][]
+        {
+            ShipStatus.Instance.CommonTasks,
+            ShipStatus.Instance.LongTasks,
+            ShipStatus.Instance.ShortTasks
+        };
+
         foreach (var tasks in allTasksArrays) // I tried using ShipStatus.Instance.GetAllTasks() but couldn't get it to work
         {
             foreach (var task in tasks)

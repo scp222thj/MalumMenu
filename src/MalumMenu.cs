@@ -17,8 +17,8 @@ public partial class MalumMenu : BasePlugin
 {
     public Harmony Harmony { get; } = new(Id);
     public new static ManualLogSource Log;
-    public static string malumVersion = "2.6.1";
-    public static List<string> supportedAU = ["2025.9.9", "2025.10.14", "2025.11.18"];
+    public static string malumVersion = "3.0.0";
+    public static List<string> supportedAU = new List<string> { "2026.2.17" };
     public static MenuUI menuUI;
     public static ConsoleUI consoleUI;
     public static RolesUI rolesUI;

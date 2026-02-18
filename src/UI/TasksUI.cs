@@ -92,7 +92,7 @@ public class TasksUI : MonoBehaviour
                     {
                         if (pc == PlayerControl.LocalPlayer)
                         {
-                            if (GUILayout.Button("Complete", GUIStyles.NormalButtonStyle))
+                            if (GUILayout.Button("Complete", GUIStylePreset.NormalButton))
                             {
                                 Utils.completeTask(task);
                             }
@@ -109,7 +109,7 @@ public class TasksUI : MonoBehaviour
 
         GUILayout.EndScrollView();
 
-        if (GUILayout.Button("Complete My Tasks", GUIStyles.NormalButtonStyle))
+        if (GUILayout.Button("Complete My Tasks", GUIStylePreset.NormalButton))
         {
             CheatToggles.completeMyTasks = true;
         }

@@ -127,7 +127,7 @@ public static class MalumCheats
             shapeshifterRole.durationSecondsRemaining = float.MaxValue;
 
         // Shapeshift duration is reset to normal value after the cheat is disabled
-        }else if (shapeshifterRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.ShapeshifterDuration)){
+        } else if (shapeshifterRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.ShapeshifterDuration)){
 
             shapeshifterRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.ShapeshifterDuration);
 
@@ -166,9 +166,9 @@ public static class MalumCheats
 
         }
 
-        if (CheatToggles.noTrackingDelay)
+        if (CheatToggles.noTrackingDelay && MapBehaviour.Instance != null)
         {
-            MapBehaviour.Instance?.trackedPointDelayTime = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDelay);
+            MapBehaviour.Instance.trackedPointDelayTime = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDelay);
         }
 
         if (CheatToggles.endlessTracking){
