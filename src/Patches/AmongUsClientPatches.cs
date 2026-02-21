@@ -27,9 +27,7 @@ public static class AmongUsClient_Update
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameJoined))]
 public static class AmongUsClient_OnGameJoined
 {
-    /// <summary>
-    /// Postfix patch of AmongUsClient.OnGameJoined to store the last joined game ID string
-    /// </summary>
+    // Postfix patch of AmongUsClient.OnGameJoined to store the last joined game ID string
     public static string lastGameIdString = "";
 
     public static void Postfix(string gameIdString)
