@@ -38,6 +38,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<bool> freeCosmetics;
     public static ConfigEntry<bool> avoidBans;
     public static ConfigEntry<bool> unlockFeatures;
+    public static ConfigEntry<bool> autoLoadProfile;
 
     public override void Load()
     {
@@ -63,6 +64,11 @@ public partial class MalumMenu : BasePlugin
                                 "UseHorizontalUI",
                                 false,
                                 "When enabled, use the (new) horizontal tab-based UI instead of the vertical one.");
+        
+        autoLoadProfile = Config.Bind("MalumMenu.GUI",
+                                "AutoLoadProfile",
+                                false,
+                                "When enabled, it will automatically load your saved profile when the game starts");
 
         guestMode = Config.Bind("MalumMenu.GuestMode",
                                 "GuestMode",
@@ -116,6 +122,12 @@ public partial class MalumMenu : BasePlugin
 
         }
 
+        // Load profile on start
+        if (autoLoadProfile.Value)
+        {
+            CheatToggles.LoadTogglesFromProfile();
+        }
+        
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
         {
             if (scene.name == "MainMenu")
