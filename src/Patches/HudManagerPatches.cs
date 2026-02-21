@@ -46,7 +46,7 @@ public static class HudManager_Update
 		MalumESP.freecamCheat();
 
 		// Close PlayerPickMenu if there is no PPM cheat enabled
-		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.shouldPPMClose()){
+		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.ShouldPPMClose()){
             PlayerPickMenu.playerpickMenu.Close();
         }
     }
