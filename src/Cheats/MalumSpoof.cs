@@ -34,7 +34,7 @@ public static class MalumSpoof
         Platforms? platformType;
 
         // Parse Spoofing.Platform config entry and save it as the spoofed platform type
-        if (Utils.stringToPlatformType(MalumMenu.spoofPlatform.Value, out platformType))
+        if (Utils.StringToPlatformType(MalumMenu.spoofPlatform.Value, out platformType))
         {
             platformSpecificData.Platform = (Platforms)platformType;
         }

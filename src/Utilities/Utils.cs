@@ -11,58 +11,47 @@ using BepInEx;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using Sentry.Internal.Extensions;
-using Debug = UnityEngine.Debug;
-using Object = UnityEngine.Object;
 
 namespace MalumMenu;
 
 public static class Utils
 {
-    // Useful for getting full lists of all the Among Us cosmetics IDs
-    public static ReferenceDataManager referenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance;
+    public static ReferenceDataManager ReferenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance; // Useful for getting full lists of all the Among Us cosmetics IDs
     public static SabotageSystemType SabotageSystem => ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
-    public static bool isShip => ShipStatus.Instance;
-    public static bool isLobby => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !isFreePlay;
-    public static bool isOnlineGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
-    public static bool isLocalGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
-    public static bool isFreePlay => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
-    public static bool isPlayer => PlayerControl.LocalPlayer;
-    public static bool isHost => AmongUsClient.Instance && AmongUsClient.Instance.AmHost;
-    public static bool isInGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && isPlayer;
-    public static bool isMeeting => MeetingHud.Instance;
-    public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
-    public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
-    public static bool isExiling => ExileController.Instance && !(AirshipIsActive && SpawnInMinigame.Instance.isActiveAndEnabled);
-    public static bool isAnySabotageActive => ShipStatus.Instance && SabotageSystem.AnyActive;
-    public static bool isNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
-    public static bool isHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
-    public static bool SkeldIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Skeld;
-    public static bool MiraHQIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.MiraHQ;
-    public static bool PolusIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Polus;
-    public static bool DleksIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Dleks;
-    public static bool AirshipIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Airship;
-    public static bool FungleIsActive => (MapNames)GameOptionsManager.Instance.CurrentGameOptions.MapId == MapNames.Fungle;
+    public static bool IsShip => ShipStatus.Instance;
+    public static bool IsLobby => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !IsFreePlay;
+    public static bool IsOnlineGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
+    public static bool IsLocalGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
+    public static bool IsFreePlay => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
+    public static bool IsPlayer => PlayerControl.LocalPlayer;
+    public static bool IsHost => AmongUsClient.Instance && AmongUsClient.Instance.AmHost;
+    public static bool IsInGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && IsPlayer;
+    public static bool IsMeeting => MeetingHud.Instance;
+    public static bool IsMeetingVoting => IsMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
+    public static bool IsMeetingProceeding => IsMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
+    public static bool IsExiling => ExileController.Instance && !(IsAirshipMap && SpawnInMinigame.Instance.isActiveAndEnabled);
+    public static bool IsAnySabotageActive => ShipStatus.Instance && SabotageSystem.AnyActive;
+    public static bool IsNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
+    public static bool IsHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
+    public static bool IsSkeldMap => (MapNames)GetCurrentMapID() == MapNames.Skeld;
+    public static bool IsMiraHQMap => (MapNames)GetCurrentMapID() == MapNames.MiraHQ;
+    public static bool IsPolusMap => (MapNames)GetCurrentMapID() == MapNames.Polus;
+    public static bool IsDleksMap => (MapNames)GetCurrentMapID() == MapNames.Dleks;
+    public static bool IsAirshipMap => (MapNames)GetCurrentMapID() == MapNames.Airship;
+    public static bool IsFungleMap => (MapNames)GetCurrentMapID() == MapNames.Fungle;
 
     public const float DefaultSpeed = 2.5f;
     public const float DefaultGhostSpeed = 3f;
 
-    /// <summary>
-    /// Check if LocalPlayer's speed is the default
-    /// </summary>
-    /// <param name="forGhost">Check ghost speed instead of normal speed</param>
-    /// <returns>True if speed is the default, false otherwise</returns>
-    public static bool isSpeedDefault(bool forGhost = false)
+    // Check if LocalPlayer's speed is at its default value
+    public static bool IsSpeedDefault(bool forGhost = false)
     {
         return forGhost ? Mathf.Approximately(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed, DefaultGhostSpeed) :
             Mathf.Approximately(PlayerControl.LocalPlayer.MyPhysics.Speed, DefaultSpeed);
     }
 
-    /// <summary>
-    /// Snap LocalPlayer's speed to the default if within snapRange
-    /// </summary>
-    /// <param name="snapRange">The range within which to snap the speed</param>
-    /// <param name="forGhost">Snap ghost speed instead of normal speed</param>
-    public static void snapSpeedToDefault(float snapRange, bool forGhost = false)
+    // Snap LocalPlayer's speed to the default if within snapRange
+    public static void SnapSpeedToDefault(float snapRange, bool forGhost = false)
     {
         if (forGhost)
         {
@@ -77,7 +66,7 @@ public static class Utils
     }
 
     // Get ClientData by PlayerControl
-    public static ClientData getClientByPlayer(PlayerControl player)
+    public static ClientData GetClientByPlayer(PlayerControl player)
     {
         try
         {
@@ -91,18 +80,14 @@ public static class Utils
     }
 
     // Get ClientData.Id by PlayerControl
-    public static int getClientIdByPlayer(PlayerControl player)
+    public static int GetClientIdByPlayer(PlayerControl player)
     {
         if (player == null) return -1;
-        var client = getClientByPlayer(player);
+        var client = GetClientByPlayer(player);
         return client == null ? -1 : client.Id;
     }
 
-    /// <summary>
-    /// Get a player's real name, display name, and whether they are disguised or not.
-    /// </summary>
-    /// <param name="player">The PlayerControl of the player to get the identity of.</param>
-    /// <returns>A tuple containing the player's real name, display name, and whether they are disguised or not.</returns>
+    // Get a player's real name, display name, and whether they are disguised or not
     public static (string realName, string displayName, bool isDisguised) GetPlayerIdentity(PlayerControl player)
     {
         if (player == null || player.Data == null) return ("", "", false);
@@ -115,7 +100,7 @@ public static class Utils
     }
 
     // Check if player is currently vanished
-    public static bool isVanished(NetworkedPlayerInfo playerInfo)
+    public static bool IsVanished(NetworkedPlayerInfo playerInfo)
     {
         PhantomRole phantomRole = playerInfo.Role as PhantomRole;
 
@@ -126,8 +111,8 @@ public static class Utils
         return false;
     }
 
-    // Custom isValidTarget method for cheats
-    public static bool isValidTarget(NetworkedPlayerInfo target)
+    // Checks whether a player is a valid target depending on whether killAnyone cheat is enabled or not
+    public static bool IsValidTarget(NetworkedPlayerInfo target)
     {
         var killAnyoneRequirements = target && !target.Disconnected && target.Object.Visible && target.PlayerId != PlayerControl.LocalPlayer.PlayerId && target.Role && target.Object;
 
@@ -152,20 +137,21 @@ public static class Utils
 
     // Adjusts HUD resolution
     // Used to fix UI problems when zooming out
-    public static void adjustResolution() {
+    public static void AdjustResolution()
+    {
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
     }
 
-    // Get RoleBehaviour from a RoleType
-    public static RoleBehaviour getBehaviourByRoleType(RoleTypes roleType)
+    // Gets RoleBehaviour from a RoleType
+    public static RoleBehaviour GetBehaviourByRoleType(RoleTypes roleType)
     {
         return RoleManager.Instance.AllRoles.ToArray().First(r => r.Role == roleType);
     }
 
-    // Kill any player using RPC calls
-    public static void murderPlayer(PlayerControl target, MurderResultFlags result)
+    // Kills any player using RPC calls
+    public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
-        if (isFreePlay){
+        if (IsFreePlay){
 
             PlayerControl.LocalPlayer.MurderPlayer(target, MurderResultFlags.Succeeded);
             return;
@@ -182,10 +168,10 @@ public static class Utils
     }
 
     // Complete all of LocalPlayer's tasks using RPC calls
-    public static void completeMyTasks()
+    public static void CompleteMyTasks()
     {
 
-        if (isFreePlay){
+        if (IsFreePlay){
 
             foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
@@ -211,9 +197,9 @@ public static class Utils
         }
     }
 
-    public static void completeTask(PlayerTask task)
+    public static void CompleteTask(PlayerTask task)
     {
-        if (isFreePlay)
+        if (IsFreePlay)
         {
             PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
             return;
@@ -231,8 +217,8 @@ public static class Utils
         }
     }
 
-    // Open Chat UI
-    public static void openChat()
+    // Opens Chat UI
+    public static void OpenChat()
     {
         if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
             DestroyableSingleton<HudManager>.Instance.Chat.chatScreen.SetActive(true);
@@ -246,8 +232,8 @@ public static class Utils
 
     }
 
-    // Draw a tracer line between two 2 GameObjects
-    public static void drawTracer(GameObject sourceObject, GameObject targetObject, Color color)
+    // Draw a tracer line between two GameObjects
+    public static void DrawTracer(GameObject sourceObject, GameObject targetObject, Color color)
     {
         var lineRenderer = sourceObject.GetComponent<LineRenderer>();
 
@@ -269,8 +255,8 @@ public static class Utils
         lineRenderer.SetPosition(1, targetObject.transform.position);
     }
 
-    // Return if the ChatUI should be active or not
-    public static bool chatUiActive()
+    // Returns whether the ChatUI should be active or not
+    public static bool IsChatUiActive()
     {
         try{
             return CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
@@ -279,20 +265,17 @@ public static class Utils
         }
     }
 
-    // Close Chat UI
-    public static void closeChat()
+    // Closes Chat UI
+    public static void CloseChat()
     {
         if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
             DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
         }
     }
 
-    // Get the distance between two players as a float
-    public static float getDistanceFrom(PlayerControl target, PlayerControl source = null){
-
-        if (source.IsNull()){
-            source = PlayerControl.LocalPlayer;
-        }
+    // Gets the distance between two players
+    public static float GetDistanceBetween(PlayerControl source, PlayerControl target)
+    {
 
         Vector2 vector = target.GetTruePosition() - source.GetTruePosition();
 		float magnitude = vector.magnitude;
@@ -302,7 +285,8 @@ public static class Utils
     }
 
     // Returns a list of all the players in the game ordered from closest to farthest (from LocalPlayer by default)
-    public static System.Collections.Generic.List<PlayerControl> getPlayersSortedByDistance(PlayerControl source = null){
+    public static System.Collections.Generic.List<PlayerControl> GetPlayersSortedByDistance(PlayerControl source = null)
+    {
 
         if (source.IsNull()){
             source = PlayerControl.LocalPlayer;
@@ -322,16 +306,16 @@ public static class Utils
             }
         }
 
-        outputList = outputList.OrderBy(target => getDistanceFrom(target, source)).ToList();
+        outputList = outputList.OrderBy(target => GetDistanceBetween(source, target)).ToList();
 
         return outputList.Count <= 0 ? null : outputList;
     }
 
     // Gets current map ID
-    public static byte getCurrentMapID()
+    public static byte GetCurrentMapID()
     {
         // If playing the tutorial
-        if (isFreePlay)
+        if (IsFreePlay)
         {
             return (byte)AmongUsClient.Instance.TutorialMapId;
         }
@@ -341,51 +325,52 @@ public static class Utils
     }
 
     // Get SystemType of the room the player is currently in
-    public static SystemTypes getCurrentRoom(){
+    public static SystemTypes GetCurrentRoom()
+    {
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
     }
 
-    /// <summary>
-    /// Get the PlainShipRoom from a Vector2 position.
-    /// </summary>
-    /// <param name="position">The position to check for the room.</param>
-    /// <returns>The PlainShipRoom at the given position, or null if none found.</returns>
+    // Get the PlainShipRoom of room that overlaps specified position
     public static PlainShipRoom GetRoomFromPosition(Vector2 position)
     {
         return ShipStatus.Instance == null ? null : ShipStatus.Instance.AllRooms.FirstOrDefault(
             room => room != null && room.roomArea != null && room.roomArea.OverlapPoint(position));
     }
 
-    // Fancy colored ping text
-    public static string getColoredPingText(int ping)
+    // Returns colored ping text for PingTracker
+    public static string GetColoredPingText(int ping)
     {
         return ping switch
         {
-            <= 100 => $"<color=#00ff00ff>PING: {ping} ms</color>",
-            < 400 => $"<color=#ffff00ff>PING: {ping} ms</color>",
-            _ => $"<color=#ff0000ff>PING: {ping} ms</color>"
+            <= 100 => $"<color=#00ff00ff>PING: {ping} ms</color>", // Green for ping < 100
+            < 400 => $"<color=#ffff00ff>PING: {ping} ms</color>", // Yellow for 100 < ping < 400
+            _ => $"<color=#ff0000ff>PING: {ping} ms</color>" // Red for ping > 400
         };
     }
 
     // Get a UnityEngine.KeyCode from a string
-    public static KeyCode stringToKeycode(string keyCodeStr){
+    public static KeyCode StringToKeycode(string keyCodeStr)
+    {
 
         if(!string.IsNullOrEmpty(keyCodeStr)) // Empty strings are automatically invalid
         {
             try
             {
-                // Case-insensitive parse of UnityEngine.KeyCode to check if string is validssss
-                KeyCode keyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyCodeStr, true);
+                // Case-insensitive parse of UnityEngine.KeyCode to check if string is valid
+                KeyCode keyCode = (KeyCode)Enum.Parse(typeof(KeyCode), keyCodeStr, true);
 
                 return keyCode;
-            }catch{}
+
+            }
+            
+            catch { }
         }
 
         return KeyCode.Delete; // If string is invalid, return Delete as the default key
     }
 
     // Get a platform type from a string
-    public static bool stringToPlatformType(string platformStr, out Platforms? platform)
+    public static bool StringToPlatformType(string platformStr, out Platforms? platform)
     {
         if (!string.IsNullOrEmpty(platformStr)) // Empty strings are automatically invalid
         {
@@ -406,7 +391,7 @@ public static class Utils
     {
         return platform switch
         {
-            Platforms.StandaloneEpicPC => "Epic",
+            Platforms.StandaloneEpicPC => "Epic Games",
             Platforms.StandaloneSteamPC => "Steam",
             Platforms.StandaloneMac => "Mac",
             Platforms.StandaloneWin10 => "Microsoft Store",
@@ -421,15 +406,16 @@ public static class Utils
         };
     }
 
-    // Get the string name for a chosen player's role
-    // String are automatically translated
-    public static string getRoleName(NetworkedPlayerInfo playerData)
+    // Get the name for a specified player's role as a string
+    // Strings are automatically translated
+    public static string GetRoleName(NetworkedPlayerInfo playerData)
     {
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         if (translatedRole != "STRMISS") return translatedRole;
+        
         if (playerData.RoleWhenAlive.HasValue)
         {
-            translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(getBehaviourByRoleType(playerData.RoleWhenAlive.Value).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+            translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(GetBehaviourByRoleType(playerData.RoleWhenAlive.Value).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         }
         else
         {
@@ -450,10 +436,13 @@ public static class Utils
         var player = AmongUsClient.Instance.GetClientFromPlayerInfo(playerInfo);
         var host = AmongUsClient.Instance.GetHost();
         var level = playerInfo.PlayerLevel + 1;
+
         var platform = "Unknown";
         try { platform = PlatformTypeToString(player.PlatformData.Platform); } catch { }
+        
         //var puid = player.ProductUserId;
         //var friendcode = player.FriendCode;
+        
         var roleColor = ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor);
 
         var hostString = player == host ? "Host - " : "";
@@ -465,22 +454,22 @@ public static class Utils
             {
                 if (isChat)
                 {
-                    nameTag = $"<color=#{roleColor}>{nameTag} <size=70%>{getRoleName(playerInfo)}</size></color> <size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>";
+                    nameTag = $"<color=#{roleColor}>{nameTag} <size=70%>{GetRoleName(playerInfo)}</size></color> <size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>";
                     return nameTag;
                 }
 
                 nameTag =
-                    $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{roleColor}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
+                    $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{roleColor}><size=70%>{GetRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
             }
             else
             {
                 if (isChat)
                 {
-                    nameTag = $"<color=#{roleColor}>{nameTag} <size=70%>{getRoleName(playerInfo)}</size></color>";
+                    nameTag = $"<color=#{roleColor}>{nameTag} <size=70%>{GetRoleName(playerInfo)}</size></color>";
                     return nameTag;
                 }
 
-                nameTag = $"<color=#{roleColor}><size=70%>{getRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
+                nameTag = $"<color=#{roleColor}><size=70%>{GetRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
             }
         }
         else
@@ -532,9 +521,9 @@ public static class Utils
 
     // Show custom popup ingame
     // Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
-    public static void showPopup(string text)
+    public static void ShowPopup(string text)
     {
-        var popup = Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
+        var popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
 
         var background = popup.transform.Find("Background").GetComponent<SpriteRenderer>();
         var size = background.size;
@@ -550,7 +539,7 @@ public static class Utils
         DestroyableSingleton<DisconnectPopup>.Instance.ShowCustom(text);
     }
 
-    // Load sprites and textures from manifest resources
+    // Load sprites from manifest resources
     // Found here: https://github.com/Loonie-Toons/TOHE-Restored/blob/TOHE/Modules/Utils.cs
     public static Dictionary<string, Sprite> CachedSprites = new();
     public static Sprite LoadSprite(string path, float pixelsPerUnit = 1f)
@@ -567,10 +556,13 @@ public static class Utils
         }
         catch
         {
-            Debug.LogError($"Failed to read Texture: {path}");
+            MalumMenu.Log.LogError($"Failed to read Texture: {path}");
         }
         return null;
     }
+
+    // Load textures from manifest resources
+    // Found here: https://github.com/Loonie-Toons/TOHE-Restored/blob/TOHE/Modules/Utils.cs
     public static Texture2D LoadTextureFromResources(string path)
     {
         try
@@ -585,14 +577,14 @@ public static class Utils
         }
         catch
         {
-            Debug.LogError($"Failed to read Texture: {path}");
+            MalumMenu.Log.LogError($"Failed to read Texture: {path}");
         }
         return null;
     }
 
+    // Open the config file in the default text editor (doesn't work on Linux with Proton)
     public static void OpenConfigFile()
     {
-        // Open the config file in the default text editor (doesn't work on Linux with Proton)
         var configFilePath = Path.Combine(Paths.ConfigPath, "MalumMenu.cfg");
 
         if (File.Exists(configFilePath))
@@ -608,17 +600,18 @@ public static class Utils
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to open config file: {ex.Message}. If you are on Linux, this is expected.");
+                MalumMenu.Log.LogError($"Failed to open configuration file: {ex.Message}. If you are on Linux, this is expected.");
             }
         }
         else
         {
-            Debug.LogError("Config file does not exist.");
+            MalumMenu.Log.LogError("Configuration file does not exist");
         }
     }
 
     public class PanicCleaner : MonoBehaviour
     {
+        // Creates a PanicCleaner to unpatch Harmony
         public static void Create()
         {
             ClassInjector.RegisterTypeInIl2Cpp<PanicCleaner>();
@@ -627,6 +620,8 @@ public static class Utils
             go.AddComponent<PanicCleaner>();
         }
 
+        // Unpatching Harmony in handled in the next frame after creation
+        // This allows some patches to run for a last time and finish properly
         private void LateUpdate()
         {
             try { Harmony.UnpatchID(MalumMenu.Id); }
@@ -640,8 +635,6 @@ public static class Utils
         CheatToggles.DisableAll();
         ModManager.Instance.ModStamp.enabled = false;
 
-        // Create a PanicCleaner to unpatch Harmony in the next frame
-        // This allows some patches to run for a last time and finish properly
         PanicCleaner.Create();
     }
 }

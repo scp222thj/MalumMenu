@@ -32,7 +32,7 @@ public static class MalumESP
     {
         if (CheatToggles.zoomOut)
         {
-            if (hudManager.Chat.IsOpenOrOpening || PlayerCustomizationMenu.Instance || (Utils.isLobby && (FriendsListUI.Instance.IsOpen ||
+            if (hudManager.Chat.IsOpenOrOpening || PlayerCustomizationMenu.Instance || (Utils.IsLobby && (FriendsListUI.Instance.IsOpen ||
                 GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active || GameStartManager.Instance.RulesEditPanel))) return;
 
             resolutionchangeNeeded = true;
@@ -47,7 +47,7 @@ public static class MalumESP
                 // Utils.AdjustResolution() seems to be needed to properly sync the game's UI
                 // after a change in orthographicSize
 
-                Utils.adjustResolution();
+                Utils.AdjustResolution();
 
             } else if(Input.GetAxis("Mouse ScrollWheel") > 0f )
             {
@@ -57,7 +57,7 @@ public static class MalumESP
                 Camera.main.orthographicSize--;
                 hudManager.UICamera.orthographicSize--;
 
-                Utils.adjustResolution();
+                Utils.AdjustResolution();
             }
         } else {
 
@@ -67,7 +67,7 @@ public static class MalumESP
 
             // Utils.AdjustResolution() is invoked one last time to prevent issues with UI
             if (resolutionchangeNeeded){
-                Utils.adjustResolution();
+                Utils.AdjustResolution();
                 resolutionchangeNeeded = false;
             }
         }

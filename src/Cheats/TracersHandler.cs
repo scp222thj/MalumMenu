@@ -53,7 +53,7 @@ public static class TracersHandler
             }
 
             // Draw tracer between the player and LocalPlayer using the right color
-            Utils.drawTracer(playerPhysics.myPlayer.gameObject, PlayerControl.LocalPlayer.gameObject, color);
+            Utils.DrawTracer(playerPhysics.myPlayer.gameObject, PlayerControl.LocalPlayer.gameObject, color);
         }catch{}
     }
 
@@ -82,7 +82,7 @@ public static class TracersHandler
         }
 
         // Draw tracer between the dead body and LocalPlayer using the right color
-        Utils.drawTracer(deadBody.gameObject, PlayerControl.LocalPlayer.gameObject, color);
+        Utils.DrawTracer(deadBody.gameObject, PlayerControl.LocalPlayer.gameObject, color);
     }
 
     /// <summary>

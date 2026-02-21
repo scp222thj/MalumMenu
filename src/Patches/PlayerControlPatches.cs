@@ -50,7 +50,7 @@ public static class PlayerControl_CmdCheckMurder
 
         return false;*/
 
-        if (!Utils.isHost) return true;
+        if (!Utils.IsHost) return true;
         // __instance.isKilling = true;
         PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
         return false;

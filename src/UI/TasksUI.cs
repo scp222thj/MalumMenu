@@ -50,7 +50,7 @@ public class TasksUI : MonoBehaviour
             {
                 taskCount -= 1;
             }
-            if (pc == PlayerControl.LocalPlayer && Utils.isAnySabotageActive)
+            if (pc == PlayerControl.LocalPlayer && Utils.IsAnySabotageActive)
             {
                 taskCount -= 1;
             }
@@ -94,7 +94,7 @@ public class TasksUI : MonoBehaviour
                         {
                             if (GUILayout.Button("Complete", GUIStylePreset.NormalButton))
                             {
-                                Utils.completeTask(task);
+                                Utils.CompleteTask(task);
                             }
                         }
                     }

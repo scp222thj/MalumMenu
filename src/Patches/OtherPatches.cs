@@ -113,12 +113,12 @@ public static class PingTracker_Update
 
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
 
-            __instance.text.text = $"MalumMenu by scp222thj & Astral ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+            __instance.text.text = $"MalumMenu by scp222thj & Astral ~ {Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
 
             return;
         }
 
-        __instance.text.text = $"MalumMenu by scp222thj & Astral\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+        __instance.text.text = $"MalumMenu by scp222thj & Astral\n{Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
 
     }
 }
@@ -143,7 +143,7 @@ public static class HatManager_Initialize
 {
     public static void Postfix(HatManager __instance){
 
-        CosmeticsUnlocker.unlockCosmetics(__instance);
+        CosmeticsUnlocker.UnlockCosmetics(__instance);
 
     }
 }
@@ -305,7 +305,7 @@ public static class IntroCutscene_CoBegin
     /// </summary>
     public static void Prefix()
     {
-        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue)
+        if (!Utils.IsHost || !CheatToggles.forcedRole.HasValue)
         {
             return;
         }
@@ -392,7 +392,7 @@ public static class BanMenu_SetVisible
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(BanMenu __instance, bool show)
     {
-        if (!Utils.isHost) return true;
+        if (!Utils.IsHost) return true;
 
         show &= PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data != null;
         __instance.BanButton.gameObject.SetActive(true);

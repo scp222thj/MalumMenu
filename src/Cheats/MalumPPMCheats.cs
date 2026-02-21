@@ -61,7 +61,7 @@ public static class MalumPPMCheats
                     PlayerPickMenu.playerpickMenu.Close();
                     CheatToggles.DisablePPMCheats("ejectPlayer");
                 }
-                if (!Utils.isMeeting)
+                if (!Utils.IsMeeting)
                 {
                     CheatToggles.ejectPlayer = false;
                     return;
@@ -107,7 +107,7 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("killPlayer");
                 }
 
-                if (Utils.isLobby){
+                if (Utils.IsLobby){
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
                     CheatToggles.killPlayer = false;
                     return;
@@ -116,7 +116,7 @@ public static class MalumPPMCheats
                 // Player pick menu made for killing any player by sending a successful MurderPlayer RPC call
                 PlayerPickMenu.openPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
                 {
-                    Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
+                    Utils.MurderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
                 }));
 
                 killPlayerActive = true;
@@ -146,7 +146,7 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("telekillPlayer");
                 }
 
-                if (Utils.isLobby){
+                if (Utils.IsLobby){
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
                     CheatToggles.telekillPlayer = false;
                     return;
@@ -156,7 +156,7 @@ public static class MalumPPMCheats
                 PlayerPickMenu.openPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
                 {
                     var oldPos = PlayerControl.LocalPlayer.GetTruePosition();
-                    Utils.murderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
+                    Utils.MurderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
                     AmongUsClient.Instance.StartCoroutine(DelayedTeleportBack(oldPos));
                 }));
 
@@ -244,49 +244,49 @@ public static class MalumPPMCheats
 
                 // Shapeshifter role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Shapeshifter || Utils.isFreePlay){
+                if (oldRole == RoleTypes.Shapeshifter || Utils.IsFreePlay){
 
-                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", OutfitPreset.Shapeshifter, Utils.getBehaviourByRoleType(RoleTypes.Shapeshifter)));
+                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", OutfitPreset.Shapeshifter, Utils.GetBehaviourByRoleType(RoleTypes.Shapeshifter)));
 
                 }
 
                 // Phantom role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Phantom || Utils.isFreePlay){
+                if (oldRole == RoleTypes.Phantom || Utils.IsFreePlay){
 
-                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", OutfitPreset.Phantom, Utils.getBehaviourByRoleType(RoleTypes.Phantom)));
+                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", OutfitPreset.Phantom, Utils.GetBehaviourByRoleType(RoleTypes.Phantom)));
 
                 }
 
                 // Viper role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Viper || Utils.isFreePlay){
+                if (oldRole == RoleTypes.Viper || Utils.IsFreePlay){
 
-                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", OutfitPreset.Viper, Utils.getBehaviourByRoleType(RoleTypes.Viper)));
+                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", OutfitPreset.Viper, Utils.GetBehaviourByRoleType(RoleTypes.Viper)));
 
                 }
 
                 // Impostor role can only be used if it was already assigned at the start of the game or as host
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Impostor || Utils.isFreePlay || Utils.isHost){
+                if (oldRole == RoleTypes.Impostor || Utils.IsFreePlay || Utils.IsHost){
 
-                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", OutfitPreset.Impostor, Utils.getBehaviourByRoleType(RoleTypes.Impostor)));
+                    playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", OutfitPreset.Impostor, Utils.GetBehaviourByRoleType(RoleTypes.Impostor)));
 
                 }
 
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Tracker", OutfitPreset.Tracker, Utils.getBehaviourByRoleType(RoleTypes.Tracker)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Noisemaker", OutfitPreset.Noisemaker, Utils.getBehaviourByRoleType(RoleTypes.Noisemaker)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Engineer", OutfitPreset.Engineer, Utils.getBehaviourByRoleType(RoleTypes.Engineer)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Scientist", OutfitPreset.Scientist, Utils.getBehaviourByRoleType(RoleTypes.Scientist)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Detective", OutfitPreset.Detective, Utils.getBehaviourByRoleType(RoleTypes.Detective)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.getBehaviourByRoleType(RoleTypes.Crewmate)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Tracker", OutfitPreset.Tracker, Utils.GetBehaviourByRoleType(RoleTypes.Tracker)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Noisemaker", OutfitPreset.Noisemaker, Utils.GetBehaviourByRoleType(RoleTypes.Noisemaker)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Engineer", OutfitPreset.Engineer, Utils.GetBehaviourByRoleType(RoleTypes.Engineer)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Scientist", OutfitPreset.Scientist, Utils.GetBehaviourByRoleType(RoleTypes.Scientist)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Detective", OutfitPreset.Detective, Utils.GetBehaviourByRoleType(RoleTypes.Detective)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.GetBehaviourByRoleType(RoleTypes.Crewmate)));
 
                 // Player pick menu made for changing your roles with a custom choice list
                 PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action) (() =>
                 {
 
                     // Log the originally assigned role before it gets changed by changeRole cheat
-                    if (!Utils.isLobby && !Utils.isFreePlay && oldRole == null){
+                    if (!Utils.IsLobby && !Utils.IsFreePlay && oldRole == null){
                         oldRole = PlayerControl.LocalPlayer.Data.RoleType;
                     }
 
@@ -348,16 +348,16 @@ public static class MalumPPMCheats
 
                 List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
 
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", OutfitPreset.Shapeshifter, Utils.getBehaviourByRoleType(RoleTypes.Shapeshifter)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", OutfitPreset.Phantom, Utils.getBehaviourByRoleType(RoleTypes.Phantom)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", OutfitPreset.Viper, Utils.getBehaviourByRoleType(RoleTypes.Viper)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", OutfitPreset.Impostor, Utils.getBehaviourByRoleType(RoleTypes.Impostor)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Tracker", OutfitPreset.Tracker, Utils.getBehaviourByRoleType(RoleTypes.Tracker)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Noisemaker", OutfitPreset.Noisemaker, Utils.getBehaviourByRoleType(RoleTypes.Noisemaker)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Engineer", OutfitPreset.Engineer, Utils.getBehaviourByRoleType(RoleTypes.Engineer)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Scientist", OutfitPreset.Scientist, Utils.getBehaviourByRoleType(RoleTypes.Scientist)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Detective", OutfitPreset.Detective, Utils.getBehaviourByRoleType(RoleTypes.Detective)));
-                playerDataList.Add(PlayerPickMenu.customPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.getBehaviourByRoleType(RoleTypes.Crewmate)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", OutfitPreset.Shapeshifter, Utils.GetBehaviourByRoleType(RoleTypes.Shapeshifter)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", OutfitPreset.Phantom, Utils.GetBehaviourByRoleType(RoleTypes.Phantom)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", OutfitPreset.Viper, Utils.GetBehaviourByRoleType(RoleTypes.Viper)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", OutfitPreset.Impostor, Utils.GetBehaviourByRoleType(RoleTypes.Impostor)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Tracker", OutfitPreset.Tracker, Utils.GetBehaviourByRoleType(RoleTypes.Tracker)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Noisemaker", OutfitPreset.Noisemaker, Utils.GetBehaviourByRoleType(RoleTypes.Noisemaker)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Engineer", OutfitPreset.Engineer, Utils.GetBehaviourByRoleType(RoleTypes.Engineer)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Scientist", OutfitPreset.Scientist, Utils.GetBehaviourByRoleType(RoleTypes.Scientist)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Detective", OutfitPreset.Detective, Utils.GetBehaviourByRoleType(RoleTypes.Detective)));
+                playerDataList.Add(PlayerPickMenu.customPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.GetBehaviourByRoleType(RoleTypes.Crewmate)));
 
                 // Player pick menu made for forcing a role onto another player
                 PlayerPickMenu.openPlayerPickMenu(playerDataList, (Action)(() =>

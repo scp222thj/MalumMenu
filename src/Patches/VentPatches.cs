@@ -33,7 +33,7 @@ public static class Vent_EnterVent
     // along with the room they entered it in
     public static void Postfix(Vent __instance, PlayerControl pc)
     {
-        if (!CheatToggles.logVents || !Utils.isShip) return;
+        if (!CheatToggles.logVents || !Utils.IsShip) return;
 
         var (realPlayerName, displayPlayerName, isDisguised) = Utils.GetPlayerIdentity(pc);
         var room = Utils.GetRoomFromPosition(__instance.transform.position); //- (Vector3) pc.Collider.offset);
@@ -52,7 +52,7 @@ public static class Vent_ExitVent
     // along with the room they exited it in
     public static void Postfix(Vent __instance, PlayerControl pc)
     {
-        if (!CheatToggles.logVents || !Utils.isShip) return;
+        if (!CheatToggles.logVents || !Utils.IsShip) return;
 
         var (realPlayerName, displayPlayerName, isDisguised) = Utils.GetPlayerIdentity(pc);
         var room = Utils.GetRoomFromPosition(__instance.transform.position); //- (Vector3) pc.Collider.offset);

@@ -34,10 +34,10 @@ public static class HudManager_Update
     {
 		__instance.ShadowQuad.gameObject.SetActive(!MalumESP.fullBrightActive()); // Fullbright
 
-		if (Utils.chatUiActive()){ // AlwaysChat
+		if (Utils.IsChatUiActive()){ // AlwaysChat
 			__instance.Chat.gameObject.SetActive(true);
 		} else {
-			Utils.closeChat();
+			Utils.CloseChat();
 			__instance.Chat.gameObject.SetActive(false);
 		}
 

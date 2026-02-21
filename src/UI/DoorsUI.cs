@@ -23,13 +23,13 @@ public class DoorsUI : MonoBehaviour
 
     private void DoorsWindow(int windowID)
     {
-        if (!Utils.isShip)
+        if (!Utils.IsShip)
         {
             GUI.DragWindow();
             return;
         }
 
-        var map = (MapNames)Utils.getCurrentMapID();
+        var map = (MapNames)Utils.GetCurrentMapID();
 
         if (map is MapNames.MiraHQ)
         {
@@ -62,7 +62,7 @@ public class DoorsUI : MonoBehaviour
                 }
             }
 
-            if (Utils.isHost)
+            if (Utils.IsHost)
             {
                 var spamClose = doorsToSpamClose.Contains(doorRoom);
                 spamClose = GUILayout.Toggle(spamClose, "Spam Close", GUIStylePreset.NormalToggle);
@@ -116,7 +116,7 @@ public class DoorsUI : MonoBehaviour
 
         GUILayout.FlexibleSpace();
 
-        if (Utils.isHost)
+        if (Utils.IsHost)
         {
             CheatToggles.spamCloseAllDoors = GUILayout.Toggle(CheatToggles.spamCloseAllDoors, "Spam Close All", GUIStylePreset.NormalToggle);
 
@@ -137,7 +137,7 @@ public class DoorsUI : MonoBehaviour
 
     public void Update()
     {
-        if (!Utils.isShip) return;
+        if (!Utils.IsShip) return;
 
         // Spam Close selected doors
         foreach (var doorRoom in doorsToSpamClose)
@@ -146,7 +146,7 @@ public class DoorsUI : MonoBehaviour
         }
 
         // Spam Open selected doors
-        var map = (MapNames)Utils.getCurrentMapID();
+        var map = (MapNames)Utils.GetCurrentMapID();
 
         if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
         {
