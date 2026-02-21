@@ -39,7 +39,7 @@ public class DoorsUI : MonoBehaviour
 
         GUILayout.BeginVertical();
 
-        foreach (var doorRoom in DoorsHandler.GetDoorRooms())
+        foreach (var doorRoom in DoorsHandler.GetRoomsWithDoors())
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label($"{doorRoom.ToString()}", GUILayout.Width(110f));
@@ -51,14 +51,14 @@ public class DoorsUI : MonoBehaviour
 
             if (GUILayout.Button("Close", GUIStylePreset.NormalButton, GUILayout.Width(50f)))
             {
-                DoorsHandler.CloseDoorsOfRoom(doorRoom);
+                DoorsHandler.CloseDoorsInRoom(doorRoom);
             }
 
             if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
             {
                 if (GUILayout.Button("Open", GUIStylePreset.NormalButton, GUILayout.Width(50f)))
                 {
-                    DoorsHandler.OpenDoorsOfRoom(doorRoom);
+                    DoorsHandler.OpenDoorsInRoom(doorRoom);
                 }
             }
 
@@ -142,7 +142,7 @@ public class DoorsUI : MonoBehaviour
         // Spam Close selected doors
         foreach (var doorRoom in doorsToSpamClose)
         {
-            DoorsHandler.CloseDoorsOfRoom(doorRoom);
+            DoorsHandler.CloseDoorsInRoom(doorRoom);
         }
 
         // Spam Open selected doors
@@ -152,7 +152,7 @@ public class DoorsUI : MonoBehaviour
         {
             foreach (var doorRoom in doorsToSpamOpen)
             {
-                DoorsHandler.OpenDoorsOfRoom(doorRoom);
+                DoorsHandler.OpenDoorsInRoom(doorRoom);
             }
         }
     }

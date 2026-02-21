@@ -5,22 +5,15 @@ namespace MalumMenu;
 
 public static class DoorsHandler
 {
-    /// <summary>
-    /// Gets a list of all rooms that have doors.
-    /// </summary>
-    /// <returns>List of SystemTypes representing rooms with doors.</returns>
-    public static List<SystemTypes> GetDoorRooms()
+    // Returns a list of all rooms that have doors
+    public static List<SystemTypes> GetRoomsWithDoors()
     {
         if (!Utils.isShip || ShipStatus.Instance.AllDoors.Count <= 0) return new List<SystemTypes>();
 
         return ShipStatus.Instance.AllDoors.Select(d => d.Room).Distinct().ToList();
     }
 
-    /// <summary>
-    /// Gets all doors in a specified room.
-    /// </summary>
-    /// <param name="room">The room to get doors from.</param>
-    /// <returns>List of OpenableDoor objects in the specified room.</returns>
+    // Returns a list of all doors in a specified room
     public static List<OpenableDoor> GetDoorsInRoom(SystemTypes room)
     {
         if (!Utils.isShip || ShipStatus.Instance.AllDoors.Count <= 0) return new List<OpenableDoor>();
@@ -28,12 +21,7 @@ public static class DoorsHandler
         return ShipStatus.Instance.AllDoors.Where(d => d.Room == room).ToList();
     }
 
-    /// <summary>
-    /// Gets the status of doors in a specified room.
-    /// </summary>
-    /// <param name="room">The room to check door status for.</param>
-    /// <param name="colorize">Whether to colorize the status string.</param>
-    /// <returns>A string representing the status: "Open", "Closed", "Mixed", or "N/A".</returns>
+    // Returns the aggregate status of doors in a specified room
     public static string GetStatusOfDoorsInRoom(SystemTypes room, bool colorize)
     {
         var doorsInRoom = GetDoorsInRoom(room);
@@ -43,37 +31,31 @@ public static class DoorsHandler
         return colorize ? "<color=#FFFF00>Mixed</color>" : "Mixed";
     }
 
-    /// <summary>
-    /// Opens all doors in a specified room.
-    /// </summary>
-    /// <param name="doorRoom">The room to open doors in.</param>
-    public static void OpenDoorsOfRoom(SystemTypes doorRoom)
+    // Opens all doors in a specified room
+    public static void OpenDoorsInRoom(SystemTypes doorRoom)
     {
         foreach (var door in GetDoorsInRoom(doorRoom))
+        {
             OpenDoor(door);
+        }
     }
 
-    /// <summary>
-    /// Closes all doors in a specified room.
-    /// </summary>
-    /// <param name="doorRoom">The room to close doors in.</param>
-    public static void CloseDoorsOfRoom(SystemTypes doorRoom)
+    // Closes all doors in a specified room
+    public static void CloseDoorsInRoom(SystemTypes doorRoom)
     {
         try { ShipStatus.Instance.RpcCloseDoorsOfType(doorRoom); } catch { }
     }
 
-    /// <summary>
-    /// Opens all doors on the map.
-    /// </summary>
+    // Opens all doors on the map
     public static void OpenAllDoors()
     {
         foreach (var door in ShipStatus.Instance.AllDoors)
+        {
             OpenDoor(door);
+        }
     }
 
-    /// <summary>
-    /// Closes all doors on the map.
-    /// </summary>
+    // Closes all doors on the map
     public static void CloseAllDoors()
     {
         foreach (var door in ShipStatus.Instance.AllDoors)
@@ -82,10 +64,7 @@ public static class DoorsHandler
         }
     }
 
-    /// <summary>
-    /// Opens a specific door.
-    /// </summary>
-    /// <param name="openableDoor">The door to open.</param>
+    // Opens a specific door
     public static void OpenDoor(OpenableDoor openableDoor)
     {
         try { ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Doors, (byte)(openableDoor.Id | 64)); } catch { }
