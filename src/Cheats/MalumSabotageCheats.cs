@@ -1,12 +1,12 @@
 namespace MalumMenu;
 
-public static class MalumSabotageSystem
+public static class MalumSabotageCheats
 {
-    public static bool reactorSab;
-    public static bool oxygenSab;
-    public static bool commsSab;
-    public static bool elecSab;
-    public static bool unfixableLights;
+    private static bool _reactorSab;
+    private static bool _oxygenSab;
+    private static bool _commsSab;
+    private static bool _elecSab;
+    private static bool _unfixableLights;
 
     public static void HandleReactor(ShipStatus shipStatus, byte mapId)
     {
@@ -18,13 +18,13 @@ public static class MalumSabotageSystem
 
                 var labSys = shipStatus.Systems[SystemTypes.Laboratory].Cast<ReactorSystemType>();
 
-                if (CheatToggles.reactorSab != reactorSab)
+                if (CheatToggles.reactorSab != _reactorSab)
                 {
-                    shipStatus.RpcUpdateSystem(SystemTypes.Laboratory, reactorSab ? (byte)16 : (byte)128);
-                    reactorSab = CheatToggles.reactorSab;
+                    shipStatus.RpcUpdateSystem(SystemTypes.Laboratory, _reactorSab ? (byte)16 : (byte)128);
+                    _reactorSab = CheatToggles.reactorSab;
                 }
 
-                CheatToggles.reactorSab = reactorSab = labSys.IsActive;
+                CheatToggles.reactorSab = _reactorSab = labSys.IsActive;
                 break;
             }
             case 4:
@@ -33,19 +33,19 @@ public static class MalumSabotageSystem
 
                 var heliSys = shipStatus.Systems[SystemTypes.HeliSabotage].Cast<HeliSabotageSystem>();
 
-                if (CheatToggles.reactorSab != reactorSab){
+                if (CheatToggles.reactorSab != _reactorSab){
 
-                    if (reactorSab){
+                    if (_reactorSab){
                         shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 0); // Repair
                         shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 16 | 1);
                     }else{
                         shipStatus.RpcUpdateSystem(SystemTypes.HeliSabotage, 128); // Sabotage
                     }
 
-                    reactorSab = CheatToggles.reactorSab;
+                    _reactorSab = CheatToggles.reactorSab;
                 }
 
-                CheatToggles.reactorSab = reactorSab = heliSys.IsActive;
+                CheatToggles.reactorSab = _reactorSab = heliSys.IsActive;
                 break;
             }
             default:
@@ -54,13 +54,13 @@ public static class MalumSabotageSystem
 
                 var reactorSys = shipStatus.Systems[SystemTypes.Reactor].Cast<ReactorSystemType>();
 
-                if (CheatToggles.reactorSab != reactorSab)
+                if (CheatToggles.reactorSab != _reactorSab)
                 {
-                    shipStatus.RpcUpdateSystem(SystemTypes.Reactor, reactorSab ? (byte)16 : (byte)128);
-                    reactorSab = CheatToggles.reactorSab;
+                    shipStatus.RpcUpdateSystem(SystemTypes.Reactor, _reactorSab ? (byte)16 : (byte)128);
+                    _reactorSab = CheatToggles.reactorSab;
                 }
 
-                CheatToggles.reactorSab = reactorSab = reactorSys.IsActive;
+                CheatToggles.reactorSab = _reactorSab = reactorSys.IsActive;
                 break;
             }
         }
@@ -72,13 +72,13 @@ public static class MalumSabotageSystem
 
             var oxygenSys = shipStatus.Systems[SystemTypes.LifeSupp].Cast<LifeSuppSystemType>();
 
-            if (CheatToggles.oxygenSab != oxygenSab)
+            if (CheatToggles.oxygenSab != _oxygenSab)
             {
-                shipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, oxygenSab ? (byte)16 : (byte)128);
-                oxygenSab = CheatToggles.oxygenSab;
+                shipStatus.RpcUpdateSystem(SystemTypes.LifeSupp, _oxygenSab ? (byte)16 : (byte)128);
+                _oxygenSab = CheatToggles.oxygenSab;
             }
 
-            CheatToggles.oxygenSab = oxygenSab = oxygenSys.IsActive;
+            CheatToggles.oxygenSab = _oxygenSab = oxygenSys.IsActive;
 
             return;
 
@@ -96,32 +96,32 @@ public static class MalumSabotageSystem
 
             var hqCommsSys = shipStatus.Systems[SystemTypes.Comms].Cast<HqHudSystemType>();
 
-            if (CheatToggles.commsSab != commsSab){
+            if (CheatToggles.commsSab != _commsSab){
 
-                if (commsSab){
+                if (_commsSab){
                     shipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 0); // Repair
                     shipStatus.RpcUpdateSystem(SystemTypes.Comms, 16 | 1);
                 }else{
                     shipStatus.RpcUpdateSystem(SystemTypes.Comms, 128); // Sabotage
                 }
 
-                commsSab = CheatToggles.commsSab;
+                _commsSab = CheatToggles.commsSab;
 
             }
 
-            CheatToggles.commsSab = commsSab = hqCommsSys.IsActive;
+            CheatToggles.commsSab = _commsSab = hqCommsSys.IsActive;
 
         }else{ // Other maps behave normally
 
             var commsSys = shipStatus.Systems[SystemTypes.Comms].Cast<HudOverrideSystemType>();
 
-            if (CheatToggles.commsSab != commsSab)
+            if (CheatToggles.commsSab != _commsSab)
             {
-                shipStatus.RpcUpdateSystem(SystemTypes.Comms, commsSab ? (byte)16 : (byte)128);
-                commsSab = CheatToggles.commsSab;
+                shipStatus.RpcUpdateSystem(SystemTypes.Comms, _commsSab ? (byte)16 : (byte)128);
+                _commsSab = CheatToggles.commsSab;
             }
 
-            CheatToggles.commsSab = commsSab = commsSys.IsActive;
+            CheatToggles.commsSab = _commsSab = commsSys.IsActive;
 
         }
     }
@@ -135,8 +135,8 @@ public static class MalumSabotageSystem
             // Handle unfixableLights cheat first to avoid the cheats messing with each other
             HandleUnfixLights(shipStatus);
 
-            if (CheatToggles.elecSab != elecSab){
-                if (elecSab){
+            if (CheatToggles.elecSab != _elecSab){
+                if (_elecSab){
 
                     // Repair
 
@@ -169,10 +169,10 @@ public static class MalumSabotageSystem
 
                 }
 
-                elecSab = CheatToggles.elecSab;
+                _elecSab = CheatToggles.elecSab;
             }
 
-            CheatToggles.elecSab = elecSab = elecSys.IsActive && !unfixableLights;
+            CheatToggles.elecSab = _elecSab = elecSys.IsActive && !_unfixableLights;
 
             return;
 
@@ -186,23 +186,24 @@ public static class MalumSabotageSystem
 
     public static void HandleUnfixLights(ShipStatus shipStatus)
     {
-        if (CheatToggles.unfixableLights == unfixableLights) return;
+        if (CheatToggles.unfixableLights == _unfixableLights) return;
         // Apparently most values you put for amount in RpcUpdateSystem will break lights completely
         // They are unfixable through regular means (toggling switches)
         // They can only be repaired by repeating RpcUpdateSystem with the same amount
 
-        if (!unfixableLights){
+        if (!_unfixableLights){
             CheatToggles.elecSab = false;
         }
 
-        shipStatus.RpcUpdateSystem(SystemTypes.Electrical, 69); // Repair & Sabotage
+        shipStatus.RpcUpdateSystem(SystemTypes.Electrical, 69); // Repair or Sabotage
 
-        unfixableLights = CheatToggles.unfixableLights;
+        _unfixableLights = CheatToggles.unfixableLights;
     }
 
     public static void HandleMushMix(ShipStatus shipStatus, byte mapId)
     {
         if (!CheatToggles.mushSab) return;
+        
         if (mapId == 5){ // MushroomMixup only works on Fungle
 
             shipStatus.RpcUpdateSystem(SystemTypes.MushroomMixupSabotage, 1); // Sabotage
@@ -218,7 +219,7 @@ public static class MalumSabotageSystem
         // var mushSys = shipStatus.Systems[SystemTypes.MushroomMixupSabotage].Cast<MushroomMixupSabotageSystem>();
         // mushSys.Deteriorate(mushSys.currentSecondsUntilHeal);
 
-        CheatToggles.mushSab = false; //Button behaviour
+        CheatToggles.mushSab = false;
     }
 
     public static void HandleSpores(FungleShipStatus shipStatus, byte mapId)
@@ -262,13 +263,24 @@ public static class MalumSabotageSystem
         }
     }
 
-    public static void OpenSabotageMap()
+    public static void Process(ShipStatus shipStatus)
     {
-        if (!CheatToggles.sabotageMap) return;
-        DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions
-        {
-            Mode = MapOptions.Modes.Sabotage
-        });
-        CheatToggles.sabotageMap = false;
+        var currentMapID = Utils.GetCurrentMapID();
+
+        // Handle all sabotage systems
+        HandleReactor(shipStatus, currentMapID);
+        HandleOxygen(shipStatus, currentMapID);
+        HandleComms(shipStatus, currentMapID);
+        HandleElectrical(shipStatus, currentMapID);
+        HandleDoors(shipStatus);
+    }
+
+    public static void ProcessFungle(FungleShipStatus shipStatus)
+    {
+        var currentMapID = Utils.GetCurrentMapID();
+
+        // Handle Fungle sabotage systems
+        HandleMushMix(shipStatus, currentMapID);
+        HandleSpores(shipStatus, currentMapID);
     }
 }

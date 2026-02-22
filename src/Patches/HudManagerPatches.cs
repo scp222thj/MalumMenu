@@ -41,9 +41,9 @@ public static class HudManager_Update
 			__instance.Chat.gameObject.SetActive(false);
 		}
 
-		MalumCheats.useVentCheat(__instance);
 		MalumESP.zoomOut(__instance);
 		MalumESP.freecamCheat();
+		MalumCheats.UseVentCheat(__instance);
 
 		// Close PlayerPickMenu if there is no PPM cheat enabled
 		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.ShouldPPMClose()){

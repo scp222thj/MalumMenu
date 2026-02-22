@@ -11,7 +11,7 @@ public static class EngineerRole_FixedUpdate
 
         if(__instance.Player.AmOwner){
 
-            MalumCheats.engineerCheats(__instance);
+            MalumCheats.HandleEngineerCheats(__instance);
         }
     }
 }
@@ -24,7 +24,7 @@ public static class ShapeshifterRole_FixedUpdate
         try{
             if(__instance.Player.AmOwner){
 
-                MalumCheats.shapeshifterCheats(__instance);
+                MalumCheats.HandleShapeshifterCheats(__instance);
             }
         }catch{}
     }
@@ -38,7 +38,7 @@ public static class ScientistRole_Update
 
         if(__instance.Player.AmOwner){
 
-            MalumCheats.scientistCheats(__instance);
+            MalumCheats.HandleScientistCheats(__instance);
         }
     }
 }
@@ -51,20 +51,7 @@ public static class TrackerRole_FixedUpdate
 
         if(__instance.Player.AmOwner){
 
-            MalumCheats.trackerCheats(__instance);
-        }
-    }
-}
-
-[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.FixedUpdate))]
-public static class PhantomRole_FixedUpdate
-{
-
-    public static void Postfix(PhantomRole __instance){
-
-        if(__instance.Player.AmOwner){
-
-            MalumCheats.phantomCheats(__instance);
+            MalumCheats.HandleTrackerCheats(__instance);
         }
     }
 }

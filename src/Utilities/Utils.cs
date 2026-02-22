@@ -11,6 +11,8 @@ using BepInEx;
 using HarmonyLib;
 using Il2CppInterop.Runtime.Injection;
 using Sentry.Internal.Extensions;
+using System.Runtime.CompilerServices;
+using AmongUs.InnerNet.GameDataMessages;
 
 namespace MalumMenu;
 
@@ -147,6 +149,24 @@ public static class Utils
         return RoleManager.Instance.AllRoles.ToArray().First(r => r.Role == roleType);
     }
 
+    public static void ForceSetScanner(PlayerControl player, bool toggle)
+    {
+        var count = ++player.scannerCount;
+        player.SetScanner(toggle, count);
+        RpcSetScannerMessage rpcMessage = new(player.NetId, toggle, count);
+        AmongUsClient.Instance.LateBroadcastReliableMessage(Unsafe.As<IGameDataMessage>(rpcMessage));
+    }
+
+    public static void ForcePlayAnimation(byte animationType)
+    {
+        // PlayerControl.LocalPlayer.RpcPlayAnimation(1) wouldn't work if visual tasks are turned off
+        // The below way makes sure it works regardless of visual task settings
+
+        PlayerControl.LocalPlayer.PlayAnimation(animationType);
+        RpcPlayAnimationMessage rpcMessage = new(PlayerControl.LocalPlayer.NetId, animationType);
+        AmongUsClient.Instance.LateBroadcastUnreliableMessage(Unsafe.As<IGameDataMessage>(rpcMessage));
+    }
+
     // Kills any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
@@ -163,36 +183,6 @@ public static class Utils
             writer.WriteNetObject(target);
             writer.Write((int)result);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
-    }
-
-    // Complete all of LocalPlayer's tasks using RPC calls
-    public static void CompleteMyTasks()
-    {
-
-        if (isFreePlay){
-
-            foreach (var task in PlayerControl.LocalPlayer.myTasks)
-            {
-                PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
-            }
-            return;
-
-        }
-
-        var hostData = AmongUsClient.Instance.GetHost();
-        if (hostData == null || hostData.Character.Data.Disconnected) return;
-        {
-            foreach (var task in PlayerControl.LocalPlayer.myTasks)
-            {
-                if (task.IsComplete) continue;
-                foreach (var item in PlayerControl.AllPlayerControls)
-                {
-                    var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-                    messageWriter.WritePacked(task.Id);
-                    AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
-                }
-            }
         }
     }
 
