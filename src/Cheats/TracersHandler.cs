@@ -4,10 +4,7 @@ namespace MalumMenu;
 
 public static class TracersHandler
 {
-    /// <summary>
-    /// Draws a tracer from the local player to another player.
-    /// </summary>
-    /// <param name="playerPhysics">The <c>PlayerPhysics</c> of the target player.</param>
+    // Draws a tracer from LocalPlayer to another player.
     public static void DrawPlayerTracer(PlayerPhysics playerPhysics)
     {
         try
@@ -54,13 +51,10 @@ public static class TracersHandler
 
             // Draw tracer between the player and LocalPlayer using the right color
             Utils.DrawTracer(playerPhysics.myPlayer.gameObject, PlayerControl.LocalPlayer.gameObject, color);
-        }catch{}
+        } catch { }
     }
 
-    /// <summary>
-    /// Draws a tracer from the local player to a dead body. Only draws tracers for unreported dead bodies.
-    /// </summary>
-    /// <param name="deadBody">The <c>DeadBody</c> to draw a tracer to.</param>
+    // Draws a tracer LocalPlayer to a dead body. Only draws tracers for unreported dead bodies.
     public static void DrawBodyTracer(DeadBody deadBody)
     {
         var color = Color.clear; // All tracers are invisible by default
@@ -85,12 +79,8 @@ public static class TracersHandler
         Utils.DrawTracer(deadBody.gameObject, PlayerControl.LocalPlayer.gameObject, color);
     }
 
-    /// <summary>
-    /// Gets a color based on the distance between the local player and a target position.
-    /// Closer distances are red, medium distances are yellow, and farther distances are green.
-    /// </summary>
-    /// <param name="targetPosition">The position to calculate the distance from.</param>
-    /// <returns>A Color that represents the distance (red for close, yellow for medium, green for far).</returns>
+    // Gets a color based on the distance between the LocalPlayer and a target position.
+    // Closer distances are red, medium distances are yellow, and farther distances are green.
     private static Color GetDistanceBasedColor(Vector3 targetPosition)
     {
         const float maxDistance = 20f; // Green at 20+ units
