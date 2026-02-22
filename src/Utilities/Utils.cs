@@ -167,6 +167,13 @@ public static class Utils
         AmongUsClient.Instance.LateBroadcastUnreliableMessage(Unsafe.As<IGameDataMessage>(rpcMessage));
     }
 
+    // Coroutine to teleport the LocalPlayer to a position after a delay
+    public static System.Collections.IEnumerator DelayedSnapTo(Vector2 position, float delay = 0.25f)
+    {
+        yield return new WaitForSeconds(delay);
+        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(position);
+    }
+
     // Kills any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {

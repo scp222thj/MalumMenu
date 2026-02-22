@@ -24,13 +24,13 @@ public static class PlayerPhysics_LateUpdate
         MalumCheats.PlayAnimationCheat();
         MalumCheats.PlayScannerCheat();
 
-        MalumPPMCheats.ejectPlayerPPM();
-        MalumPPMCheats.spectatePPM();
-        MalumPPMCheats.killPlayerPPM();
-        MalumPPMCheats.telekillPlayerPPM();
-        MalumPPMCheats.teleportPlayerPPM();
-        MalumPPMCheats.changeRolePPM();
-        MalumPPMCheats.forceRolePPM();
+        MalumPPMCheats.EjectPlayerPPM();
+        MalumPPMCheats.SpectatePPM();
+        MalumPPMCheats.KillPlayerPPM();
+        MalumPPMCheats.TelekillPlayerPPM();
+        MalumPPMCheats.TeleportPlayerPPM();
+        MalumPPMCheats.ChangeRolePPM();
+        MalumPPMCheats.ForceRolePPM();
 
         TracersHandler.DrawPlayerTracer(__instance);
 

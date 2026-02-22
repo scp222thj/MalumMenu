@@ -8,23 +8,27 @@ using UnityEngine;
 namespace MalumMenu;
 public static class MalumPPMCheats
 {
-    public static bool telekillPlayerActive;
-    public static bool killPlayerActive;
-    public static bool spectateActive;
-    public static bool teleportPlayerActive;
-    public static bool reportBodyActive;
-    public static bool ejectPlayerActive;
-    public static bool changeRoleActive;
-    public static bool forceRoleActive;
-    public static RoleTypes? oldRole = null;
+    private static bool _telekillPlayerActive;
+    private static bool _killPlayerActive;
+    private static bool _spectateActive;
+    private static bool _teleportPlayerActive;
+    private static bool _reportBodyActive;
+    private static bool _ejectPlayerActive;
+    private static bool _changeRoleActive;
+    private static bool _forceRoleActive;
+    private static RoleTypes? _oldRole = null;
 
-    public static void reportBodyPPM(){
-        if (CheatToggles.reportBody){
+    public static void ReportBodyPPM()
+    {
+        if (CheatToggles.reportBody)
+        {
 
-            if (!reportBodyActive){
+            if (!_reportBodyActive)
+            {
 
                 // Close any player pick menus already open & their cheats
-                if (PlayerPickMenu.playerpickMenu != null){
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
                     PlayerPickMenu.playerpickMenu.Close();
                     CheatToggles.DisablePPMCheats("reportBody");
                 }
@@ -35,26 +39,30 @@ public static class MalumPPMCheats
                     PlayerControl.LocalPlayer.CmdReportDeadBody(PlayerPickMenu.targetPlayerData);
                 }));
 
-                reportBodyActive = true;
+                _reportBodyActive = true;
             }
 
             // Deactivate cheat if menu is closed
-            if (PlayerPickMenu.playerpickMenu == null){
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
                 CheatToggles.reportBody = false;
             }
 
-        }else{
-            if (reportBodyActive){
-                reportBodyActive = false;
+        }
+        else
+        {
+            if (_reportBodyActive)
+            {
+                _reportBodyActive = false;
             }
         }
     }
 
-    public static void ejectPlayerPPM()
+    public static void EjectPlayerPPM()
     {
         if (CheatToggles.ejectPlayer)
         {
-            if (!ejectPlayerActive)
+            if (!_ejectPlayerActive)
             {
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
@@ -81,24 +89,24 @@ public static class MalumPPMCheats
                     MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), playerToEject, false);
                 }));
 
-                ejectPlayerActive = true;
+                _ejectPlayerActive = true;
             }
             if (PlayerPickMenu.playerpickMenu == null)
             {
                 CheatToggles.ejectPlayer = false;
             }
         }
-        else if (ejectPlayerActive)
+        else if (_ejectPlayerActive)
         {
-            ejectPlayerActive = false;
+            _ejectPlayerActive = false;
         }
     }
 
-    public static void killPlayerPPM()
+    public static void KillPlayerPPM()
     {
         if (CheatToggles.killPlayer)
         {
-            if (!killPlayerActive)
+            if (!_killPlayerActive)
             {
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
@@ -107,7 +115,8 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("killPlayer");
                 }
 
-                if (Utils.isLobby){
+                if (Utils.isLobby)
+                {
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
                     CheatToggles.killPlayer = false;
                     return;
@@ -119,25 +128,26 @@ public static class MalumPPMCheats
                     Utils.MurderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
                 }));
 
-                killPlayerActive = true;
+                _killPlayerActive = true;
             }
 
             // Deactivate cheat if menu is closed
-            if (PlayerPickMenu.playerpickMenu == null){
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
                 CheatToggles.killPlayer = false;
             }
         }
-        else if (killPlayerActive)
+        else if (_killPlayerActive)
         {
-            killPlayerActive = false;
+            _killPlayerActive = false;
         }
     }
 
-    public static void telekillPlayerPPM()
+    public static void TelekillPlayerPPM()
     {
         if (CheatToggles.telekillPlayer)
         {
-            if (!telekillPlayerActive)
+            if (!_telekillPlayerActive)
             {
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
@@ -146,7 +156,8 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("telekillPlayer");
                 }
 
-                if (Utils.isLobby){
+                if (Utils.isLobby)
+                {
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
                     CheatToggles.telekillPlayer = false;
                     return;
@@ -157,39 +168,29 @@ public static class MalumPPMCheats
                 {
                     var oldPos = PlayerControl.LocalPlayer.GetTruePosition();
                     Utils.MurderPlayer(PlayerPickMenu.targetPlayerData.Object, MurderResultFlags.Succeeded);
-                    AmongUsClient.Instance.StartCoroutine(DelayedTeleportBack(oldPos));
+                    AmongUsClient.Instance.StartCoroutine(Utils.DelayedSnapTo(oldPos));
                 }));
 
-                telekillPlayerActive = true;
+                _telekillPlayerActive = true;
             }
 
             // Deactivate cheat if menu is closed
-            if (PlayerPickMenu.playerpickMenu == null){
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
                 CheatToggles.telekillPlayer = false;
             }
         }
-        else if (telekillPlayerActive)
+        else if (_telekillPlayerActive)
         {
-            telekillPlayerActive = false;
+            _telekillPlayerActive = false;
         }
     }
 
-    /// <summary>
-    /// Coroutine to teleport the LocalPlayer back to their original position after a short delay.
-    /// </summary>
-    /// <param name="position">The position to teleport back to.</param>
-    /// <returns>An IEnumerator for the coroutine.</returns>
-    public static System.Collections.IEnumerator DelayedTeleportBack(Vector2 position)
-    {
-        yield return new WaitForSeconds(0.25f);
-        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(position);
-    }
-
-    public static void teleportPlayerPPM()
+    public static void TeleportPlayerPPM()
     {
         if (CheatToggles.teleportPlayer)
         {
-            if (!teleportPlayerActive)
+            if (!_teleportPlayerActive)
             {
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
@@ -214,7 +215,7 @@ public static class MalumPPMCheats
                     PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerPickMenu.targetPlayerData.Object.transform.position);
                 }));
 
-                teleportPlayerActive = true;
+                _teleportPlayerActive = true;
             }
 
             // Deactivate cheat if menu is closed
@@ -222,17 +223,17 @@ public static class MalumPPMCheats
                 CheatToggles.teleportPlayer = false;
             }
         }
-        else if (teleportPlayerActive)
+        else if (_teleportPlayerActive)
         {
-            teleportPlayerActive = false;
+            _teleportPlayerActive = false;
         }
     }
 
-    public static void changeRolePPM()
+    public static void ChangeRolePPM()
     {
         if (CheatToggles.changeRole){
 
-            if (!changeRoleActive){
+            if (!_changeRoleActive){
 
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null){
@@ -244,7 +245,7 @@ public static class MalumPPMCheats
 
                 // Shapeshifter role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Shapeshifter || Utils.isFreePlay){
+                if (_oldRole == RoleTypes.Shapeshifter || Utils.isFreePlay){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", OutfitPreset.Shapeshifter, Utils.GetBehaviourByRoleType(RoleTypes.Shapeshifter)));
 
@@ -252,7 +253,7 @@ public static class MalumPPMCheats
 
                 // Phantom role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Phantom || Utils.isFreePlay){
+                if (_oldRole == RoleTypes.Phantom || Utils.isFreePlay){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", OutfitPreset.Phantom, Utils.GetBehaviourByRoleType(RoleTypes.Phantom)));
 
@@ -260,7 +261,7 @@ public static class MalumPPMCheats
 
                 // Viper role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Viper || Utils.isFreePlay){
+                if (_oldRole == RoleTypes.Viper || Utils.isFreePlay){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", OutfitPreset.Viper, Utils.GetBehaviourByRoleType(RoleTypes.Viper)));
 
@@ -268,7 +269,7 @@ public static class MalumPPMCheats
 
                 // Impostor role can only be used if it was already assigned at the start of the game or as host
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Impostor || Utils.isFreePlay || Utils.isHost){
+                if (_oldRole == RoleTypes.Impostor || Utils.isFreePlay || Utils.isHost){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", OutfitPreset.Impostor, Utils.GetBehaviourByRoleType(RoleTypes.Impostor)));
 
@@ -286,8 +287,8 @@ public static class MalumPPMCheats
                 {
 
                     // Log the originally assigned role before it gets changed by changeRole cheat
-                    if (!Utils.isLobby && !Utils.isFreePlay && oldRole == null){
-                        oldRole = PlayerControl.LocalPlayer.Data.RoleType;
+                    if (!Utils.isLobby && !Utils.isFreePlay && _oldRole == null){
+                        _oldRole = PlayerControl.LocalPlayer.Data.RoleType;
                     }
 
                     if (PlayerControl.LocalPlayer.Data.IsDead){ // Prevent accidential revives
@@ -319,7 +320,7 @@ public static class MalumPPMCheats
 
                 }));
 
-                changeRoleActive = true;
+                _changeRoleActive = true;
             }
 
             // Deactivate cheat if menu is closed
@@ -328,17 +329,17 @@ public static class MalumPPMCheats
             }
 
         }else{
-            if (changeRoleActive){
-                changeRoleActive = false;
+            if (_changeRoleActive){
+                _changeRoleActive = false;
             }
         }
     }
 
-    public static void forceRolePPM()
+    public static void ForceRolePPM()
     {
         if (CheatToggles.forceRole)
         {
-            if (!forceRoleActive)
+            if (!_forceRoleActive)
             {
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
@@ -365,7 +366,7 @@ public static class MalumPPMCheats
                     CheatToggles.forcedRole = PlayerPickMenu.targetPlayerData.Role.Role;
                 }));
 
-                forceRoleActive = true;
+                _forceRoleActive = true;
             }
 
             // Deactivate cheat if menu is closed
@@ -377,18 +378,18 @@ public static class MalumPPMCheats
         }
         else
         {
-            if (forceRoleActive)
+            if (_forceRoleActive)
             {
-                forceRoleActive = false;
+                _forceRoleActive = false;
             }
         }
     }
 
-    public static void spectatePPM()
+    public static void SpectatePPM()
     {
         if (CheatToggles.spectate){
 
-            if (!spectateActive){
+            if (!_spectateActive){
 
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null){
@@ -411,7 +412,7 @@ public static class MalumPPMCheats
                     Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerPickMenu.targetPlayerData.Object);
                 }));
 
-                spectateActive = true;
+                _spectateActive = true;
 
                 PlayerControl.LocalPlayer.moveable = false; // Can't move while spectating
 
@@ -426,8 +427,8 @@ public static class MalumPPMCheats
             }
         }else{
             // Deactivate cheat when it is disabled from the Malum GUI
-            if (spectateActive){
-                spectateActive = false;
+            if (_spectateActive){
+                _spectateActive = false;
                 PlayerControl.LocalPlayer.moveable = true;
                 Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
             }
