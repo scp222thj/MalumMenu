@@ -308,7 +308,7 @@ public class MenuUI : MonoBehaviour
             //Enable-disable GUI with DELETE key
             isGUIActive = !isGUIActive;
 
-            if (MalumMenu.teleportMenuToMouse.Value)
+            if (MalumMenu.menuOpenOnMouse.Value)
             {
                 // Teleport the window to the mouse for immediate use
                 Vector2 mousePosition = Input.mousePosition;
