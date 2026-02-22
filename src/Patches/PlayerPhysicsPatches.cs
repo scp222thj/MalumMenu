@@ -10,7 +10,7 @@ public static class PlayerPhysics_LateUpdate
     public static void Postfix(PlayerPhysics __instance)
     {
         MalumESP.PlayerNametags(__instance);
-        MalumESP.seeGhostsCheat(__instance);
+        MalumESP.SeeGhostsCheat(__instance);
 
         MalumCheats.NoClipCheat();
         MalumCheats.ReviveCheat();

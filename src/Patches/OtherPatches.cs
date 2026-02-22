@@ -224,7 +224,7 @@ public static class Mushroom_FixedUpdate
 {
     public static void Postfix(Mushroom __instance)
     {
-        MalumESP.sporeCloudVision(__instance);
+        MalumESP.SporeCloudVision(__instance);
     }
 }
 

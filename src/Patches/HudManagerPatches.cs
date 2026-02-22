@@ -32,7 +32,7 @@ public static class HudManager_Update
 {
 	public static void Postfix(HudManager __instance)
     {
-		__instance.ShadowQuad.gameObject.SetActive(!MalumESP.fullBrightActive()); // Fullbright
+		__instance.ShadowQuad.gameObject.SetActive(!MalumESP.IsFullbrightActive()); // Fullbright
 
 		if (Utils.IsChatUiActive()){ // AlwaysChat
 			__instance.Chat.gameObject.SetActive(true);
@@ -41,9 +41,9 @@ public static class HudManager_Update
 			__instance.Chat.gameObject.SetActive(false);
 		}
 
-		MalumESP.zoomOut(__instance);
-		MalumESP.freecamCheat();
 		MalumCheats.UseVentCheat(__instance);
+		MalumESP.ZoomOut(__instance);
+		MalumESP.FreecamCheat();
 
 		// Close PlayerPickMenu if there is no PPM cheat enabled
 		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.ShouldPPMClose()){
