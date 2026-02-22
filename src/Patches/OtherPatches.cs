@@ -16,7 +16,7 @@ public static class PlatformSpecificData_Serialize
     public static void Prefix(PlatformSpecificData __instance)
     {
 
-        MalumSpoof.spoofPlatform(__instance);
+        MalumSpoof.SpoofPlatform(__instance);
 
     }
 }
@@ -319,10 +319,10 @@ public static class IntroCutscene_CoBegin
 
         PlayerControl roleSwapTarget = null;
         // Find a player with the forced role to swap roles with
-        foreach (var pc in PlayerControl.AllPlayerControls)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (pc.Data.RoleType != forcedRole) continue;
-            roleSwapTarget = pc;
+            if (player.Data.RoleType != forcedRole) continue;
+            roleSwapTarget = player;
             break;
         }
 

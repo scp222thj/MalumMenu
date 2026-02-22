@@ -9,7 +9,7 @@ public static class AmongUsClient_Update
 {
     public static void Postfix()
     {
-        MalumSpoof.spoofLevel();
+        MalumSpoof.SpoofLevel();
 
         // GuestMode cheats are commented out as they are broken in latest updates
         
