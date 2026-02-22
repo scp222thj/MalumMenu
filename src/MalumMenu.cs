@@ -31,7 +31,6 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
     public static ConfigEntry<bool> menuOpenOnMouse;
-    public static ConfigEntry<bool> useHorizontalUI;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
     public static ConfigEntry<bool> spoofDeviceId;
