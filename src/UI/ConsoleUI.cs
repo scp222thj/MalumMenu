@@ -45,8 +45,9 @@ public class ConsoleUI : MonoBehaviour
     private void ConsoleWindow(int windowID)
     {
         GUILayout.BeginVertical();
+        
         _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, false, true);
-
+        
         foreach (var log in _logEntries)
         {
             GUILayout.Label(log, _logStyle);
@@ -55,14 +56,17 @@ public class ConsoleUI : MonoBehaviour
         GUILayout.EndScrollView();
 
         GUILayout.BeginHorizontal();
+        
         if (GUILayout.Button("Clear Log", GUILayout.Width(235)))
         {
             _logEntries.Clear();
         }
-        if (GUILayout.Button("Copy Log to clipboard"))
+        
+        if (GUILayout.Button("Copy Log to Clipboard"))
         {
             GUIUtility.systemCopyBuffer = String.Join("\n", _logEntries.ToArray());
         }
+        
         GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
