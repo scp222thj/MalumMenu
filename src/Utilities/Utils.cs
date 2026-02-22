@@ -18,28 +18,27 @@ public static class Utils
 {
     public static ReferenceDataManager ReferenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance; // Useful for getting full lists of all the Among Us cosmetics IDs
     public static SabotageSystemType SabotageSystem => ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
-    public static bool IsShip => ShipStatus.Instance;
-    public static bool IsLobby => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !IsFreePlay;
-    public static bool IsOnlineGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
-    public static bool IsLocalGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
-    public static bool IsFreePlay => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
-    public static bool IsPlayer => PlayerControl.LocalPlayer;
-    public static bool IsHost => AmongUsClient.Instance && AmongUsClient.Instance.AmHost;
-    public static bool IsInGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && IsPlayer;
-    public static bool IsMeeting => MeetingHud.Instance;
-    public static bool IsMeetingVoting => IsMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
-    public static bool IsMeetingProceeding => IsMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
-    public static bool IsExiling => ExileController.Instance && !(IsAirshipMap && SpawnInMinigame.Instance.isActiveAndEnabled);
-    public static bool IsAnySabotageActive => ShipStatus.Instance && SabotageSystem.AnyActive;
-    public static bool IsNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
-    public static bool IsHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
-    public static bool IsSkeldMap => (MapNames)GetCurrentMapID() == MapNames.Skeld;
-    public static bool IsMiraHQMap => (MapNames)GetCurrentMapID() == MapNames.MiraHQ;
-    public static bool IsPolusMap => (MapNames)GetCurrentMapID() == MapNames.Polus;
-    public static bool IsDleksMap => (MapNames)GetCurrentMapID() == MapNames.Dleks;
-    public static bool IsAirshipMap => (MapNames)GetCurrentMapID() == MapNames.Airship;
-    public static bool IsFungleMap => (MapNames)GetCurrentMapID() == MapNames.Fungle;
-
+    public static bool isShip => ShipStatus.Instance;
+    public static bool isLobby => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined && !isFreePlay;
+    public static bool isOnlineGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.OnlineGame;
+    public static bool isLocalGame => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame;
+    public static bool isFreePlay => AmongUsClient.Instance && AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
+    public static bool isPlayer => PlayerControl.LocalPlayer;
+    public static bool isHost => AmongUsClient.Instance && AmongUsClient.Instance.AmHost;
+    public static bool isInGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && isPlayer;
+    public static bool isMeeting => MeetingHud.Instance;
+    public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
+    public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
+    public static bool isExiling => ExileController.Instance && !(isAirshipMap && SpawnInMinigame.Instance.isActiveAndEnabled);
+    public static bool isAnySabotageActive => ShipStatus.Instance && SabotageSystem.AnyActive;
+    public static bool isNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
+    public static bool isHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
+    public static bool isSkeldMap => (MapNames)GetCurrentMapID() == MapNames.Skeld;
+    public static bool isMiraHQMap => (MapNames)GetCurrentMapID() == MapNames.MiraHQ;
+    public static bool isPolusMap => (MapNames)GetCurrentMapID() == MapNames.Polus;
+    public static bool isDleksMap => (MapNames)GetCurrentMapID() == MapNames.Dleks;
+    public static bool isAirshipMap => (MapNames)GetCurrentMapID() == MapNames.Airship;
+    public static bool isFungleMap => (MapNames)GetCurrentMapID() == MapNames.Fungle;
     public const float DefaultSpeed = 2.5f;
     public const float DefaultGhostSpeed = 3f;
 
@@ -151,7 +150,7 @@ public static class Utils
     // Kills any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
-        if (IsFreePlay){
+        if (isFreePlay){
 
             PlayerControl.LocalPlayer.MurderPlayer(target, MurderResultFlags.Succeeded);
             return;
@@ -171,7 +170,7 @@ public static class Utils
     public static void CompleteMyTasks()
     {
 
-        if (IsFreePlay){
+        if (isFreePlay){
 
             foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
@@ -199,7 +198,7 @@ public static class Utils
 
     public static void CompleteTask(PlayerTask task)
     {
-        if (IsFreePlay)
+        if (isFreePlay)
         {
             PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
             return;
@@ -315,7 +314,7 @@ public static class Utils
     public static byte GetCurrentMapID()
     {
         // If playing the tutorial
-        if (IsFreePlay)
+        if (isFreePlay)
         {
             return (byte)AmongUsClient.Instance.TutorialMapId;
         }

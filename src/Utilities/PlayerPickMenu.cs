@@ -6,7 +6,7 @@ namespace MalumMenu;
 public static class PlayerPickMenu
 {
     public static ShapeshifterMinigame playerpickMenu;
-    public static bool IsActive;
+    public static bool isActive;
     public static NetworkedPlayerInfo targetPlayerData;
     public static Il2CppSystem.Action customAction;
     public static List<NetworkedPlayerInfo> customPlayerList;
@@ -22,11 +22,11 @@ public static class PlayerPickMenu
     // Open a PlayerPickMenu to pick a specific player to target
     public static void openPlayerPickMenu(List<NetworkedPlayerInfo> playerList, Il2CppSystem.Action action)
     {
-        IsActive = true;
+        isActive = true;
         customPlayerList = playerList;
         customAction = action;
 
-        //The menu is based off the shapeshifting menu
+        // The menu is based off the shapeshifting menu
         playerpickMenu = Object.Instantiate(getShapeshifterMenu(), Camera.main.transform, false);
 
         playerpickMenu.transform.localPosition = new Vector3(0f, 0f, -50f);

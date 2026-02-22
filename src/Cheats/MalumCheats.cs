@@ -11,7 +11,7 @@ public static class MalumCheats
     {
         if (!CheatToggles.closeMeeting) return;
 
-        if (Utils.IsMeeting){ // Closes MeetingHud window if it's open
+        if (Utils.isMeeting){ // Closes MeetingHud window if it's open
 
             // Destroy MeetingHud window gameobject
             MeetingHud.Instance.DespawnOnDestroy = false;
@@ -37,7 +37,7 @@ public static class MalumCheats
     {
         if (!CheatToggles.skipMeeting) return;
 
-        if (Utils.IsMeeting)
+        if (Utils.isMeeting)
         {
             MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), null, true);
         }
@@ -49,7 +49,7 @@ public static class MalumCheats
     {
         if (!CheatToggles.callMeeting) return;
 
-        if (Utils.IsHost)
+        if (Utils.isHost)
         {
             // Same as PlayerControl.ReportDeadBody but without additional checks
             MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
@@ -67,7 +67,7 @@ public static class MalumCheats
     public static void forceStartGameCheat()
     {
         if (!CheatToggles.forceStartGame) return;
-        if (Utils.IsHost && Utils.IsLobby)
+        if (Utils.isHost && Utils.isLobby)
         {
             AmongUsClient.Instance.SendStartGame();
         }
@@ -252,7 +252,7 @@ public static class MalumCheats
     {
         if (!CheatToggles.killAll) return;
 
-        if (Utils.IsLobby)
+        if (Utils.isLobby)
         {
             HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
         }
@@ -272,7 +272,7 @@ public static class MalumCheats
     {
         if (!CheatToggles.killAllCrew) return;
 
-        if (Utils.IsLobby)
+        if (Utils.isLobby)
         {
             HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
         }
@@ -294,7 +294,7 @@ public static class MalumCheats
     {
         if (!CheatToggles.killAllImps) return;
 
-        if (Utils.IsLobby)
+        if (Utils.isLobby)
         {
             HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
         }
@@ -314,7 +314,7 @@ public static class MalumCheats
 
     public static void ProtectCheat()
     {
-        if (!Utils.IsHost || Utils.IsLobby) return;
+        if (!Utils.isHost || Utils.isLobby) return;
         foreach (var pc in ProtectUI.playersToProtect)
         {
             if (pc.protectedByGuardianId == -1) // -1 means no protection is currently active
@@ -460,7 +460,7 @@ public static class MalumCheats
             _hasUsedCamsCheatBefore = false;
         }
 
-        if (CheatToggles.animPet && Utils.IsPlayer && PlayerControl.LocalPlayer.cosmetics != null && PlayerControl.LocalPlayer.cosmetics.CurrentPet != null)
+        if (CheatToggles.animPet && Utils.isPlayer && PlayerControl.LocalPlayer.cosmetics != null && PlayerControl.LocalPlayer.cosmetics.CurrentPet != null)
         {
             // Don't move the local player, just send the RPC so others see the petting animation.
             RpcPetMessage rpcMessage = new(PlayerControl.LocalPlayer.MyPhysics.NetId,

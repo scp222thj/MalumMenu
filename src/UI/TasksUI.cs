@@ -50,7 +50,7 @@ public class TasksUI : MonoBehaviour
             {
                 taskCount -= 1;
             }
-            if (pc == PlayerControl.LocalPlayer && Utils.IsAnySabotageActive)
+            if (pc == PlayerControl.LocalPlayer && Utils.isAnySabotageActive)
             {
                 taskCount -= 1;
             }

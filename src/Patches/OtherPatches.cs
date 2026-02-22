@@ -305,7 +305,7 @@ public static class IntroCutscene_CoBegin
     /// </summary>
     public static void Prefix()
     {
-        if (!Utils.IsHost || !CheatToggles.forcedRole.HasValue)
+        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue)
         {
             return;
         }
@@ -392,7 +392,7 @@ public static class BanMenu_SetVisible
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(BanMenu __instance, bool show)
     {
-        if (!Utils.IsHost) return true;
+        if (!Utils.isHost) return true;
 
         show &= PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data != null;
         __instance.BanButton.gameObject.SetActive(true);

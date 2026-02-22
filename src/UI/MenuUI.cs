@@ -252,7 +252,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Reload plugin config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
                 new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
                 new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
-                new ToggleInfo(" RGB Mode", () => CheatToggles.RGBMode, x => CheatToggles.RGBMode = x)
+                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x)
             }, 
             new List<SubmenuInfo>()
         ));
@@ -317,7 +317,7 @@ public class MenuUI : MonoBehaviour
             }
         }
 
-        if (CheatToggles.RGBMode)
+        if (CheatToggles.rgbMode)
         {
             hue += Time.deltaTime * 0.3f; // Adjust speed of color change, higher multiplier = faster
             if (hue > 1f) hue -= 1f; // Loop hue back to 0 when it exceeds 1
@@ -342,11 +342,11 @@ public class MenuUI : MonoBehaviour
         //Passive cheats are always on to avoid problems
         //CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
-        if(!Utils.IsPlayer){
+        if(!Utils.isPlayer){
             CheatToggles.changeRole = CheatToggles.killAll = CheatToggles.telekillPlayer = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.killPlayer = false;
         }
 
-        if(!Utils.IsHost && !Utils.IsFreePlay){
+        if(!Utils.isHost && !Utils.isFreePlay){
             CheatToggles.killAll = CheatToggles.telekillPlayer = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.killPlayer = CheatToggles.ejectPlayer = CheatToggles.zeroKillCd = CheatToggles.killAnyone = CheatToggles.killVanished = CheatToggles.forceStartGame = CheatToggles.noGameEnd = CheatToggles.skipMeeting = false;
         }
 
@@ -356,7 +356,7 @@ public class MenuUI : MonoBehaviour
         //}
 
         //Some cheats only work if the ship is present, so they are turned off if it is not
-        if(!Utils.IsShip){
+        if(!Utils.isShip){
             CheatToggles.revive = CheatToggles.sabotageMap = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.ejectPlayer = CheatToggles.closeMeeting = CheatToggles.skipMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.closeAllDoors = CheatToggles.openAllDoors = CheatToggles.spamCloseAllDoors = CheatToggles.spamOpenAllDoors = CheatToggles.autoOpenDoorsOnUse = CheatToggles.mushSpore = CheatToggles.animShields = CheatToggles.animAsteroids = CheatToggles.animEmptyGarbage = CheatToggles.animScan = CheatToggles.animCamsInUse = false;
         }
     }
@@ -375,7 +375,7 @@ public class MenuUI : MonoBehaviour
             windowRect.height = windowHeight;
         }
 
-        if (CheatToggles.RGBMode)
+        if (CheatToggles.rgbMode)
         {
             GUI.backgroundColor = Color.HSVToRGB(hue, 1f, 1f); // Set background color based on hue
         }

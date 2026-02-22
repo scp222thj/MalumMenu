@@ -23,7 +23,7 @@ public class DoorsUI : MonoBehaviour
 
     private void DoorsWindow(int windowID)
     {
-        if (!Utils.IsShip)
+        if (!Utils.isShip)
         {
             GUI.DragWindow();
             return;
@@ -62,7 +62,7 @@ public class DoorsUI : MonoBehaviour
                 }
             }
 
-            if (Utils.IsHost)
+            if (Utils.isHost)
             {
                 var spamClose = doorsToSpamClose.Contains(doorRoom);
                 spamClose = GUILayout.Toggle(spamClose, "Spam Close", GUIStylePreset.NormalToggle);
@@ -116,7 +116,7 @@ public class DoorsUI : MonoBehaviour
 
         GUILayout.FlexibleSpace();
 
-        if (Utils.IsHost)
+        if (Utils.isHost)
         {
             CheatToggles.spamCloseAllDoors = GUILayout.Toggle(CheatToggles.spamCloseAllDoors, "Spam Close All", GUIStylePreset.NormalToggle);
 
@@ -137,7 +137,7 @@ public class DoorsUI : MonoBehaviour
 
     public void Update()
     {
-        if (!Utils.IsShip) return;
+        if (!Utils.isShip) return;
 
         // Spam Close selected doors
         foreach (var doorRoom in doorsToSpamClose)

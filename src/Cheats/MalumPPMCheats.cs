@@ -61,7 +61,7 @@ public static class MalumPPMCheats
                     PlayerPickMenu.playerpickMenu.Close();
                     CheatToggles.DisablePPMCheats("ejectPlayer");
                 }
-                if (!Utils.IsMeeting)
+                if (!Utils.isMeeting)
                 {
                     CheatToggles.ejectPlayer = false;
                     return;
@@ -107,7 +107,7 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("killPlayer");
                 }
 
-                if (Utils.IsLobby){
+                if (Utils.isLobby){
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
                     CheatToggles.killPlayer = false;
                     return;
@@ -146,7 +146,7 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("telekillPlayer");
                 }
 
-                if (Utils.IsLobby){
+                if (Utils.isLobby){
                     HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
                     CheatToggles.telekillPlayer = false;
                     return;
@@ -244,7 +244,7 @@ public static class MalumPPMCheats
 
                 // Shapeshifter role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Shapeshifter || Utils.IsFreePlay){
+                if (oldRole == RoleTypes.Shapeshifter || Utils.isFreePlay){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Shapeshifter", OutfitPreset.Shapeshifter, Utils.GetBehaviourByRoleType(RoleTypes.Shapeshifter)));
 
@@ -252,7 +252,7 @@ public static class MalumPPMCheats
 
                 // Phantom role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Phantom || Utils.IsFreePlay){
+                if (oldRole == RoleTypes.Phantom || Utils.isFreePlay){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Phantom", OutfitPreset.Phantom, Utils.GetBehaviourByRoleType(RoleTypes.Phantom)));
 
@@ -260,7 +260,7 @@ public static class MalumPPMCheats
 
                 // Viper role can only be used if it was already assigned at the start of the game
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Viper || Utils.IsFreePlay){
+                if (oldRole == RoleTypes.Viper || Utils.isFreePlay){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Viper", OutfitPreset.Viper, Utils.GetBehaviourByRoleType(RoleTypes.Viper)));
 
@@ -268,7 +268,7 @@ public static class MalumPPMCheats
 
                 // Impostor role can only be used if it was already assigned at the start of the game or as host
                 // This is done to prevent the anticheat from kicking players
-                if (oldRole == RoleTypes.Impostor || Utils.IsFreePlay || Utils.IsHost){
+                if (oldRole == RoleTypes.Impostor || Utils.isFreePlay || Utils.isHost){
 
                     playerDataList.Add(PlayerPickMenu.customPPMChoice("Impostor", OutfitPreset.Impostor, Utils.GetBehaviourByRoleType(RoleTypes.Impostor)));
 
@@ -286,7 +286,7 @@ public static class MalumPPMCheats
                 {
 
                     // Log the originally assigned role before it gets changed by changeRole cheat
-                    if (!Utils.IsLobby && !Utils.IsFreePlay && oldRole == null){
+                    if (!Utils.isLobby && !Utils.isFreePlay && oldRole == null){
                         oldRole = PlayerControl.LocalPlayer.Data.RoleType;
                     }
 

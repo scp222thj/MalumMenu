@@ -14,7 +14,7 @@ public static class VoteBanSystem_AddVote
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(VoteBanSystem __instance, int srcClient, int clientId)
     {
-        if (!Utils.IsHost) return true;
+        if (!Utils.isHost) return true;
 
         if (AmongUsClient.Instance.ClientId == srcClient)
         {
@@ -34,6 +34,6 @@ public static class VoteBanSystem_CmdAddVote
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(int clientIdToVoteBan)
     {
-        return !Utils.IsHost;
+        return !Utils.isHost;
     }
 }
