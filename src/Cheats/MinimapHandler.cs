@@ -8,54 +8,67 @@ public static class MinimapHandler
     public static List<HerePoint> herePoints = new List<HerePoint>();
     public static List<HerePoint> herePointsToRemove = new List<HerePoint>();
     
-    public static bool isCheatEnabled(){
+    public static bool IsCheatEnabled()
+    {
         return CheatToggles.mapCrew || CheatToggles.mapGhosts || CheatToggles.mapImps;
     }
 
-    public static void handleHerePoint(HerePoint herePoint){
-
+    public static void HandleHerePoint(HerePoint herePoint)
+    {
         Color herePointColor = new Color();
 
-        try{ // try-catch to fix issues caused by player disconnection
-
+        try // try-catch to fix issues caused by player disconnection
+        {
             herePoint.sprite.gameObject.SetActive(false); // Initally make player icon invisible
 
             // Crewmate, alive
-            if (CheatToggles.mapCrew && !herePoint.player.Data.Role.IsImpostor){
-                if (!herePoint.player.Data.IsDead){
+            if (CheatToggles.mapCrew && !herePoint.player.Data.Role.IsImpostor)
+            {
+                if (!herePoint.player.Data.IsDead)
+                {
                     herePoint.sprite.gameObject.SetActive(true);
-                    if (CheatToggles.colorBasedMap){
+                    if (CheatToggles.colorBasedMap)
+                    {
                         herePointColor = herePoint.player.Data.Color; // Color-Based Icon
-                    }else{
-                        herePointColor = herePoint.player.Data.Role.TeamColor; // Role-Based Icon
                     }
-                }
-
-            // Impostor, alive
-            } else if (CheatToggles.mapImps && herePoint.player.Data.Role.IsImpostor){
-                if (!herePoint.player.Data.IsDead){
-                    herePoint.sprite.gameObject.SetActive(true);
-                    if (CheatToggles.colorBasedMap){
-                        herePointColor = herePoint.player.Data.Color; // Color-Based Icon
-                    }else{
+                    else
+                    {
                         herePointColor = herePoint.player.Data.Role.TeamColor; // Role-Based Icon
                     }
                 }
             }
-
+            // Impostor, alive
+            else if (CheatToggles.mapImps && herePoint.player.Data.Role.IsImpostor)
+            {
+                if (!herePoint.player.Data.IsDead)
+                {
+                    herePoint.sprite.gameObject.SetActive(true);
+                    if (CheatToggles.colorBasedMap)
+                    {
+                        herePointColor = herePoint.player.Data.Color; // Color-Based Icon
+                    }
+                    else
+                    {
+                        herePointColor = herePoint.player.Data.Role.TeamColor; // Role-Based Icon
+                    }
+                }
+            }
             // Any Role, dead
-            if (CheatToggles.mapGhosts && herePoint.player.Data.IsDead){
+            if (CheatToggles.mapGhosts && herePoint.player.Data.IsDead)
+            {
                 herePoint.sprite.gameObject.SetActive(true);
-                if (CheatToggles.colorBasedMap){
+                if (CheatToggles.colorBasedMap)
+                {
                     herePointColor = herePoint.player.Data.Color; // Color-Based Icon
-                }else{
+                }
+                else
+                {
                     herePointColor = Palette.White;
                 }
             }
-        
 
-            if (herePoint.sprite.gameObject.active){
-
+            if (herePoint.sprite.gameObject.active)
+            {
                 // Set the right colors for active herePoint icons
                 herePoint.sprite.material.SetColor(PlayerMaterial.BackColor, herePointColor);
                 herePoint.sprite.material.SetColor(PlayerMaterial.BodyColor, herePointColor);
@@ -68,13 +81,12 @@ public static class MinimapHandler
                 vector.z = -1f;
                 herePoint.sprite.transform.localPosition = vector;
             }
-
-        }catch{
-
+        }
+        catch
+        {
             // Remove icons that are causing problems
             Object.Destroy(herePoint.sprite.gameObject);
             herePointsToRemove.Add(herePoint);
-
         }
     }
 }

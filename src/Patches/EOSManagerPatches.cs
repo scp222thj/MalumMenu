@@ -2,28 +2,30 @@ using HarmonyLib;
 
 namespace MalumMenu;
 
-[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.StartInitialLoginFlow))]
-public static class EOSManager_StartInitialLoginFlow
-{
-    /// <summary>
-    /// Prefix patch of EOSManager.StartInitialLoginFlow to automatically play with a guest account
-    /// when loading the game with guestMode enabled
-    /// </summary>
-    /// <param name="__instance">The <c>EOSManager</c> instance.</param>
-    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
-    public static bool Prefix(EOSManager __instance)
-    {
-        // Always delete old guest accounts to avoid merge account popup
-        __instance.DeleteDeviceID(new System.Action(__instance.EndMergeGuestAccountFlow));
+// GuestMode cheats are commented out as they are broken in latest updates
 
-        // Log into a new temp account if the user is playing in guest mode
-        if (!MalumMenu.guestMode.Value) return true;
-        __instance.StartTempAccountFlow();
-        __instance.CloseStartupWaitScreen();
+// [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.StartInitialLoginFlow))]
+// public static class EOSManager_StartInitialLoginFlow
+// {
+//     /// <summary>
+//     /// Prefix patch of EOSManager.StartInitialLoginFlow to automatically play with a guest account
+//     /// when loading the game with guestMode enabled
+//     /// </summary>
+//     /// <param name="__instance">The <c>EOSManager</c> instance.</param>
+//     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
+//     public static bool Prefix(EOSManager __instance)
+//     {
+//         // Always delete old guest accounts to avoid merge account popup
+//         __instance.DeleteDeviceID(new System.Action(__instance.EndMergeGuestAccountFlow));
 
-        return false;
-    }
-}
+//         // Log into a new temp account if the user is playing in guest mode
+//         if (!MalumMenu.guestMode.Value) return true;
+//         __instance.StartTempAccountFlow();
+//         __instance.CloseStartupWaitScreen();
+
+//         return false;
+//     }
+// }
 
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFreechatAllowed))]
 public static class EOSManager_IsFreechatAllowed

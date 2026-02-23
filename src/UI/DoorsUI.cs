@@ -29,7 +29,7 @@ public class DoorsUI : MonoBehaviour
             return;
         }
 
-        var map = (MapNames)Utils.getCurrentMapID();
+        var map = (MapNames)Utils.GetCurrentMapID();
 
         if (map is MapNames.MiraHQ)
         {
@@ -146,7 +146,7 @@ public class DoorsUI : MonoBehaviour
         }
 
         // Spam Open selected doors
-        var map = (MapNames)Utils.getCurrentMapID();
+        var map = (MapNames)Utils.GetCurrentMapID();
 
         if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
         {

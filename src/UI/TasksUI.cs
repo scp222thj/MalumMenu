@@ -94,7 +94,7 @@ public class TasksUI : MonoBehaviour
                         {
                             if (GUILayout.Button("Complete", GUIStylePreset.NormalButton))
                             {
-                                Utils.completeTask(task);
+                                Utils.CompleteTask(task);
                             }
                         }
                     }

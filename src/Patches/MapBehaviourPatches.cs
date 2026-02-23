@@ -12,7 +12,7 @@ public static class MapBehaviour_ShowNormalMap
     /// <param name="__instance">The <c>MapBehaviour</c> instance.</param>
     public static void Postfix(MapBehaviour __instance)
     {
-        MinimapHandler.minimapActive = MinimapHandler.isCheatEnabled();
+        MinimapHandler.minimapActive = MinimapHandler.IsCheatEnabled();
 
         if (!MinimapHandler.minimapActive) {
             return; // Only runs if miniMap Cheat is enabled
@@ -56,7 +56,7 @@ public static class MapBehaviour_FixedUpdate
     public static void Postfix(MapBehaviour __instance)
     {
         // Reset map if miniMap cheat is disabled
-        if (MinimapHandler.isCheatEnabled() != MinimapHandler.minimapActive){
+        if (MinimapHandler.IsCheatEnabled() != MinimapHandler.minimapActive){
             if (!__instance.infectedOverlay.gameObject.active){ // Do not affect sabotage map
                 __instance.Close();
                 __instance.ShowNormalMap();
@@ -67,7 +67,7 @@ public static class MapBehaviour_FixedUpdate
         var temp = MinimapHandler.herePoints;
         foreach (var herePoint in temp)
         {
-            MinimapHandler.handleHerePoint(herePoint);
+            MinimapHandler.HandleHerePoint(herePoint);
         }
 
         foreach (var herePoint in MinimapHandler.herePointsToRemove)

@@ -9,7 +9,7 @@ public static class PlayerControl_FixedUpdate
     public static void Postfix(PlayerControl __instance){
 
         if (__instance.AmOwner){
-            MalumCheats.noKillCdCheat(__instance);
+            MalumCheats.NoKillCdCheat(__instance);
         }
 
     }

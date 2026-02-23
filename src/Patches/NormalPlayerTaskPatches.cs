@@ -12,7 +12,7 @@ public static class NormalPlayerTask_Initialize
     public static void Postfix(NormalPlayerTask __instance)
     {
         // Set up arrow target for Airship UploadData task separately
-        if (__instance.TaskType == TaskTypes.UploadData && __instance.taskStep == 0 && (MapNames)Utils.getCurrentMapID() == MapNames.Airship)
+        if (__instance.TaskType == TaskTypes.UploadData && __instance.taskStep == 0 && (MapNames)Utils.GetCurrentMapID() == MapNames.Airship)
         {
             var airshipTask = __instance.GetComponent<AirshipUploadTask>();
             var consolePositions = airshipTask.FindValidConsolesPositions();

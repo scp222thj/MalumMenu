@@ -10,27 +10,27 @@ public static class PlayerPhysics_LateUpdate
     public static void Postfix(PlayerPhysics __instance)
     {
         MalumESP.PlayerNametags(__instance);
-        MalumESP.seeGhostsCheat(__instance);
+        MalumESP.SeeGhostsCheat(__instance);
 
-        MalumCheats.noClipCheat();
+        MalumCheats.NoClipCheat();
         MalumCheats.ReviveCheat();
         MalumCheats.ProtectCheat();
-        MalumCheats.killAllCheat();
-        MalumCheats.killAllCrewCheat();
-        MalumCheats.killAllImpsCheat();
-        MalumCheats.forceStartGameCheat();
-        MalumCheats.teleportCursorCheat();
-        MalumCheats.completeMyTasksCheat();
-        MalumCheats.AnimationCheat();
-        MalumCheats.ScanCheat();
+        MalumCheats.KillAllCheat();
+        MalumCheats.KillAllCrewCheat();
+        MalumCheats.KillAllImpsCheat();
+        MalumCheats.ForceStartGameCheat();
+        MalumCheats.TeleportCursorCheat();
+        MalumCheats.CompleteMyTasksCheat();
+        MalumCheats.PlayAnimationCheat();
+        MalumCheats.PlayScannerCheat();
 
-        MalumPPMCheats.ejectPlayerPPM();
-        MalumPPMCheats.spectatePPM();
-        MalumPPMCheats.killPlayerPPM();
-        MalumPPMCheats.telekillPlayerPPM();
-        MalumPPMCheats.teleportPlayerPPM();
-        MalumPPMCheats.changeRolePPM();
-        MalumPPMCheats.forceRolePPM();
+        MalumPPMCheats.EjectPlayerPPM();
+        MalumPPMCheats.SpectatePPM();
+        MalumPPMCheats.KillPlayerPPM();
+        MalumPPMCheats.TelekillPlayerPPM();
+        MalumPPMCheats.TeleportPlayerPPM();
+        MalumPPMCheats.ChangeRolePPM();
+        MalumPPMCheats.ForceRolePPM();
 
         TracersHandler.DrawPlayerTracer(__instance);
 

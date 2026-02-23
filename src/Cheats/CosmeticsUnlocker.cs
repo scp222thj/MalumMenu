@@ -1,7 +1,7 @@
 namespace MalumMenu;
 public static class CosmeticsUnlocker
 {
-    public static void unlockCosmetics(HatManager hatManager)
+    public static void UnlockCosmetics(HatManager hatManager)
     {
         if (!CheatToggles.freeCosmetics) return;
 

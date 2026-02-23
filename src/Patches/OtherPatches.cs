@@ -16,7 +16,7 @@ public static class PlatformSpecificData_Serialize
     public static void Prefix(PlatformSpecificData __instance)
     {
 
-        MalumSpoof.spoofPlatform(__instance);
+        MalumSpoof.SpoofPlatform(__instance);
 
     }
 }
@@ -113,12 +113,12 @@ public static class PingTracker_Update
 
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
 
-            __instance.text.text = $"MalumMenu by scp222thj & Astral ~ {Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+            __instance.text.text = $"MalumMenu by scp222thj & Astral ~ {Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
 
             return;
         }
 
-        __instance.text.text = $"MalumMenu by scp222thj & Astral\n{Utils.getColoredPingText(AmongUsClient.Instance.Ping)}";
+        __instance.text.text = $"MalumMenu by scp222thj & Astral\n{Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
 
     }
 }
@@ -143,7 +143,7 @@ public static class HatManager_Initialize
 {
     public static void Postfix(HatManager __instance){
 
-        CosmeticsUnlocker.unlockCosmetics(__instance);
+        CosmeticsUnlocker.UnlockCosmetics(__instance);
 
     }
 }
@@ -224,7 +224,7 @@ public static class Mushroom_FixedUpdate
 {
     public static void Postfix(Mushroom __instance)
     {
-        MalumESP.sporeCloudVision(__instance);
+        MalumESP.SporeCloudVision(__instance);
     }
 }
 
@@ -319,10 +319,10 @@ public static class IntroCutscene_CoBegin
 
         PlayerControl roleSwapTarget = null;
         // Find a player with the forced role to swap roles with
-        foreach (var pc in PlayerControl.AllPlayerControls)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (pc.Data.RoleType != forcedRole) continue;
-            roleSwapTarget = pc;
+            if (player.Data.RoleType != forcedRole) continue;
+            roleSwapTarget = player;
             break;
         }
 

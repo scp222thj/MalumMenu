@@ -7,10 +7,7 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.Update))]
 public static class TextBoxTMP_Update
 {
-    /// <summary>
-    /// Postfix patch of TextBoxTMP.Update to allow copying, pasting and cutting text between the chatbox and the device's clipboard
-    /// </summary>
-    /// <param name="__instance">The <c>TextBoxTMP</c> instance.</param>
+    // Postfix patch of TextBoxTMP.Update to allow copying, pasting and cutting text between the chatbox and the device's clipboard
     public static void Postfix(TextBoxTMP __instance)
     {
         if (!CheatToggles.chatJailbreak || !__instance.hasFocus) return;
@@ -36,13 +33,7 @@ public static class TextBoxTMP_Update
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.IsCharAllowed))]
 public static class TextBoxTMP_IsCharAllowed
 {
-    /// <summary>
-    /// Prefix patch of TextBoxTMP.IsCharAllowed to allow all characters
-    /// </summary>
-    /// <param name="__instance">The <c>TextBoxTMP</c> instance.</param>
-    /// <param name="i">The character to be checked.</param>
-    /// <param name="__result">Original return value of <c>IsCharAllowed</c>.</param>
-    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
+    // Prefix patch of TextBoxTMP.IsCharAllowed to allow all characters
     public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
     {
         if (!CheatToggles.chatJailbreak) return true;

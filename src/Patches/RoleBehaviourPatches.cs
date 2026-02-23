@@ -11,7 +11,7 @@ public static class EngineerRole_FixedUpdate
 
         if(__instance.Player.AmOwner){
 
-            MalumCheats.engineerCheats(__instance);
+            MalumCheats.HandleEngineerCheats(__instance);
         }
     }
 }
@@ -24,7 +24,7 @@ public static class ShapeshifterRole_FixedUpdate
         try{
             if(__instance.Player.AmOwner){
 
-                MalumCheats.shapeshifterCheats(__instance);
+                MalumCheats.HandleShapeshifterCheats(__instance);
             }
         }catch{}
     }
@@ -38,7 +38,7 @@ public static class ScientistRole_Update
 
         if(__instance.Player.AmOwner){
 
-            MalumCheats.scientistCheats(__instance);
+            MalumCheats.HandleScientistCheats(__instance);
         }
     }
 }
@@ -51,20 +51,7 @@ public static class TrackerRole_FixedUpdate
 
         if(__instance.Player.AmOwner){
 
-            MalumCheats.trackerCheats(__instance);
-        }
-    }
-}
-
-[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.FixedUpdate))]
-public static class PhantomRole_FixedUpdate
-{
-
-    public static void Postfix(PhantomRole __instance){
-
-        if(__instance.Player.AmOwner){
-
-            MalumCheats.phantomCheats(__instance);
+            MalumCheats.HandleTrackerCheats(__instance);
         }
     }
 }
@@ -80,7 +67,7 @@ public static class PhantomRole_IsValidTarget
     public static void Postfix(NetworkedPlayerInfo target, ref bool __result){
 
         if (CheatToggles.killVanished){
-            __result = Utils.isValidTarget(target);
+            __result = Utils.IsValidTarget(target);
         }
     }
 }
@@ -97,7 +84,7 @@ public static class ImpostorRole_IsValidTarget
     public static void Postfix(NetworkedPlayerInfo target, ref bool __result){
 
         if (CheatToggles.killAnyone){
-           __result = Utils.isValidTarget(target);
+           __result = Utils.IsValidTarget(target);
         }
 
     }
@@ -114,7 +101,7 @@ public static class ImpostorRole_FindClosestTarget
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ImpostorRole __instance, ref PlayerControl __result){
         if (!CheatToggles.killReach) return true;
-        var playerList = Utils.getPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        var playerList = Utils.GetPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
 
         __result = playerList[0];
 
@@ -135,7 +122,7 @@ public static class DetectiveRole_FindClosestTarget
     public static bool Prefix(DetectiveRole __instance, ref PlayerControl __result)
     {
         if (!CheatToggles.interrogateReach) return true;
-        var playerList = Utils.getPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        var playerList = Utils.GetPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
 
         __result = playerList[0];
 
@@ -155,7 +142,7 @@ public static class TrackerRole_FindClosestTarget
     public static bool Prefix(TrackerRole __instance, ref PlayerControl __result)
     {
         if (!CheatToggles.trackReach) return true;
-        var playerList = Utils.getPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        var playerList = Utils.GetPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
 
         __result = playerList[0];
 

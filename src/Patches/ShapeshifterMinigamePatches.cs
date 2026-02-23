@@ -15,7 +15,7 @@ public static class ShapeshifterMinigame_Begin
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ShapeshifterMinigame __instance)
     {
-        if (!PlayerPickMenu.IsActive) return true; // Open normal shapeshifter menu if not active
+        if (!PlayerPickMenu.isActive) return true; // Open normal shapeshifter menu if not active
         // Player Pick Menu logic
 
         // Custom player list set by openPlayerPickMenu
@@ -68,7 +68,7 @@ public static class ShapeshifterMinigame_Begin
 
         ControllerManager.Instance.OpenOverlayMenu(__instance.name, __instance.BackButton, __instance.DefaultButtonSelected, list2, false);
 
-        PlayerPickMenu.IsActive = false;
+        PlayerPickMenu.isActive = false;
 
         return false; // Skip original method when active
 
@@ -88,7 +88,7 @@ public static class ShapeshifterPanel_SetPlayer
     /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
     public static bool Prefix(ShapeshifterPanel __instance, int index, NetworkedPlayerInfo playerInfo, Il2CppSystem.Action onShift)
     {
-        if (!PlayerPickMenu.IsActive) return true; // Open normal shapeshifter menu if not active
+        if (!PlayerPickMenu.isActive) return true; // Open normal shapeshifter menu if not active
         // Player Pick Menu logic
 
         __instance.shapeshift = onShift;
