@@ -65,6 +65,13 @@ public static class PlayerPhysics_HandleAnimation
     // Prefix patch of PlayerPhysics.HandleAnimation to disable walking animation
     public static bool Prefix(PlayerPhysics __instance)
     {
-        return !(CheatToggles.moonWalk && __instance.AmOwner);
+        if (CheatToggles.moonWalk && __instance.AmOwner)
+        {
+            __instance.ResetAnimState();
+
+            return false;
+        }
+
+        return true;
     }
 }
