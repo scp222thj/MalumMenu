@@ -28,7 +28,7 @@ public static class ArrowHandler
             ShipStatus.Instance.ShortTasks
         };
 
-        foreach (var tasks in allTasksArrays) 
+        foreach (var tasks in allTasksArrays)
         {
             foreach (var task in tasks)
             {
@@ -51,7 +51,7 @@ public static class ArrowHandler
 
         // Set task.transform as parent of arrowObj so it gets destroyed with the task
         var arrowObj = Object.Instantiate(_cachedArrowTemplate, task.transform, false);
-        
+
         return arrowObj.GetComponent<ArrowBehaviour>();
     }
 
@@ -75,7 +75,7 @@ public static class ArrowHandler
     private static void SetArrowTarget(NormalPlayerTask task, Console targetConsole)
     {
         if (targetConsole == null) return;
-        
+
         task.Arrow.target = targetConsole.transform.position;
         task.StartAt = targetConsole.Room;
     }
@@ -92,7 +92,7 @@ public static class ArrowHandler
             case TaskTypes.AlignEngineOutput when task.TaskStep == 0:
             {
                 Il2CppSystem.Collections.Generic.List<Console> consoles = task.FindConsoles();
-                
+
                 if (consoles is { Count: > 0 })
                 {
                     SetArrowTarget(task, consoles[0]);
@@ -104,7 +104,7 @@ public static class ArrowHandler
             case TaskTypes.ReplaceParts when task.taskStep == 0:
             {
                 Il2CppSystem.Collections.Generic.List<Console> consoles = NormalPlayerTask.PickRandomConsoles(0, TaskTypes.ReplaceParts);
-                
+
                 if (consoles is { Count: > 0 })
                 {
                     var firstConsole = consoles.ToArray().FirstOrDefault(c => c.ConsoleId == task.Data[0]);

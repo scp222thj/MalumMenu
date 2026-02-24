@@ -44,14 +44,14 @@ public static class Utils
     public const float DefaultSpeed = 2.5f;
     public const float DefaultGhostSpeed = 3f;
 
-    // Check if LocalPlayer's speed is at its default value
+    // Checks if LocalPlayer's speed is at its default value
     public static bool IsSpeedDefault(bool forGhost = false)
     {
         return forGhost ? Mathf.Approximately(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed, DefaultGhostSpeed) :
             Mathf.Approximately(PlayerControl.LocalPlayer.MyPhysics.Speed, DefaultSpeed);
     }
 
-    // Snap LocalPlayer's speed to the default if within snapRange
+    // Snaps LocalPlayer's speed to the default if within snapRange
     public static void SnapSpeedToDefault(float snapRange, bool forGhost = false)
     {
         if (forGhost)
@@ -66,7 +66,7 @@ public static class Utils
         }
     }
 
-    // Get ClientData by PlayerControl
+    // Gets ClientData by PlayerControl
     public static ClientData GetClientByPlayer(PlayerControl player)
     {
         try
@@ -80,7 +80,7 @@ public static class Utils
         }
     }
 
-    // Get ClientData.Id by PlayerControl
+    // Gets ClientData.Id by PlayerControl
     public static int GetClientIdByPlayer(PlayerControl player)
     {
         if (player == null) return -1;
@@ -88,7 +88,7 @@ public static class Utils
         return client == null ? -1 : client.Id;
     }
 
-    // Get a player's real name, display name, and whether they are disguised or not
+    // Gets a player's real name, display name, and whether they are disguised or not
     public static (string realName, string displayName, bool isDisguised) GetPlayerIdentity(PlayerControl player)
     {
         if (player == null || player.Data == null) return ("", "", false);
@@ -100,12 +100,13 @@ public static class Utils
         return (realName, displayName, isDisguised);
     }
 
-    // Check if player is currently vanished
+    // Checks if player is currently vanished
     public static bool IsVanished(NetworkedPlayerInfo playerInfo)
     {
         PhantomRole phantomRole = playerInfo.Role as PhantomRole;
 
-        if (phantomRole != null){
+        if (phantomRole != null)
+        {
             return phantomRole.fading || phantomRole.isInvisible;
         }
 
@@ -177,7 +178,8 @@ public static class Utils
     // Kills any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
-        if (isFreePlay){
+        if (isFreePlay)
+        {
 
             PlayerControl.LocalPlayer.MurderPlayer(target, MurderResultFlags.Succeeded);
             return;
@@ -216,7 +218,8 @@ public static class Utils
     // Opens Chat UI
     public static void OpenChat()
     {
-        if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+        if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        {
             DestroyableSingleton<HudManager>.Instance.Chat.chatScreen.SetActive(true);
             PlayerControl.LocalPlayer.NetTransform.Halt();
             DestroyableSingleton<HudManager>.Instance.Chat.StartCoroutine(DestroyableSingleton<HudManager>.Instance.Chat.CoOpen());
@@ -224,11 +227,15 @@ public static class Utils
             {
                 DestroyableSingleton<FriendsListManager>.Instance.SetFriendButtonColor(true);
             }
+            if (DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.gameObject.activeSelf)
+			{
+				DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
+			}
         }
 
     }
 
-    // Draw a tracer line between two GameObjects
+    // Draws a tracer line between two GameObjects
     public static void DrawTracer(GameObject sourceObject, GameObject targetObject, Color color)
     {
         var lineRenderer = sourceObject.GetComponent<LineRenderer>();
@@ -254,9 +261,12 @@ public static class Utils
     // Returns whether the ChatUI should be active or not
     public static bool IsChatUiActive()
     {
-        try{
+        try
+        {
             return CheatToggles.alwaysChat || MeetingHud.Instance || !ShipStatus.Instance || PlayerControl.LocalPlayer.Data.IsDead;
-        }catch{
+        }
+        catch
+        {
             return false;
         }
     }
@@ -264,7 +274,8 @@ public static class Utils
     // Closes Chat UI
     public static void CloseChat()
     {
-        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening){
+        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        {
             DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
         }
     }
@@ -284,7 +295,8 @@ public static class Utils
     public static System.Collections.Generic.List<PlayerControl> GetPlayersSortedByDistance(PlayerControl source = null)
     {
 
-        if (source.IsNull()){
+        if (source.IsNull())
+        {
             source = PlayerControl.LocalPlayer;
         }
 
@@ -293,9 +305,9 @@ public static class Utils
         outputList.Clear();
 
         var allPlayers = GameData.Instance.AllPlayers;
-        foreach (var t in allPlayers)
+        foreach (var playerInfo in allPlayers)
         {
-            var player = t.Object;
+            var player = playerInfo.Object;
             if (player)
             {
                 outputList.Add(player);
@@ -320,13 +332,13 @@ public static class Utils
         return GameOptionsManager.Instance.currentGameOptions.MapId;
     }
 
-    // Get SystemType of the room the player is currently in
+    // Gets SystemType of the room the player is currently in
     public static SystemTypes GetCurrentRoom()
     {
         return HudManager.Instance.roomTracker.LastRoom.RoomId;
     }
 
-    // Get the PlainShipRoom of room that overlaps specified position
+    // Gets the PlainShipRoom of room that overlaps specified position
     public static PlainShipRoom GetRoomFromPosition(Vector2 position)
     {
         return ShipStatus.Instance == null ? null : ShipStatus.Instance.AllRooms.FirstOrDefault(
@@ -344,7 +356,7 @@ public static class Utils
         };
     }
 
-    // Get a UnityEngine.KeyCode from a string
+    // Gets a UnityEngine.KeyCode from a string
     public static KeyCode StringToKeycode(string keyCodeStr)
     {
 
@@ -358,14 +370,14 @@ public static class Utils
                 return keyCode;
 
             }
-            
+
             catch { }
         }
 
         return KeyCode.Delete; // If string is invalid, return Delete as the default key
     }
 
-    // Get a platform type from a string
+    // Gets a platform type from a string
     public static bool StringToPlatformType(string platformStr, out Platforms? platform)
     {
         if (!string.IsNullOrEmpty(platformStr)) // Empty strings are automatically invalid
@@ -402,13 +414,13 @@ public static class Utils
         };
     }
 
-    // Get the name for a specified player's role as a string
+    // Gets the name for a specified player's role as a string
     // Strings are automatically translated
     public static string GetRoleName(NetworkedPlayerInfo playerData)
     {
         var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         if (translatedRole != "STRMISS") return translatedRole;
-        
+
         if (playerData.RoleWhenAlive.HasValue)
         {
             translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(GetBehaviourByRoleType(playerData.RoleWhenAlive.Value).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
@@ -421,7 +433,7 @@ public static class Utils
         return translatedRole;
     }
 
-    // Get the appropriate nametag for a player (seeRoles cheat)
+    // Gets the appropriate nametag for a player (seeRoles cheat)
     public static string GetNameTag(NetworkedPlayerInfo playerInfo, string playerName, bool isChat = false)
     {
         var nameTag = playerName;
@@ -435,10 +447,10 @@ public static class Utils
 
         var platform = "Unknown";
         try { platform = PlatformTypeToString(player.PlatformData.Platform); } catch { }
-        
+
         //var puid = player.ProductUserId;
         //var friendcode = player.FriendCode;
-        
+
         var roleColor = ColorUtility.ToHtmlStringRGB(playerInfo.Role.TeamColor);
 
         var hostString = player == host ? "Host - " : "";
@@ -509,13 +521,13 @@ public static class Utils
 
     public static string GetRandomName()
     {
-        // Randomize 1-12 characters long names
+        // Randomizes 1-12 characters long names
         var length = UnityEngine.Random.Range(1, 13);
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         return new string(Enumerable.Repeat(chars, length).Select(s => s[UnityEngine.Random.Range(0, s.Length)]).ToArray());
     }
 
-    // Show custom popup ingame
+    // Shows a custom popup ingame
     // Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
     public static void ShowPopup(string text)
     {
@@ -535,7 +547,7 @@ public static class Utils
         DestroyableSingleton<DisconnectPopup>.Instance.ShowCustom(text);
     }
 
-    // Load sprites from manifest resources
+    // Loads sprites from manifest resources
     // Found here: https://github.com/Loonie-Toons/TOHE-Restored/blob/TOHE/Modules/Utils.cs
     public static Dictionary<string, Sprite> CachedSprites = new();
     public static Sprite LoadSprite(string path, float pixelsPerUnit = 1f)
@@ -557,7 +569,7 @@ public static class Utils
         return null;
     }
 
-    // Load textures from manifest resources
+    // Loads textures from manifest resources
     // Found here: https://github.com/Loonie-Toons/TOHE-Restored/blob/TOHE/Modules/Utils.cs
     public static Texture2D LoadTextureFromResources(string path)
     {
@@ -578,7 +590,7 @@ public static class Utils
         return null;
     }
 
-    // Open the config file in the default text editor (doesn't work on Linux with Proton)
+    // Opens the config file in the default text editor (doesn't work on Linux with Proton)
     public static void OpenConfigFile()
     {
         var configFilePath = Path.Combine(Paths.ConfigPath, "MalumMenu.cfg");

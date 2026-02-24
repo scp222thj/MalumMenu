@@ -36,7 +36,8 @@ public static class EOSManager_IsFreechatAllowed
     /// <param name="__result">Original return value of <c>IsFreechatAllowed</c>.</param>
     public static void Postfix(ref bool __result)
     {
-        if (CheatToggles.unlockFeatures){
+        if (CheatToggles.unlockFeatures)
+        {
             __result = true;
         }
     }
@@ -45,13 +46,11 @@ public static class EOSManager_IsFreechatAllowed
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFriendsListAllowed))]
 public static class EOSManager_IsFriendsListAllowed
 {
-    /// <summary>
-    /// Prefix patch of EOSManager.IsFriendsListAllowed to unlock friend list
-    /// </summary>
-    /// <param name="__result">Original return value of <c>IsFriendsListAllowed</c>.</param>
+    // Prefix patch of EOSManager.IsFriendsListAllowed to unlock friend list
     public static void Postfix(ref bool __result)
     {
-        if (CheatToggles.unlockFeatures){
+        if (CheatToggles.unlockFeatures)
+        {
             __result = true;
         }
     }
@@ -60,13 +59,11 @@ public static class EOSManager_IsFriendsListAllowed
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsAllowedOnline))]
 public static class EOSManager_IsAllowedOnline
 {
-    /// <summary>
-    /// Prefix patch of EOSManager.IsAllowedOnline to allow online games
-    /// </summary>
-    /// <param name="canOnline">Whether the button to play online should be enabled.</param>
+    // Prefix patch of EOSManager.IsAllowedOnline to allow online games
     public static void Prefix(ref bool canOnline)
     {
-        if (CheatToggles.unlockFeatures){
+        if (CheatToggles.unlockFeatures)
+        {
             canOnline = true;
         }
     }
@@ -75,13 +72,11 @@ public static class EOSManager_IsAllowedOnline
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsMinorOrWaiting))]
 public static class EOSManager_IsMinorOrWaiting
 {
-    /// <summary>
-    /// Prefix patch of EOSManager.IsMinorOrWaiting to remove minor status
-    /// </summary>
-    /// <param name="__result">Original return value of <c>IsMinorOrWaiting</c>.</param>
+    // Prefix patch of EOSManager.IsMinorOrWaiting to remove minor status
     public static void Postfix(ref bool __result)
     {
-        if (CheatToggles.unlockFeatures){
+        if (CheatToggles.unlockFeatures)
+        {
             __result = false;
         }
     }

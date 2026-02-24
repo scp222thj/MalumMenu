@@ -42,7 +42,8 @@ public static class PlayerPickMenu
 
         customChoice.Outfits[PlayerOutfitType.Default] = outfit;
 
-        if (!role.IsNull()){
+        if (!role.IsNull())
+        {
             customChoice.Role = role;
         }
 

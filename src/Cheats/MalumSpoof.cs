@@ -6,7 +6,7 @@ public static class MalumSpoof
     public static void SpoofLevel()
     {
         // Parse Spoofing.Level config entry and turn it into a uint
-        if (!string.IsNullOrEmpty(MalumMenu.spoofLevel.Value) && 
+        if (!string.IsNullOrEmpty(MalumMenu.spoofLevel.Value) &&
             uint.TryParse(MalumMenu.spoofLevel.Value, out uint parsedLevel) &&
             parsedLevel != DataManager.Player.Stats.Level)
         {

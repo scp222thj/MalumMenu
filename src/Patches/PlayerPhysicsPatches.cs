@@ -55,20 +55,15 @@ public static class PlayerPhysics_LateUpdate
                 PlayerControl.LocalPlayer.MyPhysics.Speed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed);
                 PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed);
             }
-        }catch (NullReferenceException) {}
+        } catch (NullReferenceException) { }
     }
 }
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleAnimation))]
 public static class PlayerPhysics_HandleAnimation
 {
-    /// <summary>
-    /// Prefix patch of PlayerPhysics.HandleAnimation to disable walking animation.
-    /// </summary>
-    /// <param name="__instance">The <c>PlayerPhysics</c> instance.</param>
-    /// <param name="amDead">Whether to play the ghost animation.</param>
-    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
-    public static bool Prefix(PlayerPhysics __instance, ref bool amDead)
+    // Prefix patch of PlayerPhysics.HandleAnimation to disable walking animation
+    public static bool Prefix(PlayerPhysics __instance)
     {
         return !(CheatToggles.moonWalk && __instance.AmOwner);
     }

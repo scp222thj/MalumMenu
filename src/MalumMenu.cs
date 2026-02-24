@@ -18,12 +18,12 @@ public partial class MalumMenu : BasePlugin
     public Harmony Harmony { get; } = new(Id);
     public new static ManualLogSource Log;
 
-    public static MenuUI MenuUI;
-    public static ConsoleUI ConsoleUI;
-    public static RolesUI RolesUI;
-    public static DoorsUI DoorsUI;
-    public static TasksUI TasksUI;
-    public static ProtectUI ProtectUI;
+    public static MenuUI menuUI;
+    public static ConsoleUI consoleUI;
+    public static RolesUI rolesUI;
+    public static DoorsUI doorsUI;
+    public static TasksUI tasksUI;
+    public static ProtectUI protectUI;
 
     public static string malumVersion = "3.0.0";
     public static List<string> supportedAU = new List<string> { "2026.2.24" };
@@ -59,7 +59,7 @@ public partial class MalumMenu : BasePlugin
                                 "When enabled, the MalumMenu GUI will always be opened at the current mouse position");
 
         // GuestMode config settings are commented out as the cheats are broken in latest updates
-        
+
         // guestMode = Config.Bind("MalumMenu.GuestMode",
         //                         "GuestMode",
         //                         false,
@@ -95,23 +95,22 @@ public partial class MalumMenu : BasePlugin
 
         Harmony.PatchAll();
 
-        MenuUI = AddComponent<MenuUI>();
+        menuUI = AddComponent<MenuUI>();
 
-        ConsoleUI = AddComponent<ConsoleUI>();
-        RolesUI = AddComponent<RolesUI>();
-        DoorsUI = AddComponent<DoorsUI>();
-        TasksUI = AddComponent <TasksUI>();
-        ProtectUI = AddComponent<ProtectUI>();
+        consoleUI = AddComponent<ConsoleUI>();
+        rolesUI = AddComponent<RolesUI>();
+        doorsUI = AddComponent<DoorsUI>();
+        tasksUI = AddComponent <TasksUI>();
+        protectUI = AddComponent<ProtectUI>();
 
         AddComponent<CheatToggles.KeybindListener>().Plugin = this;
 
         // Disables Telemetry (haven't fully tested if it works, but according to Unity docs it should)
-        if (noTelemetry.Value){
-
+        if (noTelemetry.Value)
+        {
             Analytics.enabled = false;
             Analytics.deviceStatsEnabled = false;
             PerformanceReporting.enabled = false;
-
         }
 
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>

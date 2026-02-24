@@ -1,8 +1,6 @@
 using HarmonyLib;
-using AmongUs.Data;
 
 namespace MalumMenu;
-
 
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Update))]
 public static class AmongUsClient_Update
@@ -12,7 +10,7 @@ public static class AmongUsClient_Update
         MalumSpoof.SpoofLevel();
 
         // GuestMode cheats are commented out as they are broken in latest updates
-        
+
         // Code to treat temp accounts the same as full accounts, including access to friend codes
         // if (!EOSManager.Instance.loginFlowFinished || !MalumMenu.guestMode.Value) return;
         // DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
