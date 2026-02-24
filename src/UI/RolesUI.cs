@@ -25,13 +25,13 @@ public class RolesUI : MonoBehaviour
 
         _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, false, true);
 
-        foreach (var pc in PlayerControl.AllPlayerControls)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (!pc.Data || !pc.Data.Role || string.IsNullOrEmpty(pc.Data.PlayerName) || pc != PlayerControl.LocalPlayer) continue;
+            if (!player.Data || !player.Data.Role || string.IsNullOrEmpty(player.Data.PlayerName) || player != PlayerControl.LocalPlayer) continue;
 
             GUILayout.BeginHorizontal();
 
-            GUILayout.Label($"<color=#{ColorUtility.ToHtmlStringRGB(pc.Data.Color)}>{pc.name}</color>", GUILayout.Width(140f));
+            GUILayout.Label($"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Color)}>{player.name}</color>", GUILayout.Width(140f));
             GUILayout.BeginHorizontal();
             GUILayout.Label($"{CheatToggles.forcedRole}");
             GUILayout.FlexibleSpace();
@@ -51,7 +51,7 @@ public class RolesUI : MonoBehaviour
 
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
-        GUILayout.Label("Roles will be assigned on next game start.");
+        GUILayout.Label("Roles will be assigned on next game start");
         GUI.DragWindow();
     }
 }
