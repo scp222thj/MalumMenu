@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 using UnityEngine;
 
@@ -8,43 +9,69 @@ public static class PlayerPhysics_LateUpdate
 {
     public static void Postfix(PlayerPhysics __instance)
     {
+        MalumESP.PlayerNametags(__instance);
+        MalumESP.SeeGhostsCheat(__instance);
 
-        MalumESP.playerNametags(__instance);
-        MalumESP.seeGhostsCheat(__instance);
+        MalumCheats.NoClipCheat();
+        MalumCheats.ReviveCheat();
+        MalumCheats.ProtectCheat();
+        MalumCheats.KillAllCheat();
+        MalumCheats.KillAllCrewCheat();
+        MalumCheats.KillAllImpsCheat();
+        MalumCheats.ForceStartGameCheat();
+        MalumCheats.TeleportCursorCheat();
+        MalumCheats.CompleteMyTasksCheat();
+        MalumCheats.PlayAnimationCheat();
+        MalumCheats.PlayScannerCheat();
 
-        MalumCheats.noClipCheat();
-        MalumCheats.speedBoostCheat();
-        MalumCheats.killAllCheat();
-        MalumCheats.killAllCrewCheat();
-        MalumCheats.killAllImpsCheat();
-        MalumCheats.teleportCursorCheat();
-        MalumCheats.completeMyTasksCheat();
+        MalumPPMCheats.EjectPlayerPPM();
+        MalumPPMCheats.SpectatePPM();
+        MalumPPMCheats.KillPlayerPPM();
+        MalumPPMCheats.TelekillPlayerPPM();
+        MalumPPMCheats.TeleportPlayerPPM();
+        MalumPPMCheats.ChangeRolePPM();
+        MalumPPMCheats.ForceRolePPM();
 
-        MalumPPMCheats.spectatePPM();
-        MalumPPMCheats.killPlayerPPM();
-        //MalumPPMCheats.telekillPlayerPPM();
-        MalumPPMCheats.teleportPlayerPPM();
-        MalumPPMCheats.changeRolePPM();
-
-        //if (MalumPPMCheats.teleKillWaitFrames == 0){
-        //    KillAnimation.SetMovement(PlayerControl.LocalPlayer, true);
-        //    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(MalumPPMCheats.teleKillPosition);
-        //}
-
-        //MalumPPMCheats.teleKillWaitFrames--;
-
-        TracersHandler.drawPlayerTracer(__instance);
+        TracersHandler.DrawPlayerTracer(__instance);
 
         GameObject[] bodyObjects = GameObject.FindGameObjectsWithTag("DeadBody");
         foreach(GameObject bodyObject in bodyObjects) // Finds and loops through all dead bodies
         {
             DeadBody deadBody = bodyObject.GetComponent<DeadBody>();
 
-            if (deadBody){
-                if (!deadBody.Reported){ // Only draw tracers for unreported dead bodies
-                    TracersHandler.drawBodyTracer(deadBody);
-                }
-            }
+            if (!deadBody || deadBody.Reported) continue;  // Only draw tracers for unreported dead bodies
+            TracersHandler.DrawBodyTracer(deadBody);
         }
+
+        try
+        {
+            if (CheatToggles.invertControls)
+            {
+                PlayerControl.LocalPlayer.MyPhysics.Speed = -Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed);
+                PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = -Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed);
+            }
+            else
+            {
+                PlayerControl.LocalPlayer.MyPhysics.Speed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed);
+                PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed);
+            }
+        } catch (NullReferenceException) { }
+    }
+}
+
+[HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.HandleAnimation))]
+public static class PlayerPhysics_HandleAnimation
+{
+    // Prefix patch of PlayerPhysics.HandleAnimation to disable walking animation
+    public static bool Prefix(PlayerPhysics __instance)
+    {
+        if (CheatToggles.moonWalk && __instance.AmOwner)
+        {
+            __instance.ResetAnimState();
+
+            return false;
+        }
+
+        return true;
     }
 }

@@ -7,11 +7,19 @@
 <p align="center">
   
   <a href="https://discord.gg/YYcYf88jAb">
-    <img src="https://img.shields.io/badge/Join%20us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
+    <img hspace="6" src="https://img.shields.io/badge/Join%20Us%20on-Discord-blue?style=flat&logo=discord" alt="Discord">
   </a>
   
   <a href="https://ko-fi.com/scp222thj">
-    <img src="https://img.shields.io/badge/Support%20me%20on-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
+    <img hspace="6" src="https://img.shields.io/badge/Support%20scp222thj-Ko--fi-ff5f5f?style=flat&logo=ko-fi" alt="Ko-fi">
+  </a>
+  
+  <a href="https://github.com/astra1dev#%EF%B8%8F-support-me">
+    <img hspace="6" src="https://img.shields.io/badge/Support%20astra1dev-Monero-FF6600?style=flat&logo=monero" alt="Monero">
+  </a>
+
+  <a href="https://github.com/scp222thj/MalumMenu/releases">
+    <img hspace="6" src="https://img.shields.io/github/downloads/scp222thj/MalumMenu/total?style=flat&logo=github&label=Total%20Downloads&color=2ECC71" alt="Downloads">
   </a>
   
 </p>
@@ -20,6 +28,7 @@
 <b>An easy-to-use Among Us cheat menu with a simple GUI and lots of useful modules. </b>
 
 
+<!-- omit in toc -->
 # 😎 Table Of Contents
 - [🎁 Releases](#-releases)
 - [⬇️ Installation](#️-installation)
@@ -71,7 +80,7 @@
 
 # 📋 Features
 
-<img width="550" alt="image" src="https://scp222thj.dev/static/images/malumIngame.png">
+<img alt="image" src="https://scp222thj.dev/static/images/malumIngame.png">
 
 - An intuitive GUI with our latest, greatest Among Us cheats
 - See ghosts & reveal the impostors

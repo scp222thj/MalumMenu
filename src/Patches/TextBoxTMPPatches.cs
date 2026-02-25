@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -6,18 +7,25 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.Update))]
 public static class TextBoxTMP_Update
 {
-    // Postfix patch of TextBoxTMP.Update to allow copying from the chatbox
+    // Postfix patch of TextBoxTMP.Update to allow copying, pasting and cutting text between the chatbox and the device's clipboard
     public static void Postfix(TextBoxTMP __instance)
     {
-        if (CheatToggles.chatJailbreak)
-        { 
-            if (!__instance.hasFocus){return;}
+        if (!CheatToggles.chatJailbreak || !__instance.hasFocus) return;
 
-            // If the user is pressing Ctrl + C, copy the text from the chatbox to the device's clipboard
-            if((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.C))
-            {
-                ClipboardHelper.PutClipboardString(__instance.text);
-            }
+        if (!Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl)) return;
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            GUIUtility.systemCopyBuffer = __instance.text;
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            __instance.SetText(__instance.text + GUIUtility.systemCopyBuffer);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GUIUtility.systemCopyBuffer = __instance.text;
+            __instance.SetText("");
         }
     }
 }
@@ -25,14 +33,20 @@ public static class TextBoxTMP_Update
 [HarmonyPatch(typeof(TextBoxTMP), nameof(TextBoxTMP.IsCharAllowed))]
 public static class TextBoxTMP_IsCharAllowed
 {
-    // Postfix patch of TextBoxTMP.IsCharAllowed to allow all characters
+    // Prefix patch of TextBoxTMP.IsCharAllowed to allow all characters
     public static bool Prefix(TextBoxTMP __instance, char i, ref bool __result)
     {
-        if (!CheatToggles.chatJailbreak){
-            return true;
+        if (!CheatToggles.chatJailbreak) return true;
+
+        HashSet<char> blockedSymbols = new() { '\b', '\r' };
+
+        if (blockedSymbols.Contains(i))
+        {
+            __result = false;
+            return false;
         }
 
-        __result = !(i == '\b' || i == '>' || i == '<' || i == ']' || i == '[' || i == '\r'); // Some characters cause issues and must therefore be removed
+        __result = true;
         return false;
     }
 }

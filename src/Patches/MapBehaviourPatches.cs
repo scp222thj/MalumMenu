@@ -9,34 +9,35 @@ public static class MapBehaviour_ShowNormalMap
     // Postfix patch of MapBehaviour.ShowNormalMap to spawn herePoint icons for each player
     public static void Postfix(MapBehaviour __instance)
     {
-        MinimapHandler.minimapActive = MinimapHandler.isCheatEnabled();
+        MinimapHandler.minimapActive = MinimapHandler.IsCheatEnabled();
 
-        if (!MinimapHandler.minimapActive) {
+        if (!MinimapHandler.minimapActive)
+        {
             return; // Only runs if miniMap Cheat is enabled
         }
 
-        __instance.ColorControl.SetColor(Palette.Purple); // Custom map color 😎
+        __instance.ColorControl.SetColor(Palette.Purple); // Custom map color
 
         __instance.DisableTrackerOverlays();
 
         // Destroy old player icons (herePoints)
         try
-            {
-                MinimapHandler.herePoints.ForEach(x => UnityEngine.Object.Destroy(x.sprite.gameObject));
-                MinimapHandler.herePoints.Clear();
-            }
+        {
+            MinimapHandler.herePoints.ForEach(x => UnityEngine.Object.Destroy(x.sprite.gameObject));
+            MinimapHandler.herePoints.Clear();
+        }
         catch { }
 
         // & create new ones for each player
         var temp = new List<HerePoint>();
-        foreach (var t in PlayerControl.AllPlayerControls)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (!t.AmOwner){ // LocalPlayer is always treated normally
-
+            if (!player.AmOwner) // LocalPlayer is always treated normally
+            {
                 var herePoint = UnityEngine.Object.Instantiate(__instance.HerePoint, __instance.HerePoint.transform.parent);
-                
-                temp.Add(new HerePoint(t, herePoint));
-            }	
+
+                temp.Add(new HerePoint(player, herePoint));
+            }
         }
         MinimapHandler.herePoints = temp;
 
@@ -50,8 +51,10 @@ public static class MapBehaviour_FixedUpdate
     public static void Postfix(MapBehaviour __instance)
     {
         // Reset map if miniMap cheat is disabled
-        if (MinimapHandler.isCheatEnabled() != MinimapHandler.minimapActive){
-            if (!__instance.infectedOverlay.gameObject.active){ // Do not affect sabotage map
+        if (MinimapHandler.IsCheatEnabled() != MinimapHandler.minimapActive)
+        {
+            if (!__instance.infectedOverlay.gameObject.active) // Do not affect sabotage map
+            {
                 __instance.Close();
                 __instance.ShowNormalMap();
             }
@@ -61,7 +64,7 @@ public static class MapBehaviour_FixedUpdate
         var temp = MinimapHandler.herePoints;
         foreach (var herePoint in temp)
         {
-            MinimapHandler.handleHerePoint(herePoint);
+            MinimapHandler.HandleHerePoint(herePoint);
         }
 
         foreach (var herePoint in MinimapHandler.herePointsToRemove)
@@ -71,7 +74,7 @@ public static class MapBehaviour_FixedUpdate
 
     }
 }
-			
+
 [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Close))]
 public static class MapBehaviour_Close
 {
@@ -83,7 +86,6 @@ public static class MapBehaviour_Close
             MinimapHandler.herePoints.ForEach(x => UnityEngine.Object.Destroy(x.sprite.gameObject));
             MinimapHandler.herePoints.Clear();
         }
-        
         catch { }
     }
 }

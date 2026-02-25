@@ -1,0 +1,25 @@
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+
+# Set up the the NuGet repository hosted by BepInEx so Dependabot can scan for updates to GameLibs and BepInEx-related packages
+registries:
+  nuget-bepinex:
+    type: nuget-feed
+    url: https://nuget.bepinex.dev/v3/index.json
+
+updates:
+  # Enable version updates for NuGet packages
+  - package-ecosystem: "nuget"
+    directories:
+      - "/"
+      - "/src"
+    registries: "*"
+    schedule:
+      interval: "daily"
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

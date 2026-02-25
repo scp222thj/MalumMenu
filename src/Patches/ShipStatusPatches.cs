@@ -7,11 +7,24 @@ public static class ShipStatus_FixedUpdate
 {
     public static void Postfix(ShipStatus __instance)
     {
-        MalumCheats.sabotageCheat(__instance);
-        MalumCheats.closeMeetingCheat();
-        MalumCheats.walkInVentCheat();
-        MalumCheats.kickVentsCheat();
+        MalumSabotageCheats.Process(__instance);
+        MalumCheats.OpenSabotageMapCheat();
 
-        MalumPPMCheats.reportBodyPPM();
+        MalumCheats.CloseMeetingCheat();
+        MalumCheats.SkipMeetingCheat();
+        MalumCheats.CallMeetingCheat();
+        MalumCheats.WalkInVentCheat();
+        MalumCheats.KickVentsCheat();
+
+        MalumPPMCheats.ReportBodyPPM();
+    }
+}
+
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
+public static class FungleShipStatus_FixedUpdate
+{
+    public static void Postfix(FungleShipStatus __instance)
+    {
+        MalumSabotageCheats.ProcessFungle(__instance);
     }
 }

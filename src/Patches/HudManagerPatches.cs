@@ -6,10 +6,10 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
 public static class HudManager_Start
 {
-	// Prefix patch of HudManager.Start to give minimap access to impostors too
+	// Postfix patch of HudManager.Start to give minimap access to impostors too
 	public static void Postfix(HudManager __instance)
 	{
-		__instance.MapButton.OnClick.RemoveAllListeners(); //Remove previous OnClick action
+		__instance.MapButton.OnClick.RemoveAllListeners(); // Remove previous OnClick action
 
 		// Always open normal map when map button is clicked
 		// To access sabotage map, sabotage button can be used
@@ -29,21 +29,25 @@ public static class HudManager_Update
 {
 	public static void Postfix(HudManager __instance)
     {
-		__instance.ShadowQuad.gameObject.SetActive(!MalumESP.fullBrightActive()); // Fullbright
+		__instance.ShadowQuad.gameObject.SetActive(!MalumESP.IsFullbrightActive()); // Fullbright
 
-		if (Utils.chatUiActive()){ // AlwaysChat
+		if (Utils.IsChatUiActive()) // AlwaysChat
+		{
 			__instance.Chat.gameObject.SetActive(true);
-		} else {
-			Utils.closeChat();
+		}
+		else
+		{
+			Utils.CloseChat();
 			__instance.Chat.gameObject.SetActive(false);
 		}
-		
-		MalumCheats.useVentCheat(__instance);
-		MalumESP.zoomOut(__instance);
-		MalumESP.freecamCheat();
-        
+
+		MalumCheats.UseVentCheat(__instance);
+		MalumESP.ZoomOut(__instance);
+		MalumESP.FreecamCheat();
+
 		// Close PlayerPickMenu if there is no PPM cheat enabled
-		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.shouldPPMClose()){
+		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.ShouldPPMClose())
+		{
             PlayerPickMenu.playerpickMenu.Close();
         }
     }
