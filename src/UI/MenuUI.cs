@@ -45,6 +45,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" No Shadows", () => CheatToggles.fullBright, x => CheatToggles.fullBright = x),
                 new ToggleInfo(" Task Arrows", () => CheatToggles.taskArrows, x => CheatToggles.taskArrows = x),
                 new ToggleInfo(" Reveal Votes", () => CheatToggles.revealVotes, x => CheatToggles.revealVotes = x),
+                new ToggleInfo(" Enable Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x), // Temporarily in ESP group
                 new ToggleInfo(" Show Lobby Info", () => CheatToggles.showLobbyInfo, x => CheatToggles.showLobbyInfo = x),
             },
             new List<SubmenuInfo> {
@@ -132,7 +133,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Ship", false,
             new List<ToggleInfo>() {
                 new ToggleInfo(" Unfixable Lights", () => CheatToggles.unfixableLights, x => CheatToggles.unfixableLights = x),
-                new ToggleInfo(" Report Body", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
+                //new ToggleInfo(" Report Body", () => CheatToggles.reportBody, x => CheatToggles.reportBody = x),
                 new ToggleInfo(" Call Meeting", () => CheatToggles.callMeeting, x => CheatToggles.callMeeting = x),
                 new ToggleInfo(" Close Meeting", () => CheatToggles.closeMeeting, x => CheatToggles.closeMeeting = x),
                 new ToggleInfo(" Auto-Open Doors On Use", () => CheatToggles.autoOpenDoorsOnUse, x => CheatToggles.autoOpenDoorsOnUse = x)
@@ -160,13 +161,13 @@ public class MenuUI : MonoBehaviour
             }
         ));
 
-        groups.Add(new GroupInfo("Chat", false,
-            new List<ToggleInfo>() {
-                new ToggleInfo(" Enable Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x),
-                new ToggleInfo(" Unlock Textbox", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
-            },
-            new List<SubmenuInfo>()
-        ));
+        // groups.Add(new GroupInfo("Chat", false,
+        //     new List<ToggleInfo>() {
+        //         new ToggleInfo(" Enable Chat", () => CheatToggles.alwaysChat, x => CheatToggles.alwaysChat = x),
+        //         new ToggleInfo(" Unlock Textbox", () => CheatToggles.chatJailbreak, x => CheatToggles.chatJailbreak = x)
+        //     },
+        //     new List<SubmenuInfo>()
+        // ));
 
         groups.Add(new GroupInfo("Console", false,
             new List<ToggleInfo>() {
@@ -185,7 +186,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" No Kill Cooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                 new ToggleInfo(" Show Protect Menu", () => CheatToggles.showProtectMenu, x => CheatToggles.showProtectMenu = x),
                 //new ToggleInfo(" Force Role", () => CheatToggles.showRolesMenu, x => CheatToggles.showRolesMenu = x),
-                new ToggleInfo(" No Options Limits", () => CheatToggles.noOptionsLimits, x => CheatToggles.noOptionsLimits = x)
+                //new ToggleInfo(" No Options Limits", () => CheatToggles.noOptionsLimits, x => CheatToggles.noOptionsLimits = x)
             },
             new List<SubmenuInfo>() {
                 new SubmenuInfo("Murder", false,
@@ -232,7 +233,7 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Empty Garbage", () => CheatToggles.animEmptyGarbage, x => CheatToggles.animEmptyGarbage = x),
                 new ToggleInfo(" Medbay Scan", () => CheatToggles.animScan, x => CheatToggles.animScan = x),
                 new ToggleInfo(" Cams In Use", () => CheatToggles.animCamsInUse, x => CheatToggles.animCamsInUse = x),
-                new ToggleInfo(" Pet", () => CheatToggles.animPet, x => CheatToggles.animPet = x)
+                //new ToggleInfo(" Pet", () => CheatToggles.animPet, x => CheatToggles.animPet = x)
             },
             new List<SubmenuInfo>() {
                 new SubmenuInfo("Client-Sided", false,
@@ -343,6 +344,11 @@ public class MenuUI : MonoBehaviour
         {
             CheatToggles.fakeRevive = CheatToggles.sabotageMap = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.ejectPlayer = CheatToggles.closeMeeting = CheatToggles.skipMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.closeAllDoors = CheatToggles.openAllDoors = CheatToggles.spamCloseAllDoors = CheatToggles.spamOpenAllDoors = CheatToggles.autoOpenDoorsOnUse = CheatToggles.mushSpore = CheatToggles.animShields = CheatToggles.animAsteroids = CheatToggles.animEmptyGarbage = CheatToggles.animScan = CheatToggles.animCamsInUse = false;
         }
+
+        if(!Utils.isHost && !Utils.isFreePlay)
+        {
+            CheatToggles.skipMeeting = CheatToggles.voteImmune = CheatToggles.ejectPlayer = CheatToggles.forceStartGame = CheatToggles.noGameEnd = CheatToggles.killAll = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.killAnyone = CheatToggles.killPlayer = CheatToggles.telekillPlayer = CheatToggles.killVanished = CheatToggles.zeroKillCd = CheatToggles.showProtectMenu = CheatToggles.showRolesMenu = CheatToggles.noOptionsLimits = false;
+        }
     }
 
     public void OnGUI()
@@ -420,7 +426,7 @@ public class MenuUI : MonoBehaviour
         return groups[groupId].name switch
         {
             "Player" => 1,
-            "ESP" => 2,
+            "ESP" => 1, //2, Temporarily set while alwaysChat is in ESP group
             "Roles" => 4,
             "Ship" => 1,
             "Chat" => 1,
