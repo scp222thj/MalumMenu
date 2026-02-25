@@ -16,7 +16,7 @@ public class MenuUI : MonoBehaviour
     private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
-    private float hue; // For RGB mode
+    public static float hue; // For RGB mode
 
     // Create all groups (buttons) and their toggles on start
     private void Start()
