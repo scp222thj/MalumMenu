@@ -147,7 +147,7 @@ public static class MalumCheats
         {
             // Makes shapeshift duration so incredibly long (float.MaxValue) so that it never ends
             shapeshifterRole.durationSecondsRemaining = float.MaxValue;
-        } 
+        }
         else if (shapeshifterRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.ShapeshifterDuration))
         {
             // Shapeshift duration is reset to normal value after the cheat is disabled
@@ -313,7 +313,7 @@ public static class MalumCheats
     public static void ProtectCheat()
     {
         if (!Utils.isHost || Utils.isLobby) return;
-        
+
         foreach (var player in ProtectUI.playersToProtect)
         {
             if (player.protectedByGuardianId == -1) // -1 means no protection is currently active

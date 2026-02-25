@@ -5,25 +5,28 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.Initialize))]
 public static class NormalPlayerTask_Initialize
 {
-    /// <summary>
-    /// Postfix patch of NormalPlayerTask.Initialize to create arrows for tasks that don't have them.
-    /// </summary>
-    /// <param name="__instance">The <c>NormalPlayerTask</c> instance.</param>
+    // Postfix patch of NormalPlayerTask.Initialize to create arrows for tasks that don't have them
     public static void Postfix(NormalPlayerTask __instance)
     {
         // Set up arrow target for Airship UploadData task separately
-        if (__instance.TaskType == TaskTypes.UploadData && __instance.taskStep == 0 && (MapNames)Utils.GetCurrentMapID() == MapNames.Airship)
+        if (__instance.TaskType == TaskTypes.UploadData && (MapNames)Utils.GetCurrentMapID() == MapNames.Airship)
         {
-            var airshipTask = __instance.GetComponent<AirshipUploadTask>();
-            var consolePositions = airshipTask.FindValidConsolesPositions();
-            // AirshipUploadTask uses an Arrows[] array instead of the inherited Arrow field
-            for (var i = 0; i < consolePositions.Count && i < airshipTask.Arrows.Length; i++)
+            if (__instance.taskStep == 0)
             {
-                // There are two already existing arrows, we just need to set the target of one of them at step 0
-                airshipTask.Arrows[i].target = consolePositions[i];
+                var airshipTask = __instance.GetComponent<AirshipUploadTask>();
+                var consolePositions = airshipTask.FindValidConsolesPositions();
+
+                // AirshipUploadTask uses an Arrows[] array instead of the inherited Arrow field
+                for (var i = 0; i < consolePositions.Count && i < airshipTask.Arrows.Length; i++)
+                {
+                    // There are two already existing arrows, we just need to set the target of one of them at step 0
+                    airshipTask.Arrows[i].target = consolePositions[i];
+                }
+
+                airshipTask.LocationDirty = true;
+
+                return;
             }
-            airshipTask.LocationDirty = true;
-            return;
         }
 
         ArrowHandler.EnsureArrowExists(__instance);
@@ -42,21 +45,19 @@ public static class NormalPlayerTask_Initialize
 [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.FixedUpdate))]
 public static class NormalPlayerTask_FixedUpdate
 {
-    /// <summary>
-    /// Postfix patch of NormalPlayerTask.FixedUpdate to control arrow visibility.
-    /// </summary>
-    /// <param name="__instance">The <c>NormalPlayerTask</c> instance.</param>
+    // Postfix patch of NormalPlayerTask.FixedUpdate to control arrow visibility
     public static void Postfix(NormalPlayerTask __instance)
     {
         if (__instance.Arrow == null) return;
 
-        if (!CheatToggles.showTaskArrows)
+        if (!CheatToggles.taskArrows)
         {
             // Hide arrows if taskStep == 0 (vanilla behavior)
             if (__instance.taskStep == 0)
             {
                 __instance.Arrow.gameObject.SetActive(false);
             }
+
             return;
         }
 
@@ -75,27 +76,27 @@ public static class NormalPlayerTask_FixedUpdate
 [HarmonyPatch(typeof(AirshipUploadTask), nameof(AirshipUploadTask.FixedUpdate))]
 public static class AirshipUploadTask_FixedUpdate_Patch
 {
-    /// <summary>
-    /// Postfix patch of AirshipUploadTask.FixedUpdate to keep arrows visible when taskStep == 0 or Comms sabotage is active.
-    /// </summary>
-    /// <param name="__instance">The <c>AirshipUploadTask</c> instance.</param>
+    // Postfix patch of AirshipUploadTask.FixedUpdate to keep arrows visible when taskStep == 0 or Comms sabotage is active
     public static void Postfix(AirshipUploadTask __instance)
     {
         // This patch is unfortunately necessary because AirshipUploadTask overrides NormalPlayerTask.FixedUpdate
         if (__instance.Arrows == null) return;
 
-        if (!CheatToggles.showTaskArrows)
+        if (!CheatToggles.taskArrows)
         {
             // Deactivate all arrows if taskStep == 0 (vanilla behavior)
             if (__instance.taskStep != 0) return;
+
             foreach (var arrow in __instance.Arrows)
             {
                 arrow.gameObject.SetActive(false);
             }
+
             return;
         }
 
         var consolePositions = __instance.FindValidConsolesPositions();
+
         for (var i = 0; i < __instance.Arrows.Length; i++)
         {
             // Only activate arrows that correspond to valid console positions

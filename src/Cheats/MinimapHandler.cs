@@ -7,7 +7,7 @@ public static class MinimapHandler
     public static bool minimapActive;
     public static List<HerePoint> herePoints = new List<HerePoint>();
     public static List<HerePoint> herePointsToRemove = new List<HerePoint>();
-    
+
     public static bool IsCheatEnabled()
     {
         return CheatToggles.mapCrew || CheatToggles.mapGhosts || CheatToggles.mapImps;
@@ -72,7 +72,7 @@ public static class MinimapHandler
                 // Set the right colors for active herePoint icons
                 herePoint.sprite.material.SetColor(PlayerMaterial.BackColor, herePointColor);
                 herePoint.sprite.material.SetColor(PlayerMaterial.BodyColor, herePointColor);
-                herePoint.sprite.material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);	
+                herePoint.sprite.material.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
 
                 // Sync the position of active herePoint icons with their players
                 var vector = herePoint.player.transform.position;

@@ -50,7 +50,7 @@ public static class MalumESP
 
                 Utils.AdjustResolution();
 
-            } 
+            }
             else if (Input.GetAxis("Mouse ScrollWheel") > 0f )
             {
                 // Zoom in
@@ -61,8 +61,8 @@ public static class MalumESP
 
                 Utils.AdjustResolution();
             }
-        } 
-        else 
+        }
+        else
         {
             // orthographicSize is reset to default value: 3f
             Camera.main.orthographicSize = 3f;
@@ -144,7 +144,7 @@ public static class MalumESP
             chatBubble.NameText.ForceMeshUpdate(true, true);
             chatBubble.Background.size = new Vector2(5.52f, 0.2f + chatBubble.NameText.GetNotDumbRenderedHeight() + chatBubble.TextArea.GetNotDumbRenderedHeight());
             chatBubble.MaskArea.size = chatBubble.Background.size - new Vector2(0f, 0.03f);
-        
+
         } catch { }
     }
 

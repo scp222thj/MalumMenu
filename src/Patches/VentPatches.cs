@@ -12,7 +12,7 @@ public static class Vent_CanUse
         if (!PlayerControl.LocalPlayer || !PlayerControl.LocalPlayer.Data) return;
         if (PlayerControl.LocalPlayer.Data.Role.CanVent || PlayerControl.LocalPlayer.Data.IsDead) return;
         if (!CheatToggles.useVents) return;
-        
+
         var @object = pc.Object;
 
         var center = @object.Collider.bounds.center;
@@ -55,9 +55,10 @@ public static class Vent_ExitVent
         if (!CheatToggles.logVents || !Utils.isShip) return;
 
         var (realPlayerName, displayPlayerName, isDisguised) = Utils.GetPlayerIdentity(pc);
+
         var room = Utils.GetRoomFromPosition(__instance.transform.position); //- (Vector3) pc.Collider.offset);
         var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
-        
+
         ConsoleUI.Log(isDisguised
             ? $"{realPlayerName} (as {displayPlayerName}) exited a vent in {roomName}"
             : $"{realPlayerName} exited a vent in {roomName}");

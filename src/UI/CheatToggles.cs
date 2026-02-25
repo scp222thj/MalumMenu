@@ -20,7 +20,7 @@ public struct CheatToggles
     public static bool killAll;
     public static bool killAllCrew;
     public static bool killAllImps;
-    public static bool revive;
+    public static bool fakeRevive;
     public static bool invertControls;
     public static bool moonWalk;
 
@@ -53,9 +53,9 @@ public struct CheatToggles
     public static bool seeRoles;
     public static bool showPlayerInfo;
     public static bool seeDisguises;
-    public static bool showTaskArrows;
+    public static bool taskArrows;
     public static bool revealVotes;
-    public static bool moreLobbyInfo;
+    public static bool showLobbyInfo;
 
     // Camera
     public static bool spectate;
@@ -156,7 +156,7 @@ public struct CheatToggles
     static CheatToggles()
     {
         var fields = typeof(CheatToggles).GetFields(BindingFlags.Static | BindingFlags.Public);
-        
+
         foreach (var field in fields)
         {
             if (field.FieldType != typeof(bool)) continue;
@@ -220,7 +220,7 @@ public struct CheatToggles
         if (!File.Exists(ProfilePath)) return;
 
         using var reader = new StreamReader(ProfilePath);
-        
+
         while (reader.ReadLine() is { } line)
         {
             // Skips empty lines
@@ -271,7 +271,7 @@ public struct CheatToggles
         public void Update()
         {
             if (MenuUI.isPanicked) return;
-            
+
             // Keybinds aren't triggered from typing in the chat
             if (HudManager.InstanceExists && HudManager.Instance.Chat && HudManager.Instance.Chat.IsOpenOrOpening) return;
 
@@ -290,7 +290,7 @@ public struct CheatToggles
                 if (!Input.GetKeyDown(key)) continue;
 
                 if (!ToggleFields.TryGetValue(name, out var field)) continue;
-                
+
                 var current = (bool)field.GetValue(null);
                 field.SetValue(null, !current);
             }

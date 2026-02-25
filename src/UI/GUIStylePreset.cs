@@ -22,7 +22,7 @@ public static class GUIStylePreset
                     border = new RectOffset()
                 };
             }
-            
+
             return _separator;
         }
     }
@@ -38,7 +38,7 @@ public static class GUIStylePreset
                     fontSize = 13
                 };
             }
-            
+
             return _normalButton;
         }
     }
@@ -54,7 +54,7 @@ public static class GUIStylePreset
                     fontSize = 13
                 };
             }
-            
+
             return _normalToggle;
         }
     }

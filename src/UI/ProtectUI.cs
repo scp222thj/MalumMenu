@@ -12,7 +12,7 @@ public class ProtectUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!CheatToggles.showProtectMenu) return;
+        if (!CheatToggles.showProtectMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
         if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
         {
@@ -25,41 +25,51 @@ public class ProtectUI : MonoBehaviour
     private void ProtectWindow(int windowID)
     {
         GUILayout.BeginVertical();
+
         _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, false, true);
 
-        foreach (var pc in playersToProtect)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (!pc.Data || !pc.Data.Role || string.IsNullOrEmpty(pc.Data.PlayerName))
+            if (!player.Data || !player.Data.Role || string.IsNullOrEmpty(player.Data.PlayerName))
             {
-                playersToProtect.Remove(pc);  // Ensure to remove invalid players from the list
-                break; // Exit the loop to avoid modifying the collection during iteration
-            }
-        }
-        foreach (var pc in PlayerControl.AllPlayerControls)
-        {
-            if (!pc.Data || !pc.Data.Role || string.IsNullOrEmpty(pc.Data.PlayerName))
-            {
-                if (playersToProtect.Contains(pc))  // Ensure to remove invalid players from the list
+                if (playersToProtect.Contains(player))  // Ensure to remove invalid players from the list
                 {
-                    playersToProtect.Remove(pc);
+                    playersToProtect.Remove(player);
                 }
+
                 continue;
             }
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"<color=#{ColorUtility.ToHtmlStringRGB(pc.Data.Color)}>{pc.Data.PlayerName}</color>", GUILayout.Width(140f));
-            GUILayout.Label($"{(pc.protectedByGuardianId != -1 ? $"<color=#00FF00>Protected</color> by <color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById((byte)pc.protectedByGuardianId).Color)}>{GameData.Instance.GetPlayerById((byte)pc.protectedByGuardianId)._object.Data.PlayerName}</color>" : "<color=#FF0000>Unprotected</color>")}", GUILayout.Width(135));
-            if (GUILayout.Button("Protect", GUIStylePreset.NormalButton) && Utils.isHost && !Utils.isLobby)
+
+            GUILayout.Label($"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Color)}>{player.Data.PlayerName}</color>", GUILayout.Width(140f));
+
+            if (player.protectedByGuardianId == -1)
             {
-                PlayerControl.LocalPlayer.RpcProtectPlayer(pc, pc.cosmetics.ColorId);
+                GUILayout.Label("<color=#FF0000>Unprotected</color>", GUILayout.Width(135));
+            }
+            else
+            {
+                NetworkedPlayerInfo guardianInfo = GameData.Instance.GetPlayerById((byte)player.protectedByGuardianId);
+                GUILayout.Label($"<color=#00FF00>Protected</color> by <color=#{ColorUtility.ToHtmlStringRGB(guardianInfo.Color)}>{guardianInfo._object.Data.PlayerName}</color>", GUILayout.Width(135));
             }
 
-            var keepProtected = playersToProtect.Contains(pc);
+            if (GUILayout.Button("Protect", GUIStylePreset.NormalButton) && Utils.isHost && !Utils.isLobby)
+            {
+                PlayerControl.LocalPlayer.RpcProtectPlayer(player, player.cosmetics.ColorId);
+            }
+
+            var keepProtected = playersToProtect.Contains(player);
             keepProtected = GUILayout.Toggle(keepProtected, "Keep protected", GUIStylePreset.NormalToggle);
-            if (keepProtected && !playersToProtect.Contains(pc))
-                playersToProtect.Add(pc);
-            else if (!keepProtected && playersToProtect.Contains(pc))
-                playersToProtect.Remove(pc);
+
+            if (keepProtected && !playersToProtect.Contains(player))
+            {
+                playersToProtect.Add(player);
+            }
+            else if (!keepProtected && playersToProtect.Contains(player))
+            {
+                playersToProtect.Remove(player);
+            }
 
             GUILayout.EndHorizontal();
         }
@@ -67,24 +77,26 @@ public class ProtectUI : MonoBehaviour
         GUILayout.EndScrollView();
 
         GUILayout.BeginHorizontal();
+
         if (GUILayout.Button("Protect Everyone") && Utils.isHost && !Utils.isLobby)
         {
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var player in PlayerControl.AllPlayerControls)
             {
-                PlayerControl.LocalPlayer.RpcProtectPlayer(pc, pc.cosmetics.ColorId);
+                PlayerControl.LocalPlayer.RpcProtectPlayer(player, player.cosmetics.ColorId);
             }
         }
 
         GUILayout.FlexibleSpace();
 
         _keepEveryoneProtected = GUILayout.Toggle(_keepEveryoneProtected, "Keep Everyone Protected");
+
         if (_keepEveryoneProtected)
         {
-            foreach (var pc in PlayerControl.AllPlayerControls)
+            foreach (var player in PlayerControl.AllPlayerControls)
             {
-                if (!playersToProtect.Contains(pc))
+                if (!playersToProtect.Contains(player))
                 {
-                    playersToProtect.Add(pc);
+                    playersToProtect.Add(player);
                 }
             }
         }
@@ -97,7 +109,9 @@ public class ProtectUI : MonoBehaviour
         }
 
         GUILayout.EndHorizontal();
+
         GUILayout.EndVertical();
+
         GUI.DragWindow();
     }
 }

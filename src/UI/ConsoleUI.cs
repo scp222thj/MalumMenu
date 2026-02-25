@@ -41,7 +41,7 @@ public class ConsoleUI : MonoBehaviour
             GUI.backgroundColor = configUIColor;
         }
 
-        _windowRect = GUI.Window(1, _windowRect, (GUI.WindowFunction)ConsoleWindow, "MalumConsole");
+        _windowRect = GUI.Window(1, _windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
     }
 
     private void ConsoleWindow(int windowID)
@@ -49,11 +49,13 @@ public class ConsoleUI : MonoBehaviour
         GUILayout.BeginVertical();
 
         GUILayout.BeginHorizontal();
+        
         if (GUILayout.Toggle(activeTab == 0, "Console", GUI.skin.button, GUILayout.Height(28)))
             activeTab = 0;
 
         if (GUILayout.Toggle(activeTab == 1, "Lobby Info", GUI.skin.button, GUILayout.Height(28)))
             activeTab = 1;
+
         GUILayout.EndHorizontal();
 
         if (activeTab == 0)
@@ -71,17 +73,24 @@ public class ConsoleUI : MonoBehaviour
         _consoleScrollPosition = GUILayout.BeginScrollView(_consoleScrollPosition, false, true);
 
         foreach (var log in _logEntries)
+        {
             GUILayout.Label(log, _logStyle);
+        }
 
         GUILayout.EndScrollView();
 
         GUILayout.BeginHorizontal();
+
         if (GUILayout.Button("Clear Log", GUILayout.Width(235)))
+        {
             _logEntries.Clear();
+        }
 
         if (GUILayout.Button("Copy Log to Clipboard"))
-            GUIUtility.systemCopyBuffer = string.Join("\n", _logEntries);
-
+        {
+            GUIUtility.systemCopyBuffer = String.Join("\n", _logEntries.ToArray());
+        }
+        
         GUILayout.EndHorizontal();
     }
 
@@ -89,7 +98,7 @@ public class ConsoleUI : MonoBehaviour
     {
         _lobbyInfoScrollPosition = GUILayout.BeginScrollView(_lobbyInfoScrollPosition, false, true);
 
-        MalumMenu.LobbyInfoUI.DrawLobbyInfo();
+        MalumMenu.lobbyInfoUI.DrawLobbyInfo();
 
         GUILayout.EndScrollView();
     }

@@ -8,33 +8,19 @@ namespace MalumMenu;
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
 public static class ChatController_AddChat
 {
-	/// <summary>
-	/// Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
-	/// Basically does what the original method did with the required modifications
-	/// </summary>
-	/// <param name="sourcePlayer">The player who sent the chat message.</param>
-	/// <param name="chatText">The chat message text.</param>
-	/// <param name="censor">Whether to censor the chat message. False only if Quick Chat is used.</param>
-	/// <param name="__instance">The <c>ChatController</c> instance.</param>
-	/// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
-    public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
+	// Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
+	// Basically does what the original method did with the required modifications
+	public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
     {
-        if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead){
-            return true; // Simply run original method if seeGhosts is disabled or LocalPlayer already dead
-        }
+		// Simply run original method if seeGhosts is disabled or LocalPlayer already dead
+        if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead) return true;
 
-        if (!sourcePlayer || !PlayerControl.LocalPlayer)
-		{
-			return true;
-		}
+        if (!sourcePlayer || !PlayerControl.LocalPlayer) return true;
 
 		NetworkedPlayerInfo data = PlayerControl.LocalPlayer.Data;
 		NetworkedPlayerInfo data2 = sourcePlayer.Data;
 
-		if (data2 == null || data == null) // Remove isDead check for LocalPlayer
-		{
-			return true;
-		}
+		if (data2 == null || data == null) return true; // Remove isDead check for LocalPlayer
 
 		ChatBubble pooledBubble = __instance.GetPooledBubble();
 
@@ -84,7 +70,8 @@ public static class ChatController_AddChat
 [HarmonyPatch(typeof(ChatBubble), nameof(ChatBubble.SetName))]
 public static class ChatBubble_SetName
 {
-    public static void Postfix(ChatBubble __instance){
+    public static void Postfix(ChatBubble __instance)
+	{
         MalumESP.ChatNametags(__instance);
     }
 }
@@ -101,9 +88,12 @@ public static class ChatController_Update
         __instance.freeChatField.textArea.AllowEmail = CheatToggles.chatJailbreak; // Allow sending email addresses when chatJailbreak is enabled
         //__instance.freeChatField.textArea.AllowPaste = CheatToggles.chatJailbreak; // Allow pasting from clipboard in chat when chatJailbreak is enabled
 
-        if (CheatToggles.chatJailbreak){
+        if (CheatToggles.chatJailbreak)
+		{
             __instance.freeChatField.textArea.characterLimit = 119; // Longer message length when chatJailbreak is enabled
-        }else{
+        }
+		else
+		{
             __instance.freeChatField.textArea.characterLimit = 100;
         }
 
@@ -113,16 +103,11 @@ public static class ChatController_Update
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendFreeChat))]
 public static class ChatController_SendFreeChat
 {
-    /// <summary>
-    /// Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
-    /// </summary>
-    /// <param name="__instance">The <c>ChatController</c> instance.</param>
-    /// <returns><c>false</c> to skip the original method, <c>true</c> to allow the original method to run.</returns>
+    // Prefix patch of ChatController.SendFreeChat to unlock extra chat capabilities
     public static bool Prefix(ChatController __instance)
     {
-        if (!CheatToggles.chatJailbreak){
-            return true; // Only works if CheatSettings.chatJailbreak is enabled
-        }
+		// Only works if CheatSettings.chatJailbreak is enabled
+        if (!CheatToggles.chatJailbreak) return true;
 
         string text = __instance.freeChatField.Text;
 

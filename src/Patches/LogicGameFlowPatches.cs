@@ -19,7 +19,8 @@ public static class LogicGameFlowNormal_IsGameOverDueToDeath
     // after an exile that should have triggered game over
     public static void Postfix(ref bool __result)
     {
-        if (CheatToggles.noGameEnd){
+        if (CheatToggles.noGameEnd)
+        {
             __result = false;
         }
 
@@ -43,7 +44,8 @@ public static class LogicGameFlowHnS_IsGameOverDueToDeath
     // after an exile that should have triggered game over
     public static void Postfix(ref bool __result)
     {
-        if (CheatToggles.noGameEnd){
+        if (CheatToggles.noGameEnd)
+        {
             __result = false;
         }
 

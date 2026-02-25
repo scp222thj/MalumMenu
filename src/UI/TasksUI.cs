@@ -13,7 +13,7 @@ public class TasksUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!CheatToggles.showTasksMenu) return;
+        if (!CheatToggles.showTasksMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
         _playerHeaderStyle ??= new GUIStyle(GUI.skin.button)
         {
@@ -21,7 +21,8 @@ public class TasksUI : MonoBehaviour
             alignment = TextAnchor.MiddleLeft
         };
 
-        if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor)){
+        if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
+        {
             GUI.backgroundColor = configUIColor;
         }
 
@@ -31,35 +32,36 @@ public class TasksUI : MonoBehaviour
     private void TasksWindow(int windowID)
     {
         GUILayout.BeginVertical();
+
         _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, false, true);
 
-        foreach (var pc in PlayerControl.AllPlayerControls)
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (!pc.Data || !pc.Data.Role || string.IsNullOrEmpty(pc.Data.PlayerName)) continue;
+            if (!player.Data || !player.Data.Role || string.IsNullOrEmpty(player.Data.PlayerName)) continue;
 
             GUILayout.BeginVertical();
 
-            var nameKey = pc.name;
+            var nameKey = player.name;
             _expandedPlayers.TryGetValue(nameKey, out var expanded);
             var arrow = expanded ? "\u25BC" : "\u25B6"; // ▼ or ▶
 
-            var taskCount = pc.myTasks.Count;
-            var completeCount = pc.myTasks.ToArray().Count(t => t.IsComplete);
+            var taskCount = player.myTasks.Count;
+            var completeCount = player.myTasks.ToArray().Count(t => t.IsComplete);
 
-            if (pc == PlayerControl.LocalPlayer && pc.Data.IsDead)
+            if (player == PlayerControl.LocalPlayer && player.Data.IsDead)
             {
                 taskCount -= 1;
             }
-            if (pc == PlayerControl.LocalPlayer && Utils.isAnySabotageActive)
+            if (player == PlayerControl.LocalPlayer && Utils.isAnySabotageActive)
             {
                 taskCount -= 1;
             }
-            if (pc == PlayerControl.LocalPlayer && pc.Data.Role.IsImpostor)
+            if (player == PlayerControl.LocalPlayer && player.Data.Role.IsImpostor)
             {
                 taskCount -= 1;
             }
 
-            if (GUILayout.Button($"{arrow} [{completeCount}/{taskCount}] <color=#{ColorUtility.ToHtmlStringRGB(pc.Data.Color)}>{nameKey}</color>", _playerHeaderStyle))
+            if (GUILayout.Button($"{arrow} [{completeCount}/{taskCount}] <color=#{ColorUtility.ToHtmlStringRGB(player.Data.Color)}>{nameKey}</color>", _playerHeaderStyle))
             {
                 _expandedPlayers[nameKey] = !expanded;
                 expanded = !expanded;
@@ -68,8 +70,10 @@ public class TasksUI : MonoBehaviour
             if (expanded)
             {
                 GUILayout.BeginHorizontal();
+
                 GUILayout.BeginVertical();
-                foreach (var task in pc.myTasks)
+
+                foreach (var task in player.myTasks)
                 {
                     // Do some checks to not show texts: sabotage active, dead hint, impostor hint
                     if (task.TaskType is TaskTypes.ResetReactor or TaskTypes.RestoreOxy or TaskTypes.FixLights or TaskTypes.FixComms or TaskTypes.ResetSeismic or TaskTypes.StopCharles or TaskTypes.MushroomMixupSabotage) continue;
@@ -78,6 +82,7 @@ public class TasksUI : MonoBehaviour
                     task.AppendTaskText(_tasksString);
                     //_tasksString.Append($"Task Type: {task.TaskType.ToString()}");
                     var taskText = _tasksString.ToString();
+
                     if (taskText.Contains("You're dead") || taskText.Contains("Sabotage and kill")) continue;
 
                     GUILayout.BeginHorizontal();
@@ -90,7 +95,7 @@ public class TasksUI : MonoBehaviour
                     }
                     else
                     {
-                        if (pc == PlayerControl.LocalPlayer)
+                        if (player == PlayerControl.LocalPlayer)
                         {
                             if (GUILayout.Button("Complete", GUIStylePreset.NormalButton))
                             {
@@ -100,7 +105,9 @@ public class TasksUI : MonoBehaviour
                     }
                     GUILayout.EndHorizontal();
                 }
+
                 GUILayout.EndVertical();
+
                 GUILayout.EndHorizontal();
             }
 

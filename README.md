@@ -39,6 +39,7 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
+| v3.0.0 | 2026.2.24 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v3.0.0/MalumMenu-3.0.0.zip) |
 | v2.4.2 | 2024.9.4 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.2/MalumMenu-2.4.2.zip) |
 | v2.4.1 | 2024.8.13 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.1/MalumMenu-2.4.1.zip) |
 | v2.4.0 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.0/MalumMenu-2.4.0.zip) |
@@ -58,8 +59,8 @@
 # ⬇️ Installation
 
 1. Download the latest **MalumMenu zip pack** from [here](https://github.com/scp222thj/MalumMenu/releases/latest).
-    - **For Steam, Epic Launcher, and Itch.io:** Download `MalumMenu-VERSION.zip`.
-    - **For Microsoft Store:** Download `MalumMenu-VERSION-Microsoft.zip`.
+    - **For Steam or Itch.io:** Download `MalumMenu-VERSION-Steam-Itch.zip`.
+    - **For Microsoft Store, Epic Games Store, or Xbox App:** Download `MalumMenu-VERSION-MicrosoftStore-EpicGames-XboxApp.zip`.
 
 2. Open the zip file you have just downloaded and copy all its contents.
 
@@ -91,7 +92,6 @@
 - Murder any distant player from across the map
 - Unlock all of the game's cosmetics for FREE
 - No more annoying disconnect penalties
-- Bypass account bans with ease
 
 For a complete list of all of MalumMenu's features, click [here](https://github.com/scp222thj/MalumMenu/blob/main/FEATURES.md)
 
@@ -100,7 +100,7 @@ Click to expand each topic
 <details>
   <summary><h2>❗ I'm having issues installing MalumMenu</h2></summary>
 
-First of all, make sure you are running the most recent version of Among Us (`2024.9.4`) with the most recent version of MalumMenu (`v2.4.2`).
+First of all, make sure you are running the most recent version of Among Us (`2026.2.24`) with the most recent version of MalumMenu (`v3.0.0`).
 
 Also, check if your platform is officially supported:
 
@@ -108,13 +108,14 @@ Also, check if your platform is officially supported:
 - ✅ Itch.io
 - ✅ Epic Games Launcher
 - ✅ Microsoft Store
+- ✅ Xbox App
 - ❔ Cracked (rarely works)
 - ❌ iOS App Store & Google Play
-- ❌ PS & Switch & Xbox
+- ❌ PS & Switch & Xbox Console
 
 Now ensure that you have downloaded the correct zip file for your platform:
-- For Steam, Epic Games Launcher, and Itch.io, use `MalumMenu-VERSION.zip`
-- For the Microsoft Store edition, use `MalumMenu-VERSION-Microsoft.zip`
+- For Steam or Itch.io: Download `MalumMenu-VERSION-Steam-Itch.zip`
+- For Microsoft Store, Epic Games Store, or Xbox App: Download `MalumMenu-VERSION-MicrosoftStore-EpicGames-XboxApp.zip`
 
 Make sure you followed the installation guide precisely. This is what your `Among Us` folder should look like after a successful installation:
 

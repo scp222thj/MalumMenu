@@ -6,12 +6,12 @@ namespace MalumMenu;
 public class DoorsUI : MonoBehaviour
 {
     private Rect _windowRect = new(320, 10, 480, 270);
-    private List<SystemTypes> doorsToSpamOpen = new();
-    private List<SystemTypes> doorsToSpamClose = new();
+    private List<SystemTypes> _doorsToSpamOpen = new();
+    private List<SystemTypes> _doorsToSpamClose = new();
 
     private void OnGUI()
     {
-        if (!CheatToggles.showDoorsMenu) return;
+        if (!CheatToggles.showDoorsMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
         if (ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
         {
@@ -42,9 +42,11 @@ public class DoorsUI : MonoBehaviour
         foreach (var doorRoom in DoorsHandler.GetRoomsWithDoors())
         {
             GUILayout.BeginHorizontal();
+
             GUILayout.Label($"{doorRoom.ToString()}", GUILayout.Width(110f));
 
             GUILayout.BeginHorizontal();
+
             GUILayout.Label($"{DoorsHandler.GetStatusOfDoorsInRoom(doorRoom, true)}");
 
             GUILayout.FlexibleSpace();
@@ -64,40 +66,52 @@ public class DoorsUI : MonoBehaviour
 
             if (Utils.isHost)
             {
-                var spamClose = doorsToSpamClose.Contains(doorRoom);
+                var spamClose = _doorsToSpamClose.Contains(doorRoom);
                 spamClose = GUILayout.Toggle(spamClose, "Spam Close", GUIStylePreset.NormalToggle);
-                if (spamClose && !doorsToSpamClose.Contains(doorRoom))
-                    doorsToSpamClose.Add(doorRoom);
-                else if (!spamClose && doorsToSpamClose.Contains(doorRoom))
-                    doorsToSpamClose.Remove(doorRoom);
+
+                if (spamClose && !_doorsToSpamClose.Contains(doorRoom))
+                {
+                    _doorsToSpamClose.Add(doorRoom);
+                }
+                else if (!spamClose && _doorsToSpamClose.Contains(doorRoom))
+                {
+                    _doorsToSpamClose.Remove(doorRoom);
+                }
 
                 if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
                 {
-                    var spamOpen = doorsToSpamOpen.Contains(doorRoom);
+                    var spamOpen = _doorsToSpamOpen.Contains(doorRoom);
                     spamOpen = GUILayout.Toggle(spamOpen, "Spam Open", GUIStylePreset.NormalToggle);
-                    if (spamOpen && !doorsToSpamOpen.Contains(doorRoom))
-                        doorsToSpamOpen.Add(doorRoom);
-                    else if (!spamOpen && doorsToSpamOpen.Contains(doorRoom))
-                        doorsToSpamOpen.Remove(doorRoom);
+
+                    if (spamOpen && !_doorsToSpamOpen.Contains(doorRoom))
+                    {
+                        _doorsToSpamOpen.Add(doorRoom);
+                    }
+                    else if (!spamOpen && _doorsToSpamOpen.Contains(doorRoom))
+                    {
+                        _doorsToSpamOpen.Remove(doorRoom);
+                    }
                 }
             }
             else
             {
                 // Clear spam lists if not host
-                if (doorsToSpamClose.Count != 0 || doorsToSpamOpen.Count != 0)
+                if (_doorsToSpamClose.Count != 0 || _doorsToSpamOpen.Count != 0)
                 {
-                    doorsToSpamClose.Clear();
-                    doorsToSpamOpen.Clear();
+                    _doorsToSpamClose.Clear();
+                    _doorsToSpamOpen.Clear();
                 }
             }
 
             GUILayout.EndHorizontal();
+
             GUILayout.EndHorizontal();
         }
 
         GUILayout.FlexibleSpace();
+
         GUILayout.Box("", GUIStylePreset.Separator, GUILayout.Height(1f), GUILayout.ExpandWidth(true));
-        GUILayout.Box("", GUIStyle.none, GUILayout.Height(1f), GUILayout.ExpandWidth(true));
+        GUILayout.Space(1f);
 
         GUILayout.BeginHorizontal();
 
@@ -131,7 +145,9 @@ public class DoorsUI : MonoBehaviour
         }
 
         GUILayout.EndHorizontal();
+
         GUILayout.EndVertical();
+
         GUI.DragWindow();
     }
 
@@ -139,18 +155,18 @@ public class DoorsUI : MonoBehaviour
     {
         if (!Utils.isShip) return;
 
-        // Spam Close selected doors
-        foreach (var doorRoom in doorsToSpamClose)
+        // Spam close selected doors
+        foreach (var doorRoom in _doorsToSpamClose)
         {
             DoorsHandler.CloseDoorsInRoom(doorRoom);
         }
 
-        // Spam Open selected doors
+        // Spam open selected doors
         var map = (MapNames)Utils.GetCurrentMapID();
 
         if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
         {
-            foreach (var doorRoom in doorsToSpamOpen)
+            foreach (var doorRoom in _doorsToSpamOpen)
             {
                 DoorsHandler.OpenDoorsInRoom(doorRoom);
             }
