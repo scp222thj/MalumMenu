@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MalumMenu;
 
-public struct SubmenuInfo
+public class SubmenuInfo
 {
     public string name;
     public bool isExpanded;
@@ -17,7 +17,7 @@ public struct SubmenuInfo
     }
 }
 
-public struct GroupInfo
+public class GroupInfo
 {
     public string name;
     public bool isExpanded;

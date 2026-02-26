@@ -143,6 +143,7 @@ public struct CheatToggles
     // Config
     public static bool reloadConfig;
     public static bool rgbMode;
+    public static bool oldUi;
 
     // Keybind Map: Toggle Name -> KeyCode (KeyCode.None == No Key)
     public static readonly Dictionary<string, KeyCode> Keybinds = new();

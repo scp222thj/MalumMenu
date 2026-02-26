@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using OldStyle = MalumMenu.UI.OldUi;
 
 namespace MalumMenu;
 
@@ -11,8 +12,10 @@ public class MenuUI : MonoBehaviour
     public static bool isGUIActive = false;
     public static bool isPanicked = false;
     public int selectedTab;
+    private bool isDraggingOldUi = false;
 
     // Styles
+    private GUIStyle classicSubmenuStyle;
     private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
@@ -250,7 +253,8 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Reload Config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
                 new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
                 new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
-                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x)
+                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x),
+                new ToggleInfo(" Use Old Ui", () => CheatToggles.oldUi, x => CheatToggles.oldUi = x),
             },
             new List<SubmenuInfo>()
         ));
@@ -258,6 +262,8 @@ public class MenuUI : MonoBehaviour
 
     public void InitStyles()
     {
+        windowRect.width = 700;
+        windowRect.height = 550;
         GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = GUI.skin.label.fontSize = 15;
 
         tabButtonStyle = new GUIStyle(GUI.skin.button)
@@ -356,33 +362,49 @@ public class MenuUI : MonoBehaviour
 
         if (!isGUIActive || isPanicked) return;
 
-        InitStyles();
-
-        if (CheatToggles.rgbMode)
+        if (CheatToggles.oldUi)
         {
-            GUI.backgroundColor = Color.HSVToRGB(hue, 1f, 1f); // Set background color based on hue
+            // Initialize the classic style if it's null
+            if (classicSubmenuStyle == null)
+            {
+                classicSubmenuStyle = new GUIStyle(GUI.skin.button);
+                classicSubmenuStyle.normal.textColor = Color.white;
+                classicSubmenuStyle.normal.background = Texture2D.grayTexture;
+                classicSubmenuStyle.fontSize = 18;
+            }
+
+            OldStyle.Render(ref windowRect, groups, ref isDraggingOldUi, classicSubmenuStyle);
         }
         else
         {
-            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
+            InitStyles();
 
-            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
+            if (CheatToggles.rgbMode)
             {
-                if (!configHtmlColor.StartsWith("#"))
-                {
-                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
-                    {
-                        GUI.backgroundColor = uiColor;
-                    }
-                }
+                GUI.backgroundColor = Color.HSVToRGB(hue, 1f, 1f); // Set background color based on hue
             }
             else
             {
-                GUI.backgroundColor = uiColor;
-            }
-        }
+                var configHtmlColor = MalumMenu.menuHtmlColor.Value;
 
-        windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+                if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
+                {
+                    if (!configHtmlColor.StartsWith("#"))
+                    {
+                        if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
+                        {
+                            GUI.backgroundColor = uiColor;
+                        }
+                    }
+                }
+                else
+                {
+                    GUI.backgroundColor = uiColor;
+                }
+            }
+
+            windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        }
     }
 
     public void WindowFunction(int windowID)
