@@ -34,14 +34,7 @@ public class ConsoleUI : MonoBehaviour
             fontSize = 16
         };
 
-        if (ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
-        {
-            GUI.backgroundColor = configUIColor;
-        }
-
         MenuHelper.ApplyMenuColor();
-
-        
 
         _windowRect = GUI.Window(1, _windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
     }
