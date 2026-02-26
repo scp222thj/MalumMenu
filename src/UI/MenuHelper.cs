@@ -7,10 +7,10 @@ public static class MenuHelper
     public static void ApplyMenuColor()
     {
 
-        if (ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
+        /*if (ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
         {
             GUI.backgroundColor = configUIColor;
-        }
+        }*/
         
         if (CheatToggles.rgbMode)
         {
