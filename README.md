@@ -39,7 +39,8 @@
 # 🎁 Releases
 | Mod Version| Among Us - Version | Link |
 |----------|-------------|-----------------|
-| v3.0.0 | 2026.2.24 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v3.0.0/MalumMenu-3.0.0.zip) |
+| v3.0.0 (Steam or Itch.IO) | 2026.2.24 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v3.0.0/MalumMenu-3.0.0-Steam-Itch.zip) | 
+| v3.0.0 (Microsoft Store, Epic Games Store, or Xbox App version ) | 2026.2.24 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v3.0.0/MalumMenu-3.0.0-MicrosoftStore-EpicGames-XboxApp.zip) | 
 | v2.4.2 | 2024.9.4 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.2/MalumMenu-2.4.2.zip) |
 | v2.4.1 | 2024.8.13 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.1/MalumMenu-2.4.1.zip) |
 | v2.4.0 | 2024.6.18 | [Download](https://github.com/scp222thj/MalumMenu/releases/download/v2.4.0/MalumMenu-2.4.0.zip) |
