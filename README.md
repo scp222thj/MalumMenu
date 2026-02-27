@@ -68,7 +68,7 @@
     - **Steam:** Right-click Among Us in your Library → Click `Manage` → Click `Browse local files`.
     - **Epic Launcher:** Right-click Among Us in your Library → Click `Manage` → Click the folder icon in the `Installation` box.
     - **Itch.io:** Open the Itch.io app → Right-click Among Us in your Library → Click `Manage` → Click `Open folder in Explorer`.
-    - **Microsoft Store** Open the location where Among Us is installed (usually under `C:\XboxGames\Among Us\Content` or `C:\Program Files\WindowsApps` depending on your installation).
+    - **Microsoft Store:** Open the location where Among Us is installed (usually under `C:\XboxGames\Among Us\Content` or `C:\Program Files\WindowsApps` depending on your installation).
 
 4. Launch Among Us as you normally would. You should see a console window appear, installing the mod's requirements.
 
