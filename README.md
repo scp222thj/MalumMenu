@@ -158,8 +158,8 @@ Here are some other useful resources:
     - Here you can also find the most recent decompiled Among Us assemblies (the DLL files in `#resources` channel). I suggest using [dnSpy](https://github.com/dnSpy/dnSpy/releases/latest) to go through these.
 
 - [sus.wiki](https://github.com/roobscoob/among-us-protocol)
-    - Useful resource to learn more about the Among Us network protocol 
-    - Keep in mind that both it is slightly outdated
+    - Useful resource to learn more about the Among Us network protocol
+    - Keep in mind that it is slightly outdated
 
 </details>
 
