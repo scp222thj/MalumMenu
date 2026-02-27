@@ -29,6 +29,8 @@
 
 - [🎁 Releases](#-releases)
 - [⬇️ Installation](#️-installation)
+  - [🪟 Windows](#-windows)
+  - [🐧 Linux](#-linux)
 - [📋 Features](#-features)
 - [❓ FAQ](#-faq)
 - [⚠️ Disclaimer](#️-disclaimer)
@@ -55,6 +57,8 @@
 
 # ⬇️ Installation
 
+## 🪟 Windows
+
 1. Download the latest **MalumMenu zip pack** from [here](https://github.com/scp222thj/MalumMenu/releases/latest).
     - **For Steam or Itch.io:** Download `MalumMenu-VERSION-Steam-Itch.zip`.
     - **For Microsoft Store, Epic Games Store, or Xbox App:** Download `MalumMenu-VERSION-MicrosoftStore-EpicGames-XboxApp.zip`.
@@ -75,6 +79,11 @@
     - By default, you can toggle the cheat GUI on by pressing **DELETE** on your keyboard.
 
 7. If the installation doesn't work, check out our [FAQ](#-faq).
+
+## 🐧 Linux
+- Make sure you are running Among Us under Proton (or Wine). On Steam you can check this by right-clicking Among Us in your library → `Properties` → `Compatibility` → `Force the use of a specific Steam Play compatibility tool`. Test different Proton versions if you're having issues launching the game.
+- Check out [this guide](https://docs.bepinex.dev/articles/advanced/proton_wine.html) to get BepInEx (the framework MalumMenu is built upon) working. Alternatively, if you are using Proton with Steam, you can specify the DLL override in the launch options (right-click Among Us in your library → `Properties` → `General` → `Launch Options`): `WINEDLLOVERRIDES="winhttp.dll=n,b" %command%` Then follow the steps for Windows.
+- If you are experiencing crashes or errors like `Unable to execute IL2CPP chainloader`, set your launch options (right-click Among Us in your library → `Properties` → `General` → `Launch Options`) to `PROTON_NO_ESYNC=1 PROTON_USE_WINED3D=1 WINEDLLOVERRIDES="winhttp.dll=n,b" %command%`
 
 # 📋 Features
 
