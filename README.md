@@ -81,9 +81,31 @@
 7. If the installation doesn't work, check out our [FAQ](#-faq).
 
 ## 🐧 Linux
-- Make sure you are running Among Us under Proton (or Wine). On Steam you can check this by right-clicking Among Us in your library → `Properties` → `Compatibility` → `Force the use of a specific Steam Play compatibility tool`. Test different Proton versions if you're having issues launching the game.
-- Check out [this guide](https://docs.bepinex.dev/articles/advanced/proton_wine.html) to get BepInEx (the framework MalumMenu is built upon) working. Alternatively, if you are using Proton with Steam, you can specify the DLL override in the launch options (right-click Among Us in your library → `Properties` → `General` → `Launch Options`): `WINEDLLOVERRIDES="winhttp.dll=n,b" %command%` Then follow the steps for Windows.
-- If you are experiencing crashes or errors like `Unable to execute IL2CPP chainloader`, set your launch options (right-click Among Us in your library → `Properties` → `General` → `Launch Options`) to `PROTON_NO_ESYNC=1 PROTON_USE_WINED3D=1 WINEDLLOVERRIDES="winhttp.dll=n,b" %command%`
+
+1. Run Among Us under **Proton (or Wine)**.
+   - **In Steam:** Right-click Among Us in your Library → Click `Properties` → Click `Compatibility` → Enable `Force the use of a specific Steam Play compatibility tool`.
+
+   - Test different Proton versions if you're having issues launching the game.
+
+2. Set up **BepInEx** (the framework MalumMenu is built upon).
+   - Follow the official Proton / Wine setup guide found [here](https://docs.bepinex.dev/articles/advanced/proton_wine.html).
+   - If you are using Proton with Steam, specify the DLL override:
+     - **In Steam:** Right-click Among Us in your Library → Click `Properties` → Click `General` → Click `Launch Options`.
+     - Add this to your launch options:
+
+       ```
+       WINEDLLOVERRIDES="winhttp.dll=n,b" %command%
+       ```
+
+   - After that, continue with the Windows installation steps found [here](#-windows).
+
+3. Fix crashes or errors (like `Unable to execute IL2CPP chainloader`).
+   - **In Steam:** Right-click Among Us in your Library → Click `Properties` → Click `General` → Click `Launch Options`.
+   - Set your launch options to:
+
+     ```
+     PROTON_NO_ESYNC=1 PROTON_USE_WINED3D=1 WINEDLLOVERRIDES="winhttp.dll=n,b" %command%
+     ```
 
 # 📋 Features
 
