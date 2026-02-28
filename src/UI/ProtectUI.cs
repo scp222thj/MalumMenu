@@ -14,7 +14,7 @@ public class ProtectUI : MonoBehaviour
     {
         if (!CheatToggles.showProtectMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
-        MenuHelper.ApplyMenuColor();
+        UIHelper.ApplyUIColor();
        
         _windowRect = GUI.Window(5, _windowRect, (GUI.WindowFunction)ProtectWindow, "Protect Players");
     }

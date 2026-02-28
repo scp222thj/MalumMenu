@@ -34,7 +34,7 @@ public class ConsoleUI : MonoBehaviour
             fontSize = 16
         };
 
-        MenuHelper.ApplyMenuColor();
+        UIHelper.ApplyUIColor();
 
         _windowRect = GUI.Window(1, _windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
     }

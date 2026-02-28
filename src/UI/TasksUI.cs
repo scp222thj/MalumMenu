@@ -21,7 +21,7 @@ public class TasksUI : MonoBehaviour
             alignment = TextAnchor.MiddleLeft
         };
 
-        MenuHelper.ApplyMenuColor();       
+        UIHelper.ApplyUIColor();
 
         _windowRect = GUI.Window(3, _windowRect, (GUI.WindowFunction)TasksWindow, "Tasks");
     }

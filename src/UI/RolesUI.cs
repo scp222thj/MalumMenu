@@ -11,7 +11,7 @@ public class RolesUI : MonoBehaviour
     {
         if (!CheatToggles.showRolesMenu) return;
 
-        MenuHelper.ApplyMenuColor();    
+        UIHelper.ApplyUIColor();
 
         _windowRect = GUI.Window(4, _windowRect, (GUI.WindowFunction)RolesWindow, "Assign Roles");
     }

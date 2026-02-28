@@ -358,7 +358,7 @@ public class MenuUI : MonoBehaviour
 
         InitStyles();
 
-       MenuHelper.ApplyMenuColor();
+       UIHelper.ApplyUIColor();
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
