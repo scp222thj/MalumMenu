@@ -17,6 +17,7 @@ public class DoorsUI : MonoBehaviour
 
         _windowRect = GUI.Window(2, _windowRect, (GUI.WindowFunction)DoorsWindow, "Doors");
     }
+    
     private void DoorsWindow(int windowID)
     {
         if (!Utils.isShip)
