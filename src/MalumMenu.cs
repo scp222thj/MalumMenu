@@ -37,6 +37,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<bool> noTelemetry;
     public static ConfigEntry<string> guestFriendCode;
     public static ConfigEntry<bool> guestMode;
+    public static ConfigEntry<bool> loadProfileOnLaunch;
 
     public override void Load()
     {
@@ -89,6 +90,10 @@ public partial class MalumMenu : BasePlugin
                                 "NoTelemetry",
                                 true,
                                 "When enabled, it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
+        loadProfileOnLaunch = Config.Bind("MalumMenu.QOL",
+                                "LoadProfileonLaunch",
+                                false,
+                                "When enabled, it will automatically load your Profile when the game is launched");
 
         // Passives are enabled by default
         CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
@@ -111,6 +116,11 @@ public partial class MalumMenu : BasePlugin
             Analytics.enabled = false;
             Analytics.deviceStatsEnabled = false;
             PerformanceReporting.enabled = false;
+        }
+        //Load the UserProfile if set in the Config
+        if (loadProfileOnLaunch.Value) 
+        {
+            CheatToggles.LoadTogglesFromProfile();
         }
 
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
