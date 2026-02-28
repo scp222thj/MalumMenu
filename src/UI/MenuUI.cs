@@ -16,7 +16,7 @@ public class MenuUI : MonoBehaviour
     private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
-    private float hue; // For RGB mode
+    public static float hue; // For RGB mode
 
     // Create all groups (buttons) and their toggles on start
     private void Start()
@@ -293,7 +293,10 @@ public class MenuUI : MonoBehaviour
             {
                 // Teleport the window to the mouse for immediate use
                 Vector2 mousePosition = Input.mousePosition;
-                windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+                // Clamp the menu window within the AU window bounds
+                float mousePosX = Math.Clamp(mousePosition.x, 0, Screen.width - windowRect.width);
+                float mousePosY = Math.Clamp(Screen.height - mousePosition.y, 0, Screen.height - windowRect.height);
+                windowRect.position = new Vector2(mousePosX, mousePosY);
             }
         }
 
@@ -324,12 +327,12 @@ public class MenuUI : MonoBehaviour
         // CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
 
         // Some cheats only work if the LocalPlayer exists, so they are turned off if it does not
-        if(!Utils.isPlayer)
+        if (!Utils.isPlayer)
         {
-            CheatToggles.changeRole = CheatToggles.killAll = CheatToggles.telekillPlayer = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.teleportCursor = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.killPlayer = false;
+            CheatToggles.changeRole = CheatToggles.killAll = CheatToggles.telekillPlayer = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.teleportPlayer = CheatToggles.spectate = CheatToggles.freecam = CheatToggles.killPlayer = false;
         }
 
-        if(!Utils.isHost && !Utils.isFreePlay)
+        if (!Utils.isHost && !Utils.isFreePlay)
         {
             CheatToggles.killAll = CheatToggles.telekillPlayer = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.killPlayer = CheatToggles.ejectPlayer = CheatToggles.zeroKillCd = CheatToggles.killAnyone = CheatToggles.killVanished = CheatToggles.forceStartGame = CheatToggles.noGameEnd = CheatToggles.skipMeeting = false;
         }
@@ -340,12 +343,12 @@ public class MenuUI : MonoBehaviour
         // }
 
         // Some cheats only work if the ship exists, so they are turned off if it does not
-        if(!Utils.isShip)
+        if (!Utils.isShip)
         {
             CheatToggles.fakeRevive = CheatToggles.sabotageMap = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.ejectPlayer = CheatToggles.closeMeeting = CheatToggles.skipMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.closeAllDoors = CheatToggles.openAllDoors = CheatToggles.spamCloseAllDoors = CheatToggles.spamOpenAllDoors = CheatToggles.autoOpenDoorsOnUse = CheatToggles.mushSpore = CheatToggles.animShields = CheatToggles.animAsteroids = CheatToggles.animEmptyGarbage = CheatToggles.animScan = CheatToggles.animCamsInUse = false;
         }
 
-        if(!Utils.isHost && !Utils.isFreePlay)
+        if (!Utils.isHost && !Utils.isFreePlay)
         {
             CheatToggles.skipMeeting = CheatToggles.voteImmune = CheatToggles.ejectPlayer = CheatToggles.forceStartGame = CheatToggles.noGameEnd = CheatToggles.killAll = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.killAnyone = CheatToggles.killPlayer = CheatToggles.telekillPlayer = CheatToggles.killVanished = CheatToggles.zeroKillCd = CheatToggles.showProtectMenu = CheatToggles.showRolesMenu = CheatToggles.noOptionsLimits = false;
         }
@@ -358,29 +361,7 @@ public class MenuUI : MonoBehaviour
 
         InitStyles();
 
-        if (CheatToggles.rgbMode)
-        {
-            GUI.backgroundColor = Color.HSVToRGB(hue, 1f, 1f); // Set background color based on hue
-        }
-        else
-        {
-            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
-
-            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
-            {
-                if (!configHtmlColor.StartsWith("#"))
-                {
-                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
-                    {
-                        GUI.backgroundColor = uiColor;
-                    }
-                }
-            }
-            else
-            {
-                GUI.backgroundColor = uiColor;
-            }
-        }
+        GUI.backgroundColor = GetWindowColor(CheatToggles.rgbMode);
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
@@ -462,14 +443,14 @@ public class MenuUI : MonoBehaviour
             {
                 if (PlayerControl.LocalPlayer.Data.IsDead)
                 {
-                    PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = GUILayout.HorizontalSlider(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed, 0f, 20f, GUILayout.Width(250f));
-                    Utils.SnapSpeedToDefault(0.05f, true);
+                    PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = GUILayout.HorizontalSlider(Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed), 0f, 20f, GUILayout.Width(400f));
+                    PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = (CheatToggles.invertControls ? -1 : 1) * Utils.SnapFloatWithinRange(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed, 0.1f);
                     GUILayout.Label($"Current Speed: {PlayerControl.LocalPlayer?.MyPhysics.GhostSpeed} {(Utils.IsSpeedDefault(true) ? "(Default)" : "")}");
                 }
                 else
                 {
-                    PlayerControl.LocalPlayer.MyPhysics.Speed = GUILayout.HorizontalSlider(PlayerControl.LocalPlayer.MyPhysics.Speed, 0f, 20f, GUILayout.Width(250f));
-                    Utils.SnapSpeedToDefault(0.05f);
+                    PlayerControl.LocalPlayer.MyPhysics.Speed = GUILayout.HorizontalSlider(Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed), 0f, 20f, GUILayout.Width(400f));
+                    PlayerControl.LocalPlayer.MyPhysics.Speed = (CheatToggles.invertControls ? -1 : 1) * Utils.SnapFloatWithinRange(PlayerControl.LocalPlayer.MyPhysics.Speed, 0.1f);
                     GUILayout.Label($"Current Speed: {PlayerControl.LocalPlayer?.MyPhysics.Speed} {(Utils.IsSpeedDefault() ? "(Default)" : "")}");
                 }
             } catch (NullReferenceException) {}
@@ -526,5 +507,35 @@ public class MenuUI : MonoBehaviour
                 toggle.setState(newState);
             }
         }
+    }
+
+    // Get window color for menu UI
+    public static Color GetWindowColor(bool rgb)
+    {
+        Color windowCol = Color.white;
+        if (rgb)
+        {
+            windowCol = Color.HSVToRGB(MenuUI.hue, 1f, 1f); // Set background color based on hue
+        }
+        else
+        {
+            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
+
+            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
+            {
+                if (!configHtmlColor.StartsWith("#"))
+                {
+                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
+                    {
+                        windowCol = uiColor;
+                    }
+                }
+            }
+            else
+            {
+                windowCol = uiColor;
+            }
+        }
+        return windowCol;
     }
 }

@@ -11,10 +11,7 @@ public class RolesUI : MonoBehaviour
     {
         if (!CheatToggles.showRolesMenu) return;
 
-        if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
-        {
-            GUI.backgroundColor = configUIColor;
-        }
+        GUI.backgroundColor = MenuUI.GetWindowColor(CheatToggles.rgbMode);
 
         _windowRect = GUI.Window(4, _windowRect, (GUI.WindowFunction)RolesWindow, "Assign Roles");
     }

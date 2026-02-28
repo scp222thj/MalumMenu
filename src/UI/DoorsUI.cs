@@ -13,10 +13,7 @@ public class DoorsUI : MonoBehaviour
     {
         if (!CheatToggles.showDoorsMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
-        if (ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
-        {
-            GUI.backgroundColor = configUIColor;
-        }
+        GUI.backgroundColor = MenuUI.GetWindowColor(CheatToggles.rgbMode);
 
         _windowRect = GUI.Window(2, _windowRect, (GUI.WindowFunction)DoorsWindow, "Doors");
     }

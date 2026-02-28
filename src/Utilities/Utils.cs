@@ -66,6 +66,12 @@ public static class Utils
         }
     }
 
+    // Snaps a float within a snapRange (can result in slight floating point errors)
+    public static float SnapFloatWithinRange(float original, float snapRange)
+    {
+        return Mathf.RoundToMultipleOf(original, snapRange);
+    }
+
     // Gets ClientData by PlayerControl
     public static ClientData GetClientByPlayer(PlayerControl player)
     {
