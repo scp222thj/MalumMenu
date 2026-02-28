@@ -13,14 +13,11 @@ public class DoorsUI : MonoBehaviour
     {
         if (!CheatToggles.showDoorsMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
-        if (ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
-        {
-            GUI.backgroundColor = configUIColor;
-        }
+        UIHelper.ApplyUIColor();
 
         _windowRect = GUI.Window(2, _windowRect, (GUI.WindowFunction)DoorsWindow, "Doors");
     }
-
+    
     private void DoorsWindow(int windowID)
     {
         if (!Utils.isShip)

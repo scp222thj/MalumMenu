@@ -16,7 +16,7 @@ public class MenuUI : MonoBehaviour
     private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
-    private float hue; // For RGB mode
+    public static float hue; // For RGB mode
 
     // Create all groups (buttons) and their toggles on start
     private void Start()
@@ -358,29 +358,7 @@ public class MenuUI : MonoBehaviour
 
         InitStyles();
 
-        if (CheatToggles.rgbMode)
-        {
-            GUI.backgroundColor = Color.HSVToRGB(hue, 1f, 1f); // Set background color based on hue
-        }
-        else
-        {
-            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
-
-            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
-            {
-                if (!configHtmlColor.StartsWith("#"))
-                {
-                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
-                    {
-                        GUI.backgroundColor = uiColor;
-                    }
-                }
-            }
-            else
-            {
-                GUI.backgroundColor = uiColor;
-            }
-        }
+       UIHelper.ApplyUIColor();
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }

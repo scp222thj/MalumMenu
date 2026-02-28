@@ -21,10 +21,7 @@ public class TasksUI : MonoBehaviour
             alignment = TextAnchor.MiddleLeft
         };
 
-        if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
-        {
-            GUI.backgroundColor = configUIColor;
-        }
+        UIHelper.ApplyUIColor();
 
         _windowRect = GUI.Window(3, _windowRect, (GUI.WindowFunction)TasksWindow, "Tasks");
     }
