@@ -21,9 +21,28 @@ public class TasksUI : MonoBehaviour
             alignment = TextAnchor.MiddleLeft
         };
 
-        if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
+        if (CheatToggles.rgbMode)
         {
-            GUI.backgroundColor = configUIColor;
+            GUI.backgroundColor = Color.HSVToRGB(MenuUI.hue, 1f, 1f); // Set background color based on hue
+        }
+        else
+        {
+            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
+
+            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
+            {
+                if (!configHtmlColor.StartsWith("#"))
+                {
+                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
+                    {
+                        GUI.backgroundColor = uiColor;
+                    }
+                }
+            }
+            else
+            {
+                GUI.backgroundColor = uiColor;
+            }
         }
 
         _windowRect = GUI.Window(3, _windowRect, (GUI.WindowFunction)TasksWindow, "Tasks");
