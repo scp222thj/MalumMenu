@@ -143,6 +143,8 @@ public struct CheatToggles
     // Config
     public static bool reloadConfig;
     public static bool rgbMode;
+    public static int windowHeight = MenuUI.defaultWindowHeight;
+    public static int windowWidth = MenuUI.defaultWindowWidth;
 
     // Keybind Map: Toggle Name -> KeyCode (KeyCode.None == No Key)
     public static readonly Dictionary<string, KeyCode> Keybinds = new();
@@ -159,7 +161,8 @@ public struct CheatToggles
 
         foreach (var field in fields)
         {
-            if (field.FieldType != typeof(bool)) continue;
+            if (field.FieldType != typeof(bool) &&
+                field.FieldType !=typeof(int)) continue;
 
             ToggleFields[field.Name] = field;
             Keybinds[field.Name] = KeyCode.None;
@@ -239,9 +242,18 @@ public struct CheatToggles
             if (!ToggleFields.TryGetValue(name, out var field)) continue;
 
             // Loads whether the cheat is enabled or disabled by default
-            if (bool.TryParse(parts[1].Trim(), out var boolVal))
+            if (field.FieldType == typeof(bool))
             {
-                field.SetValue(null, boolVal);
+                if (bool.TryParse(parts[1].Trim(), out var boolVal))
+                {
+                    field.SetValue(null, boolVal);
+                }
+            }
+            else if (field.FieldType == typeof(int))
+            {
+                var valuePart = parts[1].Trim();
+                if (int.TryParse(valuePart, out var intVal))
+                    field.SetValue(null, intVal);
             }
 
             // Loads the keybind associated with each cheat
