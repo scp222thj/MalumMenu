@@ -13,7 +13,7 @@ public class DoorsUI : MonoBehaviour
     {
         if (!CheatToggles.showDoorsMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
-        MenuHelper.ApplyMenuColor();
+        UIHelper.ApplyUIColor();
 
         _windowRect = GUI.Window(2, _windowRect, (GUI.WindowFunction)DoorsWindow, "Doors");
     }
