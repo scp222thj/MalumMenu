@@ -14,29 +14,7 @@ public class ProtectUI : MonoBehaviour
     {
         if (!CheatToggles.showProtectMenu || !MenuUI.isGUIActive || MenuUI.isPanicked) return;
 
-        if (CheatToggles.rgbMode)
-        {
-            GUI.backgroundColor = Color.HSVToRGB(MenuUI.hue, 1f, 1f); // Set background color based on hue
-        }
-        else
-        {
-            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
-
-            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
-            {
-                if (!configHtmlColor.StartsWith("#"))
-                {
-                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
-                    {
-                        GUI.backgroundColor = uiColor;
-                    }
-                }
-            }
-            else
-            {
-                GUI.backgroundColor = uiColor;
-            }
-        }
+        GUI.backgroundColor = MenuUI.GetWindowColor(CheatToggles.rgbMode);
 
         _windowRect = GUI.Window(5, _windowRect, (GUI.WindowFunction)ProtectWindow, "Protect Players");
     }

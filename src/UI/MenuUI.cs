@@ -361,29 +361,7 @@ public class MenuUI : MonoBehaviour
 
         InitStyles();
 
-        if (CheatToggles.rgbMode)
-        {
-            GUI.backgroundColor = Color.HSVToRGB(hue, 1f, 1f); // Set background color based on hue
-        }
-        else
-        {
-            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
-
-            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
-            {
-                if (!configHtmlColor.StartsWith("#"))
-                {
-                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
-                    {
-                        GUI.backgroundColor = uiColor;
-                    }
-                }
-            }
-            else
-            {
-                GUI.backgroundColor = uiColor;
-            }
-        }
+        GUI.backgroundColor = GetWindowColor(CheatToggles.rgbMode);
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
@@ -529,5 +507,35 @@ public class MenuUI : MonoBehaviour
                 toggle.setState(newState);
             }
         }
+    }
+
+    // Get window color for menu UI
+    public static Color GetWindowColor(bool rgb)
+    {
+        Color windowCol = Color.white;
+        if (rgb)
+        {
+            windowCol = Color.HSVToRGB(MenuUI.hue, 1f, 1f); // Set background color based on hue
+        }
+        else
+        {
+            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
+
+            if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
+            {
+                if (!configHtmlColor.StartsWith("#"))
+                {
+                    if (ColorUtility.TryParseHtmlString("#" + configHtmlColor, out uiColor))
+                    {
+                        windowCol = uiColor;
+                    }
+                }
+            }
+            else
+            {
+                windowCol = uiColor;
+            }
+        }
+        return windowCol;
     }
 }
