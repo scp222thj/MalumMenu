@@ -247,7 +247,7 @@ public class MenuUI : MonoBehaviour
         groups.Add(new GroupInfo("Config", false,
             new List<ToggleInfo>() {
                 //new ToggleInfo(" Open Plugin Config", () => false, x => Utils.OpenConfigFile()),
-                new ToggleInfo(" Load Config on Gamelaunch", () => MalumMenu.loadProfileOnLaunch.Value, x => {MalumMenu.loadProfileOnLaunch.Value = x;}),
+                new ToggleInfo(" Load Profile on Launch", () => MalumMenu.loadProfileOnLaunch.Value, x => {MalumMenu.loadProfileOnLaunch.Value = x;}),
                 new ToggleInfo(" Reload Config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
                 new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
                 new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
