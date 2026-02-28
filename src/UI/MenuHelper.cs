@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace MalumMenu;
 
-public static class MenuHelper
+public static class UIHelper
 {
-    public static void ApplyMenuColor()
+    public static void ApplyUIColor()
     {
         
          if (CheatToggles.rgbMode)
