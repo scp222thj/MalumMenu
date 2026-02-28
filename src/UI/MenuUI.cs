@@ -7,12 +7,15 @@ namespace MalumMenu;
 public class MenuUI : MonoBehaviour
 {
     public List<GroupInfo> groups = new List<GroupInfo>();
-    private Rect windowRect = new(10, 10, 700, 550);
+    private Rect windowRect = new(10, 10, defaultWindowWidth, defaultWindowHeight);
     public static bool isGUIActive = false;
     public static bool isPanicked = false;
     public int selectedTab;
 
     // Styles
+    public static int defaultWindowHeight = 550; //Changed to a Default value for easy change in the Future
+    public static int defaultWindowWidth = 700;
+
     private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
@@ -258,6 +261,9 @@ public class MenuUI : MonoBehaviour
 
     public void InitStyles()
     {
+        windowRect.width = CheatToggles.windowWidth;
+        windowRect.height = CheatToggles.windowHeight;
+
         GUI.skin.toggle.fontSize = GUI.skin.button.fontSize = GUI.skin.label.fontSize = 15;
 
         tabButtonStyle = new GUIStyle(GUI.skin.button)
@@ -393,8 +399,18 @@ public class MenuUI : MonoBehaviour
         GUILayout.BeginVertical(GUILayout.Width(windowRect.width * 0.15f));
         for (var i = 0; i < groups.Count; i++)
         {
+            Color standartColor = GUI.backgroundColor;
+
+            if (selectedTab == i)
+            {
+                GUI.backgroundColor = new Color(0.2f, 0.2f, 0.2f);
+            }
+
             if (GUILayout.Button(groups[i].name, tabButtonStyle, GUILayout.Height(35)))
                 selectedTab = i;
+
+            GUI.backgroundColor = standartColor;
+
         }
         GUILayout.EndVertical();
 
@@ -475,6 +491,19 @@ public class MenuUI : MonoBehaviour
             } catch (NullReferenceException) {}
         }
 
+        if (group.name == "Config")
+        {
+            try
+            {
+                CheatToggles.windowWidth = Mathf.RoundToInt(GUILayout.HorizontalSlider(CheatToggles.windowWidth, 510, 1500, GUILayout.Width(250)));//510 is the Minimum so sidemenu text is not covered
+                GUILayout.Label($"Window Width: {CheatToggles.windowWidth} {(CheatToggles.windowWidth ==defaultWindowWidth ? "(Default)" : "")}");
+                CheatToggles.windowHeight = Mathf.RoundToInt(GUILayout.HorizontalSlider(CheatToggles.windowHeight, 435, 1000, GUILayout.Width(250)));
+                GUILayout.Label($"Window Height: {CheatToggles.windowHeight} {(CheatToggles.windowHeight ==defaultWindowHeight ? "(Default)" : "")}");
+
+            }
+            catch (NullReferenceException) { }
+        }
+
         var desiredLeft = GetLeftSubmenuCount(groupId);
         var leftCount = Mathf.Clamp(desiredLeft, 0, submenuCount);
 
@@ -513,7 +542,6 @@ public class MenuUI : MonoBehaviour
 
         GUILayout.EndHorizontal();
     }
-
     public void DrawToggles(List<ToggleInfo> toggles)
     {
         foreach (var toggle in toggles)
