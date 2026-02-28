@@ -542,6 +542,7 @@ public class MenuUI : MonoBehaviour
 
         GUILayout.EndHorizontal();
     }
+    
     public void DrawToggles(List<ToggleInfo> toggles)
     {
         foreach (var toggle in toggles)
