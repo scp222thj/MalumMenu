@@ -11,6 +11,7 @@ public class MenuUI : MonoBehaviour
     public static bool isGUIActive = false;
     public static bool isPanicked = false;
     public int selectedTab;
+    private bool isContentVisible = true;
 
     // Styles
     private GUIStyle tabButtonStyle;
@@ -250,9 +251,16 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Reload Config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
                 new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
                 new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
-                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x)
+                
             },
-            new List<SubmenuInfo>()
+            new List<SubmenuInfo>() {
+                new SubmenuInfo("User Interface", false,
+                    new List<ToggleInfo>() {
+                        new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x),
+                        new ToggleInfo(" Collapsible UI", () => CheatToggles.collapsibleUI, x => CheatToggles.collapsibleUI = x)
+                    }
+                )
+            }
         ));
     }
 
@@ -393,26 +401,56 @@ public class MenuUI : MonoBehaviour
         GUILayout.BeginVertical(GUILayout.Width(windowRect.width * 0.15f));
         for (var i = 0; i < groups.Count; i++)
         {
+            Color standartColor = GUI.backgroundColor;
+
+            if (selectedTab == i) //If the Selected Tab equals itself then it will collapse the sidebar
+            {
+                GUI.backgroundColor = new Color(0.2f, 0.2f, 0.2f);
+            }
             if (GUILayout.Button(groups[i].name, tabButtonStyle, GUILayout.Height(35)))
-                selectedTab = i;
+            {
+                if (selectedTab == i && CheatToggles.collapsibleUI)
+                {
+                    isContentVisible = !isContentVisible;
+                    if (isContentVisible) windowRect.width = 700;
+                }
+                else
+                {
+                    windowRect.width = 700;
+                    selectedTab = i;
+                    isContentVisible = true;
+                }
+            }
+            
+            GUI.backgroundColor = standartColor;
         }
+
         GUILayout.EndVertical();
 
-        // Vertical separator line + invisible space to create gap between the tab selector and the content
-        GUILayout.Box("", GUIStylePreset.Separator, GUILayout.Width(1f), GUILayout.ExpandHeight(true));
-        GUILayout.Space(10f);
-
-        // Right tab content and controls (85% width)
-        GUILayout.BeginVertical(GUILayout.Width(windowRect.width * 0.85f));
-
-        // Tab-specific content
-        if (selectedTab >= 0 && selectedTab < groups.Count)
+        // Renders the right side content if visible otherwise, collapses the window to its sidebar width.
+        if (isContentVisible && selectedTab >= 0 && selectedTab < groups.Count)
         {
-            GUILayout.Label(groups[selectedTab].name, tabTitleStyle);
-            DrawTabContents(selectedTab);
-        }
+            // Vertical separator line + invisible space to create gap between the tab selector and the content
+            GUILayout.Box("", GUIStylePreset.Separator, GUILayout.Width(1f), GUILayout.ExpandHeight(true));
+            GUILayout.Space(10f);
 
-        GUILayout.EndVertical();
+            // Right tab content and controls (85% width)
+            GUILayout.BeginVertical(GUILayout.Width(windowRect.width * 0.85f));
+
+            // Tab-specific content
+            if (selectedTab >= 0 && selectedTab < groups.Count)
+            {
+                GUILayout.Label(groups[selectedTab].name, tabTitleStyle);
+                DrawTabContents(selectedTab);
+            }
+
+            GUILayout.EndVertical();
+        }
+        else
+        {
+            isContentVisible = false;
+            windowRect.width = 130;
+        }
 
         GUILayout.EndHorizontal();
 
