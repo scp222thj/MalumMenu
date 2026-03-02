@@ -6,9 +6,7 @@ namespace MalumMenu;
 
 public class ConsoleUI : MonoBehaviour
 {
-    private static Vector2 _consoleScrollPosition = Vector2.zero;
-    private Vector2 _lobbyInfoScrollPosition;
-    private int activeTab = 0;
+    private static Vector2 _scrollPosition = Vector2.zero;
     private static List<string> _logEntries = new();
     private const int MaxLogEntries = 300;
     private Rect _windowRect = new(320, 10, 500, 300);
@@ -24,7 +22,7 @@ public class ConsoleUI : MonoBehaviour
         _logEntries.Add(message);
 
         // Scroll to the bottom
-        _consoleScrollPosition.y = float.MaxValue;
+        _scrollPosition.y = float.MaxValue;
     }
 
     private void OnGUI()
@@ -36,10 +34,7 @@ public class ConsoleUI : MonoBehaviour
             fontSize = 16
         };
 
-        if(ColorUtility.TryParseHtmlString(MalumMenu.menuHtmlColor.Value, out var configUIColor))
-        {
-            GUI.backgroundColor = configUIColor;
-        }
+        UIHelper.ApplyUIColor();
 
         _windowRect = GUI.Window(1, _windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
     }
@@ -48,29 +43,7 @@ public class ConsoleUI : MonoBehaviour
     {
         GUILayout.BeginVertical();
 
-        GUILayout.BeginHorizontal();
-        
-        if (GUILayout.Toggle(activeTab == 0, "Console", GUI.skin.button, GUILayout.Height(28)))
-            activeTab = 0;
-
-        if (GUILayout.Toggle(activeTab == 1, "Lobby Info", GUI.skin.button, GUILayout.Height(28)))
-            activeTab = 1;
-
-        GUILayout.EndHorizontal();
-
-        if (activeTab == 0)
-            DrawConsoleTab();
-        else if (activeTab == 1)
-            DrawLobbyInfoTab();
-
-        GUILayout.EndVertical();
-
-        GUI.DragWindow();
-    }
-
-    private void DrawConsoleTab()
-    {
-        _consoleScrollPosition = GUILayout.BeginScrollView(_consoleScrollPosition, false, true);
+        _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, false, true);
 
         foreach (var log in _logEntries)
         {
@@ -90,16 +63,11 @@ public class ConsoleUI : MonoBehaviour
         {
             GUIUtility.systemCopyBuffer = String.Join("\n", _logEntries.ToArray());
         }
-        
+
         GUILayout.EndHorizontal();
-    }
 
-    private void DrawLobbyInfoTab()
-    {
-        _lobbyInfoScrollPosition = GUILayout.BeginScrollView(_lobbyInfoScrollPosition, false, true);
+        GUILayout.EndVertical();
 
-        MalumMenu.lobbyInfoUI.DrawLobbyInfo();
-
-        GUILayout.EndScrollView();
+        GUI.DragWindow();
     }
 }
