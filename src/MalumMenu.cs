@@ -60,10 +60,10 @@ public partial class MalumMenu : BasePlugin
                                 true,
                                 "When enabled, the MalumMenu GUI will always be opened at the current mouse position");
 
-        autoLoadProfile = Config.Bind("MalumMenu.GUI",
+        autoLoadProfile = Config.Bind("MalumMenu.Profile",
                                 "AutoLoadProfile",
                                 false,
-                                "When enabled, it will automatically load your saved profile when the game starts");
+                                "When enabled, your saved keybind and toggle profile will be automatically loaded at game startup");
 
         // GuestMode config settings are commented out as the cheats are broken in latest updates
 
