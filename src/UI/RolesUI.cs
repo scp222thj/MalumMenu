@@ -1,4 +1,5 @@
 using UnityEngine;
+using AmongUs.GameOptions;
 
 namespace MalumMenu;
 
@@ -6,6 +7,35 @@ public class RolesUI : MonoBehaviour
 {
     private Vector2 _scrollPosition = Vector2.zero;
     private Rect _windowRect = new(320, 10, 450, 100);
+    private int _selectedRoleIndex = 0;
+    
+    private readonly string[] _roleOptions = new string[]
+    {
+        "Shapeshifter",
+        "Phantom",
+        "Viper",
+        "Impostor",
+        "Tracker",
+        "Noisemaker",
+        "Engineer",
+        "Scientist",
+        "Detective",
+        "Crewmate"
+    };
+    
+    private readonly RoleTypes[] _roleTypes = new RoleTypes[]
+    {
+        RoleTypes.Shapeshifter,
+        RoleTypes.Phantom,
+        RoleTypes.Viper,
+        RoleTypes.Impostor,
+        RoleTypes.Tracker,
+        RoleTypes.Noisemaker,
+        RoleTypes.Engineer,
+        RoleTypes.Scientist,
+        RoleTypes.Detective,
+        RoleTypes.Crewmate
+    };
 
     private void OnGUI()
     {
@@ -29,8 +59,16 @@ public class RolesUI : MonoBehaviour
             GUILayout.BeginHorizontal();
 
             GUILayout.Label($"<color=#{ColorUtility.ToHtmlStringRGB(player.Data.Color)}>{player.Data.PlayerName}</color>", GUILayout.Width(140f));
+            
+            GUILayout.BeginVertical();
+            
+            // Role selection dropdown
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"{CheatToggles.forcedRole}");
+            GUILayout.Label("Role:", GUILayout.Width(40f));
+            _selectedRoleIndex = GUILayout.SelectionGrid(_selectedRoleIndex, _roleOptions, 2, GUILayout.Width(200f));
+            GUILayout.EndHorizontal();
+            
+            GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
 
             if (GUILayout.Button("Reset", GUILayout.Width(80f)))
@@ -39,10 +77,13 @@ public class RolesUI : MonoBehaviour
             }
             if (GUILayout.Button("Assign", GUILayout.Width(80f)))
             {
+                CheatToggles.forcedRole = _roleTypes[_selectedRoleIndex];
                 CheatToggles.forceRole = true;
             }
 
             GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+            
             GUILayout.EndHorizontal();
         }
 
