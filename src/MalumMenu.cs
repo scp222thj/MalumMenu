@@ -20,7 +20,6 @@ public partial class MalumMenu : BasePlugin
 
     public static MenuUI menuUI;
     public static ConsoleUI consoleUI;
-    public static RolesUI rolesUI;
     public static DoorsUI doorsUI;
     public static TasksUI tasksUI;
     public static ProtectUI protectUI;
@@ -104,10 +103,15 @@ public partial class MalumMenu : BasePlugin
 
         Harmony.PatchAll();
 
+        // Load keybinds
+        KeybindManager.LoadKeybinds();
+
+        // Migrate legacy profile if it exists
+        CheatToggles.MigrateLegacyProfile();
+
         menuUI = AddComponent<MenuUI>();
 
         consoleUI = AddComponent<ConsoleUI>();
-        rolesUI = AddComponent<RolesUI>();
         doorsUI = AddComponent<DoorsUI>();
         tasksUI = AddComponent<TasksUI>();
         protectUI = AddComponent<ProtectUI>();
@@ -115,7 +119,7 @@ public partial class MalumMenu : BasePlugin
         keybindListener = AddComponent<CheatToggles.KeybindListener>();
         keybindListener.Plugin = this;
 
-        // Disables Telemetry (haven't fully tested if it works, but according to Unity docs it should)
+        // Disables Telemetry
         if (noTelemetry.Value)
         {
             Analytics.enabled = false;
@@ -126,7 +130,7 @@ public partial class MalumMenu : BasePlugin
         // Load profile on start
         if (autoLoadProfile.Value)
         {
-            CheatToggles.LoadTogglesFromProfile();
+            ProfileManager.LoadProfile("Default");
         }
 
         SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>

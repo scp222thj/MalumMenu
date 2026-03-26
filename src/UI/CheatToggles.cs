@@ -148,15 +148,14 @@ public struct CheatToggles
     public static bool reloadConfig;
     public static bool rgbMode;
 
-    // Keybind Map: Toggle Name -> KeyCode (KeyCode.None == No Key)
     public static readonly Dictionary<string, KeyCode> Keybinds = new();
 
-    // Internal Map for Reflection Access: Toggle Name -> FieldInfo
     private static readonly Dictionary<string, FieldInfo> ToggleFields = new();
 
-    public static readonly string ProfilePath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt");
+    private static readonly string LegacyProfilePath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt");
 
-    // Populate reflection map once at startup and initialize Keybinds with KeyCode.None
+    private static ManualLogSource Log => MalumMenu.Log;
+
     static CheatToggles()
     {
         var fields = typeof(CheatToggles).GetFields(BindingFlags.Static | BindingFlags.Public);
@@ -196,75 +195,38 @@ public struct CheatToggles
         }
     }
 
-    // Saves cheat toggles and their keybinds to MalumProfile.txt
-    // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void SaveTogglesToProfile()
     {
-        using var writer = new StreamWriter(ProfilePath);
-
-        writer.WriteLine("# MalumProfile");
-        writer.WriteLine("# Format: ToggleName = True/False = KeyCode.KEY");
-        writer.WriteLine("# - List of supported keycodes: https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html");
-        writer.WriteLine("# - Setting a keybind is optional. Use KeyCode.None to not set a keybind");
-        writer.WriteLine("# - Multiple toggles may have the same key, but multiple keys per toggle are NOT supported");
-        writer.WriteLine("# - Keybinds are only applied after loading this profile by pressing 'Load from Profile' in the Config menu");
-        writer.WriteLine();
-
-        foreach (var field in ToggleFields.Values)
-        {
-            Keybinds.TryGetValue(field.Name, out var key);  // If no key is set then write KeyCode.None
-            writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");
-        }
+        ProfileManager.SaveCurrentProfile();
     }
 
-    // Loads cheat toggles and their keybinds from MalumProfile.txt if the file is present
-    // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void LoadTogglesFromProfile()
     {
-        if (!File.Exists(ProfilePath)) return;
+        ProfileManager.LoadCurrentProfile();
+    }
 
-        using var reader = new StreamReader(ProfilePath);
+    public static void MigrateLegacyProfile()
+    {
+        if (!File.Exists(LegacyProfilePath)) return;
 
-        while (reader.ReadLine() is { } line)
+        if (ProfileManager.ProfileExists("Default")) return;
+
+        try
         {
-            // Skips empty lines
-            if (string.IsNullOrWhiteSpace(line)) continue;
+            var defaultProfilePath = Path.Combine(ProfileManager.ProfilesDirectory, "Default.txt");
+            File.Copy(LegacyProfilePath, defaultProfilePath, true);
 
-            // Skips lines that are commented out
-            line = line.Trim();
-            if (line.StartsWith("#")) continue;
-
-            // Extracts the three relevant config values for each remaining line
-            var parts = line.Split('=', 3);
-            if (parts.Length < 2) continue;
-
-            // Gets the cheat's FieldInfo from its name
-            var name = parts[0].Trim();
-            if (!ToggleFields.TryGetValue(name, out var field)) continue;
-
-            // Loads whether the cheat is enabled or disabled by default
-            if (bool.TryParse(parts[1].Trim(), out var boolVal))
+            var lines = new List<string>(File.ReadAllLines(defaultProfilePath));
+            if (lines.Count > 0 && lines[0].StartsWith("#"))
             {
-                field.SetValue(null, boolVal);
+                lines[0] = $"# MalumMenu Profile: Default";
+                lines.Insert(1, $"# Migrated from legacy profile on {DateTime.Now:yyyy-MM-dd HH:mm:ss}");
+                File.WriteAllLines(defaultProfilePath, lines);
             }
-
-            // Loads the keybind associated with each cheat
-            KeyCode key = KeyCode.None;
-            if (parts.Length >= 3)
-            {
-                var keyPart = parts[2].Trim();
-                if (keyPart.StartsWith("KeyCode."))
-                {
-                    keyPart = keyPart["KeyCode.".Length..];
-                }
-
-                if (!string.IsNullOrEmpty(keyPart) && System.Enum.TryParse<KeyCode>(keyPart, true, out var parsed))
-                {
-                    key = parsed;
-                }
-            }
-
-            Keybinds[name] = key;
+        }
+        catch (Exception ex)
+        {
+            Log.LogError($"Failed to migrate legacy profile: {ex.Message}");
         }
     }
 
