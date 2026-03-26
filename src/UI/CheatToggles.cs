@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using AmongUs.GameOptions;
 using UnityEngine;
+using BepInEx.Logging;
 
 namespace MalumMenu;
 
@@ -119,7 +121,6 @@ public struct CheatToggles
     public static bool voteImmune;
     public static bool forceRole;
     public static RoleTypes? forcedRole;
-    public static bool showRolesMenu;
     public static bool skipMeeting;
     public static bool callMeeting;
     public static bool forceStartGame;
@@ -148,14 +149,19 @@ public struct CheatToggles
     public static bool reloadConfig;
     public static bool rgbMode;
 
+    // Keybind Map: Toggle Name -> KeyCode (KeyCode.None == No Key)
     public static readonly Dictionary<string, KeyCode> Keybinds = new();
 
+    // Internal Map for Reflection Access: Toggle Name -> FieldInfo
     private static readonly Dictionary<string, FieldInfo> ToggleFields = new();
 
+    // Legacy profile path for migration
     private static readonly string LegacyProfilePath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt");
-
+    
+    // Reference to plugin logger
     private static ManualLogSource Log => MalumMenu.Log;
 
+    // Populate reflection map once at startup and initialize Keybinds with KeyCode.None
     static CheatToggles()
     {
         var fields = typeof(CheatToggles).GetFields(BindingFlags.Static | BindingFlags.Public);
@@ -195,27 +201,35 @@ public struct CheatToggles
         }
     }
 
+    // Saves cheat toggles and their keybinds to the current profile
+    // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void SaveTogglesToProfile()
     {
         ProfileManager.SaveCurrentProfile();
     }
 
+    // Loads cheat toggles and their keybinds from the current profile
+    // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void LoadTogglesFromProfile()
     {
         ProfileManager.LoadCurrentProfile();
     }
 
+    // Migrates legacy profile (MalumProfile.txt) to new profile system
     public static void MigrateLegacyProfile()
     {
         if (!File.Exists(LegacyProfilePath)) return;
-
+        
+        // Check if Default profile already exists
         if (ProfileManager.ProfileExists("Default")) return;
-
+        
         try
         {
+            // Copy legacy profile to new Default profile
             var defaultProfilePath = Path.Combine(ProfileManager.ProfilesDirectory, "Default.txt");
             File.Copy(LegacyProfilePath, defaultProfilePath, true);
-
+            
+            // Update header in migrated profile
             var lines = new List<string>(File.ReadAllLines(defaultProfilePath));
             if (lines.Count > 0 && lines[0].StartsWith("#"))
             {
