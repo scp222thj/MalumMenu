@@ -17,6 +17,13 @@ public class MenuUI : MonoBehaviour
     public GUIStyle tabTitleStyle;
     public GUIStyle tabSubtitleStyle;
     public static float hue; // For RGB mode
+    
+    // Profile management
+    private bool showProfileDropdown = false;
+    private List<string> availableProfiles = new();
+    private bool showDeleteList = false;
+    private Vector2 loadProfileScrollPos = Vector2.zero;
+    private Vector2 deleteProfileScrollPos = Vector2.zero;
 
     // Create all groups (buttons) and their toggles on start
     private void Start()
@@ -147,7 +154,8 @@ public class MenuUI : MonoBehaviour
                         new ToggleInfo(" Show Doors Menu", () => CheatToggles.showDoorsMenu, x => CheatToggles.showDoorsMenu = x),
                         new ToggleInfo(" Mushroom Mixup", () => CheatToggles.mushSab, x => CheatToggles.mushSab = x),
                         new ToggleInfo(" Trigger Spores", () => CheatToggles.mushSpore, x => CheatToggles.mushSpore = x),
-                        new ToggleInfo(" Open Sabotage Map", () => CheatToggles.sabotageMap, x => CheatToggles.sabotageMap = x)
+                        new ToggleInfo(" Open Sabotage Map", () => CheatToggles.sabotageMap, x => CheatToggles.sabotageMap = x),
+                        new ToggleInfo(" No Sabotage Cooldown", () => CheatToggles.noSabotageCooldown, x => CheatToggles.noSabotageCooldown = x)
                     }
                 ),
                 new SubmenuInfo("Vents", false,
@@ -193,7 +201,6 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Kill Anyone", () => CheatToggles.killAnyone, x => CheatToggles.killAnyone = x),
                 new ToggleInfo(" No Kill Cooldown", () => CheatToggles.zeroKillCd, x => CheatToggles.zeroKillCd = x),
                 new ToggleInfo(" Show Protect Menu", () => CheatToggles.showProtectMenu, x => CheatToggles.showProtectMenu = x),
-                //new ToggleInfo(" Force Role", () => CheatToggles.showRolesMenu, x => CheatToggles.showRolesMenu = x),
                 //new ToggleInfo(" No Options Limits", () => CheatToggles.noOptionsLimits, x => CheatToggles.noOptionsLimits = x)
             },
             new List<SubmenuInfo>() {
@@ -254,14 +261,14 @@ public class MenuUI : MonoBehaviour
 
         groups.Add(new GroupInfo("Config", false,
             new List<ToggleInfo>() {
-                //new ToggleInfo(" Open Plugin Config", () => false, x => Utils.OpenConfigFile()),
                 new ToggleInfo(" Reload Config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
-                new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
-                new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
                 new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x)
             },
             new List<SubmenuInfo>()
         ));
+        
+        // Refresh profiles list on start
+        RefreshProfiles();
     }
 
     public void InitStyles()
@@ -328,8 +335,8 @@ public class MenuUI : MonoBehaviour
         var stamp = ModManager.Instance.ModStamp;
         if (stamp) stamp.enabled = !(MalumMenu.inStealthMode || MalumMenu.isPanicked);
 
-        // Passive cheats are always on to avoid problems
-        // CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
+        // Check keybinds
+        KeybindManager.CheckAllKeybinds(groups);
 
         // Some cheats only work if the LocalPlayer exists, so they are turned off if it does not
         if(!Utils.isPlayer)
@@ -350,12 +357,12 @@ public class MenuUI : MonoBehaviour
         // Some cheats only work if the ship exists, so they are turned off if it does not
         if(!Utils.isShip)
         {
-            CheatToggles.fakeRevive = CheatToggles.sabotageMap = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.ejectPlayer = CheatToggles.closeMeeting = CheatToggles.skipMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.closeAllDoors = CheatToggles.openAllDoors = CheatToggles.spamCloseAllDoors = CheatToggles.spamOpenAllDoors = CheatToggles.autoOpenDoorsOnUse = CheatToggles.mushSpore = CheatToggles.animShields = CheatToggles.animAsteroids = CheatToggles.animEmptyGarbage = CheatToggles.animScan = CheatToggles.animCamsInUse = false;
+            CheatToggles.fakeRevive = CheatToggles.sabotageMap = CheatToggles.unfixableLights = CheatToggles.completeMyTasks = CheatToggles.kickVents = CheatToggles.reportBody = CheatToggles.ejectPlayer = CheatToggles.closeMeeting = CheatToggles.skipMeeting = CheatToggles.reactorSab = CheatToggles.oxygenSab = CheatToggles.commsSab = CheatToggles.elecSab = CheatToggles.mushSab = CheatToggles.noSabotageCooldown = CheatToggles.closeAllDoors = CheatToggles.openAllDoors = CheatToggles.spamCloseAllDoors = CheatToggles.spamOpenAllDoors = CheatToggles.autoOpenDoorsOnUse = CheatToggles.mushSpore = CheatToggles.animShields = CheatToggles.animAsteroids = CheatToggles.animEmptyGarbage = CheatToggles.animScan = CheatToggles.animCamsInUse = false;
         }
 
         if(!Utils.isHost && !Utils.isFreePlay)
         {
-            CheatToggles.skipMeeting = CheatToggles.voteImmune = CheatToggles.ejectPlayer = CheatToggles.forceStartGame = CheatToggles.noGameEnd = CheatToggles.killAll = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.killAnyone = CheatToggles.killPlayer = CheatToggles.telekillPlayer = CheatToggles.killVanished = CheatToggles.zeroKillCd = CheatToggles.showProtectMenu = CheatToggles.showRolesMenu = CheatToggles.noOptionsLimits = false;
+            CheatToggles.skipMeeting = CheatToggles.voteImmune = CheatToggles.ejectPlayer = CheatToggles.forceStartGame = CheatToggles.noGameEnd = CheatToggles.killAll = CheatToggles.killAllCrew = CheatToggles.killAllImps = CheatToggles.killAnyone = CheatToggles.killPlayer = CheatToggles.telekillPlayer = CheatToggles.killVanished = CheatToggles.zeroKillCd = CheatToggles.showProtectMenu = CheatToggles.noOptionsLimits = false;
         }
     }
 
@@ -368,6 +375,12 @@ public class MenuUI : MonoBehaviour
         UIHelpers.ApplyUIColor();
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        
+        // Draw keybind setting window if waiting for input
+        KeybindManager.DrawKeybindWindow(groups);
+        
+        // Draw notifications
+        NotificationManager.OnGUI();
     }
 
     public void WindowFunction(int windowID)
@@ -460,6 +473,101 @@ public class MenuUI : MonoBehaviour
                 }
             } catch (NullReferenceException) {}
         }
+        
+        // Profile management UI for Config tab
+        if (group.name == "Config")
+        {
+            GUILayout.Space(20f);
+            GUILayout.Box("Profile Management", GUILayout.Width(250f));
+            GUILayout.Space(10f);
+
+            // Current profile display
+            GUILayout.Label($"Current Profile: {ProfileManager.CurrentProfileName}", tabSubtitleStyle);
+            GUILayout.Space(10f);
+
+            // Profile dropdown for loading
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Load Profile:", GUILayout.Width(100f));
+
+            if (GUILayout.Button(ProfileManager.CurrentProfileName, GUILayout.Width(150f)))
+            {
+                showProfileDropdown = !showProfileDropdown;
+                RefreshProfiles();
+            }
+            GUILayout.EndHorizontal();
+
+            if (showProfileDropdown)
+            {
+                GUILayout.BeginVertical("box");
+                loadProfileScrollPos = GUILayout.BeginScrollView(loadProfileScrollPos, false, false, GUILayout.Height(150f));
+                foreach (var profile in availableProfiles)
+                {
+                    if (GUILayout.Button(profile))
+                    {
+                        ProfileManager.LoadProfile(profile);
+                        showProfileDropdown = false;
+                    }
+                }
+                GUILayout.EndScrollView();
+                GUILayout.EndVertical();
+            }
+
+            GUILayout.Space(15f);
+
+            // Save to current profile button
+            if (GUILayout.Button("Save to Current Profile", GUILayout.Width(200f)))
+            {
+                CheatToggles.SaveTogglesToProfile();
+            }
+
+            GUILayout.Space(10f);
+
+            // Add new profile
+            GUILayout.Label("Add New Profile:", tabSubtitleStyle);
+            if (GUILayout.Button("Create New Profile"))
+            {
+                // Find next available profile number
+                string newProfileName = "Profile_1";
+                int num = 1;
+                while (ProfileManager.ProfileExists(newProfileName))
+                {
+                    num++;
+                    newProfileName = $"Profile_{num}";
+                }
+                ProfileManager.CreateNewProfile(newProfileName);
+                RefreshProfiles();
+            }
+
+            GUILayout.Space(15f);
+
+            // Delete profile
+            GUILayout.Label("Delete Profile:", tabSubtitleStyle);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Select to Delete", GUILayout.Width(150f)))
+            {
+                showDeleteList = !showDeleteList;
+                showProfileDropdown = false;
+            }
+            GUILayout.EndHorizontal();
+
+            if (showDeleteList)
+            {
+                GUILayout.BeginVertical("box");
+                deleteProfileScrollPos = GUILayout.BeginScrollView(deleteProfileScrollPos, false, false, GUILayout.Height(150f));
+                foreach (var profile in availableProfiles)
+                {
+                    if (profile == "Default") continue; // Don't allow deleting Default profile
+
+                    if (GUILayout.Button($"Delete '{profile}'"))
+                    {
+                        ProfileManager.DeleteProfile(profile);
+                        RefreshProfiles();
+                    }
+                }
+                GUILayout.EndScrollView();
+                GUILayout.EndVertical();
+            }
+        }
 
         var desiredLeft = GetLeftSubmenuCount(groupId);
         var leftCount = Mathf.Clamp(desiredLeft, 0, submenuCount);
@@ -505,12 +613,35 @@ public class MenuUI : MonoBehaviour
         foreach (var toggle in toggles)
         {
             var currentState = toggle.getState();
-            var newState = GUILayout.Toggle(currentState, toggle.label);
+
+            // Get keybind for display
+            var keybind = KeybindManager.GetKeybind(toggle.label.Trim());
+            string toggleLabel = toggle.label;
+            if (keybind.HasValue && keybind.Value != KeyCode.None)
+            {
+                toggleLabel = $"{toggle.label} [{keybind.Value}]";
+            }
+
+            var toggleRect = GUILayoutUtility.GetRect(new GUIContent(toggleLabel), GUI.skin.toggle);
+
+            // Handle right-click for keybind setting (on mouse up to avoid immediate trigger)
+            if (Event.current.type == EventType.MouseUp && toggleRect.Contains(Event.current.mousePosition) && Event.current.button == 1)
+            {
+                KeybindManager.StartWaitingForToggle(toggle.label.Trim());
+                Event.current.Use();
+            }
+
+            var newState = GUI.Toggle(toggleRect, currentState, toggleLabel);
 
             if (newState != currentState)
             {
                 toggle.setState(newState);
             }
         }
+    }
+    
+    private void RefreshProfiles()
+    {
+        availableProfiles = ProfileManager.GetAvailableProfiles();
     }
 }
