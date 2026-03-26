@@ -12,6 +12,9 @@ public class MenuUI : MonoBehaviour
     public static bool isGUIActive = false;
     public int selectedTab;
 
+    // Level Spoof UI
+    public LevelSpoofUI levelSpoofUI { get; private set; }
+
     // Styles
     private GUIStyle tabButtonStyle;
     public GUIStyle tabTitleStyle;
@@ -21,6 +24,9 @@ public class MenuUI : MonoBehaviour
     // Create all groups (buttons) and their toggles on start
     private void Start()
     {
+        // Initialize Level Spoof UI
+        levelSpoofUI = gameObject.AddComponent<LevelSpoofUI>();
+
         groups.Add(new GroupInfo("Player", false,
             new List<ToggleInfo>() {
                 new ToggleInfo(" NoClip", () => CheatToggles.noClip, x => CheatToggles.noClip = x),
@@ -258,7 +264,8 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Reload Config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
                 new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
                 new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
-                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x)
+                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x),
+                new ToggleInfo(" Level Spoof", () => false, x => levelSpoofUI?.ToggleMenu())
             },
             new List<SubmenuInfo>()
         ));
