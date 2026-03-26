@@ -26,7 +26,7 @@ public partial class MalumMenu : BasePlugin
     public static ProtectUI protectUI;
     public static CheatToggles.KeybindListener keybindListener;
 
-    public static string malumVersion = "3.0.1";
+    public static string malumVersion = "3.0.2";
     public static List<string> supportedAU = new List<string> { "2026.2.24", "2026.3.17" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
@@ -82,7 +82,7 @@ public partial class MalumMenu : BasePlugin
         spoofLevel = Config.Bind("MalumMenu.Spoofing",
                                 "Level",
                                 "",
-                                "A custom player level to display to others in online games to hide your actual platform. IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work");
+                                "A custom player level to display to others in online games to hide your actual platform. IMPORTANT: Custom levels can only be within 1 and 100001. Decimal numbers will not work");
 
         spoofPlatform = Config.Bind("MalumMenu.Spoofing",
                                 "Platform",

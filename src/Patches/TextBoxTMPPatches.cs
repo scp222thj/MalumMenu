@@ -41,7 +41,7 @@ public static class TextBoxTMP_IsCharAllowed
 {
     private static int _currentCharPos = 0;
 
-    // Prefix patch of TextBoxTMP.IsCharAllowed to allow all characters
+    // Prefix patch of TextBoxTMP.IsCharAllowed to unlock extra characters
     public static bool Prefix(TextBoxTMP __instance, ref bool __result)
     {
         // If user is writing through IME composition, then always allow the inputted characters
@@ -54,13 +54,17 @@ public static class TextBoxTMP_IsCharAllowed
             return false;
         }
 
-        // Reconstruct the string being processed by TextBoxTMP.SetText
-        // Each individual character in this string is being checked in a foreach loop
-
         // If the user pasted text, read from clipboard. Otherwise use typed input
         var input = Utils.isPastingInput ? GUIUtility.systemCopyBuffer : Input.inputString;
 
-        if (input.Length == 0) return true;
+        // Allow all characters if there is no user input, as validation is not needed then
+        if (input.Length == 0)
+        {
+            __result = true;
+            return false;
+        }
+
+        // Reconstruct the full string being processed by TextBoxTMP.SetText
 
         string currentText = __instance.text ?? string.Empty;
 
@@ -69,11 +73,13 @@ public static class TextBoxTMP_IsCharAllowed
         string text = currentText.Insert(caretPos, input);
 
         // Get character that is currently being checked by keeping track
-        // of each TextBoxTMP.IsCharAllowed call made within the foreach loop
+        // of each TextBoxTMP.IsCharAllowed call made within TextBoxTMP.SetText foreach loop
+
+        _currentCharPos = Mathf.Clamp(_currentCharPos, 0, text.Length - 1);
 
         char currentChar = text[_currentCharPos];
 
-        if (_currentCharPos == text.Length - 1)
+        if (_currentCharPos >= text.Length - 1)
         {
             _currentCharPos = 0; // Reset position when loop finishes
         }
