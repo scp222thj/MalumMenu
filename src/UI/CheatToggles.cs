@@ -105,6 +105,7 @@ public struct CheatToggles
     public static bool oxygenSab;
     public static bool mushSab;
     public static bool mushSpore;
+    public static bool noSabotageCooldown;
     public static bool showDoorsMenu;
 
     // Vents
