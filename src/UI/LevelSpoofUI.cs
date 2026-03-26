@@ -54,7 +54,7 @@ public static class LevelSpoofUI
         if (!_showMenu) return;
 
         UIHelpers.ApplyUIColor();
-        _windowRect = GUI.Window(100, _windowRect, (GUI.WindowFunction)LevelSpoofWindow, "★ Level Spoof ★");
+        _windowRect = GUI.Window(100, _windowRect, (GUI.WindowFunction)LevelSpoofWindow, "Level Spoof");
     }
 
     private static void LevelSpoofWindow(int windowID)
