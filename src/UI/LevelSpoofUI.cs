@@ -3,44 +3,53 @@ using UnityEngine;
 
 namespace MalumMenu;
 
-public class LevelSpoofUI : MonoBehaviour
+public static class LevelSpoofUI
 {
-    private Rect _windowRect = new Rect(400, 200, 400, 250);
-    private string _levelInput = "";
-    private bool _showMenu = false;
-    private string _currentLevel = "";
-    private string _message = "";
-    private Color _messageColor = Color.white;
+    private static Rect _windowRect = new Rect(400, 200, 450, 170);
+    private static bool _showMenu = false;
+    private static uint _currentLevel = 0;
+    private static float _sliderValue = 0f;
+    private static bool _isDragging = false;
+    
+    private const uint MAX_LEVEL = 100000;
+    private const uint MIN_LEVEL = 1;
 
-    public static LevelSpoofUI Instance { get; private set; }
-
-    private void Awake()
-    {
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    public void ToggleMenu()
+    public static void ToggleMenu()
     {
         _showMenu = !_showMenu;
         if (_showMenu)
         {
-            _levelInput = MalumMenu.spoofLevel.Value;
             _currentLevel = GetCurrentLevel();
-            _message = "";
+            _sliderValue = LevelToSlider(_currentLevel);
         }
     }
 
-    private string GetCurrentLevel()
+    private static uint GetCurrentLevel()
     {
         if (AmongUsClient.Instance != null && PlayerControl.LocalPlayer != null)
         {
-            return PlayerControl.LocalPlayer.Data.PlayerLevel.ToString();
+            return PlayerControl.LocalPlayer.Data.PlayerLevel;
         }
-        return "N/A";
+        return 0;
     }
 
-    private void OnGUI()
+    private static float LevelToSlider(uint level)
+    {
+        if (level <= MIN_LEVEL) return 0f;
+        if (level >= MAX_LEVEL) return 100f;
+        return Mathf.Log10(level) / Mathf.Log10(MAX_LEVEL) * 100f;
+    }
+
+    private static uint SliderToLevel(float slider)
+    {
+        if (slider <= 0f) return MIN_LEVEL;
+        if (slider >= 100f) return MAX_LEVEL;
+        uint level = (uint)Mathf.Round(Mathf.Pow(10f, slider / 100f * Mathf.Log10(MAX_LEVEL)));
+        if (level > 1) level -= 1;
+        return level;
+    }
+
+    public static void OnGUI()
     {
         if (!_showMenu) return;
 
@@ -48,90 +57,106 @@ public class LevelSpoofUI : MonoBehaviour
         _windowRect = GUI.Window(100, _windowRect, (GUI.WindowFunction)LevelSpoofWindow, "★ Level Spoof ★");
     }
 
-    private void LevelSpoofWindow(int windowID)
+    private static void LevelSpoofWindow(int windowID)
     {
         GUILayout.BeginVertical();
 
+        // Level display - centered
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Current Level:", GUILayout.Width(100f));
-        GUILayout.Label(_currentLevel, GUILayout.Width(50f));
+        GUILayout.FlexibleSpace();
+        GUILayout.Label("Level: " + _currentLevel);
+        GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
 
         GUILayout.Space(10f);
 
-        GUIStyle warningStyle = new GUIStyle(GUI.skin.label)
-        {
-            wordWrap = true,
-            fontSize = 10
-        };
-        warningStyle.normal.textColor = Color.yellow;
-        GUILayout.Label("IMPORTANT: Custom levels can only be within 0 and 4294967295. Decimal numbers will not work", warningStyle);
-
-        GUILayout.Space(10f);
-
+        // Slider row - labels and slider perfectly aligned
         GUILayout.BeginHorizontal();
-        GUILayout.Label("New Level:", GUILayout.Width(100f));
-        _levelInput = GUILayout.TextField(_levelInput, GUILayout.Width(200f));
+        GUILayout.FlexibleSpace();
+        
+        GUIStyle labelStyle = new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter };
+        GUILayout.Label("1", labelStyle, GUILayout.Width(30f), GUILayout.Height(20f));
+        
+        // Check if user is dragging the slider
+        Rect sliderRect = GUILayoutUtility.GetRect(300f, 20f);
+        float newSliderValue = GUI.HorizontalSlider(sliderRect, _sliderValue, 0f, 100f);
+        
+        // Detect if slider is being dragged
+        if (Event.current.type == EventType.MouseDown && sliderRect.Contains(Event.current.mousePosition))
+        {
+            _isDragging = true;
+        }
+        if (Event.current.type == EventType.MouseUp)
+        {
+            _isDragging = false;
+        }
+        
+        GUILayout.Label("100K", labelStyle, GUILayout.Width(35f), GUILayout.Height(20f));
+        
+        GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
 
+        // Update level when slider changes (only when not dragging to prevent feedback loop)
+        if (!_isDragging && newSliderValue != _sliderValue)
+        {
+            _sliderValue = newSliderValue;
+            uint newLevel = SliderToLevel(_sliderValue);
+            SetLevel(newLevel);
+        }
+        else if (_isDragging)
+        {
+            _sliderValue = newSliderValue;
+        }
+
         GUILayout.Space(10f);
 
-        if (!string.IsNullOrEmpty(_message))
-        {
-            GUIStyle messageStyle = new GUIStyle(GUI.skin.label) { fontSize = 11 };
-            messageStyle.normal.textColor = _messageColor;
-            GUILayout.Label(_message, messageStyle);
-            GUILayout.Space(5f);
-        }
-
+        // Preset buttons - centered
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Apply", GUILayout.Width(100f)))
-        {
-            ApplyLevel();
-        }
-        if (GUILayout.Button("Reset", GUILayout.Width(100f)))
-        {
-            ResetLevel();
-        }
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("1", GUILayout.Width(40f), GUILayout.Height(20f))) SetLevel(1);
+        if (GUILayout.Button("100", GUILayout.Width(40f), GUILayout.Height(20f))) SetLevel(100);
+        if (GUILayout.Button("1K", GUILayout.Width(40f), GUILayout.Height(20f))) SetLevel(1000);
+        if (GUILayout.Button("10K", GUILayout.Width(40f), GUILayout.Height(20f))) SetLevel(10000);
+        if (GUILayout.Button("50K", GUILayout.Width(40f), GUILayout.Height(20f))) SetLevel(50000);
+        if (GUILayout.Button("100K", GUILayout.Width(40f), GUILayout.Height(20f))) SetLevel(100000);
+        GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
 
         GUILayout.Space(5f);
-        if (GUILayout.Button("Close", GUILayout.Width(80f)))
-        {
-            _showMenu = false;
-        }
+
+        // Bottom buttons - centered
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("Reset", GUILayout.Width(70f), GUILayout.Height(20f))) ResetLevel();
+        GUILayout.Space(20f);
+        if (GUILayout.Button("Close", GUILayout.Width(50f), GUILayout.Height(20f))) _showMenu = false;
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
 
         GUILayout.EndVertical();
         GUI.DragWindow();
     }
 
-    private void ApplyLevel()
+    private static void SetLevel(uint level)
     {
-        if (uint.TryParse(_levelInput, out uint level))
-        {
-            MalumMenu.spoofLevel.Value = _levelInput;
-            SpoofLevel(level);
-            _message = $"✓ Level set to {level}";
-            _messageColor = Color.green;
-            _currentLevel = level.ToString();
-        }
-        else
-        {
-            _message = "✗ Invalid level. Enter a whole number (0-4294967295)";
-            _messageColor = Color.red;
-        }
+        if (level < MIN_LEVEL) level = MIN_LEVEL;
+        if (level > MAX_LEVEL) level = MAX_LEVEL;
+        
+        _currentLevel = level;
+        // Don't update slider value here to prevent feedback loop
+        MalumMenu.spoofLevel.Value = level.ToString();
+        SpoofLevel(level);
     }
 
-    private void ResetLevel()
+    private static void ResetLevel()
     {
         MalumMenu.spoofLevel.Value = "";
-        _levelInput = "";
-        _message = "✓ Level spoof reset";
-        _messageColor = Color.green;
         _currentLevel = GetCurrentLevel();
+        _sliderValue = LevelToSlider(_currentLevel);
+        SpoofLevel(_currentLevel);
     }
 
-    private void SpoofLevel(uint level)
+    private static void SpoofLevel(uint level)
     {
         if (PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.Data != null)
         {
