@@ -258,7 +258,8 @@ public class MenuUI : MonoBehaviour
                 new ToggleInfo(" Reload Config", () => CheatToggles.reloadConfig, x => CheatToggles.reloadConfig = x),
                 new ToggleInfo(" Save to Profile", () => false, x => CheatToggles.SaveTogglesToProfile()),
                 new ToggleInfo(" Load from Profile", () => false, x => CheatToggles.LoadTogglesFromProfile()),
-                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x)
+                new ToggleInfo(" RGB Mode", () => CheatToggles.rgbMode, x => CheatToggles.rgbMode = x),
+                new ToggleInfo(" Level Spoof", () => false, x => LevelSpoofUI.ToggleMenu())
             },
             new List<SubmenuInfo>()
         ));
@@ -368,6 +369,9 @@ public class MenuUI : MonoBehaviour
         UIHelpers.ApplyUIColor();
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        
+        // Draw level spoof menu
+        LevelSpoofUI.OnGUI();
     }
 
     public void WindowFunction(int windowID)
