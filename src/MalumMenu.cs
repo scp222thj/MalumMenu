@@ -104,6 +104,9 @@ public partial class MalumMenu : BasePlugin
 
         Harmony.PatchAll();
 
+        // Load keybinds
+        KeybindManager.LoadKeybinds();
+
         menuUI = AddComponent<MenuUI>();
 
         consoleUI = AddComponent<ConsoleUI>();

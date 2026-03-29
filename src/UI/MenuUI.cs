@@ -335,8 +335,8 @@ public class MenuUI : MonoBehaviour
         var stamp = ModManager.Instance.ModStamp;
         if (stamp) stamp.enabled = !(MalumMenu.inStealthMode || MalumMenu.isPanicked);
 
-        // Passive cheats are always on to avoid problems
-        // CheatToggles.unlockFeatures = CheatToggles.freeCosmetics = CheatToggles.avoidBans = true;
+        // Check keybinds
+        KeybindManager.CheckAllKeybinds(groups);
 
         // Some cheats only work if the LocalPlayer exists, so they are turned off if it does not
         if(!Utils.isPlayer)
@@ -375,6 +375,12 @@ public class MenuUI : MonoBehaviour
         UIHelpers.ApplyUIColor();
 
         windowRect = GUI.Window(0, windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        
+        // Draw keybind setting window if waiting for input
+        KeybindManager.DrawKeybindWindow(groups);
+        
+        // Draw notifications
+        NotificationManager.OnGUI();
     }
 
     public void WindowFunction(int windowID)
@@ -523,7 +529,25 @@ public class MenuUI : MonoBehaviour
         foreach (var toggle in toggles)
         {
             var currentState = toggle.getState();
-            var newState = GUILayout.Toggle(currentState, toggle.label);
+            
+            // Get keybind for display
+            var keybind = KeybindManager.GetKeybind(toggle.label.Trim());
+            string toggleLabel = toggle.label;
+            if (keybind.HasValue && keybind.Value != KeyCode.None)
+            {
+                toggleLabel = $"{toggle.label} [{keybind.Value}]";
+            }
+            
+            var toggleRect = GUILayoutUtility.GetRect(new GUIContent(toggleLabel), GUI.skin.toggle);
+            
+            // Handle right-click for keybind setting (on mouse up to avoid immediate trigger)
+            if (Event.current.type == EventType.MouseUp && toggleRect.Contains(Event.current.mousePosition) && Event.current.button == 1)
+            {
+                KeybindManager.StartWaitingForToggle(toggle.label.Trim());
+                Event.current.Use();
+            }
+            
+            var newState = GUI.Toggle(toggleRect, currentState, toggleLabel);
 
             if (newState != currentState)
             {
