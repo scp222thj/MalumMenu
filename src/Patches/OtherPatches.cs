@@ -268,18 +268,33 @@ public static class MushroomDoorSabotageMinigame_Begin
     }
 }
 
-// NEEDS FIX : Blocks usage of consoles to which impostor
-// has access to (like those to fix sabotages) when cheat is disabled
+[HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
+public static class Console_CanUse
+{
+    // Prefix patch of Console.CanUse to allow impostors to interact with task consoles
+    public static void Prefix(Console __instance)
+    {
+        if (CheatToggles.fakeTasks)
+            __instance.AllowImpostor = true;
+    }
 
-// [HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
-// public static class Console_CanUse
-// {
-//     // Prefix patch of Console.CanUse to allow impostors to do tasks
-//     public static void Prefix(Console __instance)
-//     {
-//         __instance.AllowImpostor = CheatToggles.impostorTasks;
-//     }
-// }
+    // Postfix patch of Console.CanUse to allow any player to use any task console when in range
+    // Note: Console.CanUse has signature (GameData.PlayerInfo, out bool canUse, out bool couldUse).
+    // Harmony patches use 'ref' to modify 'out' parameters in Postfix methods.
+    public static void Postfix(Console __instance, ref float __result, ref bool canUse, ref bool couldUse)
+    {
+        if (!CheatToggles.fakeTasks) return;
+
+        float distance = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), __instance.transform.position);
+
+        if (distance <= __instance.UsableDistance)
+        {
+            canUse = true;
+            couldUse = true;
+            __result = distance;
+        }
+    }
+}
 
 [HarmonyPatch(typeof(IntroCutscene), "CoBegin")]
 public static class IntroCutscene_CoBegin

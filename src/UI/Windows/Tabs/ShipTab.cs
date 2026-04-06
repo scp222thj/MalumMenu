@@ -31,6 +31,8 @@ public class ShipTab : ITab
 
     private void DrawGeneral()
     {
+        CheatToggles.fakeTasks = GUILayout.Toggle(CheatToggles.fakeTasks, " Fake Tasks");
+
         CheatToggles.unfixableLights = GUILayout.Toggle(CheatToggles.unfixableLights, " Unfixable Lights");
 
         // CheatToggles.reportBody = GUILayout.Toggle(CheatToggles.reportBody, " Report Body");
