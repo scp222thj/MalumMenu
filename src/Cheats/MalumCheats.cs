@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using AmongUs.GameOptions;
 using AmongUs.InnerNet.GameDataMessages;
+using InnerNet;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
@@ -81,6 +82,57 @@ public static class MalumCheats
         }
 
         CheatToggles.forceStartGame = false;
+    }
+
+    public static void DestroyMapCheat()
+    {
+        if (!Utils.isHost)
+        {
+            Debug.LogWarning("[MapCheats] Only the host can remove the map or lobby.");
+            return;
+        }
+
+        LobbyBehaviour lobby = LobbyBehaviour.Instance;
+        if (lobby != null)
+        {
+            ((InnerNetObject)lobby).Despawn();
+            LobbyBehaviour.Instance = null;
+            Debug.Log("[MapCheats] LobbyBehaviour despawned and singleton cleared.");
+        }
+
+        ShipStatus shipStatus = ShipStatus.Instance;
+        if (shipStatus != null)
+        {
+            ((InnerNetObject)shipStatus).Despawn();
+            ShipStatus.Instance = null;
+            Debug.Log("[MapCheats] ShipStatus despawned and singleton cleared.");
+        }
+    }
+
+    public static void SpawnLobbyCheat()
+    {
+        if (!Utils.isHost)
+        {
+            Debug.LogWarning("[MapCheats] Only the host can create the lobby.");
+            return;
+        }
+
+        if (LobbyBehaviour.Instance != null)
+        {
+            Debug.LogWarning("[MapCheats] LobbyBehaviour already exists.");
+            return;
+        }
+
+        LobbyBehaviour lobbyPrefab = DestroyableSingleton<GameStartManager>.Instance?.LobbyPrefab;
+        if (lobbyPrefab == null)
+        {
+            Debug.LogWarning("[MapCheats] LobbyPrefab not found in GameStartManager.");
+            return;
+        }
+
+        LobbyBehaviour.Instance = Object.Instantiate(lobbyPrefab);
+        ((InnerNetClient)AmongUsClient.Instance).Spawn((InnerNetObject)LobbyBehaviour.Instance, -2, SpawnFlags.None);
+        Debug.Log("[MapCheats] LobbyBehaviour spawned via prefab.");
     }
 
     public static void NoKillCdCheat(PlayerControl playerControl)

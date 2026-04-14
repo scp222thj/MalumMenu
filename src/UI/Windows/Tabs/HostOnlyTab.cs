@@ -22,6 +22,10 @@ public class HostOnlyTab : ITab
 
         DrawGameState();
 
+        GUILayout.Space(15);
+
+        DrawLobbyMap();
+
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical();
@@ -70,6 +74,21 @@ public class HostOnlyTab : ITab
         CheatToggles.forceStartGame = GUILayout.Toggle(CheatToggles.forceStartGame, " Force Start Game");
 
         CheatToggles.noGameEnd = GUILayout.Toggle(CheatToggles.noGameEnd, " No Game End");
+    }
+
+    private void DrawLobbyMap()
+    {
+        GUILayout.Label("Lobby / Map", GUIStylePreset.TabSubtitle);
+
+        if (GUILayout.Button(" Remove Map"))
+        {
+            MalumCheats.DestroyMapCheat();
+        }
+
+        if (GUILayout.Button(" Spawn Lobby"))
+        {
+            MalumCheats.SpawnLobbyCheat();
+        }
     }
 
     private void DrawMeetings()
