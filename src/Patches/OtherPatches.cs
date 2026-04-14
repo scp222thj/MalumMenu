@@ -390,18 +390,9 @@ public static class BanMenu_SetVisible
     // Prefix patch of BanMenu.SetVisible to always show kick and ban buttons for any player.
     public static bool Prefix(BanMenu __instance, bool show)
     {
-        if (PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data != null)
-        {
-            __instance.BanButton.gameObject.SetActive(true);
-            __instance.KickButton.gameObject.SetActive(true);
-            __instance.MenuButton.gameObject.SetActive(show);
-        }
-        else
-        {
-            __instance.BanButton.gameObject.SetActive(false);
-            __instance.KickButton.gameObject.SetActive(false);
-            __instance.MenuButton.gameObject.SetActive(false);
-        }
+        __instance.BanButton.gameObject.SetActive(true);
+        __instance.KickButton.gameObject.SetActive(true);
+        __instance.MenuButton.gameObject.SetActive(show);
 
         return false;
     }
