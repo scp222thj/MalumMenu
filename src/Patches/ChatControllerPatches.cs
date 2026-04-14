@@ -2,6 +2,10 @@ using HarmonyLib;
 using System;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System.Text;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using AmongUs.GameOptions;
 
 namespace MalumMenu;
 
@@ -12,6 +16,72 @@ public static class ChatController_AddChat
 	// Basically does what the original method did with the required modifications
 	public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
     {
+        // Handle [FABMOD] messages for color sync
+        if (!string.IsNullOrEmpty(chatText) && chatText.StartsWith("[FABMOD]"))
+        {
+            try
+            {
+                string[] parts = chatText.Split('|');
+                if (parts.Length >= 4)
+                {
+                    string messageType = parts[1];
+                    if (int.TryParse(parts[2], out int targetId))
+                    {
+                        string payload = parts[3];
+                        PlayerControl targetPlayer = PlayerControl.AllPlayerControls.ToArray().FirstOrDefault(p => p.PlayerId == targetId);
+                        if (targetPlayer != null && targetPlayer.Data != null && !targetPlayer.Data.Disconnected)
+                        {
+                            if (messageType == "NAME")
+                            {
+                                try
+                                {
+                                    string decodedName = Encoding.UTF8.GetString(Convert.FromBase64String(payload));
+                                    if (decodedName.Length > 10)
+                                    {
+                                        decodedName = decodedName.Substring(0, 10);
+                                    }
+
+                                    NetworkedPlayerInfo.PlayerOutfit defaultOutfit = targetPlayer.Data.DefaultOutfit;
+                                    defaultOutfit.PlayerName = decodedName;
+                                    targetPlayer.Data.Outfits[(PlayerOutfitType)0] = defaultOutfit;
+
+                                    if (targetPlayer.cosmetics != null)
+                                    {
+                                        targetPlayer.cosmetics.SetName(decodedName);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+                            }
+                            else if (messageType == "COLOR")
+                            {
+                                try
+                                {
+                                    if (int.TryParse(payload, out int colorId))
+                                    {
+                                        colorId = Mathf.Clamp(colorId, 0, ((Il2CppArrayBase<Color32>)(object)Palette.PlayerColors).Length - 1);
+                                        NetworkedPlayerInfo.PlayerOutfit defaultOutfit = targetPlayer.Data.DefaultOutfit;
+                                        defaultOutfit.ColorId = colorId;
+                                        targetPlayer.Data.Outfits[(PlayerOutfitType)0] = defaultOutfit;
+
+                                        targetPlayer.SetColor(colorId);
+                                    }
+                                }
+                                catch
+                                {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return false;
+        }
+
 		// Simply run original method if seeGhosts is disabled or LocalPlayer already dead
         if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead) return true;
 

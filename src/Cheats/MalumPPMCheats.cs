@@ -16,6 +16,7 @@ public static class MalumPPMCheats
     private static bool _ejectPlayerActive;
     private static bool _changeRoleActive;
     private static bool _forceRoleActive;
+    private static bool _modifyPlayerColorActive;
     private static RoleTypes? _oldRole = null;
 
     public static void ReportBodyPPM()
@@ -397,6 +398,42 @@ public static class MalumPPMCheats
             }
         }
     }
+
+    public static void ModifyPlayerColorPPM()
+    {
+        if (CheatToggles.modifyPlayerColor)
+        {
+            if (!_modifyPlayerColorActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("modifyPlayerColor");
+                }
+
+                // Player pick menu made for selecting a player to change their color
+                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
+                {
+                    PlayerModifier.SelectPlayer(PlayerPickMenu.targetPlayerData);
+                    PlayerModifier.ApplyColorChange();
+                }));
+
+                _modifyPlayerColorActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.modifyPlayerColor = false;
+            }
+        }
+        else if (_modifyPlayerColorActive)
+        {
+            _modifyPlayerColorActive = false;
+        }
+    }
+
 
     public static void SpectatePPM()
     {

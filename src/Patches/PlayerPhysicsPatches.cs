@@ -31,6 +31,7 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.TeleportPlayerPPM();
         MalumPPMCheats.ChangeRolePPM();
         MalumPPMCheats.ForceRolePPM();
+        MalumPPMCheats.ModifyPlayerColorPPM();
 
         TracersHandler.DrawPlayerTracer(__instance);
 

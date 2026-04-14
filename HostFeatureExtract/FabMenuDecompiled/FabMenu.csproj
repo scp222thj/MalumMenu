@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>FabMenu</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>14.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="UnityEngine.CoreModule" />
+    <Reference Include="Assembly-CSharp" />
+    <Reference Include="Il2Cppmscorlib" />
+    <Reference Include="BepInEx.Core" />
+    <Reference Include="BepInEx.Unity.IL2CPP" />
+    <Reference Include="0Harmony" />
+    <Reference Include="UnityEngine.IMGUIModule" />
+    <Reference Include="Hazel" />
+    <Reference Include="Il2CppInterop.Runtime" />
+    <Reference Include="UnityEngine.InputLegacyModule" />
+    <Reference Include="UnityEngine.Physics2DModule" />
+    <Reference Include="Sentry" />
+    <Reference Include="Unity.TextMeshPro" />
+    <Reference Include="UnityEngine.UnityAnalyticsModule" />
+    <Reference Include="UnityEngine.PerformanceReportingModule" />
+    <Reference Include="UnityEngine.UI" />
+    <Reference Include="UnityEngine.AudioModule" />
+    <Reference Include="UnityEngine.TextRenderingModule" />
+    <Reference Include="UnityEngine.ImageConversionModule" />
+  </ItemGroup>
+</Project>

@@ -74,6 +74,7 @@ public struct CheatToggles
     public static bool longerMessages;
     public static bool unlockClipboard;
     public static bool lowerRateLimits;
+    public static bool chatDarkMode;
 
     // Ship
     public static bool closeMeeting;
@@ -132,6 +133,7 @@ public struct CheatToggles
     public static bool killAll;
     public static bool killAllCrew;
     public static bool killAllImps;
+    public static bool modifyPlayerColor;
 
     // Passive
     public static bool unlockFeatures;

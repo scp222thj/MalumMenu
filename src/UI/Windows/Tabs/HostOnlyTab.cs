@@ -26,6 +26,10 @@ public class HostOnlyTab : ITab
 
         DrawLobbyMap();
 
+        GUILayout.Space(15);
+
+        DrawModifyPlayer();
+
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical();
@@ -88,6 +92,22 @@ public class HostOnlyTab : ITab
         if (GUILayout.Button(" Spawn Lobby"))
         {
             MalumCheats.SpawnLobbyCheat();
+        }
+    }
+
+    private void DrawModifyPlayer()
+    {
+        GUILayout.Label("Modify Player", GUIStylePreset.TabSubtitle);
+
+        bool wasEnabled = CheatToggles.modifyPlayerColor;
+        CheatToggles.modifyPlayerColor = GUILayout.Toggle(CheatToggles.modifyPlayerColor, " Change Player Color");
+        if (CheatToggles.modifyPlayerColor && !wasEnabled)
+        {
+            PlayerModifier.EnterColorModificationMode();
+        }
+        else if (!CheatToggles.modifyPlayerColor && wasEnabled)
+        {
+            PlayerModifier.ExitModificationMode();
         }
     }
 

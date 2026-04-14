@@ -3,6 +3,7 @@ using AmongUs.Data;
 using AmongUs.Data.Player;
 using AmongUs.GameOptions;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Security.Cryptography;
 using InnerNet;
@@ -60,6 +61,31 @@ public static class ChatBubble_SetName
     public static void Postfix(ChatBubble __instance)
 	{
         MalumESP.ChatNametags(__instance);
+
+        // Apply dark mode to chat bubbles
+        if (CheatToggles.chatDarkMode)
+        {
+            try
+            {
+                if (__instance.Background != null)
+                {
+                    __instance.Background.color = new Color(0.08f, 0.08f, 0.08f, 0.95f);
+                }
+
+                if (__instance.NameText != null)
+                {
+                    ((Graphic)__instance.NameText).color = Color.white;
+                }
+
+                if (__instance.TextArea != null)
+                {
+                    ((Graphic)__instance.TextArea).color = Color.white;
+                }
+            }
+            catch
+            {
+            }
+        }
     }
 }
 
@@ -361,16 +387,21 @@ public static class GameContainer_SetupGameInfo
 [HarmonyPatch(typeof(BanMenu), nameof(BanMenu.SetVisible))]
 public static class BanMenu_SetVisible
 {
-    // Prefix patch of BanMenu.SetVisible to always show kick and ban buttons as host
+    // Prefix patch of BanMenu.SetVisible to always show kick and ban buttons for any player.
     public static bool Prefix(BanMenu __instance, bool show)
     {
-        if (!Utils.isHost) return true;
-
-        show &= PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data != null;
-
-        __instance.BanButton.gameObject.SetActive(true);
-        __instance.KickButton.gameObject.SetActive(true);
-        __instance.MenuButton.gameObject.SetActive(show);
+        if (PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data != null)
+        {
+            __instance.BanButton.gameObject.SetActive(true);
+            __instance.KickButton.gameObject.SetActive(true);
+            __instance.MenuButton.gameObject.SetActive(show);
+        }
+        else
+        {
+            __instance.BanButton.gameObject.SetActive(false);
+            __instance.KickButton.gameObject.SetActive(false);
+            __instance.MenuButton.gameObject.SetActive(false);
+        }
 
         return false;
     }
