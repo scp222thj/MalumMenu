@@ -1,3 +1,4 @@
+using System;
 using HarmonyLib;
 
 namespace MalumMenu;
@@ -26,6 +27,31 @@ namespace MalumMenu;
 //         return false;
 //     }
 // }
+
+[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.HasServerTimestamp), MethodType.Getter)]
+public static class EOSManager_HasServerTimestamp_Getter
+{
+    // Postfix patch of EOSManager.HasServerTimestamp Getter method to ensure the date can be spoofed
+    public static void Postfix(ref bool __result)
+    {
+        if (!CheatToggles.spoofAprilFoolsDate) return;
+
+        __result = true;
+    }
+}
+
+[HarmonyPatch(typeof(EOSManager), nameof(EOSManager.ApproximateServerTime), MethodType.Getter)]
+public static class EOSManager_ApproximateServerTime_Getter
+{
+    // Postfix patch of EOSManager.ApproximateServerTime Getter method to spoof the date to April 1nd, 7:01 AM UTC
+    public static void Postfix(ref Il2CppSystem.DateTime __result)
+    {
+        if (!CheatToggles.spoofAprilFoolsDate) return;
+
+        var managedDate = new DateTime(DateTime.UtcNow.Year, 4, 1, 7, 1, 0, DateTimeKind.Utc);
+        __result = new Il2CppSystem.DateTime(managedDate.Ticks);
+    }
+}
 
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsFreechatAllowed))]
 public static class EOSManager_IsFreechatAllowed

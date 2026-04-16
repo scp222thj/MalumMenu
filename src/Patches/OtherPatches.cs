@@ -315,18 +315,6 @@ public static class IntroCutscene_CoBegin
     }
 }
 
-[HarmonyPatch(typeof(AprilFoolsMode), nameof(AprilFoolsMode.ShouldShowAprilFoolsToggle))]
-public static class AprilFoolsMode_ShouldShowAprilFoolsToggle
-{
-    // Postfix patch of AprilFoolsMode.ShouldShowAprilFoolsToggle to enable April Fools features
-    public static void Postfix(ref bool __result)
-    {
-        if (!CheatToggles.spoofAprilFoolsDate) return;
-
-        __result = true;
-    }
-}
-
 // Found here: https://github.com/g0aty/SickoMenu/blob/main/hooks/LobbyBehaviour.cpp
 [HarmonyPatch(typeof(GameContainer), nameof(GameContainer.SetupGameInfo))]
 public static class GameContainer_SetupGameInfo
