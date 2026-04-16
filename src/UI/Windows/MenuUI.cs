@@ -111,6 +111,7 @@ public class MenuUI : MonoBehaviour
         if(!Utils.isPlayer)
         {
             CheatToggles.setFakeRole = false;
+            CheatToggles.setFakeAlive = false;
             CheatToggles.killAll = false;
             CheatToggles.telekillPlayer = false;
             CheatToggles.killAllCrew = false;
@@ -119,7 +120,6 @@ public class MenuUI : MonoBehaviour
             CheatToggles.spectate = false;
             CheatToggles.freecam = false;
             CheatToggles.killPlayer = false;
-            CheatToggles.fakeRevive = false;
             CheatToggles.callMeeting = false;
         }
 

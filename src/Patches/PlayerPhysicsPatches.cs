@@ -13,7 +13,6 @@ public static class PlayerPhysics_LateUpdate
         MalumESP.SeeGhostsCheat(__instance);
 
         MalumCheats.NoClipCheat();
-        MalumCheats.ReviveCheat();
         MalumCheats.ProtectCheat();
         MalumCheats.KillAllCheat();
         MalumCheats.KillAllCrewCheat();
@@ -31,6 +30,7 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.TeleportPlayerPPM();
         MalumPPMCheats.ChangeRolePPM();
         MalumPPMCheats.ForceRolePPM();
+        MalumPPMCheats.SetFakeAlivePPM();
 
         TracersHandler.DrawPlayerTracer(__instance);
 

@@ -2,6 +2,12 @@ namespace MalumMenu;
 
 public static class OutfitPreset
 {
+    public static NetworkedPlayerInfo.PlayerOutfit Dead = new()
+    {
+        ColorId = 7,
+        VisorId = "visor_Scar"
+    };
+
     public static NetworkedPlayerInfo.PlayerOutfit Shapeshifter = new()
     {
         ColorId = 0,

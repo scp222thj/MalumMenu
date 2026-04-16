@@ -15,6 +15,7 @@ public static class MalumPPMCheats
     private static bool _reportBodyActive;
     private static bool _ejectPlayerActive;
     private static bool _changeRoleActive;
+    private static bool _setFakeAliveActive;
     private static bool _forceRoleActive;
     private static RoleTypes? _oldRole = null;
 
@@ -344,6 +345,55 @@ public static class MalumPPMCheats
             if (_changeRoleActive)
             {
                 _changeRoleActive = false;
+
+    public static void SetFakeAlivePPM()
+    {
+        if (CheatToggles.setFakeAlive)
+        {
+
+            if (!_setFakeAliveActive)
+            {
+
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("setFakeAlive");
+                }
+
+                List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
+
+                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Alive", OutfitPreset.Crewmate, Utils.GetBehaviourByRoleType(RoleTypes.Crewmate)));
+                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Dead", OutfitPreset.Dead, Utils.GetBehaviourByRoleType(RoleTypes.CrewmateGhost)));
+
+                // Player pick menu made for changing your alive state with a custom choice list
+                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action) (() =>
+                {
+                    if (PlayerPickMenu.targetPlayerData.Role.IsDead)
+                    {
+                        PlayerControl.LocalPlayer.Die(DeathReason.Exile, true);
+                    }
+                    else
+                    {
+                        PlayerControl.LocalPlayer.Revive();
+                    }
+                }));
+
+                _setFakeAliveActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.setFakeAlive = false;
+            }
+
+        }
+        else
+        {
+            if (_setFakeAliveActive)
+            {
+                _setFakeAliveActive = false;
             }
         }
     }

@@ -346,14 +346,6 @@ public static class MalumCheats
         } catch { }
     }
 
-    public static void ReviveCheat()
-    {
-        if (!CheatToggles.fakeRevive) return;
-
-        PlayerControl.LocalPlayer.Revive();
-        CheatToggles.fakeRevive = false;
-    }
-
     public static void PlayScannerCheat()
     {
         if (CheatToggles.animMedScan && !_isScanAnimActive)
