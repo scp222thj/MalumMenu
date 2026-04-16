@@ -43,7 +43,7 @@ public static class EOSManager_HasServerTimestamp_Getter
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.ApproximateServerTime), MethodType.Getter)]
 public static class EOSManager_ApproximateServerTime_Getter
 {
-    // Postfix patch of EOSManager.ApproximateServerTime Getter method to spoof the date to April 1nd, 7:01 AM UTC
+    // Postfix patch of EOSManager.ApproximateServerTime Getter method to spoof the date to April 1st, 7:01 AM UTC
     public static void Postfix(ref Il2CppSystem.DateTime __result)
     {
         if (!CheatToggles.spoofAprilFoolsDate) return;
