@@ -12,7 +12,7 @@ public static class UIHelpers
         }
         else
         {
-            var configHtmlColor = MalumMenu.menuHtmlColor.Value;
+            var configHtmlColor = MalumMenu.Settings.MenuHtmlColor.Value;
 
             if (!ColorUtility.TryParseHtmlString(configHtmlColor, out var uiColor))
             {

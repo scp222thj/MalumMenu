@@ -47,12 +47,12 @@ public class MenuUI : MonoBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(Utils.StringToKeycode(MalumMenu.menuKeybind.Value)))
+        if (Input.GetKeyDown(Utils.StringToKeycode(MalumMenu.Settings.MenuKeybind.Value)))
         {
             // Enable or disable GUI with DELETE key
             isGUIActive = !isGUIActive;
 
-            if (MalumMenu.menuOpenOnMouse.Value)
+            if (MalumMenu.Settings.MenuOpenOnMouse.Value)
             {
                 // Teleport the window to the mouse for immediate use
                 Vector2 mousePosition = Input.mousePosition;
@@ -66,9 +66,9 @@ public class MenuUI : MonoBehaviour
             if (hue > 1f) hue -= 1f; // Loop hue back to 0 when it exceeds 1
         }
 
-        if (CheatToggles.stealthMode != MalumMenu.inStealthMode)
+        if (CheatToggles.stealthMode != MalumMenu.InStealthMode)
         {
-            MalumMenu.inStealthMode = CheatToggles.stealthMode;
+            MalumMenu.InStealthMode = CheatToggles.stealthMode;
 
             Scene scene = SceneManager.GetActiveScene();
 
@@ -81,7 +81,7 @@ public class MenuUI : MonoBehaviour
         if (CheatToggles.panicMode) Utils.Panic();
 
         var stamp = ModManager.Instance.ModStamp;
-        if (stamp) stamp.enabled = !(MalumMenu.inStealthMode || MalumMenu.isPanicked);
+        if (stamp) stamp.enabled = !(MalumMenu.InStealthMode || MalumMenu.IsPanicked);
 
         if (CheatToggles.openConfig)
         {
@@ -176,13 +176,13 @@ public class MenuUI : MonoBehaviour
 
     public void OnGUI()
     {
-        if (!isGUIActive || MalumMenu.isPanicked) return;
+        if (!isGUIActive || MalumMenu.IsPanicked) return;
 
         InitStyles();
 
         UIHelpers.ApplyUIColor();
 
-        _windowRect = GUI.Window((int)WindowId.MenuUI, _windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        _windowRect = GUI.Window((int)WindowId.MenuUI, _windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.MalumVersion);
     }
 
     public void WindowFunction(int windowID)

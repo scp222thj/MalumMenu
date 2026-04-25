@@ -1,11 +1,11 @@
-using HarmonyLib;
+using System;
+using System.Security.Cryptography;
 using AmongUs.Data;
 using AmongUs.Data.Player;
 using AmongUs.GameOptions;
-using UnityEngine;
-using System;
-using System.Security.Cryptography;
+using HarmonyLib;
 using InnerNet;
+using UnityEngine;
 
 namespace MalumMenu;
 
@@ -15,12 +15,17 @@ public static class Constants_GetPlatformData
     // Postfix patch of Constants.GetPlatformData to spoof the user's platform type
     public static void Postfix(ref PlatformSpecificData __result)
     {
-        if (Utils.StringToPlatformType(MalumMenu.spoofPlatform.Value, out Platforms? platformType))
+        if (
+            Utils.StringToPlatformType(
+                MalumMenu.Settings.SpoofPlatform.Value,
+                out Platforms? platformType
+            )
+        )
         {
             __result = new PlatformSpecificData
             {
                 Platform = (Platforms)platformType,
-                PlatformName = Constants.GetPlatformName()
+                PlatformName = Constants.GetPlatformName(),
             };
         }
     }
@@ -33,7 +38,8 @@ public static class FreeChatInputField_UpdateCharCount
     public static void Postfix(FreeChatInputField __instance)
     {
         // Only works if CheatToggles.longerMsgs is enabled
-        if (!CheatToggles.longerMessages) return;
+        if (!CheatToggles.longerMessages)
+            return;
 
         // Update charCountText to account for longer characterLimit
         int length = __instance.textArea.text.Length;
@@ -58,7 +64,7 @@ public static class FreeChatInputField_UpdateCharCount
 public static class ChatBubble_SetName
 {
     public static void Postfix(ChatBubble __instance)
-	{
+    {
         MalumESP.ChatNametags(__instance);
     }
 }
@@ -70,7 +76,8 @@ public static class SystemInfo_deviceUniqueIdentifier_Getter
     // Made to hide the user's real unique deviceId by generating a random fake one
     public static void Postfix(ref string __result)
     {
-        if (!MalumMenu.spoofDeviceId.Value) return;
+        if (!MalumMenu.Settings.SpoofDeviceId.Value)
+            return;
 
         var bytes = new byte[16];
         using (var rng = RandomNumberGenerator.Create())
@@ -88,15 +95,17 @@ public static class VersionShower_Start
     // Postfix patch of VersionShower.Start to show MalumMenu version
     public static void Postfix(VersionShower __instance)
     {
-        if (MalumMenu.inStealthMode || MalumMenu.isPanicked) return;
+        if (MalumMenu.InStealthMode || MalumMenu.IsPanicked)
+            return;
 
-        if (MalumMenu.supportedAU.Contains(Application.version)) // Checks if Among Us version is supported
+        if (MalumMenu.SupportedAu.Contains(Application.version)) // Checks if Among Us version is supported
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
+            __instance.text.text = $"MalumMenu v{MalumMenu.MalumVersion} (v{Application.version})"; // Supported
         }
         else
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
+            __instance.text.text =
+                $"MalumMenu v{MalumMenu.MalumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
         }
     }
 }
@@ -107,7 +116,7 @@ public static class PingTracker_Update
     // Postfix patch of PingTracker.Update to show MalumMenu authors and colored ping text
     public static void Postfix(PingTracker __instance)
     {
-        if (MalumMenu.inStealthMode)
+        if (MalumMenu.InStealthMode)
         {
             __instance.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
 
@@ -120,13 +129,14 @@ public static class PingTracker_Update
         {
             __instance.aspectPosition.DistanceFromEdge = new Vector3(-0.21f, 0.50f, 0f);
 
-            __instance.text.text = $"MalumMenu by scp222thj & Astral ~ {Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
+            __instance.text.text =
+                $"MalumMenu by scp222thj & Astral ~ {Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
 
             return;
         }
 
-        __instance.text.text = $"MalumMenu by scp222thj & Astral\n{Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
-
+        __instance.text.text =
+            $"MalumMenu by scp222thj & Astral\n{Utils.GetColoredPingText(AmongUsClient.Instance.Ping)}";
     }
 }
 
@@ -136,11 +146,15 @@ public static class DisconnectPopup_DoShow
     // Postfix patch of DisconnectPopup.DoShow to copy lobby code to clipboard on disconnect
     public static void Postfix(DisconnectPopup __instance)
     {
-        if (!CheatToggles.copyLobbyCodeOnDisconnect) return;
+        if (!CheatToggles.copyLobbyCodeOnDisconnect)
+            return;
 
         GUIUtility.systemCopyBuffer = AmongUsClient_OnGameJoined.lastGameIdString;
 
-        __instance.SetText(__instance._textArea.text + "\n\n<size=60%>Lobby code has been copied to the clipboard</size>");
+        __instance.SetText(
+            __instance._textArea.text
+                + "\n\n<size=60%>Lobby code has been copied to the clipboard</size>"
+        );
     }
 }
 
@@ -150,7 +164,8 @@ public static class PlayerBanData_BanMinutesLeft_Getter
     // Postfix patch of PlayerBanData.BanMinutesLeft Getter method to remove disconnect penalty
     public static void Postfix(PlayerBanData __instance, ref int __result)
     {
-        if (!CheatToggles.avoidPenalties) return;
+        if (!CheatToggles.avoidPenalties)
+            return;
 
         __instance.BanPoints = 0f; // Removes all BanPoints
         __result = 0; // Removes all BanMinutes
@@ -202,7 +217,8 @@ public static class GameManager_CheckTaskCompletion
     // Prefix patch of GameManager.CheckTaskCompletion to prevent a running game from ending
     public static bool Prefix(ref bool __result)
     {
-        if (!CheatToggles.noGameEnd) return true;
+        if (!CheatToggles.noGameEnd)
+            return true;
 
         __result = false;
 
@@ -226,7 +242,8 @@ public static class DoorBreakerGame_Start
     // Prefix patch of DoorBreakerGame.Start to automatically open a door when the player interacts with it
     public static bool Prefix(DoorBreakerGame __instance)
     {
-        if (!CheatToggles.autoOpenDoorsOnUse) return true;
+        if (!CheatToggles.autoOpenDoorsOnUse)
+            return true;
 
         DoorsHandler.OpenDoor(__instance.MyDoor);
         __instance.MyDoor.SetDoorway(true);
@@ -243,7 +260,8 @@ public static class DoorCardSwipeGame_Begin
     // Prefix patch of DoorCardSwipeGame.Begin to automatically open a door when the player interacts with it
     public static bool Prefix(DoorCardSwipeGame __instance)
     {
-        if (!CheatToggles.autoOpenDoorsOnUse) return true;
+        if (!CheatToggles.autoOpenDoorsOnUse)
+            return true;
 
         DoorsHandler.OpenDoor(__instance.MyDoor);
         __instance.MyDoor.SetDoorway(true);
@@ -260,7 +278,8 @@ public static class MushroomDoorSabotageMinigame_Begin
     // Prefix patch of MushroomDoorSabotageMinigame.Begin to automatically open a door when the player interacts with it
     public static bool Prefix(MushroomDoorSabotageMinigame __instance)
     {
-        if (!CheatToggles.autoOpenDoorsOnUse) return true;
+        if (!CheatToggles.autoOpenDoorsOnUse)
+            return true;
 
         __instance.FixDoorAndCloseMinigame();
 
@@ -287,7 +306,8 @@ public static class IntroCutscene_CoBegin
     // Prefix patch of IntroCutscene.CoBegin to force the LocalPlayer's role to a specified role
     public static void Prefix()
     {
-        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue) return;
+        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue)
+            return;
 
         var forcedRole = CheatToggles.forcedRole.Value;
 
@@ -301,7 +321,8 @@ public static class IntroCutscene_CoBegin
         PlayerControl roleSwapTarget = null;
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player.Data.RoleType != forcedRole) continue;
+            if (player.Data.RoleType != forcedRole)
+                continue;
             roleSwapTarget = player;
             break;
         }
@@ -310,7 +331,10 @@ public static class IntroCutscene_CoBegin
 
         if (roleSwapTarget != null)
         {
-            DestroyableSingleton<RoleManager>.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
+            DestroyableSingleton<RoleManager>.Instance.SetRole(
+                roleSwapTarget,
+                PlayerControl.LocalPlayer.Data.RoleType
+            );
         }
     }
 }
@@ -323,7 +347,8 @@ public static class GameContainer_SetupGameInfo
     // host name (e.g. Astral), lobby code (e.g. KLHCEG), host platform (e.g. Epic), and lobby age in minutes (e.g. 4:20)
     public static void Postfix(GameContainer __instance)
     {
-        if (!CheatToggles.seeLobbyInfo) return;
+        if (!CheatToggles.seeLobbyInfo)
+            return;
 
         // The Crewmate icon gets aligned properly with this
         const string separator = "<#0000>000000000000000</color>";
@@ -336,9 +361,10 @@ public static class GameContainer_SetupGameInfo
         var platform = Utils.PlatformTypeToString(__instance.gameListing.Platform);
 
         // Sets the text of the capacity field to include the new information
-        __instance.capacity.text = $"<size=40%>{separator}\n{trueHostName}\n{__instance.capacity.text}\n" +
-                                   $"<#fb0>{GameCode.IntToGameName(__instance.gameListing.GameId)}</color>\n" +
-                                   $"<#b0f>{platform}</color>\n{lobbyTime}\n{separator}</size>";
+        __instance.capacity.text =
+            $"<size=40%>{separator}\n{trueHostName}\n{__instance.capacity.text}\n"
+            + $"<#fb0>{GameCode.IntToGameName(__instance.gameListing.GameId)}</color>\n"
+            + $"<#b0f>{platform}</color>\n{lobbyTime}\n{separator}</size>";
     }
 }
 
@@ -348,7 +374,8 @@ public static class BanMenu_SetVisible
     // Prefix patch of BanMenu.SetVisible to always show kick and ban buttons as host
     public static bool Prefix(BanMenu __instance, bool show)
     {
-        if (!Utils.isHost) return true;
+        if (!Utils.isHost)
+            return true;
 
         show &= PlayerControl.LocalPlayer && PlayerControl.LocalPlayer.Data != null;
 
@@ -360,13 +387,17 @@ public static class BanMenu_SetVisible
     }
 }
 
-[HarmonyPatch(typeof(IGameOptionsExtensions), nameof(IGameOptionsExtensions.GetAdjustedNumImpostors))]
+[HarmonyPatch(
+    typeof(IGameOptionsExtensions),
+    nameof(IGameOptionsExtensions.GetAdjustedNumImpostors)
+)]
 public static class IGameOptionsExtensions_GetAdjustedNumImpostors
 {
     // Prefix patch of IGameOptionsExtensions.GetAdjustedNumImpostors to remove impostor limits
     public static bool Prefix(IGameOptions __instance, ref int __result)
     {
-        if (!CheatToggles.noOptionsLimits) return true;
+        if (!CheatToggles.noOptionsLimits)
+            return true;
 
         __result = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
 
@@ -380,7 +411,8 @@ public static class PlayerPurchasesData_GetPurchase
     // Postfix patch of PlayerPurchasesData.GetPurchase to unlock all cosmetics
     public static void Postfix(ref bool __result)
     {
-        if (!CheatToggles.freeCosmetics) return;
+        if (!CheatToggles.freeCosmetics)
+            return;
 
         __result = true;
     }

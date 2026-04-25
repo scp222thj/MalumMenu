@@ -6,8 +6,8 @@ public static class MalumSpoof
     public static void SpoofLevel()
     {
         // Parse Spoofing.Level config entry and turn it into a uint
-        if (!string.IsNullOrEmpty(MalumMenu.spoofLevel.Value) &&
-            uint.TryParse(MalumMenu.spoofLevel.Value, out uint parsedLevel) &&
+        if (!string.IsNullOrEmpty(MalumMenu.Settings.SpoofLevel.Value) &&
+            uint.TryParse(MalumMenu.Settings.SpoofLevel.Value, out uint parsedLevel) &&
             parsedLevel != DataManager.Player.Stats.Level)
         {
 
@@ -19,7 +19,7 @@ public static class MalumSpoof
 
     public static string SpoofFriendCode()
     {
-        string friendCode = MalumMenu.guestFriendCode.Value;
+        string friendCode = MalumMenu.Settings.GuestFriendCode.Value;
         if (string.IsNullOrWhiteSpace(friendCode))
         {
             friendCode = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
