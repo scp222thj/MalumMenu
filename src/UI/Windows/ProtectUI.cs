@@ -26,7 +26,7 @@ public class ProtectUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!CheatToggles.showProtectMenu || !(MenuUI.isGUIActive || MalumMenu.menuKeepSubwindowsOpen.Value) || MalumMenu.isPanicked) return;
+        if (!CheatToggles.showProtectMenu || !(MenuUI.isGUIActive || MalumMenu.Settings.MenuKeepSubwindowsOpen.Value) || MalumMenu.IsPanicked) return;
 
         UIHelpers.ApplyUIColor();
 

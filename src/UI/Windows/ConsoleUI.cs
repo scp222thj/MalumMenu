@@ -28,7 +28,7 @@ public class ConsoleUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!CheatToggles.showConsole || !(MenuUI.isGUIActive || MalumMenu.menuKeepSubwindowsOpen.Value) || MalumMenu.isPanicked) return;
+        if (!CheatToggles.showConsole || !(MenuUI.isGUIActive || MalumMenu.Settings.MenuKeepSubwindowsOpen.Value) || MalumMenu.IsPanicked) return;
 
         _logStyle ??= new GUIStyle(GUI.skin.label)
         {
