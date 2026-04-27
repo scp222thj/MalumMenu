@@ -22,6 +22,10 @@ public class HostOnlyTab : ITab
 
         DrawGameState();
 
+        GUILayout.Space(15);
+
+        DrawCosmetics();
+
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical();
@@ -81,5 +85,12 @@ public class HostOnlyTab : ITab
         CheatToggles.voteImmune = GUILayout.Toggle(CheatToggles.voteImmune, " Vote Immune");
 
         CheatToggles.ejectPlayer = GUILayout.Toggle(CheatToggles.ejectPlayer, " Eject Player");
+    }
+
+    private void DrawCosmetics()
+    {
+        GUILayout.Label("Cosmetics", GUIStylePreset.TabSubtitle);
+
+        CheatToggles.setAllSameColor = GUILayout.Toggle(CheatToggles.setAllSameColor, " Set All Same Color");
     }
 }

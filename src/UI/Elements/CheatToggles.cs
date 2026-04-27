@@ -74,6 +74,7 @@ public struct CheatToggles
     public static bool longerMessages;
     public static bool unlockClipboard;
     public static bool lowerRateLimits;
+    public static bool sendPrivateMessage;
 
     // Ship
     public static bool closeMeeting;
@@ -155,6 +156,7 @@ public struct CheatToggles
     public static bool killAll;
     public static bool killAllCrew;
     public static bool killAllImps;
+    public static bool setAllSameColor;
 
     // Passive
     public static bool unlockFeatures;
@@ -207,11 +209,13 @@ public struct CheatToggles
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
         forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
+        setAllSameColor = variableToKeep == "setAllSameColor" && setAllSameColor;
+        sendPrivateMessage = variableToKeep == "sendPrivateMessage" && sendPrivateMessage;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !setAllSameColor && !sendPrivateMessage;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields
