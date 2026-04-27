@@ -171,6 +171,7 @@ public class MenuUI : MonoBehaviour
             CheatToggles.showProtectMenu = false;
             CheatToggles.showRolesMenu = false;
             CheatToggles.noOptionsLimits = false;
+            CheatToggles.setAllSameColor = false;
         }
 
         // Some cheats only work if in a meeting, so they are turned off if it does not
@@ -183,6 +184,9 @@ public class MenuUI : MonoBehaviour
 
     public void OnGUI()
     {
+        // Always draw PM notification banner (even when menu is closed, since user types in game chat)
+        PrivateMessageState.DrawNotification();
+
         if (!isGUIActive || MalumMenu.isPanicked) return;
 
         InitStyles();

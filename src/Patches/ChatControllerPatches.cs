@@ -109,13 +109,31 @@ public static class ChatController_SendChat
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendFreeChat))]
 public static class ChatController_SendFreeChat
 {
-    // Prefix patch of ChatController.SendFreeChat to allow sending URLs without being censored
+    // Prefix patch of ChatController.SendFreeChat
+    // Handles both private message interception AND URL bypass
     public static bool Prefix(ChatController __instance)
     {
-		// Only works if CheatSettings.bypassUrlBlock is enabled
-        if (!CheatToggles.bypassUrlBlock) return true;
-
         string text = __instance.freeChatField.Text;
+
+        // Private message mode: intercept and send only to target
+        if (PrivateMessageState.isPrivateMode)
+        {
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                MalumNewCheats.SendPrivateChat(text, PrivateMessageState.targetPlayerId, PrivateMessageState.targetName);
+            }
+
+            // Clear the chat field manually
+            __instance.freeChatField.Clear();
+
+            // Exit private mode after sending
+            PrivateMessageState.Cancel();
+
+            return false; // Skip normal send
+        }
+
+        // Original bypass URL block logic
+        if (!CheatToggles.bypassUrlBlock) return true;
 
         // Replace periods in URLs and email addresses with commas to avoid censorship
         string modifiedText = CensorUrlsAndEmails(text);

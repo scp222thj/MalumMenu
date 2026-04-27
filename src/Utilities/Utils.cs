@@ -714,6 +714,8 @@ public static class Utils
         UnityEngine.Object.Destroy(MalumMenu.protectUI);
         // UnityEngine.Object.Destroy(MalumMenu.rolesUI);
 
+        PrivateMessageState.Cancel();
+
         UnityEngine.Object.Destroy(MalumMenu.keybindListener);
 
         PanicCleaner.Create();

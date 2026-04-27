@@ -17,6 +17,9 @@ public static class ShipStatus_FixedUpdate
         MalumCheats.KickVentsCheat();
 
         MalumPPMCheats.ReportBodyPPM();
+
+        MalumNewCheats.SetAllSameColorPPM();
+        MalumNewCheats.SendPrivateMessagePPM();
     }
 }
 

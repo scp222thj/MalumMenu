@@ -16,6 +16,10 @@ public class ChatTab : ITab
 
         DrawTextbox();
 
+        GUILayout.Space(15);
+
+        DrawPrivate();
+
         GUILayout.EndVertical();
     }
 
@@ -37,5 +41,12 @@ public class ChatTab : ITab
         CheatToggles.longerMessages = GUILayout.Toggle(CheatToggles.longerMessages, " Allow Longer Messages");
 
         CheatToggles.unlockClipboard = GUILayout.Toggle(CheatToggles.unlockClipboard, " Unlock Clipboard");
+    }
+
+    private void DrawPrivate()
+    {
+        GUILayout.Label("Private", GUIStylePreset.TabSubtitle);
+
+        CheatToggles.sendPrivateMessage = GUILayout.Toggle(CheatToggles.sendPrivateMessage, " Send Private Message");
     }
 }
