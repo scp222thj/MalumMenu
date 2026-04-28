@@ -79,7 +79,9 @@ public class ConsoleUI : MonoBehaviour
             _logEntries.RemoveAt(0); // Remove the oldest log entry
         }
 
-        _logEntries.Add(message);
+        var currentTime = DateTime.Now.ToString("HH:mm:ss");
+
+        _logEntries.Add($"[<color=#ff66cc>{currentTime}</color>] {message}");
 
         // Scroll to the bottom
         _scrollPosition.y = float.MaxValue;
