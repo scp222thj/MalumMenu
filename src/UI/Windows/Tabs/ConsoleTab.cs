@@ -24,5 +24,7 @@ public class ConsoleTab : ITab
         CheatToggles.logShapeshifts = GUILayout.Toggle(CheatToggles.logShapeshifts, " Log Shapeshifts");
 
         CheatToggles.logVents = GUILayout.Toggle(CheatToggles.logVents, " Log Vents");
+
+        CheatToggles.logGameState  = GUILayout.Toggle(CheatToggles.logGameState, " Log Game State");
     }
 }
