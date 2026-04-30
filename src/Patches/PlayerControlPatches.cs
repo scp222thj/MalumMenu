@@ -144,7 +144,7 @@ public static class PlayerControl_Shapeshift
         if (targetPlayerInfo.PlayerId == __instance.Data.PlayerId)
         {
             ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
-                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> undid their shapeshift in {roomName}");
+                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> unshapeshifted in {roomName}");
         }
         else
         {
