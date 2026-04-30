@@ -164,11 +164,13 @@ public static class PlayerControl_CompleteTask
         if (!CheatToggles.logTasks) return;
 
         var task = __instance.myTasks.Find((Predicate<PlayerTask>)(p => (int)p.Id == (int)idx));
+        var room = Utils.GetRoomFromPosition(__instance.GetTruePosition());
+        var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
 
         if (task)
         {
             ConsoleUI.Log(
-                $"<color=#{ColorUtility.ToHtmlStringRGB(__instance.Data.Color)}>{__instance.Data.PlayerName}</color> completed task {task.TaskType}");
+                $"<color=#{ColorUtility.ToHtmlStringRGB(__instance.Data.Color)}>{__instance.Data.PlayerName}</color> completed task {task.TaskType} in {roomName}");
         }
     }
 }
