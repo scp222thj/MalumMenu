@@ -81,7 +81,7 @@ public class ConsoleUI : MonoBehaviour
 
         var currentTime = DateTime.Now.ToString("HH:mm:ss");
 
-        _logEntries.Add($"[<color=#ff66cc>{currentTime}</color>] {message}");
+        _logEntries.Add($"[ <color=#ff66cc>{currentTime}</color> ]  <b>{message}</b>");
 
         // Scroll to the bottom
         _scrollPosition.y = float.MaxValue;

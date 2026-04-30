@@ -52,6 +52,6 @@ public static class AmongUsClient_OnGameEnd
     public static void Postfix(EndGameResult endGameResult)
     {
         if (CheatToggles.logGameState)
-            ConsoleUI.Log($"Game ended for reason {endGameResult.GameOverReason}");
+            ConsoleUI.Log($"Game ended with reason {endGameResult.GameOverReason}");
     }
 }
