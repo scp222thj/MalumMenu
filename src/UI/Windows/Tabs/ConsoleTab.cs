@@ -25,6 +25,8 @@ public class ConsoleTab : ITab
 
         CheatToggles.logVents = GUILayout.Toggle(CheatToggles.logVents, " Log Vents");
 
+        CheatToggles.logTasks = GUILayout.Toggle(CheatToggles.logTasks, " Log Tasks");
+
         CheatToggles.logGameState  = GUILayout.Toggle(CheatToggles.logGameState, " Log Game State");
     }
 }
