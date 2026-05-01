@@ -6,6 +6,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
 namespace MalumMenu;
+
 public static class MalumPPMCheats
 {
     private static bool _telekillPlayerActive;
@@ -23,7 +24,6 @@ public static class MalumPPMCheats
     {
         if (CheatToggles.reportBody)
         {
-
             if (!_reportBodyActive)
             {
                 // Close any player pick menus already open & their cheats
@@ -34,7 +34,7 @@ public static class MalumPPMCheats
                 }
 
                 // Player pick menu to choose any body (alive or dead) and report it
-                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action) (() =>
+                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
                 {
                     PlayerControl.LocalPlayer.CmdReportDeadBody(PlayerPickMenu.targetPlayerData);
                 }));
@@ -47,7 +47,6 @@ public static class MalumPPMCheats
             {
                 CheatToggles.reportBody = false;
             }
-
         }
         else
         {
@@ -199,7 +198,6 @@ public static class MalumPPMCheats
         {
             if (!_teleportPlayerActive)
             {
-                // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
                     PlayerPickMenu.playerpickMenu.Close();
@@ -208,25 +206,26 @@ public static class MalumPPMCheats
 
                 List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
 
-                // All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (!player.AmOwner)
+                    if (player != null && !player.AmOwner && player.Data != null)
                     {
                         playerDataList.Add(player.Data);
                     }
                 }
 
-                // Player pick menu made for teleporting LocalPlayer to any player's position
                 PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action)(() =>
                 {
-                    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerPickMenu.targetPlayerData.Object.transform.position);
+                    if (PlayerControl.LocalPlayer != null && PlayerPickMenu.targetPlayerData?.Object != null)
+                    {
+                        PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerPickMenu.targetPlayerData.Object.transform.position);
+                    }
+                    CheatToggles.teleportPlayer = false;
                 }));
 
                 _teleportPlayerActive = true;
             }
 
-            // Deactivate cheat if menu is closed
             if (PlayerPickMenu.playerpickMenu == null)
             {
                 CheatToggles.teleportPlayer = false;
@@ -242,10 +241,8 @@ public static class MalumPPMCheats
     {
         if (CheatToggles.setFakeRole)
         {
-
             if (!_setFakeRoleActive)
             {
-
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
@@ -291,7 +288,7 @@ public static class MalumPPMCheats
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.GetBehaviourByRoleType(RoleTypes.Crewmate)));
 
                 // Player pick menu made for changing your roles with a custom choice list
-                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action) (() =>
+                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action)(() =>
                 {
                     // Log the originally assigned role before it gets changed by setFakeRole cheat
                     if (!Utils.isLobby && !Utils.isFreePlay && _oldRole == null)
@@ -312,20 +309,6 @@ public static class MalumPPMCheats
                     }
                     else
                     {
-                        /* if (PlayerPickMenu.targetPlayerData.Role.Role == RoleTypes.Shapeshifter && oldRole != RoleTypes.Shapeshifter){
-
-                            Utils.showPopup("\n<size=125%>Changing into the Shapeshifter role is not recommended\nsince shapeshifting will get you kicked by the anticheat");
-
-                        } else if (PlayerPickMenu.targetPlayerData.Role.Role == RoleTypes.Noisemaker && oldRole != RoleTypes.Noisemaker){
-
-                            Utils.showPopup("\n<size=125%>Changing into the Noisemaker role is not recommended\nsince dying won't trigger the alert for other players");
-
-                        } else if (oldRole == RoleTypes.Noisemaker){
-
-                            Utils.showPopup("\n<size=125%>Your \"real\" role is still Noisemaker\nso other players will still see the alert when you die");
-
-                        } */
-
                         RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, PlayerPickMenu.targetPlayerData.Role.Role);
                     }
                 }));
@@ -338,7 +321,6 @@ public static class MalumPPMCheats
             {
                 CheatToggles.setFakeRole = false;
             }
-
         }
         else
         {
@@ -353,10 +335,8 @@ public static class MalumPPMCheats
     {
         if (CheatToggles.setFakeAlive)
         {
-
             if (!_setFakeAliveActive)
             {
-
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
@@ -370,7 +350,7 @@ public static class MalumPPMCheats
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Dead", OutfitPreset.Dead, Utils.GetBehaviourByRoleType(RoleTypes.CrewmateGhost)));
 
                 // Player pick menu made for changing your alive state with a custom choice list
-                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action) (() =>
+                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action)(() =>
                 {
                     if (PlayerPickMenu.targetPlayerData.Role.IsDead)
                     {
@@ -390,7 +370,6 @@ public static class MalumPPMCheats
             {
                 CheatToggles.setFakeAlive = false;
             }
-
         }
         else
         {
@@ -440,7 +419,6 @@ public static class MalumPPMCheats
             {
                 CheatToggles.forceRole = false;
             }
-
         }
         else
         {
@@ -455,10 +433,8 @@ public static class MalumPPMCheats
     {
         if (CheatToggles.spectate)
         {
-
             if (!_spectateActive)
             {
-
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
@@ -478,7 +454,7 @@ public static class MalumPPMCheats
                 }
 
                 // Player pick menu made for spectating the targeted player
-                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action) (() =>
+                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action)(() =>
                 {
                     Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerPickMenu.targetPlayerData.Object);
                 }));
@@ -488,7 +464,6 @@ public static class MalumPPMCheats
                 PlayerControl.LocalPlayer.moveable = false; // Can't move while spectating
 
                 CheatToggles.freecam = false; // Disable incompatible cheats while spectating
-
             }
 
             // Deactivate cheat if menu is closed and no one is getting spectated
