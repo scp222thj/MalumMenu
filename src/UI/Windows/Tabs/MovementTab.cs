@@ -49,6 +49,9 @@ public class MovementTab : ITab
 
         CheatToggles.teleportCursor = GUILayout.Toggle(CheatToggles.teleportCursor, " to Cursor");
 
-        CheatToggles.teleportPlayer = GUILayout.Toggle(CheatToggles.teleportPlayer, " to Player");
+        if (GUILayout.Button("to Player", GUIStylePreset.NormalButton))
+        {
+            CheatToggles.teleportPlayer = true;
+        }
     }
 }
