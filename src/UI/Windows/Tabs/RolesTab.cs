@@ -63,6 +63,17 @@ public class RolesTab : ITab
         CheatToggles.killReach = GUILayout.Toggle(CheatToggles.killReach, " Kill Reach");
 
         CheatToggles.impostorTasks = GUILayout.Toggle(CheatToggles.impostorTasks, " Allow Fake Tasks");
+
+        CheatToggles.noKillCd = GUILayout.Toggle(CheatToggles.noKillCd, " No Kill Cooldown");
+
+        var killReduction = MalumMenu.killCooldownReductionPercent.Value;
+        GUILayout.Label($" Kill Cooldown Reduction: {killReduction:0}%");
+        var newKillReduction = GUILayout.HorizontalSlider(killReduction, 0f, 100f);
+        if (Mathf.Abs(newKillReduction - killReduction) > 0.001f)
+        {
+            MalumMenu.killCooldownReductionPercent.Value = newKillReduction;
+            MalumMenu.Plugin.Config.Save();
+        }
     }
 
     private void DrawShapeshifter()
@@ -77,8 +88,6 @@ public class RolesTab : ITab
     private void DrawCrewmate()
     {
         GUILayout.Label("Crewmate", GUIStylePreset.TabSubtitle);
-
-        CheatToggles.showTasksMenu = GUILayout.Toggle(CheatToggles.showTasksMenu, " Show Tasks Menu");
     }
 
     private void DrawTracker()

@@ -20,7 +20,9 @@ public class MenuUI : MonoBehaviour
         // Add all tabs on start
         _tabs.Add(new MovementTab());
         _tabs.Add(new ESPTab());
+        _tabs.Add(new MinimapTab());
         _tabs.Add(new RolesTab());
+        _tabs.Add(new TasksTab());
         _tabs.Add(new ShipTab());
         _tabs.Add(new ChatTab());
         _tabs.Add(new AnimationsTab());
@@ -161,7 +163,6 @@ public class MenuUI : MonoBehaviour
             CheatToggles.killAllImps = false;
             CheatToggles.killPlayer = false;
             CheatToggles.ejectPlayer = false;
-            CheatToggles.noKillCd = false;
             CheatToggles.killAnyone = false;
             CheatToggles.killVanished = false;
             CheatToggles.forceStartGame = false;

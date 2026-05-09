@@ -187,6 +187,10 @@ public static class Utils
 
     public static void CompleteTask(PlayerTask task)
     {
+        if (task == null) return;
+        if (task.IsComplete) return;
+        if (!isClient || !isPlayer) return;
+
         if (isFreePlay)
         {
             PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
@@ -196,12 +200,24 @@ public static class Utils
         var hostData = AmongUsClient.Instance.GetHost();
         if (hostData == null || hostData.Character.Data.Disconnected) return;
 
-        if (task.IsComplete) return;
-        foreach (var item in PlayerControl.AllPlayerControls)
+        try
         {
-            var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            messageWriter.WritePacked(task.Id);
-            AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
+            PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
+            return;
+        }
+        catch
+        {
+        }
+
+        try
+        {
+            var hostId = AmongUsClient.Instance.GetClientIdFromCharacter(hostData.Character);
+            var writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.None, hostId);
+            writer.WritePacked(task.Id);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+        catch
+        {
         }
     }
 

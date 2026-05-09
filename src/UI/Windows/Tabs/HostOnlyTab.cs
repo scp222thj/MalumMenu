@@ -70,6 +70,8 @@ public class HostOnlyTab : ITab
         CheatToggles.forceStartGame = GUILayout.Toggle(CheatToggles.forceStartGame, " Force Start Game");
 
         CheatToggles.noGameEnd = GUILayout.Toggle(CheatToggles.noGameEnd, " No Game End");
+
+        CheatToggles.hostAlwaysImpostor = GUILayout.Toggle(CheatToggles.hostAlwaysImpostor, " Host Always Impostor (Lobby)");
     }
 
     private void DrawMeetings()

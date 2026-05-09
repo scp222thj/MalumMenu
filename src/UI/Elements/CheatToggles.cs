@@ -18,7 +18,6 @@ public struct CheatToggles
     public static bool setFakeRole;
     public static bool setFakeAlive;
     public static bool noKillCd;
-    public static bool showTasksMenu;
     public static bool completeMyTasks;
     public static bool impostorTasks;
     public static bool killReach;
@@ -58,6 +57,9 @@ public struct CheatToggles
     public static bool mapImps;
     public static bool mapGhosts;
     public static bool colorBasedMap;
+    public static bool mapImpsHighlight;
+    public static bool mapTrails;
+    public static bool minimapAlwaysOn;
 
     // Tracers
     public static bool tracersImps;
@@ -81,6 +83,8 @@ public struct CheatToggles
     public static bool unfixableLights;
     public static bool callMeeting;
     public static bool reportBody;
+    public static bool noSabotageCooldown;
+    public static bool noDoorCooldown;
 
     // Sabotage
     public static bool commsSab;
@@ -144,6 +148,7 @@ public struct CheatToggles
     public static bool forceRole;
     public static RoleTypes? forcedRole;
     public static bool showRolesMenu;
+    public static bool hostAlwaysImpostor;
     public static bool skipMeeting;
     public static bool forceStartGame;
     public static bool noGameEnd;
@@ -162,6 +167,13 @@ public struct CheatToggles
     public static bool avoidPenalties;
     public static bool copyLobbyCodeOnDisconnect;
     public static bool spoofAprilFoolsDate;
+    public static bool antiCrashProtection;
+    public static bool antiCrashPopups;
+    public static bool autoBanCrashers;
+    public static bool showTasksMenu;
+    public static bool autoTaskOnOpen;
+    public static bool autoTaskUseBestTime;
+    public static bool recordTaskTimes;
 
     // Modes
     public static bool rgbMode;

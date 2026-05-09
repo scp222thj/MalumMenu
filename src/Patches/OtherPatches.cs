@@ -7,6 +7,8 @@ using System;
 using System.Security.Cryptography;
 using InnerNet;
 using System.Collections.Generic;
+using System.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 
 namespace MalumMenu;
 
@@ -108,7 +110,7 @@ public static class FreeChatInputField_UpdateCharCount
 public static class ChatBubble_SetName
 {
     public static void Postfix(ChatBubble __instance)
-	{
+    {
         MalumESP.ChatNametags(__instance);
     }
 }
@@ -142,11 +144,11 @@ public static class VersionShower_Start
 
         if (MalumMenu.supportedAU.Contains(Application.version)) // Checks if Among Us version is supported
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
         }
         else
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
         }
     }
 }
@@ -281,11 +283,33 @@ public static class DoorBreakerGame_Start
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
 
-        DoorsHandler.OpenDoor(__instance.MyDoor);
-        __instance.MyDoor.SetDoorway(true);
-        __instance.Close();
+        var delay = MalumMenu.autoDoorOpenDelaySeconds.Value;
+        if (delay <= 0.1f)
+        {
+            DoorsHandler.OpenDoor(__instance.MyDoor);
+            __instance.MyDoor.SetDoorway(true);
+            __instance.Close();
+            return false;
+        }
+
+        __instance.StartCoroutine(DelayedDoorOpen(__instance.MyDoor, delay, __instance).WrapToIl2Cpp());
 
         return false;
+    }
+
+    private static IEnumerator DelayedDoorOpen(OpenableDoor door, float delay, Minigame minigame)
+    {
+        yield return new WaitForSeconds(delay);
+        if (door != null)
+        {
+            DoorsHandler.OpenDoor(door);
+            door.SetDoorway(true);
+        }
+
+        if (minigame != null)
+        {
+            minigame.Close();
+        }
     }
 }
 
@@ -298,11 +322,33 @@ public static class DoorCardSwipeGame_Begin
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
 
-        DoorsHandler.OpenDoor(__instance.MyDoor);
-        __instance.MyDoor.SetDoorway(true);
-        __instance.Close();
+        var delay = MalumMenu.autoDoorOpenDelaySeconds.Value;
+        if (delay <= 0.1f)
+        {
+            DoorsHandler.OpenDoor(__instance.MyDoor);
+            __instance.MyDoor.SetDoorway(true);
+            __instance.Close();
+            return false;
+        }
+
+        __instance.StartCoroutine(DelayedDoorOpen(__instance.MyDoor, delay, __instance).WrapToIl2Cpp());
 
         return false;
+    }
+
+    private static IEnumerator DelayedDoorOpen(OpenableDoor door, float delay, Minigame minigame)
+    {
+        yield return new WaitForSeconds(delay);
+        if (door != null)
+        {
+            DoorsHandler.OpenDoor(door);
+            door.SetDoorway(true);
+        }
+
+        if (minigame != null)
+        {
+            minigame.Close();
+        }
     }
 }
 
@@ -315,9 +361,25 @@ public static class MushroomDoorSabotageMinigame_Begin
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
 
-        __instance.FixDoorAndCloseMinigame();
+        var delay = MalumMenu.autoDoorOpenDelaySeconds.Value;
+        if (delay <= 0.1f)
+        {
+            __instance.FixDoorAndCloseMinigame();
+            return false;
+        }
+
+        __instance.StartCoroutine(DelayedFix(__instance, delay).WrapToIl2Cpp());
 
         return false;
+    }
+
+    private static IEnumerator DelayedFix(MushroomDoorSabotageMinigame minigame, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (minigame != null)
+        {
+            minigame.FixDoorAndCloseMinigame();
+        }
     }
 }
 
@@ -345,31 +407,71 @@ public static class IntroCutscene_CoBegin
     // Prefix patch of IntroCutscene.CoBegin to force the LocalPlayer's role to a specified role
     public static void Prefix()
     {
-        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue) return;
+        if (!Utils.isHost) return;
+        if (!PlayerControl.LocalPlayer || PlayerControl.LocalPlayer.Data == null) return;
 
-        var forcedRole = CheatToggles.forcedRole.Value;
-
-        // If LocalPlayer already has the forced role, do nothing
-        if (PlayerControl.LocalPlayer.Data.RoleType == forcedRole)
+        if (CheatToggles.forcedRole.HasValue)
         {
+            ApplyForcedRole(CheatToggles.forcedRole.Value);
             return;
         }
 
-        // Find a player with the forced role to swap roles with
-        PlayerControl roleSwapTarget = null;
+        if (CheatToggles.hostAlwaysImpostor)
+        {
+            EnsureHostIsImpostor();
+        }
+    }
+
+    private static void ApplyForcedRole(RoleTypes forcedRole)
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (!localPlayer || localPlayer.Data == null) return;
+
+        var originalRole = localPlayer.Data.RoleType;
+        if (originalRole == forcedRole) return;
+
+        PlayerControl swapTarget = null;
         foreach (var player in PlayerControl.AllPlayerControls)
         {
+            if (!player || player.Data == null) continue;
+            if (player.PlayerId == localPlayer.PlayerId) continue;
             if (player.Data.RoleType != forcedRole) continue;
-            roleSwapTarget = player;
+            swapTarget = player;
             break;
         }
 
-        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, forcedRole);
+        DestroyableSingleton<RoleManager>.Instance.SetRole(localPlayer, forcedRole);
 
-        if (roleSwapTarget != null)
+        if (swapTarget != null)
         {
-            DestroyableSingleton<RoleManager>.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
+            DestroyableSingleton<RoleManager>.Instance.SetRole(swapTarget, originalRole);
         }
+    }
+
+    private static void EnsureHostIsImpostor()
+    {
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (!localPlayer || localPlayer.Data == null) return;
+        if (localPlayer.Data.Role != null && localPlayer.Data.Role.IsImpostor) return;
+
+        PlayerControl swapTarget = null;
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (!player || player.Data == null) continue;
+            if (player.PlayerId == localPlayer.PlayerId) continue;
+            if (player.Data.Role == null) continue;
+            if (!player.Data.Role.IsImpostor) continue;
+            swapTarget = player;
+            break;
+        }
+
+        if (swapTarget == null) return;
+
+        var hostRole = localPlayer.Data.RoleType;
+        var impostorRole = swapTarget.Data.RoleType;
+
+        DestroyableSingleton<RoleManager>.Instance.SetRole(localPlayer, impostorRole);
+        DestroyableSingleton<RoleManager>.Instance.SetRole(swapTarget, hostRole);
     }
 }
 

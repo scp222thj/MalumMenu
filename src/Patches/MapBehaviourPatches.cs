@@ -50,6 +50,18 @@ public static class MapBehaviour_FixedUpdate
     // Postfix patch of MapBehaviour.FixedUpdate to update each herePoint icon's color and position on the map based on their respective player
     public static void Postfix(MapBehaviour __instance)
     {
+        if (__instance != null && __instance.name == "MalumMiniMap")
+        {
+            var tempMini = MinimapHandler.herePoints;
+            foreach (var herePoint in tempMini)
+            {
+                MinimapHandler.HandleHerePoint(herePoint);
+            }
+
+            MinimapHandler.HandleTrails(__instance);
+            return;
+        }
+
         // Reset map if miniMap cheat is disabled
         if (MinimapHandler.IsCheatEnabled() != MinimapHandler.minimapActive)
         {
@@ -66,6 +78,8 @@ public static class MapBehaviour_FixedUpdate
         {
             MinimapHandler.HandleHerePoint(herePoint);
         }
+
+        MinimapHandler.HandleTrails(__instance);
 
         foreach (var herePoint in MinimapHandler.herePointsToRemove)
         {
@@ -85,6 +99,7 @@ public static class MapBehaviour_Close
         {
             MinimapHandler.herePoints.ForEach(x => UnityEngine.Object.Destroy(x.sprite.gameObject));
             MinimapHandler.herePoints.Clear();
+            MinimapHandler.ClearTrails();
         }
         catch { }
     }

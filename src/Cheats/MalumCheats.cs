@@ -9,6 +9,7 @@ public static class MalumCheats
 {
     private static bool _isScanAnimActive;
     private static bool _isCamsAnimActive;
+    private static float _lastKillTimerObserved;
 
     public static void CloseMeetingCheat()
     {
@@ -89,6 +90,44 @@ public static class MalumCheats
         {
             playerControl.SetKillTimer(0f);
         }
+    }
+
+    public static void KillCooldownReductionCheat(PlayerControl playerControl)
+    {
+        if (playerControl == null) return;
+        if (!playerControl.AmOwner) return;
+        if (!Utils.isPlayer) return;
+        if (!Utils.isShip) return;
+        if (playerControl.Data == null || playerControl.Data.Role == null) return;
+        if (!playerControl.Data.Role.IsImpostor) return;
+
+        var percent = MalumMenu.killCooldownReductionPercent.Value;
+        if (percent <= 0.001f) { _lastKillTimerObserved = playerControl.killTimer; return; }
+        if (percent > 100f) percent = 100f;
+
+        var lobbyKillCooldown = 0f;
+        if (GameManager.Instance != null && GameManager.Instance.LogicOptions != null)
+        {
+            lobbyKillCooldown = GameManager.Instance.LogicOptions.GetKillCooldown();
+        }
+
+        if (lobbyKillCooldown <= 0f) { _lastKillTimerObserved = playerControl.killTimer; return; }
+
+        var scale = 1f - (percent / 100f);
+        var targetMax = lobbyKillCooldown * scale;
+        if (targetMax < 0f) targetMax = 0f;
+
+        var cur = playerControl.killTimer;
+        if (cur <= 0f) { _lastKillTimerObserved = 0f; return; }
+
+        var shouldClamp = cur > targetMax + 0.001f;
+        if (shouldClamp)
+        {
+            playerControl.SetKillTimer(targetMax);
+            cur = targetMax;
+        }
+
+        _lastKillTimerObserved = cur;
     }
 
     public static void CompleteMyTasksCheat()

@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using UnityEngine.SceneManagement;
 using System;
@@ -27,6 +27,7 @@ public partial class MalumMenu : BasePlugin
     public static TasksUI tasksUI;
     public static ProtectUI protectUI;
     public static KeybindListener keybindListener;
+    public static TaskAutomationController taskAutomationController;
 
     public static string malumVersion = "3.1.0";
     public static List<string> supportedAU = new List<string> { "2026.3.31" };
@@ -45,6 +46,11 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<bool> guestMode;
     public static ConfigEntry<bool> autoLoadProfile;
     public static ConfigEntry<string> configEditor;
+    public static ConfigEntry<float> autoTaskDefaultSeconds;
+    public static ConfigEntry<float> autoDoorOpenDelaySeconds;
+    public static ConfigEntry<float> sabotageCooldownReductionPercent;
+    public static ConfigEntry<float> doorCooldownReductionPercent;
+    public static ConfigEntry<float> killCooldownReductionPercent;
     public static ConfigEntry<int> adaptMaxStrength;
     public static ConfigEntry<float> adaptMaxCooldown;
     public static ConfigEntry<float> attackLogDelay;
@@ -57,6 +63,11 @@ public partial class MalumMenu : BasePlugin
         Log = base.Log;
         Plugin = this;
 
+        Log.LogInfo($"MalumMenu {malumVersion} starting");
+        Log.LogInfo($"GameVersion={Application.version}, Unity={Application.unityVersion}, Platform={Application.platform}");
+
+        try
+        {
         // Loads config settings
         menuKeybind = Config.Bind("MalumMenu.GUI",
                                 "Keybind",
@@ -87,6 +98,46 @@ public partial class MalumMenu : BasePlugin
                                 "ConfigEditor",
                                 "notepad.exe",
                                 "The program used to open the config file when using the Open Config toggle. Can be any executable, but using a text editor is recommended");
+
+        autoTaskDefaultSeconds = Config.Bind("MalumMenu.Tasks",
+                                "AutoTaskDefaultSeconds",
+                                4f,
+                                new ConfigDescription(
+                                    "Default duration (in seconds) used by Auto-Complete On Open when no best time exists.",
+                                    new AcceptableValueRange<float>(0.1f, 10f)
+                                ));
+
+        autoDoorOpenDelaySeconds = Config.Bind("MalumMenu.Ship",
+                                "AutoDoorOpenDelaySeconds",
+                                0.25f,
+                                new ConfigDescription(
+                                    "Delay (in seconds) before Auto-Open Doors triggers when using a door console.",
+                                    new AcceptableValueRange<float>(0.1f, 4f)
+                                ));
+
+        sabotageCooldownReductionPercent = Config.Bind("MalumMenu.Ship",
+                                "SabotageCooldownReductionPercent",
+                                0f,
+                                new ConfigDescription(
+                                    "Reduces sabotage cooldowns by this percent (0% = no change, 100% = no cooldown).",
+                                    new AcceptableValueRange<float>(0f, 100f)
+                                ));
+
+        doorCooldownReductionPercent = Config.Bind("MalumMenu.Ship",
+                                "DoorCooldownReductionPercent",
+                                0f,
+                                new ConfigDescription(
+                                    "Reduces door sabotage/door-close cooldowns by this percent (0% = no change, 100% = no cooldown).",
+                                    new AcceptableValueRange<float>(0f, 100f)
+                                ));
+
+        killCooldownReductionPercent = Config.Bind("MalumMenu.Roles",
+                                "KillCooldownReductionPercent",
+                                0f,
+                                new ConfigDescription(
+                                    "Reduces kill cooldown by this percent of the lobby kill cooldown (0% = no change, 100% = no cooldown).",
+                                    new AcceptableValueRange<float>(0f, 100f)
+                                ));
 
         // GuestMode config settings are commented out as the cheats are broken in latest updates
 
@@ -180,7 +231,47 @@ public partial class MalumMenu : BasePlugin
         CheatToggles.olLogAddRemove = true;
         CheatToggles.olLogDisconnect = true;
 
-        Harmony.PatchAll();
+        try
+        {
+            Harmony.PatchAll();
+        }
+        catch (Exception ex)
+        {
+            Log.LogError($"Harmony.PatchAll failed: {ex}");
+        }
+
+        try
+        {
+            var patched = 0;
+            foreach (var _ in Harmony.GetPatchedMethods())
+            {
+                patched++;
+            }
+            Log.LogInfo($"Harmony patched methods: {patched}");
+        }
+        catch (Exception ex)
+        {
+            Log.LogWarning($"Unable to enumerate patched methods: {ex.GetType().Name}");
+        }
+
+        try
+        {
+            Log.LogInfo($"AntiCrash: {AntiCrashLimiter.GetDiagnosticsSummary()}");
+        }
+        catch (Exception ex)
+        {
+            Log.LogWarning($"AntiCrash diagnostics failed: {ex.GetType().Name}");
+        }
+
+        try
+        {
+            TaskTimeStore.Load();
+            Log.LogInfo("TaskTimeStore loaded");
+        }
+        catch (Exception ex)
+        {
+            Log.LogWarning($"TaskTimeStore load failed: {ex.GetType().Name}");
+        }
 
         // UI
         menuUI = AddComponent<MenuUI>();
@@ -193,6 +284,8 @@ public partial class MalumMenu : BasePlugin
 
         // Components
         keybindListener = AddComponent<KeybindListener>();
+        taskAutomationController = AddComponent<TaskAutomationController>();
+        AddComponent<AlwaysOnMinimapController>();
 
         // Disables Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value)
@@ -205,6 +298,7 @@ public partial class MalumMenu : BasePlugin
         // Load profile on start
         if (autoLoadProfile.Value)
         {
+            Log.LogInfo("AutoLoadProfile enabled: loading profile");
             CheatToggles.LoadTogglesFromProfile();
         }
 
@@ -219,5 +313,12 @@ public partial class MalumMenu : BasePlugin
                 }
             }
         }));
+        }
+        catch (Exception ex)
+        {
+            Log.LogError($"MalumMenu failed during Load(): {ex}");
+        }
+
+        Log.LogInfo("MalumMenu Load() complete");
     }
 }

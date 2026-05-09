@@ -8,6 +8,7 @@ public static class ShipStatus_FixedUpdate
     public static void Postfix(ShipStatus __instance)
     {
         MalumSabotageCheats.Process(__instance);
+        CooldownCheats.Process();
         MalumCheats.OpenSabotageMapCheat();
 
         MalumCheats.CloseMeetingCheat();

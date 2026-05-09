@@ -26,5 +26,11 @@ public class PassiveTab : ITab
         CheatToggles.copyLobbyCodeOnDisconnect = GUILayout.Toggle(CheatToggles.copyLobbyCodeOnDisconnect, " Copy Lobby Code on Disconnect");
 
         CheatToggles.spoofAprilFoolsDate = GUILayout.Toggle(CheatToggles.spoofAprilFoolsDate, " Spoof Date to April 1st");
+
+        CheatToggles.antiCrashProtection = GUILayout.Toggle(CheatToggles.antiCrashProtection, " Anti-Crash Protection");
+
+        CheatToggles.antiCrashPopups = GUILayout.Toggle(CheatToggles.antiCrashPopups, " Anti-Crash Popups");
+
+        CheatToggles.autoBanCrashers = GUILayout.Toggle(CheatToggles.autoBanCrashers, " Auto Ban Crashers (Host)");
     }
 }

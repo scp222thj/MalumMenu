@@ -12,6 +12,7 @@ public static class PlayerControl_FixedUpdate
         if (__instance.AmOwner)
         {
             MalumCheats.NoKillCdCheat(__instance);
+            MalumCheats.KillCooldownReductionCheat(__instance);
         }
 
     }

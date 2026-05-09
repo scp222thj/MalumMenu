@@ -24,10 +24,6 @@ public class ESPTab : ITab
 
         DrawTracers();
 
-        GUILayout.Space(15);
-
-        DrawMinimap();
-
         GUILayout.EndVertical();
 
         GUILayout.EndHorizontal();
@@ -78,16 +74,4 @@ public class ESPTab : ITab
         CheatToggles.distanceBasedTracers = GUILayout.Toggle(CheatToggles.distanceBasedTracers, " Distance-based");
     }
 
-    private void DrawMinimap()
-    {
-        GUILayout.Label("Minimap", GUIStylePreset.TabSubtitle);
-
-        CheatToggles.mapCrew = GUILayout.Toggle(CheatToggles.mapCrew, " Crewmates");
-
-        CheatToggles.mapImps = GUILayout.Toggle(CheatToggles.mapImps, " Impostors");
-
-        CheatToggles.mapGhosts = GUILayout.Toggle(CheatToggles.mapGhosts, " Ghosts");
-
-        CheatToggles.colorBasedMap = GUILayout.Toggle(CheatToggles.colorBasedMap, " Color-based");
-    }
 }
