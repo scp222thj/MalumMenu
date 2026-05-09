@@ -10,7 +10,7 @@ public class MinimapTab : ITab
     {
         GUILayout.Label("Window", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.minimapAlwaysOn = GUILayout.Toggle(CheatToggles.minimapAlwaysOn, " Always-On Minimap");
+        CheatToggles.minimapAlwaysOn = GUILayout.Toggle(CheatToggles.minimapAlwaysOn, " Enable Minimap Window");
         if (CheatToggles.minimapAlwaysOn)
         {
             var scale = AlwaysOnMinimapController.scale;
@@ -18,6 +18,7 @@ public class MinimapTab : ITab
             AlwaysOnMinimapController.scale = GUILayout.HorizontalSlider(scale, 0.15f, 0.75f);
 
             GUILayout.Label(" Drag the minimap to move it (while menu is open).");
+            CheatToggles.debugMinimap = GUILayout.Toggle(CheatToggles.debugMinimap, " Debug Minimap (Log)");
         }
 
         GUILayout.Space(10);

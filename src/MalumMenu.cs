@@ -51,6 +51,9 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<float> sabotageCooldownReductionPercent;
     public static ConfigEntry<float> doorCooldownReductionPercent;
     public static ConfigEntry<float> killCooldownReductionPercent;
+    public static ConfigEntry<float> minimapScale;
+    public static ConfigEntry<float> minimapPosX;
+    public static ConfigEntry<float> minimapPosY;
     public static ConfigEntry<int> adaptMaxStrength;
     public static ConfigEntry<float> adaptMaxCooldown;
     public static ConfigEntry<float> attackLogDelay;
@@ -138,6 +141,24 @@ public partial class MalumMenu : BasePlugin
                                     "Reduces kill cooldown by this percent of the lobby kill cooldown (0% = no change, 100% = no cooldown).",
                                     new AcceptableValueRange<float>(0f, 100f)
                                 ));
+
+        minimapScale = Config.Bind("MalumMenu.Minimap",
+                                "AlwaysOnScale",
+                                AlwaysOnMinimapController.scale,
+                                new ConfigDescription(
+                                    "Scale of the always-on minimap window.",
+                                    new AcceptableValueRange<float>(0.15f, 0.75f)
+                                ));
+
+        minimapPosX = Config.Bind("MalumMenu.Minimap",
+                                "AlwaysOnPosX",
+                                AlwaysOnMinimapController.anchoredPosition.x,
+                                "Anchored X position of the always-on minimap window.");
+
+        minimapPosY = Config.Bind("MalumMenu.Minimap",
+                                "AlwaysOnPosY",
+                                AlwaysOnMinimapController.anchoredPosition.y,
+                                "Anchored Y position of the always-on minimap window.");
 
         // GuestMode config settings are commented out as the cheats are broken in latest updates
 
@@ -287,6 +308,9 @@ public partial class MalumMenu : BasePlugin
         taskAutomationController = AddComponent<TaskAutomationController>();
         AddComponent<AlwaysOnMinimapController>();
         AddComponent<TrailRecorderController>();
+
+        AlwaysOnMinimapController.scale = minimapScale.Value;
+        AlwaysOnMinimapController.anchoredPosition = new Vector2(minimapPosX.Value, minimapPosY.Value);
 
         // Disables Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value)

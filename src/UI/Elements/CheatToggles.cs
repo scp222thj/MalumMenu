@@ -60,6 +60,7 @@ public struct CheatToggles
     public static bool mapImpsHighlight;
     public static bool mapTrails;
     public static bool minimapAlwaysOn;
+    public static bool debugMinimap;
 
     // Tracers
     public static bool tracersImps;

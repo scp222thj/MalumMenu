@@ -16,13 +16,15 @@ public static class MinimapHandler
     private sealed class TrailLine
     {
         public byte playerId;
-        public LineRenderer line;
+        public LineRenderer lineMap;
+        public LineRenderer lineWindow;
         public Vector3[] positions = new Vector3[TrailMaxWaypoints];
         public float[] times = new float[TrailMaxWaypoints];
         public int start;
         public int count;
         public Vector3[] temp = new Vector3[TrailMaxWaypoints];
-        public int lastRenderedCount;
+        public int lastRenderedCountMap;
+        public int lastRenderedCountWindow;
         public Color color;
     }
 
@@ -169,10 +171,15 @@ public static class MinimapHandler
             if (trail.color != c)
             {
                 trail.color = c;
-                if (trail.line != null)
+                if (trail.lineMap != null)
                 {
-                    trail.line.startColor = c;
-                    trail.line.endColor = c;
+                    trail.lineMap.startColor = c;
+                    trail.lineMap.endColor = c;
+                }
+                if (trail.lineWindow != null)
+                {
+                    trail.lineWindow.startColor = c;
+                    trail.lineWindow.endColor = c;
                 }
             }
 
@@ -199,15 +206,45 @@ public static class MinimapHandler
             var trail = kvp.Value;
             if (trail == null) continue;
 
-            if (trail.count > 1 && trail.line == null)
+            if (trail.count > 1 && trail.lineMap == null)
             {
                 AttachTrailRenderer(map, trail);
             }
 
-            if (trail.line == null) continue;
+            if (trail.lineMap == null) continue;
 
             TrimTrail(trail, now, keepSeconds);
-            RenderTrail(trail);
+            RenderTrail(trail, false);
+        }
+    }
+
+    public static void RenderTrailsWindow(Transform parent, Material material)
+    {
+        if (!CheatToggles.mapTrails) return;
+        if (parent == null) return;
+        if (!Utils.isShip) return;
+        if (ShipStatus.Instance == null) return;
+        if (Utils.isMeeting) return;
+
+        var now = Time.time;
+        var keepSeconds = trailSeconds;
+        if (keepSeconds < 5f) keepSeconds = 5f;
+        if (keepSeconds > 60f) keepSeconds = 60f;
+
+        foreach (var kvp in _trailsByPlayer)
+        {
+            var trail = kvp.Value;
+            if (trail == null) continue;
+
+            if (trail.count > 1 && trail.lineWindow == null)
+            {
+                AttachTrailRenderer(parent, material, trail, true);
+            }
+
+            if (trail.lineWindow == null) continue;
+
+            TrimTrail(trail, now, keepSeconds);
+            RenderTrail(trail, true);
         }
     }
 
@@ -217,9 +254,13 @@ public static class MinimapHandler
         {
             var trail = kvp.Value;
             if (trail == null) continue;
-            if (trail.line != null)
+            if (trail.lineMap != null)
             {
-                Object.Destroy(trail.line.gameObject);
+                Object.Destroy(trail.lineMap.gameObject);
+            }
+            if (trail.lineWindow != null)
+            {
+                Object.Destroy(trail.lineWindow.gameObject);
             }
         }
         _trailsByPlayer.Clear();
@@ -232,11 +273,17 @@ public static class MinimapHandler
         {
             var trail = kvp.Value;
             if (trail == null) continue;
-            if (trail.line != null)
+            if (trail.lineMap != null)
             {
-                Object.Destroy(trail.line.gameObject);
-                trail.line = null;
-                trail.lastRenderedCount = 0;
+                Object.Destroy(trail.lineMap.gameObject);
+                trail.lineMap = null;
+                trail.lastRenderedCountMap = 0;
+            }
+            if (trail.lineWindow != null)
+            {
+                Object.Destroy(trail.lineWindow.gameObject);
+                trail.lineWindow = null;
+                trail.lastRenderedCountWindow = 0;
             }
         }
     }
@@ -245,10 +292,12 @@ public static class MinimapHandler
     {
         var t = new TrailLine();
         t.playerId = playerId;
-        t.line = null;
+        t.lineMap = null;
+        t.lineWindow = null;
         t.start = 0;
         t.count = 0;
-        t.lastRenderedCount = 0;
+        t.lastRenderedCountMap = 0;
+        t.lastRenderedCountWindow = 0;
         t.color = Color.white;
         return t;
     }
@@ -257,7 +306,7 @@ public static class MinimapHandler
     {
         if (map == null) return;
         if (trail == null) return;
-        if (trail.line != null) return;
+        if (trail.lineMap != null) return;
 
         var go = new GameObject($"MalumTrail_{trail.playerId}");
         go.transform.SetParent(map.HerePoint.transform.parent, false);
@@ -276,7 +325,47 @@ public static class MinimapHandler
         lr.startColor = trail.color;
         lr.endColor = trail.color;
 
-        trail.line = lr;
+        trail.lineMap = lr;
+    }
+
+    private static void AttachTrailRenderer(Transform parent, Material material, TrailLine trail, bool isWindow)
+    {
+        if (parent == null) return;
+        if (trail == null) return;
+        if (isWindow)
+        {
+            if (trail.lineWindow != null) return;
+        }
+        else
+        {
+            if (trail.lineMap != null) return;
+        }
+
+        var go = new GameObject($"MalumTrail_{trail.playerId}");
+        go.transform.SetParent(parent, false);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
+        go.transform.localScale = Vector3.one;
+
+        var lr = go.AddComponent<LineRenderer>();
+        lr.useWorldSpace = false;
+        lr.positionCount = 0;
+        lr.widthMultiplier = 0.025f;
+        lr.numCapVertices = 2;
+        lr.numCornerVertices = 2;
+        if (material != null) lr.material = material;
+
+        lr.startColor = trail.color;
+        lr.endColor = trail.color;
+
+        if (isWindow)
+        {
+            trail.lineWindow = lr;
+        }
+        else
+        {
+            trail.lineMap = lr;
+        }
     }
 
     private static void AddTrailPoint(TrailLine trail, Vector3 pos, float now)
@@ -336,17 +425,21 @@ public static class MinimapHandler
         }
     }
 
-    private static void RenderTrail(TrailLine trail)
+    private static void RenderTrail(TrailLine trail, bool isWindow)
     {
         var count = trail.count;
-        if (trail.line == null) return;
+        var lr = isWindow ? trail.lineWindow : trail.lineMap;
+        if (lr == null) return;
+        var lastCount = isWindow ? trail.lastRenderedCountWindow : trail.lastRenderedCountMap;
         if (count <= 1)
         {
-            if (trail.lastRenderedCount != 0)
+            if (lastCount != 0)
             {
-                trail.line.positionCount = 0;
-                trail.lastRenderedCount = 0;
+                lr.positionCount = 0;
+                lastCount = 0;
             }
+            if (isWindow) trail.lastRenderedCountWindow = lastCount;
+            else trail.lastRenderedCountMap = lastCount;
             return;
         }
 
@@ -356,15 +449,18 @@ public static class MinimapHandler
             trail.temp[i] = trail.positions[idx];
         }
 
-        if (trail.lastRenderedCount != count)
+        if (lastCount != count)
         {
-            trail.line.positionCount = count;
-            trail.lastRenderedCount = count;
+            lr.positionCount = count;
+            lastCount = count;
         }
 
         for (var i = 0; i < count; i++)
         {
-            trail.line.SetPosition(i, trail.temp[i]);
+            lr.SetPosition(i, trail.temp[i]);
         }
+
+        if (isWindow) trail.lastRenderedCountWindow = lastCount;
+        else trail.lastRenderedCountMap = lastCount;
     }
 }
