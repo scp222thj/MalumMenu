@@ -17,13 +17,7 @@ public class MinimapTab : ITab
             GUILayout.Label($" Scale: {scale:0.00}");
             AlwaysOnMinimapController.scale = GUILayout.HorizontalSlider(scale, 0.15f, 0.75f);
 
-            var x = AlwaysOnMinimapController.x;
-            GUILayout.Label($" X: {x:0.00}");
-            AlwaysOnMinimapController.x = GUILayout.HorizontalSlider(x, 0f, 1f);
-
-            var y = AlwaysOnMinimapController.y;
-            GUILayout.Label($" Y: {y:0.00}");
-            AlwaysOnMinimapController.y = GUILayout.HorizontalSlider(y, 0f, 1f);
+            GUILayout.Label(" Drag the minimap to move it (while menu is open).");
         }
 
         GUILayout.Space(10);

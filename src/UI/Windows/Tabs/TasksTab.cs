@@ -45,6 +45,8 @@ public class TasksTab : ITab
         CheatToggles.autoTaskOnOpen = GUILayout.Toggle(CheatToggles.autoTaskOnOpen, " Auto-Complete On Open");
 
         CheatToggles.autoTaskUseBestTime = GUILayout.Toggle(CheatToggles.autoTaskUseBestTime, " Use Best Recorded Time");
+
+        CheatToggles.debugTaskAutomation = GUILayout.Toggle(CheatToggles.debugTaskAutomation, " Debug Task Automation (Log)");
     }
 
     private void DrawTimings()

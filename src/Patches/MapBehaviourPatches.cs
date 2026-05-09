@@ -99,7 +99,7 @@ public static class MapBehaviour_Close
         {
             MinimapHandler.herePoints.ForEach(x => UnityEngine.Object.Destroy(x.sprite.gameObject));
             MinimapHandler.herePoints.Clear();
-            MinimapHandler.ClearTrails();
+            MinimapHandler.DetachTrailRenderers();
         }
         catch { }
     }

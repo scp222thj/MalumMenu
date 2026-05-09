@@ -117,62 +117,98 @@ public static class MinimapHandler
 
     public static void HandleTrails(MapBehaviour map)
     {
-        if (!CheatToggles.mapTrails) return;
         if (map == null) return;
+        RecordTrails();
+        RenderTrails(map);
+    }
+
+    public static void RecordTrails()
+    {
+        if (!CheatToggles.mapTrails) return;
         if (!Utils.isShip) return;
         if (ShipStatus.Instance == null) return;
         if (Utils.isMeeting) { ClearTrails(); return; }
 
         var now = Time.time;
-        if (now >= _nextTrailRecordTime)
+        if (now < _nextTrailRecordTime) return;
+        _nextTrailRecordTime = now + TrailWaypointIntervalSeconds;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
         {
-            _nextTrailRecordTime = now + TrailWaypointIntervalSeconds;
+            if (player == null || player.Data == null) continue;
 
-            foreach (var player in PlayerControl.AllPlayerControls)
+            var isImp = player.Data.Role != null && player.Data.Role.IsImpostor;
+            var isDead = player.Data.IsDead;
+
+            if (isDead)
             {
-                if (player == null || player.Data == null) continue;
+                if (!CheatToggles.mapGhosts) continue;
+            }
+            else if (isImp)
+            {
+                if (!CheatToggles.mapImps) continue;
+            }
+            else
+            {
+                if (!CheatToggles.mapCrew) continue;
+            }
 
-                var isImp = player.Data.Role != null && player.Data.Role.IsImpostor;
-                var isDead = player.Data.IsDead;
+            var pos = player.transform.position;
+            pos /= ShipStatus.Instance.MapScale;
+            pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+            pos.z = -1.1f;
 
-                if (isDead)
-                {
-                    if (!CheatToggles.mapGhosts) continue;
-                }
-                else if (isImp)
-                {
-                    if (!CheatToggles.mapImps) continue;
-                }
-                else
-                {
-                    if (!CheatToggles.mapCrew) continue;
-                }
+            var id = player.PlayerId;
+            if (!_trailsByPlayer.TryGetValue(id, out var trail) || trail == null)
+            {
+                trail = CreateTrail(id);
+                _trailsByPlayer[id] = trail;
+            }
 
-                var pos = player.transform.position;
-                pos /= ShipStatus.Instance.MapScale;
-                pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
-                pos.z = -1.1f;
-
-                var id = player.PlayerId;
-                if (!_trailsByPlayer.TryGetValue(id, out var trail) || trail == null || trail.line == null)
+            var c = player.Data.Color;
+            if (trail.color != c)
+            {
+                trail.color = c;
+                if (trail.line != null)
                 {
-                    trail = CreateTrail(map, id);
-                    _trailsByPlayer[id] = trail;
-                }
-
-                var c = player.Data.Color;
-                if (trail.color != c)
-                {
-                    trail.color = c;
                     trail.line.startColor = c;
                     trail.line.endColor = c;
                 }
-
-                AddTrailPoint(trail, pos, now);
             }
+
+            AddTrailPoint(trail, pos, now);
         }
 
-        TrimAndRenderAll(now);
+        TrimAll(now);
+    }
+
+    private static void RenderTrails(MapBehaviour map)
+    {
+        if (!CheatToggles.mapTrails) return;
+        if (!Utils.isShip) return;
+        if (ShipStatus.Instance == null) return;
+        if (Utils.isMeeting) return;
+
+        var now = Time.time;
+        var keepSeconds = trailSeconds;
+        if (keepSeconds < 5f) keepSeconds = 5f;
+        if (keepSeconds > 60f) keepSeconds = 60f;
+
+        foreach (var kvp in _trailsByPlayer)
+        {
+            var trail = kvp.Value;
+            if (trail == null) continue;
+
+            if (trail.count > 1 && trail.line == null)
+            {
+                AttachTrailRenderer(map, trail);
+            }
+
+            if (trail.line == null) continue;
+
+            TrimTrail(trail, now, keepSeconds);
+            RenderTrail(trail);
+        }
     }
 
     public static void ClearTrails()
@@ -190,9 +226,40 @@ public static class MinimapHandler
         _nextTrailRecordTime = 0f;
     }
 
-    private static TrailLine CreateTrail(MapBehaviour map, byte playerId)
+    public static void DetachTrailRenderers()
     {
-        var go = new GameObject($"MalumTrail_{playerId}");
+        foreach (var kvp in _trailsByPlayer)
+        {
+            var trail = kvp.Value;
+            if (trail == null) continue;
+            if (trail.line != null)
+            {
+                Object.Destroy(trail.line.gameObject);
+                trail.line = null;
+                trail.lastRenderedCount = 0;
+            }
+        }
+    }
+
+    private static TrailLine CreateTrail(byte playerId)
+    {
+        var t = new TrailLine();
+        t.playerId = playerId;
+        t.line = null;
+        t.start = 0;
+        t.count = 0;
+        t.lastRenderedCount = 0;
+        t.color = Color.white;
+        return t;
+    }
+
+    private static void AttachTrailRenderer(MapBehaviour map, TrailLine trail)
+    {
+        if (map == null) return;
+        if (trail == null) return;
+        if (trail.line != null) return;
+
+        var go = new GameObject($"MalumTrail_{trail.playerId}");
         go.transform.SetParent(map.HerePoint.transform.parent, false);
         go.transform.localPosition = Vector3.zero;
         go.transform.localRotation = Quaternion.identity;
@@ -206,14 +273,10 @@ public static class MinimapHandler
         lr.numCornerVertices = 2;
         lr.material = map.HerePoint.material;
 
-        var t = new TrailLine();
-        t.playerId = playerId;
-        t.line = lr;
-        t.start = 0;
-        t.count = 0;
-        t.lastRenderedCount = 0;
-        t.color = Color.white;
-        return t;
+        lr.startColor = trail.color;
+        lr.endColor = trail.color;
+
+        trail.line = lr;
     }
 
     private static void AddTrailPoint(TrailLine trail, Vector3 pos, float now)
@@ -245,6 +308,11 @@ public static class MinimapHandler
 
     private static void TrimAndRenderAll(float now)
     {
+        RenderTrails(MapBehaviour.Instance);
+    }
+
+    private static void TrimAll(float now)
+    {
         var keepSeconds = trailSeconds;
         if (keepSeconds < 5f) keepSeconds = 5f;
         if (keepSeconds > 60f) keepSeconds = 60f;
@@ -252,10 +320,8 @@ public static class MinimapHandler
         foreach (var kvp in _trailsByPlayer)
         {
             var trail = kvp.Value;
-            if (trail == null || trail.line == null) continue;
-
+            if (trail == null) continue;
             TrimTrail(trail, now, keepSeconds);
-            RenderTrail(trail);
         }
     }
 
@@ -273,6 +339,7 @@ public static class MinimapHandler
     private static void RenderTrail(TrailLine trail)
     {
         var count = trail.count;
+        if (trail.line == null) return;
         if (count <= 1)
         {
             if (trail.lastRenderedCount != 0)

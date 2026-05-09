@@ -286,6 +286,7 @@ public partial class MalumMenu : BasePlugin
         keybindListener = AddComponent<KeybindListener>();
         taskAutomationController = AddComponent<TaskAutomationController>();
         AddComponent<AlwaysOnMinimapController>();
+        AddComponent<TrailRecorderController>();
 
         // Disables Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value)

@@ -9,6 +9,7 @@ using InnerNet;
 using System.Collections.Generic;
 using System.Collections;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
+using System.Reflection;
 
 namespace MalumMenu;
 
@@ -422,7 +423,7 @@ public static class IntroCutscene_CoBegin
         }
     }
 
-    private static void ApplyForcedRole(RoleTypes forcedRole)
+    public static void ApplyForcedRole(RoleTypes forcedRole)
     {
         var localPlayer = PlayerControl.LocalPlayer;
         if (!localPlayer || localPlayer.Data == null) return;
@@ -448,7 +449,7 @@ public static class IntroCutscene_CoBegin
         }
     }
 
-    private static void EnsureHostIsImpostor()
+    public static void EnsureHostIsImpostor()
     {
         var localPlayer = PlayerControl.LocalPlayer;
         if (!localPlayer || localPlayer.Data == null) return;
@@ -472,6 +473,45 @@ public static class IntroCutscene_CoBegin
 
         DestroyableSingleton<RoleManager>.Instance.SetRole(localPlayer, impostorRole);
         DestroyableSingleton<RoleManager>.Instance.SetRole(swapTarget, hostRole);
+    }
+}
+
+[HarmonyPatch]
+public static class IntroCutscene_BeginTeam_EnsureHostImpostor
+{
+    private static bool _ran;
+
+    public static IEnumerable<MethodBase> TargetMethods()
+    {
+        var methods = AccessTools.GetDeclaredMethods(typeof(IntroCutscene));
+        foreach (var m in methods)
+        {
+            if (m == null) continue;
+            if (m.Name != "BeginCrewmate" && m.Name != "BeginImpostor") continue;
+            yield return m;
+        }
+    }
+
+    public static void Prefix()
+    {
+        _ran = false;
+    }
+
+    public static void Postfix()
+    {
+        if (_ran) return;
+        _ran = true;
+
+        if (!Utils.isHost) return;
+        if (!CheatToggles.hostAlwaysImpostor) return;
+
+        try
+        {
+            IntroCutscene_CoBegin.EnsureHostIsImpostor();
+        }
+        catch
+        {
+        }
     }
 }
 

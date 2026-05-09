@@ -168,6 +168,7 @@ public static class AntiCrashLimiter
     private static void RecordStrike(int clientId, byte code, string reason)
     {
         if (clientId < 0) return;
+        if (IsLocalClientId(clientId)) return;
 
         var now = Time.realtimeSinceStartup;
         var bucket = clientId & (MaxBuckets - 1);
@@ -186,6 +187,7 @@ public static class AntiCrashLimiter
 
         if (!CheatToggles.autoBanCrashers) return;
         if (!Utils.isHost) return;
+        if (CheatToggles.runOverload) return;
         if (StrikeBanned[bucket]) return;
         if (StrikeCount[bucket] < MaxStrikesBeforeBan) return;
 
@@ -197,6 +199,8 @@ public static class AntiCrashLimiter
     {
         if (!Utils.isHost) return;
         if (AmongUsClient.Instance == null) return;
+        if (CheatToggles.runOverload) return;
+        if (IsLocalClientId(clientId)) return;
 
         try
         {
@@ -244,6 +248,14 @@ public static class AntiCrashLimiter
 
         var idString = clientId >= 0 ? $" {name} (ClientId {clientId})" : "";
         Utils.ShowNewPopup($"{reason}{idString} [{code}]");
+    }
+
+    private static bool IsLocalClientId(int clientId)
+    {
+        if (clientId < 0) return false;
+        if (!Utils.isPlayer) return false;
+        if (PlayerControl.LocalPlayer.Data == null) return false;
+        return PlayerControl.LocalPlayer.Data.ClientId == clientId;
     }
 }
 

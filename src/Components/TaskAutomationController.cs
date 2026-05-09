@@ -19,6 +19,8 @@ public class TaskAutomationController : MonoBehaviour
     private int _mapId;
     private int _taskType;
     private int _taskId;
+    private Minigame _lastSeenMinigame;
+    private float _nextScanTime;
 
     private static Func<Minigame, PlayerTask> CreateTaskGetter()
     {
@@ -44,7 +46,14 @@ public class TaskAutomationController : MonoBehaviour
         if (!Utils.isPlayer) return;
 
         var task = GetTaskFromMinigame(minigame);
-        if (task == null) return;
+        if (task == null)
+        {
+            if (CheatToggles.debugTaskAutomation)
+            {
+                MalumMenu.Log.LogInfo($"TaskAutomation: minigame={minigame.GetType().Name} has no MyTask");
+            }
+            return;
+        }
 
         if (task.Owner == null || !task.Owner.AmOwner) return;
         if (task.IsComplete) return;
@@ -65,6 +74,10 @@ public class TaskAutomationController : MonoBehaviour
             _auto = false;
             _duration = 0f;
             _end = 0f;
+            if (CheatToggles.debugTaskAutomation)
+            {
+                MalumMenu.Log.LogInfo($"TaskAutomation: tracking manual task map={_mapId} taskId={_taskId} taskType={_taskType} mg={minigame.GetType().Name}");
+            }
             return;
         }
 
@@ -80,6 +93,11 @@ public class TaskAutomationController : MonoBehaviour
         _auto = true;
         _duration = duration;
         _end = now + duration;
+
+        if (CheatToggles.debugTaskAutomation)
+        {
+            MalumMenu.Log.LogInfo($"TaskAutomation: scheduled map={_mapId} taskId={_taskId} taskType={_taskType} duration={duration:0.00}s mg={minigame.GetType().Name}");
+        }
     }
 
     public void OnMinigameClosePrefix(Minigame minigame)
@@ -121,6 +139,45 @@ public class TaskAutomationController : MonoBehaviour
 
     private void Update()
     {
+        if (!_active)
+        {
+            if (!Utils.isInGame) return;
+            if (!Utils.isPlayer) return;
+            if (!CheatToggles.autoTaskOnOpen && !CheatToggles.recordTaskTimes) return;
+
+            var scanNow = Time.realtimeSinceStartup;
+            if (scanNow < _nextScanTime) return;
+            _nextScanTime = scanNow + 0.25f;
+
+            Minigame mg = null;
+            try
+            {
+                mg = UnityEngine.Object.FindObjectOfType<Minigame>();
+            }
+            catch
+            {
+                mg = null;
+            }
+
+            if (mg != null && mg.isActiveAndEnabled && !ReferenceEquals(mg, _lastSeenMinigame))
+            {
+                _lastSeenMinigame = mg;
+                OnMinigameBegin(mg);
+            }
+
+            return;
+        }
+
+        if (_active && (_minigame == null || !_minigame))
+        {
+            if (CheatToggles.debugTaskAutomation)
+            {
+                MalumMenu.Log.LogInfo("TaskAutomation: minigame destroyed, clearing state");
+            }
+            Clear();
+            return;
+        }
+
         if (!_active) return;
         if (!_auto) return;
         if (_task == null || _minigame == null) { Clear(); return; }
@@ -132,6 +189,12 @@ public class TaskAutomationController : MonoBehaviour
         _closingFromAuto = true;
         try
         {
+            if (CheatToggles.debugTaskAutomation)
+            {
+                MalumMenu.Log.LogInfo($"TaskAutomation: completing task map={_mapId} taskId={_taskId} taskType={_taskType} mg={_minigame.GetType().Name}");
+            }
+
+            TryLocalComplete(_task);
             Utils.CompleteTask(_task);
         }
         finally
@@ -144,6 +207,22 @@ public class TaskAutomationController : MonoBehaviour
             {
             }
             _closingFromAuto = false;
+        }
+    }
+
+    private static void TryLocalComplete(PlayerTask task)
+    {
+        if (task == null) return;
+        try
+        {
+            var m = AccessTools.Method(task.GetType(), "Complete");
+            if (m != null && m.GetParameters().Length == 0)
+            {
+                m.Invoke(task, null);
+            }
+        }
+        catch
+        {
         }
     }
 
@@ -160,5 +239,6 @@ public class TaskAutomationController : MonoBehaviour
         _mapId = 0;
         _taskType = -1;
         _taskId = 0;
+        _nextScanTime = 0f;
     }
 }
