@@ -70,6 +70,7 @@ public partial class MalumMenu : BasePlugin
 
         Log.LogInfo($"MalumMenu {malumVersion} starting");
         Log.LogInfo($"GameVersion={Application.version}, Unity={Application.unityVersion}, Platform={Application.platform}");
+        try { Log.LogInfo($"AssemblyPath={typeof(MalumMenu).Assembly.Location}"); } catch { }
 
         try
         {

@@ -65,6 +65,14 @@ public sealed class Radar : MonoBehaviour
             return;
         }
 
+        var map = MapBehaviour.Instance;
+        if (map != null && map.gameObject != null && map.gameObject.activeInHierarchy)
+        {
+            SetVisible(false);
+            _dragging = false;
+            return;
+        }
+
         EnsureUi();
         SetVisible(true);
 
@@ -329,24 +337,12 @@ public sealed class Radar : MonoBehaviour
         }
         if (renderers == null) return null;
 
-        var maxArea = 0f;
-        for (var i = 0; i < renderers.Length; i++)
-        {
-            var r = renderers[i];
-            if (r == null) continue;
-            var s = r.sprite;
-            if (s == null) continue;
-            var tex = s.texture;
-            if (tex == null) continue;
-            var area = tex.width * tex.height;
-            if (area > maxArea) maxArea = area;
-        }
-
-        if (maxArea <= 0f) return null;
+        var here = template.HerePoint;
+        var hereSprite = here != null ? here.sprite : null;
 
         SpriteRenderer best = null;
+        var bestWorldArea = 0f;
         var bestOrder = int.MaxValue;
-        var bestArea = 0f;
 
         for (var i = 0; i < renderers.Length; i++)
         {
@@ -357,30 +353,40 @@ public sealed class Radar : MonoBehaviour
             var tex = s.texture;
             if (tex == null) continue;
 
-            var area = tex.width * tex.height;
-            if (area < maxArea * 0.5f) continue;
+            if (here != null && ReferenceEquals(r, here)) continue;
+            if (hereSprite != null && ReferenceEquals(s, hereSprite)) continue;
 
             var n = r.gameObject != null ? r.gameObject.name : "";
             var ln = n != null ? n.ToLowerInvariant() : "";
-            var isOverlay = ln.Contains("overlay") || ln.Contains("highlight") || ln.Contains("room") || ln.Contains("fog");
-            if (isOverlay) continue;
+
+            if (ln.Contains("overlay") || ln.Contains("highlight") || ln.Contains("room") || ln.Contains("fog")) continue;
+            if (ln.Contains("here") || ln.Contains("player") || ln.Contains("icon")) continue;
+
+            var b = s.bounds.size;
+            var sx = Mathf.Abs(r.transform.lossyScale.x);
+            var sy = Mathf.Abs(r.transform.lossyScale.y);
+            var worldW = b.x * sx;
+            var worldH = b.y * sy;
+            var worldArea = worldW * worldH;
+
+            if (worldArea <= 0.0001f) continue;
 
             var order = r.sortingOrder;
-            if (order < bestOrder)
+            var better = false;
+            if (worldArea > bestWorldArea * 1.05f)
             {
-                best = r;
-                bestOrder = order;
-                bestArea = area;
-                continue;
+                better = true;
+            }
+            else if (worldArea >= bestWorldArea * 0.95f && order < bestOrder)
+            {
+                better = true;
             }
 
-            if (order != bestOrder) continue;
+            if (!better) continue;
 
-            if (area > bestArea)
-            {
-                best = r;
-                bestArea = area;
-            }
+            best = r;
+            bestWorldArea = worldArea;
+            bestOrder = order;
         }
 
         return best;
