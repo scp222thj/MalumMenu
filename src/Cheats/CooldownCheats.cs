@@ -141,10 +141,6 @@ public static class CooldownCheats
             cache.baseline[i] = 0f;
         }
 
-        MalumMenu.Log.LogInfo($"CooldownCheats cached {cache.fields.Length} fields for {t.Name}");
-        for (var i = 0; i < cache.fields.Length; i++)
-        {
-            MalumMenu.Log.LogInfo($"CooldownCheats field: {t.Name}.{cache.fields[i].Name}");
-        }
+        
     }
 }

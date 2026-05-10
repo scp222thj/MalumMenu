@@ -55,7 +55,6 @@ public sealed class Radar : MonoBehaviour
     private float _nextTemplateScanTime;
     private Sprite _iconSprite;
     private float _contentAspect = 1f;
-    private float _nextDebugLogTime;
 
     private void Update()
     {
@@ -98,38 +97,7 @@ public sealed class Radar : MonoBehaviour
         UpdateBackground();
         UpdatePlayers();
         UpdateTrails();
-        DebugLog();
         MaybeSaveWindow();
-    }
-
-    private void DebugLog()
-    {
-        if (!CheatToggles.debugMinimap) return;
-        if (MalumMenu.Log == null) return;
-
-        var now = Time.unscaledTime;
-        if (now < _nextDebugLogTime) return;
-        _nextDebugLogTime = now + 1f;
-
-        var lp = PlayerControl.LocalPlayer;
-        if (lp == null) return;
-        if (!Utils.isShip || ShipStatus.Instance == null) return;
-
-        var pos = lp.transform.position;
-        pos /= ShipStatus.Instance.MapScale;
-        pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
-        var mapLocal = new Vector2(pos.x, pos.y);
-
-        var ok = TryMapLocalToAnchored(mapLocal, out var anchored);
-        if (!ok) return;
-
-        try
-        {
-            MalumMenu.Log.LogInfo($"Radar: offset=({mapOffset.x:0.00},{mapOffset.y:0.00}) mapLocal=({mapLocal.x:0.00},{mapLocal.y:0.00}) anchored=({anchored.x:0.0},{anchored.y:0.0})");
-        }
-        catch
-        {
-        }
     }
 
     private void EnsureUi()
@@ -394,8 +362,8 @@ public sealed class Radar : MonoBehaviour
 
             var n = r.gameObject != null ? r.gameObject.name : "";
             var ln = n != null ? n.ToLowerInvariant() : "";
-            var isOverlay = ln.Contains("overlay") || ln.Contains("highlight") || ln.Contains("room");
-            if (isOverlay && area < maxArea * 0.9f) continue;
+            var isOverlay = ln.Contains("overlay") || ln.Contains("highlight") || ln.Contains("room") || ln.Contains("fog");
+            if (isOverlay) continue;
 
             var order = r.sortingOrder;
             if (order < bestOrder)
@@ -521,11 +489,10 @@ public sealed class Radar : MonoBehaviour
 
                 if (!_uiByPlayer.TryGetValue(id, out var ui) || ui == null)
                 {
-                    ui = CreatePlayerUi(id);
-                    _uiByPlayer[id] = ui;
+                    CreatePlayerUi(id);
                 }
 
-                UpdatePlayerUi(p, ui);
+                UpdatePlayerUi(p);
             }
         }
 
@@ -550,7 +517,7 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private RadarPlayerUi CreatePlayerUi(byte id)
+    private void CreatePlayerUi(byte id)
     {
         var ui = new RadarPlayerUi();
         ui.id = id;
@@ -562,7 +529,7 @@ public sealed class Radar : MonoBehaviour
         ui.highlight.enabled = false;
         ui.dot.enabled = false;
 
-        return ui;
+        _uiByPlayer[id] = ui;
     }
 
     private Image CreateIcon(RectTransform parent, string name, float size)
@@ -600,10 +567,12 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private void UpdatePlayerUi(PlayerControl p, RadarPlayerUi ui)
+    private void UpdatePlayerUi(PlayerControl p)
     {
         if (p == null || p.Data == null) return;
-        if (ui == null) return;
+
+        var id = p.PlayerId;
+        if (!_uiByPlayer.TryGetValue(id, out var ui) || ui == null) return;
 
         var isImp = p.Data.Role != null && p.Data.Role.IsImpostor;
         var isDead = p.Data.IsDead;
@@ -769,8 +738,11 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private static void AddTrailPoint(RadarTrail trail, Vector2 pos, float now)
+    private static void AddTrailPoint(object trailObj, Vector2 pos, float now)
     {
+        var trail = trailObj as RadarTrail;
+        if (trail == null) return;
+
         if (trail.count > 0)
         {
             var lastIndex = (trail.start + trail.count - 1) % TrailMaxWaypoints;
@@ -794,9 +766,11 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private static void TrimTrail(RadarTrail trail, float now, float keepSeconds)
+    private static void TrimTrail(object trailObj, float now, float keepSeconds)
     {
+        var trail = trailObj as RadarTrail;
         if (trail == null) return;
+
         if (keepSeconds <= 0.001f) return;
 
         while (trail.count > 0)
@@ -809,8 +783,11 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private void RenderTrail(RadarTrail trail, float now, float keepSeconds)
+    private void RenderTrail(object trailObj, float now, float keepSeconds)
     {
+        var trail = trailObj as RadarTrail;
+        if (trail == null) return;
+
         var count = trail.count;
         if (count <= 1)
         {
@@ -913,8 +890,11 @@ public sealed class Radar : MonoBehaviour
         return img;
     }
 
-    private static void HideAllSegments(RadarTrail trail)
+    private static void HideAllSegments(object trailObj)
     {
+        var trail = trailObj as RadarTrail;
+        if (trail == null) return;
+
         for (var i = 0; i < trail.segments.Count; i++)
         {
             if (trail.segments[i] != null) trail.segments[i].enabled = false;
@@ -953,6 +933,17 @@ public sealed class Radar : MonoBehaviour
         }
         catch
         {
+        }
+
+        if (offsetChanged && CheatToggles.debugMinimap && MalumMenu.Log != null)
+        {
+            try
+            {
+                MalumMenu.Log.LogInfo($"Radar: saved MapOffset=({offset.x:0.00},{offset.y:0.00})");
+            }
+            catch
+            {
+            }
         }
     }
 }
