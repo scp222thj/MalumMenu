@@ -54,6 +54,8 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<float> minimapScale;
     public static ConfigEntry<float> minimapPosX;
     public static ConfigEntry<float> minimapPosY;
+    public static ConfigEntry<float> minimapMapOffsetX;
+    public static ConfigEntry<float> minimapMapOffsetY;
     public static ConfigEntry<int> adaptMaxStrength;
     public static ConfigEntry<float> adaptMaxCooldown;
     public static ConfigEntry<float> attackLogDelay;
@@ -159,6 +161,16 @@ public partial class MalumMenu : BasePlugin
                                 "AlwaysOnPosY",
                                 Radar.anchoredPosition.y,
                                 "Anchored Y position of the always-on minimap window.");
+
+        minimapMapOffsetX = Config.Bind("MalumMenu.Minimap",
+                                "MapOffsetX",
+                                Radar.mapOffset.x,
+                                "Calibration X offset for minimap icons/trails (map local units).");
+
+        minimapMapOffsetY = Config.Bind("MalumMenu.Minimap",
+                                "MapOffsetY",
+                                Radar.mapOffset.y,
+                                "Calibration Y offset for minimap icons/trails (map local units).");
 
         // GuestMode config settings are commented out as the cheats are broken in latest updates
 
@@ -311,6 +323,7 @@ public partial class MalumMenu : BasePlugin
 
         Radar.scale = minimapScale.Value;
         Radar.anchoredPosition = new Vector2(minimapPosX.Value, minimapPosY.Value);
+        Radar.mapOffset = new Vector2(minimapMapOffsetX.Value, minimapMapOffsetY.Value);
 
         // Disables Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value)

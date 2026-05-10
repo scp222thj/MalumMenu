@@ -8,6 +8,7 @@ public sealed class Radar : MonoBehaviour
 {
     public static float scale = 0.35f;
     public static Vector2 anchoredPosition = new Vector2(320f, 180f);
+    public static Vector2 mapOffset = Vector2.zero;
 
     private const float MinScale = 0.15f;
     private const float MaxScale = 0.75f;
@@ -22,11 +23,13 @@ public sealed class Radar : MonoBehaviour
     private const float TrailAlphaStart = 0.85f;
     private const float TrailAlphaEnd = 0.60f;
 
+    private static Sprite _fallbackSprite;
+
     private sealed class PlayerUi
     {
         public byte id;
-        public RawImage highlight;
-        public RawImage dot;
+        public Image highlight;
+        public Image dot;
         public Trail trail;
     }
 
@@ -37,7 +40,7 @@ public sealed class Radar : MonoBehaviour
         public int start;
         public int count;
         public float nextRecordTime;
-        public readonly List<RawImage> segments = new List<RawImage>(TrailMaxWaypoints);
+        public readonly List<Image> segments = new List<Image>(TrailMaxWaypoints);
         public Color color;
     }
 
@@ -59,16 +62,19 @@ public sealed class Radar : MonoBehaviour
     private float _nextSaveTime;
     private Vector2 _lastSavedAnchored;
     private float _lastSavedScale;
+    private Vector2 _lastSavedMapOffset;
 
     private MapBehaviour _template;
+    private Transform _mapSpace;
+    private SpriteRenderer _bgRenderer;
     private Texture _bgTex;
     private Rect _bgUv;
-    private Vector2 _bgExtents;
+    private Vector2 _bgBoundsMin;
+    private Vector2 _bgBoundsSize;
     private float _nextTemplateScanTime;
-    private Texture _iconTex;
-    private Rect _iconUv;
-    private Material _iconMatBase;
+    private Sprite _iconSprite;
     private float _contentAspect = 1f;
+    private float _nextDebugLogTime;
 
     private void Update()
     {
@@ -111,7 +117,38 @@ public sealed class Radar : MonoBehaviour
         UpdateBackground();
         UpdatePlayers();
         UpdateTrails();
+        DebugLog();
         MaybeSaveWindow();
+    }
+
+    private void DebugLog()
+    {
+        if (!CheatToggles.debugMinimap) return;
+        if (MalumMenu.Log == null) return;
+
+        var now = Time.unscaledTime;
+        if (now < _nextDebugLogTime) return;
+        _nextDebugLogTime = now + 1f;
+
+        var lp = PlayerControl.LocalPlayer;
+        if (lp == null) return;
+        if (!Utils.isShip || ShipStatus.Instance == null) return;
+
+        var pos = lp.transform.position;
+        pos /= ShipStatus.Instance.MapScale;
+        pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+        var mapLocal = new Vector2(pos.x, pos.y);
+
+        var ok = TryMapLocalToAnchored(mapLocal, out var anchored);
+        if (!ok) return;
+
+        try
+        {
+            MalumMenu.Log.LogInfo($"Radar: offset=({mapOffset.x:0.00},{mapOffset.y:0.00}) mapLocal=({mapLocal.x:0.00},{mapLocal.y:0.00}) anchored=({anchored.x:0.0},{anchored.y:0.0})");
+        }
+        catch
+        {
+        }
     }
 
     private void EnsureUi()
@@ -265,13 +302,14 @@ public sealed class Radar : MonoBehaviour
         if (template == null)
         {
             _template = null;
+            _mapSpace = null;
+            _bgRenderer = null;
             _bgTex = null;
             _bgUv = default;
-            _bgExtents = default;
+            _bgBoundsMin = default;
+            _bgBoundsSize = default;
             _contentAspect = 1f;
-            _iconTex = null;
-            _iconUv = default;
-            _iconMatBase = null;
+            _iconSprite = null;
             return;
         }
 
@@ -281,47 +319,39 @@ public sealed class Radar : MonoBehaviour
         var sr = ResolveBackgroundRenderer(template);
         if (sr == null || sr.sprite == null || sr.sprite.texture == null)
         {
+            _bgRenderer = null;
             _bgTex = null;
             _bgUv = default;
-            _bgExtents = default;
+            _bgBoundsMin = default;
+            _bgBoundsSize = default;
             _contentAspect = 1f;
-            _iconTex = null;
-            _iconUv = default;
-            _iconMatBase = null;
+            _iconSprite = null;
             return;
         }
+
+        _bgRenderer = sr;
+        _mapSpace = template.HerePoint != null ? template.HerePoint.transform.parent : null;
+        if (_mapSpace == null) _mapSpace = sr.transform.parent;
+        if (_mapSpace == null) _mapSpace = template.transform;
 
         _bgTex = sr.sprite.texture;
         var tr = sr.sprite.textureRect;
         var texW = sr.sprite.texture.width;
         var texH = sr.sprite.texture.height;
         _bgUv = new Rect(tr.x / texW, tr.y / texH, tr.width / texW, tr.height / texH);
-        _bgExtents = sr.sprite.bounds.extents;
+        var b = sr.sprite.bounds;
+        _bgBoundsMin = b.min;
+        _bgBoundsSize = b.size;
         _contentAspect = tr.height > 0.0001f ? (tr.width / tr.height) : 1f;
 
-        if (template.HerePoint != null && template.HerePoint.sprite != null && template.HerePoint.sprite.texture != null)
-        {
-            var iconSprite = template.HerePoint.sprite;
-            _iconTex = iconSprite.texture;
-            var itr = iconSprite.textureRect;
-            var itw = iconSprite.texture.width;
-            var ith = iconSprite.texture.height;
-            _iconUv = new Rect(itr.x / itw, itr.y / ith, itr.width / itw, itr.height / ith);
-            _iconMatBase = template.HerePoint.material;
-        }
-        else
-        {
-            _iconTex = null;
-            _iconUv = default;
-            _iconMatBase = null;
-        }
+        _iconSprite = template.HerePoint != null ? template.HerePoint.sprite : null;
 
         if (CheatToggles.debugMinimap && MalumMenu.Log != null)
         {
             try
             {
-                var iconOk = _iconTex != null && _iconMatBase != null;
-                MalumMenu.Log.LogInfo($"Radar: bg tex={texW}x{texH} uv=({_bgUv.x:0.000},{_bgUv.y:0.000},{_bgUv.width:0.000},{_bgUv.height:0.000}) ext=({_bgExtents.x:0.00},{_bgExtents.y:0.00}) aspect={_contentAspect:0.000} icon={iconOk}");
+                var iconOk = _iconSprite != null;
+                MalumMenu.Log.LogInfo($"Radar: bg tex={texW}x{texH} uv=({_bgUv.x:0.000},{_bgUv.y:0.000},{_bgUv.width:0.000},{_bgUv.height:0.000}) boundsMin=({_bgBoundsMin.x:0.00},{_bgBoundsMin.y:0.00}) boundsSize=({_bgBoundsSize.x:0.00},{_bgBoundsSize.y:0.00}) aspect={_contentAspect:0.000} icon={iconOk}");
             }
             catch
             {
@@ -438,6 +468,42 @@ public sealed class Radar : MonoBehaviour
         _contentRoot.anchoredPosition = Vector2.zero;
     }
 
+    private static Sprite GetFallbackSprite()
+    {
+        if (_fallbackSprite != null) return _fallbackSprite;
+        _fallbackSprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0f, 0f, 1f, 1f), new Vector2(0.5f, 0.5f), 1f);
+        return _fallbackSprite;
+    }
+
+    private bool TryMapLocalToAnchored(Vector2 mapLocal, out Vector2 anchored)
+    {
+        anchored = default;
+
+        if (_bgRenderer == null) return false;
+        if (_bgRenderer.sprite == null) return false;
+        if (_mapSpace == null) return false;
+
+        var bsize = _bgBoundsSize;
+        if (bsize.x <= 0.0001f || bsize.y <= 0.0001f) return false;
+
+        var world = _mapSpace.TransformPoint(new Vector3(mapLocal.x, mapLocal.y, 0f));
+        var bgLocal = _bgRenderer.transform.InverseTransformPoint(world);
+
+        bgLocal.x += mapOffset.x;
+        bgLocal.y += mapOffset.y;
+
+        var u = (bgLocal.x - _bgBoundsMin.x) / bsize.x;
+        var v = (bgLocal.y - _bgBoundsMin.y) / bsize.y;
+
+        var rect = _contentRoot != null ? _contentRoot.rect : _window.rect;
+        var w = rect.width;
+        var h = rect.height;
+        if (w <= 0.0001f || h <= 0.0001f) return false;
+
+        anchored = new Vector2((Mathf.Clamp01(u) - 0.5f) * w, (Mathf.Clamp01(v) - 0.5f) * h);
+        return true;
+    }
+
     private void UpdatePlayers()
     {
         if (_iconsRoot == null) return;
@@ -496,24 +562,8 @@ public sealed class Radar : MonoBehaviour
         ui.id = id;
         ui.trail = new Trail();
 
-        ui.highlight = CreateDot(_iconsRoot, "Highlight", HighlightSize);
-        ui.dot = CreateDot(_iconsRoot, "Dot", IconSize);
-
-        ui.dot.color = Color.white;
-
-        if (_iconTex != null)
-        {
-            ui.highlight.texture = _iconTex;
-            ui.dot.texture = _iconTex;
-            ui.highlight.uvRect = _iconUv;
-            ui.dot.uvRect = _iconUv;
-        }
-
-        if (_iconMatBase != null)
-        {
-            ui.highlight.material = Object.Instantiate(_iconMatBase);
-            ui.dot.material = Object.Instantiate(_iconMatBase);
-        }
+        ui.highlight = CreateIcon(_iconsRoot, "Highlight", HighlightSize);
+        ui.dot = CreateIcon(_iconsRoot, "Dot", IconSize);
 
         ui.highlight.enabled = false;
         ui.dot.enabled = false;
@@ -521,7 +571,7 @@ public sealed class Radar : MonoBehaviour
         return ui;
     }
 
-    private static RawImage CreateDot(RectTransform parent, string name, float size)
+    private Image CreateIcon(RectTransform parent, string name, float size)
     {
         var go = new GameObject(name);
         var rt = go.AddComponent<RectTransform>();
@@ -532,8 +582,9 @@ public sealed class Radar : MonoBehaviour
         rt.sizeDelta = new Vector2(size, size);
         rt.anchoredPosition = Vector2.zero;
 
-        var img = go.AddComponent<RawImage>();
-        img.texture = Texture2D.whiteTexture;
+        var img = go.AddComponent<Image>();
+        img.sprite = _iconSprite != null ? _iconSprite : GetFallbackSprite();
+        img.preserveAspect = true;
         img.raycastTarget = false;
         return img;
     }
@@ -575,9 +626,6 @@ public sealed class Radar : MonoBehaviour
             return;
         }
 
-        var ext = _bgExtents;
-        if (ext.x <= 0.0001f || ext.y <= 0.0001f) ext = new Vector2(6f, 6f);
-
         if (!Utils.isShip || ShipStatus.Instance == null)
         {
             if (ui.dot != null) ui.dot.enabled = false;
@@ -585,45 +633,30 @@ public sealed class Radar : MonoBehaviour
             return;
         }
 
+        if (_iconSprite != null)
+        {
+            if (ui.dot != null && ui.dot.sprite != _iconSprite) ui.dot.sprite = _iconSprite;
+            if (ui.highlight != null && ui.highlight.sprite != _iconSprite) ui.highlight.sprite = _iconSprite;
+        }
+
         var pos = p.transform.position;
         pos /= ShipStatus.Instance.MapScale;
         pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
+        var mapLocal = new Vector2(pos.x, pos.y);
 
-        var u = (pos.x / ext.x + 1f) * 0.5f;
-        var v = (pos.y / ext.y + 1f) * 0.5f;
-
-        var rect = _contentRoot != null ? _contentRoot.rect : _window.rect;
-        var w = rect.width;
-        var h = rect.height;
-        if (w <= 0.0001f || h <= 0.0001f) return;
-
-        var x = Mathf.Clamp01(u) * w;
-        var y = Mathf.Clamp01(v) * h;
-        var anchored = new Vector2(x - w * 0.5f, y - h * 0.5f);
+        if (!TryMapLocalToAnchored(mapLocal, out var anchored))
+        {
+            if (ui.dot != null) ui.dot.enabled = false;
+            if (ui.highlight != null) ui.highlight.enabled = false;
+            return;
+        }
 
         var color = ResolvePlayerColor(p, isImp, isDead);
         if (ui.dot != null)
         {
             ui.dot.enabled = true;
             ui.dot.rectTransform.anchoredPosition = anchored;
-
-            if (_iconTex != null && ui.dot.texture != _iconTex)
-            {
-                ui.dot.texture = _iconTex;
-                ui.dot.uvRect = _iconUv;
-            }
-            if (_iconMatBase != null && ui.dot.material == null)
-            {
-                ui.dot.material = Object.Instantiate(_iconMatBase);
-            }
-
-            var mat = ui.dot.material;
-            if (mat != null)
-            {
-                mat.SetColor(PlayerMaterial.BackColor, color);
-                mat.SetColor(PlayerMaterial.BodyColor, color);
-                mat.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
-            }
+            ui.dot.color = color;
         }
 
         if (ui.highlight != null)
@@ -633,24 +666,7 @@ public sealed class Radar : MonoBehaviour
             if (highlight)
             {
                 ui.highlight.rectTransform.anchoredPosition = anchored;
-
-                if (_iconTex != null && ui.highlight.texture != _iconTex)
-                {
-                    ui.highlight.texture = _iconTex;
-                    ui.highlight.uvRect = _iconUv;
-                }
-                if (_iconMatBase != null && ui.highlight.material == null)
-                {
-                    ui.highlight.material = Object.Instantiate(_iconMatBase);
-                }
-
-                var hmat = ui.highlight.material;
-                if (hmat != null)
-                {
-                    hmat.SetColor(PlayerMaterial.BackColor, Color.red);
-                    hmat.SetColor(PlayerMaterial.BodyColor, Color.red);
-                    hmat.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
-                }
+                ui.highlight.color = new Color(1f, 0f, 0f, 0.75f);
             }
         }
 
@@ -666,14 +682,37 @@ public sealed class Radar : MonoBehaviour
 
         if (isDead)
         {
-            if (CheatToggles.colorBasedMap) return p.Data.Color;
+            if (CheatToggles.colorBasedMap) return SafePlayerColor(p);
             return Palette.White;
         }
 
-        if (CheatToggles.colorBasedMap) return p.Data.Color;
+        if (CheatToggles.colorBasedMap) return SafePlayerColor(p);
         if (p.Data.Role != null) return p.Data.Role.TeamColor;
         if (isImp) return Color.red;
         return Color.cyan;
+    }
+
+    private static Color SafePlayerColor(PlayerControl p)
+    {
+        if (p == null) return Color.white;
+
+        try
+        {
+            if (p.Data != null) return p.Data.Color;
+        }
+        catch
+        {
+        }
+
+        try
+        {
+            return Palette.PlayerColors[p.CurrentOutfit.ColorId];
+        }
+        catch
+        {
+        }
+
+        return Color.white;
     }
 
     private void UpdateTrails()
@@ -692,9 +731,6 @@ public sealed class Radar : MonoBehaviour
             }
             return;
         }
-
-        var ext = _bgExtents;
-        if (ext.x <= 0.0001f || ext.y <= 0.0001f) ext = new Vector2(6f, 6f);
 
         var now = Time.time;
         var keepSeconds = MinimapHandler.trailSeconds;
@@ -735,7 +771,7 @@ public sealed class Radar : MonoBehaviour
             var ui = kvp.Value;
             if (ui == null || ui.trail == null) continue;
             TrimTrail(ui.trail, now, keepSeconds);
-            RenderTrail(ui.trail, ext, now, keepSeconds);
+            RenderTrail(ui.trail, now, keepSeconds);
         }
     }
 
@@ -779,7 +815,7 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private void RenderTrail(Trail trail, Vector2 ext, float now, float keepSeconds)
+    private void RenderTrail(Trail trail, float now, float keepSeconds)
     {
         var count = trail.count;
         if (count <= 1)
@@ -802,11 +838,6 @@ public sealed class Radar : MonoBehaviour
             trail.segments[i].enabled = i < needed;
         }
 
-        var rect = _contentRoot != null ? _contentRoot.rect : _window.rect;
-        var w = rect.width;
-        var h = rect.height;
-        if (w <= 0.0001f || h <= 0.0001f) return;
-
         var step = 1;
         if (rawSegments > TrailMaxSegments)
         {
@@ -822,25 +853,38 @@ public sealed class Radar : MonoBehaviour
 
             var aIdx = (trail.start + aRaw) % TrailMaxWaypoints;
             var bIdx = (trail.start + bRaw) % TrailMaxWaypoints;
-            var a = trail.points[aIdx];
-            var b = trail.points[bIdx];
+            var at = trail.times[aIdx];
+            var bt = trail.times[bIdx];
+            if (bt < at)
+            {
+                trail.segments[i].enabled = false;
+                continue;
+            }
 
-            var au = (a.x / ext.x + 1f) * 0.5f;
-            var av = (a.y / ext.y + 1f) * 0.5f;
-            var bu = (b.x / ext.x + 1f) * 0.5f;
-            var bv = (b.y / ext.y + 1f) * 0.5f;
+            if ((bt - at) > (TrailWaypointIntervalSeconds * 3f))
+            {
+                trail.segments[i].enabled = false;
+                continue;
+            }
 
-            var ax = Mathf.Clamp01(au) * w;
-            var ay = Mathf.Clamp01(av) * h;
-            var bx = Mathf.Clamp01(bu) * w;
-            var by = Mathf.Clamp01(bv) * h;
-
-            var pa = new Vector2(ax - w * 0.5f, ay - h * 0.5f);
-            var pb = new Vector2(bx - w * 0.5f, by - h * 0.5f);
+            if (!TryMapLocalToAnchored(trail.points[aIdx], out var pa))
+            {
+                trail.segments[i].enabled = false;
+                continue;
+            }
+            if (!TryMapLocalToAnchored(trail.points[bIdx], out var pb))
+            {
+                trail.segments[i].enabled = false;
+                continue;
+            }
 
             var d = pb - pa;
             var len = d.magnitude;
-            if (len < 0.001f) continue;
+            if (len < 0.001f)
+            {
+                trail.segments[i].enabled = false;
+                continue;
+            }
 
             var mid = (pa + pb) * 0.5f;
             var angle = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
@@ -857,7 +901,7 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private RawImage CreateSegment()
+    private Image CreateSegment()
     {
         var go = new GameObject("Seg");
         var rt = go.AddComponent<RectTransform>();
@@ -868,8 +912,8 @@ public sealed class Radar : MonoBehaviour
         rt.anchoredPosition = Vector2.zero;
         rt.sizeDelta = new Vector2(10f, TrailWidth);
 
-        var img = go.AddComponent<RawImage>();
-        img.texture = Texture2D.whiteTexture;
+        var img = go.AddComponent<Image>();
+        img.sprite = GetFallbackSprite();
         img.raycastTarget = false;
         img.enabled = false;
         return img;
@@ -891,13 +935,16 @@ public sealed class Radar : MonoBehaviour
 
         var s = Mathf.Clamp(scale, MinScale, MaxScale);
         var pos = anchoredPosition;
+        var offset = mapOffset;
 
         var posChanged = Vector2.Distance(pos, _lastSavedAnchored) > 0.01f;
         var scaleChanged = Mathf.Abs(s - _lastSavedScale) > 0.0001f;
-        if (!posChanged && !scaleChanged) return;
+        var offsetChanged = Vector2.Distance(offset, _lastSavedMapOffset) > 0.001f;
+        if (!posChanged && !scaleChanged && !offsetChanged) return;
 
         _lastSavedAnchored = pos;
         _lastSavedScale = s;
+        _lastSavedMapOffset = offset;
 
         if (MalumMenu.Plugin == null) return;
 
@@ -906,6 +953,8 @@ public sealed class Radar : MonoBehaviour
             MalumMenu.minimapScale.Value = s;
             MalumMenu.minimapPosX.Value = pos.x;
             MalumMenu.minimapPosY.Value = pos.y;
+            if (MalumMenu.minimapMapOffsetX != null) MalumMenu.minimapMapOffsetX.Value = offset.x;
+            if (MalumMenu.minimapMapOffsetY != null) MalumMenu.minimapMapOffsetY.Value = offset.y;
             MalumMenu.Plugin.Config.Save();
         }
         catch

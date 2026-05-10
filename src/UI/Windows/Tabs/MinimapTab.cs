@@ -19,6 +19,18 @@ public class MinimapTab : ITab
 
             GUILayout.Label(" Drag the minimap to move it (while menu is open).");
             CheatToggles.debugMinimap = GUILayout.Toggle(CheatToggles.debugMinimap, " Debug Minimap (Log)");
+            if (CheatToggles.debugMinimap)
+            {
+                var off = Radar.mapOffset;
+                GUILayout.Label($" Map Offset X: {off.x:0.00}");
+                var ox = GUILayout.HorizontalSlider(off.x, -5f, 5f);
+                GUILayout.Label($" Map Offset Y: {off.y:0.00}");
+                var oy = GUILayout.HorizontalSlider(off.y, -5f, 5f);
+                if (Mathf.Abs(ox - off.x) > 0.0001f || Mathf.Abs(oy - off.y) > 0.0001f)
+                {
+                    Radar.mapOffset = new Vector2(ox, oy);
+                }
+            }
         }
 
         GUILayout.Space(10);
