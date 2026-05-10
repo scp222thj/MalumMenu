@@ -9,8 +9,8 @@ public static class MinimapHandler
     public static List<HerePoint> herePointsToRemove = new List<HerePoint>();
     public static float trailSeconds = 30f;
 
-    private const float TrailWaypointIntervalSeconds = 1f;
-    private const int TrailMaxWaypoints = 64;
+    private const float TrailWaypointIntervalSeconds = 0.25f;
+    private const int TrailMaxWaypoints = 256;
     private static float _nextTrailRecordTime;
 
     private sealed class TrailLine

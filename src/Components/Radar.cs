@@ -13,11 +13,14 @@ public sealed class Radar : MonoBehaviour
     private const float MaxScale = 0.75f;
     private const float BaseSizeAtDefaultScale = 300f;
     private const float DefaultScale = 0.35f;
-    private const float IconSize = 8f;
-    private const float HighlightSize = 12f;
+    private const float IconSize = 14f;
+    private const float HighlightSize = 18f;
     private const float TrailWidth = 2f;
-    private const int TrailMaxWaypoints = 32;
-    private const float TrailWaypointIntervalSeconds = 1f;
+    private const int TrailMaxWaypoints = 256;
+    private const float TrailWaypointIntervalSeconds = 0.25f;
+    private const int TrailMaxSegments = 64;
+    private const float TrailAlphaStart = 0.85f;
+    private const float TrailAlphaEnd = 0.60f;
 
     private sealed class PlayerUi
     {
@@ -30,6 +33,7 @@ public sealed class Radar : MonoBehaviour
     private sealed class Trail
     {
         public Vector2[] points = new Vector2[TrailMaxWaypoints];
+        public float[] times = new float[TrailMaxWaypoints];
         public int start;
         public int count;
         public float nextRecordTime;
@@ -43,6 +47,7 @@ public sealed class Radar : MonoBehaviour
     private Canvas _canvas;
     private CanvasScaler _scaler;
     private RectTransform _window;
+    private RectTransform _contentRoot;
     private RawImage _background;
     private RectTransform _iconsRoot;
     private RectTransform _trailsRoot;
@@ -60,6 +65,10 @@ public sealed class Radar : MonoBehaviour
     private Rect _bgUv;
     private Vector2 _bgExtents;
     private float _nextTemplateScanTime;
+    private Texture _iconTex;
+    private Rect _iconUv;
+    private Material _iconMatBase;
+    private float _contentAspect = 1f;
 
     private void Update()
     {
@@ -82,6 +91,7 @@ public sealed class Radar : MonoBehaviour
         _window.sizeDelta = new Vector2(size, size);
         _window.anchoredPosition = anchoredPosition;
         _borderRoot.gameObject.SetActive(MenuUI.isGUIActive);
+        UpdateContentRect();
 
         if (MenuUI.isGUIActive)
         {
@@ -129,9 +139,18 @@ public sealed class Radar : MonoBehaviour
         _window.pivot = new Vector2(0.5f, 0.5f);
         _window.anchoredPosition = anchoredPosition;
 
+        var contentGo = new GameObject("Content");
+        _contentRoot = contentGo.AddComponent<RectTransform>();
+        _contentRoot.SetParent(_window, false);
+        _contentRoot.anchorMin = new Vector2(0.5f, 0.5f);
+        _contentRoot.anchorMax = new Vector2(0.5f, 0.5f);
+        _contentRoot.pivot = new Vector2(0.5f, 0.5f);
+        _contentRoot.anchoredPosition = Vector2.zero;
+        _contentRoot.sizeDelta = _window.sizeDelta;
+
         var bgGo = new GameObject("Background");
         var bgRt = bgGo.AddComponent<RectTransform>();
-        bgRt.SetParent(_window, false);
+        bgRt.SetParent(_contentRoot, false);
         bgRt.anchorMin = Vector2.zero;
         bgRt.anchorMax = Vector2.one;
         bgRt.pivot = new Vector2(0.5f, 0.5f);
@@ -153,7 +172,7 @@ public sealed class Radar : MonoBehaviour
 
         var iconsGo = new GameObject("Icons");
         _iconsRoot = iconsGo.AddComponent<RectTransform>();
-        _iconsRoot.SetParent(_window, false);
+        _iconsRoot.SetParent(_contentRoot, false);
         _iconsRoot.anchorMin = Vector2.zero;
         _iconsRoot.anchorMax = Vector2.one;
         _iconsRoot.pivot = new Vector2(0.5f, 0.5f);
@@ -162,12 +181,15 @@ public sealed class Radar : MonoBehaviour
 
         var trailsGo = new GameObject("Trails");
         _trailsRoot = trailsGo.AddComponent<RectTransform>();
-        _trailsRoot.SetParent(_window, false);
+        _trailsRoot.SetParent(_contentRoot, false);
         _trailsRoot.anchorMin = Vector2.zero;
         _trailsRoot.anchorMax = Vector2.one;
         _trailsRoot.pivot = new Vector2(0.5f, 0.5f);
         _trailsRoot.anchoredPosition = Vector2.zero;
         _trailsRoot.sizeDelta = Vector2.zero;
+
+        _trailsRoot.SetSiblingIndex(1);
+        _iconsRoot.SetSiblingIndex(2);
     }
 
     private void SetVisible(bool visible)
@@ -246,6 +268,10 @@ public sealed class Radar : MonoBehaviour
             _bgTex = null;
             _bgUv = default;
             _bgExtents = default;
+            _contentAspect = 1f;
+            _iconTex = null;
+            _iconUv = default;
+            _iconMatBase = null;
             return;
         }
 
@@ -258,6 +284,10 @@ public sealed class Radar : MonoBehaviour
             _bgTex = null;
             _bgUv = default;
             _bgExtents = default;
+            _contentAspect = 1f;
+            _iconTex = null;
+            _iconUv = default;
+            _iconMatBase = null;
             return;
         }
 
@@ -267,12 +297,31 @@ public sealed class Radar : MonoBehaviour
         var texH = sr.sprite.texture.height;
         _bgUv = new Rect(tr.x / texW, tr.y / texH, tr.width / texW, tr.height / texH);
         _bgExtents = sr.sprite.bounds.extents;
+        _contentAspect = tr.height > 0.0001f ? (tr.width / tr.height) : 1f;
+
+        if (template.HerePoint != null && template.HerePoint.sprite != null && template.HerePoint.sprite.texture != null)
+        {
+            var iconSprite = template.HerePoint.sprite;
+            _iconTex = iconSprite.texture;
+            var itr = iconSprite.textureRect;
+            var itw = iconSprite.texture.width;
+            var ith = iconSprite.texture.height;
+            _iconUv = new Rect(itr.x / itw, itr.y / ith, itr.width / itw, itr.height / ith);
+            _iconMatBase = template.HerePoint.material;
+        }
+        else
+        {
+            _iconTex = null;
+            _iconUv = default;
+            _iconMatBase = null;
+        }
 
         if (CheatToggles.debugMinimap && MalumMenu.Log != null)
         {
             try
             {
-                MalumMenu.Log.LogInfo($"Radar: bg tex={texW}x{texH} uv=({_bgUv.x:0.000},{_bgUv.y:0.000},{_bgUv.width:0.000},{_bgUv.height:0.000}) ext=({_bgExtents.x:0.00},{_bgExtents.y:0.00})");
+                var iconOk = _iconTex != null && _iconMatBase != null;
+                MalumMenu.Log.LogInfo($"Radar: bg tex={texW}x{texH} uv=({_bgUv.x:0.000},{_bgUv.y:0.000},{_bgUv.width:0.000},{_bgUv.height:0.000}) ext=({_bgExtents.x:0.00},{_bgExtents.y:0.00}) aspect={_contentAspect:0.000} icon={iconOk}");
             }
             catch
             {
@@ -284,12 +333,28 @@ public sealed class Radar : MonoBehaviour
     {
         if (template == null) return null;
 
-        SpriteRenderer best = null;
-        var bestScore = 0f;
-
         SpriteRenderer[] renderers = null;
         try { renderers = template.GetComponentsInChildren<SpriteRenderer>(true); } catch { }
         if (renderers == null) return null;
+
+        var maxArea = 0f;
+        for (var i = 0; i < renderers.Length; i++)
+        {
+            var r = renderers[i];
+            if (r == null) continue;
+            var s = r.sprite;
+            if (s == null) continue;
+            var tex = s.texture;
+            if (tex == null) continue;
+            var area = tex.width * tex.height;
+            if (area > maxArea) maxArea = area;
+        }
+
+        if (maxArea <= 0f) return null;
+
+        SpriteRenderer best = null;
+        var bestOrder = int.MaxValue;
+        var bestArea = 0f;
 
         for (var i = 0; i < renderers.Length; i++)
         {
@@ -299,10 +364,31 @@ public sealed class Radar : MonoBehaviour
             if (s == null) continue;
             var tex = s.texture;
             if (tex == null) continue;
-            var score = tex.width * tex.height;
-            if (score <= bestScore) continue;
-            bestScore = score;
-            best = r;
+
+            var area = tex.width * tex.height;
+            if (area < maxArea * 0.5f) continue;
+
+            var n = r.gameObject != null ? r.gameObject.name : "";
+            var ln = n != null ? n.ToLowerInvariant() : "";
+            var isOverlay = ln.Contains("overlay") || ln.Contains("highlight") || ln.Contains("room");
+            if (isOverlay && area < maxArea * 0.9f) continue;
+
+            var order = r.sortingOrder;
+            if (order < bestOrder)
+            {
+                best = r;
+                bestOrder = order;
+                bestArea = area;
+                continue;
+            }
+
+            if (order != bestOrder) continue;
+
+            if (area > bestArea)
+            {
+                best = r;
+                bestArea = area;
+            }
         }
 
         return best;
@@ -324,6 +410,32 @@ public sealed class Radar : MonoBehaviour
             _background.uvRect = new Rect(0f, 0f, 1f, 1f);
             _background.color = new Color(0f, 0f, 0f, 0.35f);
         }
+    }
+
+    private void UpdateContentRect()
+    {
+        if (_window == null) return;
+        if (_contentRoot == null) return;
+
+        var win = _window.rect;
+        if (win.width <= 0.0001f || win.height <= 0.0001f) return;
+
+        var aspect = _contentAspect;
+        if (aspect < 0.0001f) aspect = 1f;
+
+        var w = win.width;
+        var h = win.height;
+
+        var targetW = w;
+        var targetH = w / aspect;
+        if (targetH > h)
+        {
+            targetH = h;
+            targetW = h * aspect;
+        }
+
+        _contentRoot.sizeDelta = new Vector2(targetW, targetH);
+        _contentRoot.anchoredPosition = Vector2.zero;
     }
 
     private void UpdatePlayers()
@@ -387,8 +499,22 @@ public sealed class Radar : MonoBehaviour
         ui.highlight = CreateDot(_iconsRoot, "Highlight", HighlightSize);
         ui.dot = CreateDot(_iconsRoot, "Dot", IconSize);
 
-        ui.highlight.color = new Color(1f, 0f, 0f, 0.85f);
         ui.dot.color = Color.white;
+
+        if (_iconTex != null)
+        {
+            ui.highlight.texture = _iconTex;
+            ui.dot.texture = _iconTex;
+            ui.highlight.uvRect = _iconUv;
+            ui.dot.uvRect = _iconUv;
+        }
+
+        if (_iconMatBase != null)
+        {
+            ui.highlight.material = Object.Instantiate(_iconMatBase);
+            ui.dot.material = Object.Instantiate(_iconMatBase);
+        }
+
         ui.highlight.enabled = false;
         ui.dot.enabled = false;
 
@@ -466,16 +592,38 @@ public sealed class Radar : MonoBehaviour
         var u = (pos.x / ext.x + 1f) * 0.5f;
         var v = (pos.y / ext.y + 1f) * 0.5f;
 
-        var x = Mathf.Clamp01(u) * _window.rect.width;
-        var y = (1f - Mathf.Clamp01(v)) * _window.rect.height;
-        var anchored = new Vector2(x - _window.rect.width * 0.5f, y - _window.rect.height * 0.5f);
+        var rect = _contentRoot != null ? _contentRoot.rect : _window.rect;
+        var w = rect.width;
+        var h = rect.height;
+        if (w <= 0.0001f || h <= 0.0001f) return;
+
+        var x = Mathf.Clamp01(u) * w;
+        var y = Mathf.Clamp01(v) * h;
+        var anchored = new Vector2(x - w * 0.5f, y - h * 0.5f);
 
         var color = ResolvePlayerColor(p, isImp, isDead);
         if (ui.dot != null)
         {
             ui.dot.enabled = true;
-            ui.dot.color = color;
             ui.dot.rectTransform.anchoredPosition = anchored;
+
+            if (_iconTex != null && ui.dot.texture != _iconTex)
+            {
+                ui.dot.texture = _iconTex;
+                ui.dot.uvRect = _iconUv;
+            }
+            if (_iconMatBase != null && ui.dot.material == null)
+            {
+                ui.dot.material = Object.Instantiate(_iconMatBase);
+            }
+
+            var mat = ui.dot.material;
+            if (mat != null)
+            {
+                mat.SetColor(PlayerMaterial.BackColor, color);
+                mat.SetColor(PlayerMaterial.BodyColor, color);
+                mat.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
+            }
         }
 
         if (ui.highlight != null)
@@ -485,6 +633,24 @@ public sealed class Radar : MonoBehaviour
             if (highlight)
             {
                 ui.highlight.rectTransform.anchoredPosition = anchored;
+
+                if (_iconTex != null && ui.highlight.texture != _iconTex)
+                {
+                    ui.highlight.texture = _iconTex;
+                    ui.highlight.uvRect = _iconUv;
+                }
+                if (_iconMatBase != null && ui.highlight.material == null)
+                {
+                    ui.highlight.material = Object.Instantiate(_iconMatBase);
+                }
+
+                var hmat = ui.highlight.material;
+                if (hmat != null)
+                {
+                    hmat.SetColor(PlayerMaterial.BackColor, Color.red);
+                    hmat.SetColor(PlayerMaterial.BodyColor, Color.red);
+                    hmat.SetColor(PlayerMaterial.VisorColor, Palette.VisorColor);
+                }
             }
         }
 
@@ -531,6 +697,9 @@ public sealed class Radar : MonoBehaviour
         if (ext.x <= 0.0001f || ext.y <= 0.0001f) ext = new Vector2(6f, 6f);
 
         var now = Time.time;
+        var keepSeconds = MinimapHandler.trailSeconds;
+        if (keepSeconds < 5f) keepSeconds = 5f;
+        if (keepSeconds > 60f) keepSeconds = 60f;
 
         var players = PlayerControl.AllPlayerControls;
         if (players != null)
@@ -557,7 +726,7 @@ public sealed class Radar : MonoBehaviour
                 pos /= ShipStatus.Instance.MapScale;
                 pos.x *= Mathf.Sign(ShipStatus.Instance.transform.localScale.x);
 
-                AddTrailPoint(ui.trail, new Vector2(pos.x, pos.y));
+                AddTrailPoint(ui.trail, new Vector2(pos.x, pos.y), now);
             }
         }
 
@@ -565,11 +734,12 @@ public sealed class Radar : MonoBehaviour
         {
             var ui = kvp.Value;
             if (ui == null || ui.trail == null) continue;
-            RenderTrail(ui.trail, ext);
+            TrimTrail(ui.trail, now, keepSeconds);
+            RenderTrail(ui.trail, ext, now, keepSeconds);
         }
     }
 
-    private static void AddTrailPoint(Trail trail, Vector2 pos)
+    private static void AddTrailPoint(Trail trail, Vector2 pos, float now)
     {
         if (trail.count > 0)
         {
@@ -584,15 +754,32 @@ public sealed class Radar : MonoBehaviour
             trail.start = (trail.start + 1) % TrailMaxWaypoints;
             idx = (trail.start + trail.count - 1) % TrailMaxWaypoints;
             trail.points[idx] = pos;
+            trail.times[idx] = now;
         }
         else
         {
             trail.points[idx] = pos;
+            trail.times[idx] = now;
             trail.count++;
         }
     }
 
-    private void RenderTrail(Trail trail, Vector2 ext)
+    private static void TrimTrail(Trail trail, float now, float keepSeconds)
+    {
+        if (trail == null) return;
+        if (keepSeconds <= 0.001f) return;
+
+        while (trail.count > 0)
+        {
+            var idx = trail.start;
+            var age = now - trail.times[idx];
+            if (age <= keepSeconds) break;
+            trail.start = (trail.start + 1) % TrailMaxWaypoints;
+            trail.count--;
+        }
+    }
+
+    private void RenderTrail(Trail trail, Vector2 ext, float now, float keepSeconds)
     {
         var count = trail.count;
         if (count <= 1)
@@ -601,7 +788,9 @@ public sealed class Radar : MonoBehaviour
             return;
         }
 
-        var needed = count - 1;
+        var rawSegments = count - 1;
+        var needed = rawSegments;
+        if (needed > TrailMaxSegments) needed = TrailMaxSegments;
         while (trail.segments.Count < needed)
         {
             var seg = CreateSegment();
@@ -613,13 +802,26 @@ public sealed class Radar : MonoBehaviour
             trail.segments[i].enabled = i < needed;
         }
 
-        var w = _window.rect.width;
-        var h = _window.rect.height;
+        var rect = _contentRoot != null ? _contentRoot.rect : _window.rect;
+        var w = rect.width;
+        var h = rect.height;
+        if (w <= 0.0001f || h <= 0.0001f) return;
+
+        var step = 1;
+        if (rawSegments > TrailMaxSegments)
+        {
+            step = Mathf.CeilToInt(rawSegments / (float)TrailMaxSegments);
+            if (step < 1) step = 1;
+        }
 
         for (var i = 0; i < needed; i++)
         {
-            var aIdx = (trail.start + i) % TrailMaxWaypoints;
-            var bIdx = (trail.start + i + 1) % TrailMaxWaypoints;
+            var aRaw = i * step;
+            var bRaw = (i + 1) * step;
+            if (bRaw > rawSegments) bRaw = rawSegments;
+
+            var aIdx = (trail.start + aRaw) % TrailMaxWaypoints;
+            var bIdx = (trail.start + bRaw) % TrailMaxWaypoints;
             var a = trail.points[aIdx];
             var b = trail.points[bIdx];
 
@@ -629,9 +831,9 @@ public sealed class Radar : MonoBehaviour
             var bv = (b.y / ext.y + 1f) * 0.5f;
 
             var ax = Mathf.Clamp01(au) * w;
-            var ay = (1f - Mathf.Clamp01(av)) * h;
+            var ay = Mathf.Clamp01(av) * h;
             var bx = Mathf.Clamp01(bu) * w;
-            var by = (1f - Mathf.Clamp01(bv)) * h;
+            var by = Mathf.Clamp01(bv) * h;
 
             var pa = new Vector2(ax - w * 0.5f, ay - h * 0.5f);
             var pb = new Vector2(bx - w * 0.5f, by - h * 0.5f);
@@ -644,7 +846,10 @@ public sealed class Radar : MonoBehaviour
             var angle = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
 
             var seg = trail.segments[i];
-            seg.color = new Color(trail.color.r, trail.color.g, trail.color.b, 0.85f);
+            var age = now - trail.times[aIdx];
+            var t = keepSeconds > 0.001f ? Mathf.Clamp01(age / keepSeconds) : 1f;
+            var alpha = Mathf.Lerp(TrailAlphaStart, TrailAlphaEnd, t);
+            seg.color = new Color(trail.color.r, trail.color.g, trail.color.b, alpha);
             var rt = seg.rectTransform;
             rt.anchoredPosition = mid;
             rt.sizeDelta = new Vector2(len, TrailWidth);
