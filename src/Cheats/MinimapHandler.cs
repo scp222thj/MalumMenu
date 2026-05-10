@@ -463,4 +463,75 @@ public static class MinimapHandler
         if (isWindow) trail.lastRenderedCountWindow = lastCount;
         else trail.lastRenderedCountMap = lastCount;
     }
+
+    public static void DrawTrailsGUI(Rect rect, Vector2 extents)
+    {
+        if (!CheatToggles.mapTrails) return;
+        if (!Utils.isShip) return;
+        if (ShipStatus.Instance == null) return;
+        if (Utils.isMeeting) return;
+
+        RecordTrails();
+
+        var now = Time.time;
+        var keepSeconds = trailSeconds;
+        if (keepSeconds < 5f) keepSeconds = 5f;
+        if (keepSeconds > 60f) keepSeconds = 60f;
+
+        var extX = extents.x;
+        var extY = extents.y;
+        if (extX < 0.0001f) extX = 6f;
+        if (extY < 0.0001f) extY = 6f;
+
+        foreach (var kvp in _trailsByPlayer)
+        {
+            var trail = kvp.Value;
+            if (trail == null) continue;
+
+            TrimTrail(trail, now, keepSeconds);
+            var count = trail.count;
+            if (count <= 1) continue;
+
+            var prev = Vector2.zero;
+            var hasPrev = false;
+
+            for (var i = 0; i < count; i++)
+            {
+                var idx = (trail.start + i) % TrailMaxWaypoints;
+                var p = trail.positions[idx];
+
+                var u = (p.x / extX + 1f) * 0.5f;
+                var v = (p.y / extY + 1f) * 0.5f;
+
+                var px = rect.x + Mathf.Clamp01(u) * rect.width;
+                var py = rect.y + (1f - Mathf.Clamp01(v)) * rect.height;
+                var cur = new Vector2(px, py);
+
+                if (hasPrev)
+                {
+                    DrawLineGUI(prev, cur, trail.color, 1.5f);
+                }
+
+                prev = cur;
+                hasPrev = true;
+            }
+        }
+    }
+
+    private static void DrawLineGUI(Vector2 a, Vector2 b, Color color, float width)
+    {
+        var delta = b - a;
+        var len = delta.magnitude;
+        if (len < 0.001f) return;
+
+        var angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+        var savedColor = GUI.color;
+        var savedMatrix = GUI.matrix;
+
+        GUI.color = color;
+        GUIUtility.RotateAroundPivot(angle, a);
+        GUI.DrawTexture(new Rect(a.x, a.y - width * 0.5f, len, width), Texture2D.whiteTexture);
+        GUI.matrix = savedMatrix;
+        GUI.color = savedColor;
+    }
 }

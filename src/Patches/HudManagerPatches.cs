@@ -9,6 +9,7 @@ public static class HudManager_Start
 	// Postfix patch of HudManager.Start to give minimap access to impostors too
 	public static void Postfix(HudManager __instance)
 	{
+		return;
 		if (__instance == null) return;
 		if (__instance.MapButton == null) return;
 		if (__instance.MapButton.OnClick == null) return;

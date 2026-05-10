@@ -144,7 +144,7 @@ public partial class MalumMenu : BasePlugin
 
         minimapScale = Config.Bind("MalumMenu.Minimap",
                                 "AlwaysOnScale",
-                                AlwaysOnMinimapController.scale,
+                                Radar.scale,
                                 new ConfigDescription(
                                     "Scale of the always-on minimap window.",
                                     new AcceptableValueRange<float>(0.15f, 0.75f)
@@ -152,12 +152,12 @@ public partial class MalumMenu : BasePlugin
 
         minimapPosX = Config.Bind("MalumMenu.Minimap",
                                 "AlwaysOnPosX",
-                                AlwaysOnMinimapController.anchoredPosition.x,
+                                Radar.anchoredPosition.x,
                                 "Anchored X position of the always-on minimap window.");
 
         minimapPosY = Config.Bind("MalumMenu.Minimap",
                                 "AlwaysOnPosY",
-                                AlwaysOnMinimapController.anchoredPosition.y,
+                                Radar.anchoredPosition.y,
                                 "Anchored Y position of the always-on minimap window.");
 
         // GuestMode config settings are commented out as the cheats are broken in latest updates
@@ -306,11 +306,11 @@ public partial class MalumMenu : BasePlugin
         // Components
         keybindListener = AddComponent<KeybindListener>();
         taskAutomationController = AddComponent<TaskAutomationController>();
-        AddComponent<AlwaysOnMinimapController>();
+        AddComponent<Radar>();
         AddComponent<TrailRecorderController>();
 
-        AlwaysOnMinimapController.scale = minimapScale.Value;
-        AlwaysOnMinimapController.anchoredPosition = new Vector2(minimapPosX.Value, minimapPosY.Value);
+        Radar.scale = minimapScale.Value;
+        Radar.anchoredPosition = new Vector2(minimapPosX.Value, minimapPosY.Value);
 
         // Disables Telemetry (haven't fully tested if it works, but according to Unity docs it should)
         if (noTelemetry.Value)
