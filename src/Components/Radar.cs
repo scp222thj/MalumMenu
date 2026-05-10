@@ -25,26 +25,7 @@ public sealed class Radar : MonoBehaviour
 
     private static Sprite _fallbackSprite;
 
-    private sealed class PlayerUi
-    {
-        public byte id;
-        public Image highlight;
-        public Image dot;
-        public Trail trail;
-    }
-
-    private sealed class Trail
-    {
-        public Vector2[] points = new Vector2[TrailMaxWaypoints];
-        public float[] times = new float[TrailMaxWaypoints];
-        public int start;
-        public int count;
-        public float nextRecordTime;
-        public readonly List<Image> segments = new List<Image>(TrailMaxWaypoints);
-        public Color color;
-    }
-
-    private readonly Dictionary<byte, PlayerUi> _uiByPlayer = new Dictionary<byte, PlayerUi>(16);
+    private readonly Dictionary<byte, RadarPlayerUi> _uiByPlayer = new Dictionary<byte, RadarPlayerUi>(16);
     private readonly List<byte> _tmpRemove = new List<byte>(16);
 
     private Canvas _canvas;
@@ -316,7 +297,14 @@ public sealed class Radar : MonoBehaviour
         if (_template == template) return;
         _template = template;
 
-        var sr = ResolveBackgroundRenderer(template);
+        _mapSpace = template.HerePoint != null ? template.HerePoint.transform.parent : null;
+        if (_mapSpace == null) _mapSpace = template.transform;
+
+        var sr = ResolveBackgroundRenderer(template, _mapSpace);
+        if (sr == null)
+        {
+            sr = ResolveBackgroundRenderer(template, null);
+        }
         if (sr == null || sr.sprite == null || sr.sprite.texture == null)
         {
             _bgRenderer = null;
@@ -330,7 +318,6 @@ public sealed class Radar : MonoBehaviour
         }
 
         _bgRenderer = sr;
-        _mapSpace = template.HerePoint != null ? template.HerePoint.transform.parent : null;
         if (_mapSpace == null) _mapSpace = sr.transform.parent;
         if (_mapSpace == null) _mapSpace = template.transform;
 
@@ -359,12 +346,19 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private static SpriteRenderer ResolveBackgroundRenderer(MapBehaviour template)
+    private static SpriteRenderer ResolveBackgroundRenderer(MapBehaviour template, Transform mapSpace)
     {
         if (template == null) return null;
 
         SpriteRenderer[] renderers = null;
-        try { renderers = template.GetComponentsInChildren<SpriteRenderer>(true); } catch { }
+        try
+        {
+            if (mapSpace != null) renderers = mapSpace.GetComponentsInChildren<SpriteRenderer>(true);
+            else renderers = template.GetComponentsInChildren<SpriteRenderer>(true);
+        }
+        catch
+        {
+        }
         if (renderers == null) return null;
 
         var maxArea = 0f;
@@ -556,11 +550,11 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private PlayerUi CreatePlayerUi(byte id)
+    private RadarPlayerUi CreatePlayerUi(byte id)
     {
-        var ui = new PlayerUi();
+        var ui = new RadarPlayerUi();
         ui.id = id;
-        ui.trail = new Trail();
+        ui.trail = new RadarTrail(TrailMaxWaypoints);
 
         ui.highlight = CreateIcon(_iconsRoot, "Highlight", HighlightSize);
         ui.dot = CreateIcon(_iconsRoot, "Dot", IconSize);
@@ -589,7 +583,7 @@ public sealed class Radar : MonoBehaviour
         return img;
     }
 
-    private static void DestroyPlayerUi(PlayerUi ui)
+    private static void DestroyPlayerUi(RadarPlayerUi ui)
     {
         if (ui == null) return;
         if (ui.highlight != null) { try { Object.Destroy(ui.highlight.gameObject); } catch { } }
@@ -606,7 +600,7 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private void UpdatePlayerUi(PlayerControl p, PlayerUi ui)
+    private void UpdatePlayerUi(PlayerControl p, RadarPlayerUi ui)
     {
         if (p == null || p.Data == null) return;
         if (ui == null) return;
@@ -775,7 +769,7 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private static void AddTrailPoint(Trail trail, Vector2 pos, float now)
+    private static void AddTrailPoint(RadarTrail trail, Vector2 pos, float now)
     {
         if (trail.count > 0)
         {
@@ -800,7 +794,7 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private static void TrimTrail(Trail trail, float now, float keepSeconds)
+    private static void TrimTrail(RadarTrail trail, float now, float keepSeconds)
     {
         if (trail == null) return;
         if (keepSeconds <= 0.001f) return;
@@ -815,7 +809,7 @@ public sealed class Radar : MonoBehaviour
         }
     }
 
-    private void RenderTrail(Trail trail, float now, float keepSeconds)
+    private void RenderTrail(RadarTrail trail, float now, float keepSeconds)
     {
         var count = trail.count;
         if (count <= 1)
@@ -919,7 +913,7 @@ public sealed class Radar : MonoBehaviour
         return img;
     }
 
-    private static void HideAllSegments(Trail trail)
+    private static void HideAllSegments(RadarTrail trail)
     {
         for (var i = 0; i < trail.segments.Count; i++)
         {
