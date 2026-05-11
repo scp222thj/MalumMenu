@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 
 namespace MalumMenu;
+
 public static class OverloadHandler
 {
     public static float cooldown;
@@ -32,11 +33,9 @@ public static class OverloadHandler
 
         if (_timer >= cooldown)
         {
-            // If all possible targets are selected...
-
             if (OverloadUI.maxPossibleTargets == OverloadUI.currentTargets.Count)
             {
-                int broadcastId = -1; // ... it is more efficient to broadcast RPCs
+                int broadcastId = -1;
 
                 Utils.Overload(broadcastId, strength);
                 _timer -= cooldown;
@@ -48,20 +47,13 @@ public static class OverloadHandler
                     if (!CheatToggles.olVerboseLogs)
                     {
                         _rpcCounters.TryAdd(broadcastId, 0);
-
                         _rpcCounters.TryGetValue(broadcastId, out var rpcCount);
-
                         int newRpcCount = rpcCount + strength;
-
-                        // Log number of broadcasted RPCs since last log
-                        // At most logs once per attackLogDelay interval (in seconds)
 
                         if (_attackLogTimer >= MalumMenu.attackLogDelay.Value)
                         {
                             OverloadUI.LogConsole($"> <b><color=#{colorStr}>Broadcasted {newRpcCount} malformed RPCs to all players (ID : {broadcastId})</color></b>");
-
                             _attackLogTimer -= MalumMenu.attackLogDelay.Value;
-
                             _rpcCounters.Clear();
                         }
                         else
@@ -69,12 +61,11 @@ public static class OverloadHandler
                             _rpcCounters[broadcastId] = newRpcCount;
                         }
                     }
-                    else // Log every single broadcast instead if using verbose logging
+                    else
                     {
                         OverloadUI.LogConsole($"> <b><color=#{colorStr}>Broadcasted {strength} malformed RPCs to all players (ID : {broadcastId})</color></b>");
                     }
                 }
-
                 return;
             }
 
@@ -86,7 +77,7 @@ public static class OverloadHandler
 
                 if (!_hasRun)
                 {
-                    if (_nextTarget == int.MinValue || clientId == _nextTarget) // No marked target (new cycle) OR clientId is the marked target
+                    if (_nextTarget == int.MinValue || clientId == _nextTarget)
                     {
                         Utils.Overload(clientId, strength);
                         _timer -= cooldown;
@@ -98,43 +89,28 @@ public static class OverloadHandler
                             if (!CheatToggles.olVerboseLogs)
                             {
                                 _rpcCounters.TryAdd(clientId, 0);
-
                                 _rpcCounters.TryGetValue(clientId, out var rpcCount);
-
                                 int newRpcCount = rpcCount + strength;
-
                                 _rpcCounters[clientId] = newRpcCount;
                             }
-                            else // Log every single send if using verbose logging
+                            else
                             {
                                 OverloadUI.LogConsole($"> <b><color=#{colorStr}>Sent {strength} malformed RPCs to {targetData.DefaultOutfit.PlayerName} (ID : {clientId})</color></b>");
                             }
                         }
-
-                        _hasRun = true; // Mark that an overload has run this iteration
+                        _hasRun = true;
                     }
                 }
-                else // If an overload has run this iteration...
-                    // (will always have been previous player sequentially)
+                else
                 {
-                    // Mark current player to be target in following iteration
                     _nextTarget = clientId;
                     _hasRun = false;
-
-                    // End so following iteration can directly start after cooldown
                     return;
                 }
             }
 
-            // After a full iteration (cycle ended)...
-
-            // ... (1) Reset state to begin cycle again from first player
-
             _nextTarget = int.MinValue;
             _hasRun = false;
-
-            // ... (2) Log number of sent RPCs since last log for all currentTargets
-            // At most logs once per attackLogDelay interval (in seconds)
 
             if (!CheatToggles.olVerboseLogs)
             {
@@ -156,7 +132,6 @@ public static class OverloadHandler
                     }
 
                     _attackLogTimer -= MalumMenu.attackLogDelay.Value;
-
                     _rpcCounters.Clear();
                 }
             }
@@ -241,8 +216,6 @@ public static class OverloadHandler
         _customTargets.Clear();
     }
 
-    // Iterates through all given players and
-    // adds all that are marked as targets and match given targetType to _customTargets
     public static void PopulateCustomTargets(PlayerControl[] players, TargetType targetType)
     {
         int playerCount = players.Length;
@@ -264,18 +237,16 @@ public static class OverloadHandler
         }
     }
 
-    // Returns adapted strength and cooldown using number of currentTargets and AmongUsClient ping
-    // Should balance them to aim for low lag but effective output
     public static (int strength, float cooldown) CalculateAdaptedValues()
     {
         int targetCount = OverloadUI.maxPossibleTargets == OverloadUI.currentTargets.Count
-                        ? 1 // Broadcast mode counts as one target
-                        : Math.Max(1, OverloadUI.currentTargets.Count); // Prevents division by 0
+                        ? 1 
+                        : Math.Max(1, OverloadUI.currentTargets.Count);
 
         float maxCooldown = MalumMenu.adaptMaxCooldown.Value;
         float cooldown = maxCooldown / targetCount;
 
-        int pingLevel = Math.Max(1, Utils.GetPing() / 100); // 0-99 ms = Lvl 1, 100-199 ms = Lvl 1, 200-299 ms = Lvl 2, ...
+        int pingLevel = Math.Max(1, Utils.GetPing() / 100);
 
         int maxStrength = MalumMenu.adaptMaxStrength.Value;
         int strength = Math.Max(1, maxStrength / pingLevel / targetCount);
