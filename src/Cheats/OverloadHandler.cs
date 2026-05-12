@@ -14,6 +14,7 @@ public static class OverloadHandler
     private static Dictionary<int, int> _rpcCounters = new();
     private static int _nextTarget = int.MinValue;
     private static bool _hasRun;
+    private static float _bypassOffset;
 
     public static void Run()
     {
@@ -30,16 +31,20 @@ public static class OverloadHandler
         _timer += Time.unscaledDeltaTime;
         _attackLogTimer += Time.unscaledDeltaTime;
 
-        if (_timer >= cooldown)
+        if (_timer >= (cooldown + _bypassOffset))
         {
+            _bypassOffset = UnityEngine.Random.Range(-0.02f, 0.035f);
+            int variedStrength = strength + UnityEngine.Random.Range(-2, 3);
+            if (variedStrength < 1) variedStrength = 1;
+
             // If all possible targets are selected...
 
             if (OverloadUI.maxPossibleTargets == OverloadUI.currentTargets.Count)
             {
                 int broadcastId = -1; // ... it is more efficient to broadcast RPCs
 
-                Utils.Overload(broadcastId, strength);
-                _timer -= cooldown;
+                Utils.Overload(broadcastId, variedStrength);
+                _timer = 0f;
 
                 if (CheatToggles.olLogAttack)
                 {
@@ -51,7 +56,7 @@ public static class OverloadHandler
 
                         _rpcCounters.TryGetValue(broadcastId, out var rpcCount);
 
-                        int newRpcCount = rpcCount + strength;
+                        int newRpcCount = rpcCount + variedStrength;
 
                         // Log number of broadcasted RPCs since last log
                         // At most logs once per attackLogDelay interval (in seconds)
@@ -71,7 +76,7 @@ public static class OverloadHandler
                     }
                     else // Log every single broadcast instead if using verbose logging
                     {
-                        OverloadUI.LogConsole($"> <b><color=#{colorStr}>Broadcasted {strength} malformed RPCs to all players (ID : {broadcastId})</color></b>");
+                        OverloadUI.LogConsole($"> <b><color=#{colorStr}>Broadcasted {variedStrength} malformed RPCs to all players (ID : {broadcastId})</color></b>");
                     }
                 }
 
@@ -88,8 +93,8 @@ public static class OverloadHandler
                 {
                     if (_nextTarget == int.MinValue || clientId == _nextTarget) // No marked target (new cycle) OR clientId is the marked target
                     {
-                        Utils.Overload(clientId, strength);
-                        _timer -= cooldown;
+                        Utils.Overload(clientId, variedStrength);
+                        _timer = 0f;
 
                         if (CheatToggles.olLogAttack)
                         {
@@ -101,13 +106,13 @@ public static class OverloadHandler
 
                                 _rpcCounters.TryGetValue(clientId, out var rpcCount);
 
-                                int newRpcCount = rpcCount + strength;
+                                int newRpcCount = rpcCount + variedStrength;
 
                                 _rpcCounters[clientId] = newRpcCount;
                             }
                             else // Log every single send if using verbose logging
                             {
-                                OverloadUI.LogConsole($"> <b><color=#{colorStr}>Sent {strength} malformed RPCs to {targetData.DefaultOutfit.PlayerName} (ID : {clientId})</color></b>");
+                                OverloadUI.LogConsole($"> <b><color=#{colorStr}>Sent {variedStrength} malformed RPCs to {targetData.DefaultOutfit.PlayerName} (ID : {clientId})</color></b>");
                             }
                         }
 
