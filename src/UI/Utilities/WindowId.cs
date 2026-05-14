@@ -6,5 +6,6 @@ public enum WindowId
     TasksUI = 3,
     RolesUI = 4,
     ProtectUI = 5,
-    OverloadUI = 6
+    OverloadUI = 6,
+    ColorsUI = 7
 }

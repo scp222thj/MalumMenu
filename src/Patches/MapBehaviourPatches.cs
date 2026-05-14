@@ -44,56 +44,32 @@ public static class MapBehaviour_ShowNormalMap
     }
 }
 
-
 [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
 public static class MapBehaviour_FixedUpdate
 {
     // Postfix patch of MapBehaviour.FixedUpdate to update each herePoint icon's color and position on the map based on their respective player
     public static void Postfix(MapBehaviour __instance)
     {
-        bool cheatEnabled = MinimapHandler.IsCheatEnabled();
-
-        // Spawn herePoints if they don't exist and the cheat is enabled (handles both normal and sabotage maps)
-        if (cheatEnabled && MinimapHandler.herePoints.Count == 0)
+        // Reset map if miniMap cheat is disabled
+        if (MinimapHandler.IsCheatEnabled() != MinimapHandler.minimapActive)
         {
-            var temp = new List<HerePoint>();
-            foreach (var player in PlayerControl.AllPlayerControls)
+            if (!__instance.infectedOverlay.gameObject.active) // Do not affect sabotage map
             {
-                if (!player.AmOwner)
-                {
-                    var herePoint = UnityEngine.Object.Instantiate(__instance.HerePoint, __instance.HerePoint.transform.parent);
-                    temp.Add(new HerePoint(player, herePoint));
-                }
+                __instance.Close();
+                __instance.ShowNormalMap();
             }
-            MinimapHandler.herePoints = temp;
         }
-
-        // Clean up herePoints if cheat got disabled
-        if (!cheatEnabled && MinimapHandler.herePoints.Count > 0)
-        {
-            try
-            {
-                MinimapHandler.herePoints.ForEach(x => UnityEngine.Object.Destroy(x.sprite.gameObject));
-                MinimapHandler.herePoints.Clear();
-            }
-            catch { }
-        }
-
-        MinimapHandler.minimapActive = cheatEnabled;
 
         // Properly handles each herePoint icon on the map
-        if (cheatEnabled)
+        var temp = MinimapHandler.herePoints;
+        foreach (var herePoint in temp)
         {
-            var herePoints = MinimapHandler.herePoints;
-            foreach (var herePoint in herePoints)
-            {
-                MinimapHandler.HandleHerePoint(herePoint);
-            }
+            MinimapHandler.HandleHerePoint(herePoint);
+        }
 
-            foreach (var herePoint in MinimapHandler.herePointsToRemove)
-            {
-                MinimapHandler.herePoints.Remove(herePoint);
-            }
+        foreach (var herePoint in MinimapHandler.herePointsToRemove)
+        {
+            MinimapHandler.herePoints.Remove(herePoint);
         }
 
     }

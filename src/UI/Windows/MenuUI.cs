@@ -168,6 +168,7 @@ public class MenuUI : MonoBehaviour
             CheatToggles.voteImmune = false;
             CheatToggles.noGameEnd = false;
             CheatToggles.showProtectMenu = false;
+            CheatToggles.showColorsMenu = false;
             CheatToggles.showRolesMenu = false;
             CheatToggles.noOptionsLimits = false;
         }
@@ -199,6 +200,7 @@ public class MenuUI : MonoBehaviour
         GUILayout.BeginVertical(GUILayout.Width(windowWidth * 0.15f));
         for (var i = 0; i < _tabs.Count; i++)
         {
+
             Color standardColor = GUI.backgroundColor;
 
             if (_selectedTab == i)

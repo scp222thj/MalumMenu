@@ -148,6 +148,7 @@ public struct CheatToggles
     public static bool forceStartGame;
     public static bool noGameEnd;
     public static bool showProtectMenu;
+    public static bool showColorsMenu;
     public static bool noOptionsLimits;
     public static bool ejectPlayer;
     public static bool killPlayer;

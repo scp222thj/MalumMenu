@@ -24,12 +24,5 @@ public class ConfigTab : ITab
         CheatToggles.saveProfile = GUILayout.Toggle(CheatToggles.saveProfile, " Save to Profile");
 
         CheatToggles.loadProfile = GUILayout.Toggle(CheatToggles.loadProfile, " Load from Profile");
-        
-        bool autoLoad = GUILayout.Toggle(MalumMenu.autoLoadProfile.Value, " Auto Load Profile from Startup");
-        if (autoLoad != MalumMenu.autoLoadProfile.Value)
-        {
-            MalumMenu.autoLoadProfile.Value = autoLoad;
-            MalumMenu.Plugin.Config.Save();
-        }
     }
 }
