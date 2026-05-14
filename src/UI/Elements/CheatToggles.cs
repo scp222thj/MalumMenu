@@ -180,8 +180,6 @@ public struct CheatToggles
     // Map for Reflection Access: Toggle Name -> FieldInfo
     public static readonly Dictionary<string, FieldInfo> ToggleFields = new();
 
-    public static readonly string ProfilePath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumProfile.txt");
-
     // Populate reflection map once at startup and initialize Keybinds with KeyCode.None
     static CheatToggles()
     {
@@ -227,7 +225,7 @@ public struct CheatToggles
     // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void SaveTogglesToProfile()
     {
-        using var writer = new StreamWriter(ProfilePath);
+        using var writer = new StreamWriter(MalumMenu.ProfilePath);
 
         writer.WriteLine("# MalumProfile");
         writer.WriteLine("# Format: ToggleName = True/False = KeyCode.KEY");
@@ -248,9 +246,9 @@ public struct CheatToggles
     // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void LoadTogglesFromProfile()
     {
-        if (!File.Exists(ProfilePath)) return;
+        if (!File.Exists(MalumMenu.ProfilePath)) return;
 
-        using var reader = new StreamReader(ProfilePath);
+        using var reader = new StreamReader(MalumMenu.ProfilePath);
 
         while (reader.ReadLine() is { } line)
         {

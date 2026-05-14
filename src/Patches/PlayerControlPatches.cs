@@ -3,17 +3,15 @@ using UnityEngine;
 
 namespace MalumMenu;
 
-[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-public static class PlayerControl_FixedUpdate
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
+public static class PlayerControl_SetKillTimer
 {
-    public static void Postfix(PlayerControl __instance)
+    // Prefix patch of PlayerControl.SetKillTimer to remove kill cooldown
+    public static void Prefix(PlayerControl __instance, ref float time)
     {
+        if (!__instance.AmOwner || !Utils.isHost || !CheatToggles.noKillCd) return;
 
-        if (__instance.AmOwner)
-        {
-            MalumCheats.NoKillCdCheat(__instance);
-        }
-
+        time = 0f;
     }
 }
 
@@ -137,17 +135,20 @@ public static class PlayerControl_Shapeshift
 
         var targetPlayerInfo = targetPlayer.Data;
 
+        var room = Utils.GetRoomFromPosition(__instance.GetTruePosition());
+        var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
+
         if (targetPlayerInfo.PlayerId == __instance.Data.PlayerId)
         {
             ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
-                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> undid their shapeshift");
+                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> undid their shapeshift in {roomName}");
         }
         else
         {
             ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
                           $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> shapeshifted into " +
                           $"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId).Color)}>" +
-                          $"{GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId)._object.Data.PlayerName}</color>");
+                          $"{GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId)._object.Data.PlayerName}</color> in {roomName}");
         }
     }
 }

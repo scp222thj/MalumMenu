@@ -80,11 +80,11 @@ public class OverloadUI : MonoBehaviour
             }
         }
 
-        // The HashSet swap (currentTargets <-> _tmpTargets) can only be done if AmClient
-        // Otherwise currentTargets gets cleared too early during disconnect with overload on,
+        // The HashSet swap (currentTargets <-> _tmpTargets) can only be done if isPlayer
+        // Otherwise currentTargets gets cleared too early in endgame / disconnect with overload on,
         // causing the STOP message to log the wrong total count
 
-        if (Utils.isClient && AmongUsClient.Instance.AmClient)
+        if (Utils.isPlayer)
         {
             var old = currentTargets;
             currentTargets = _tmpTargets;
@@ -92,9 +92,13 @@ public class OverloadUI : MonoBehaviour
         }
         else
         {
-            // currentTargets is cleared here if STOP log is done / unneeded (overload off)
+            // Targets are cleared here if STOP log is done / unneeded (overload off)
 
-            if (!CheatToggles.runOverload) currentTargets.Clear();
+            if (!CheatToggles.runOverload)
+            {
+                currentTargets.Clear();
+                OverloadHandler.ClearCustomTargets();
+            }
 
             _hasAutoStarted = false;
         }

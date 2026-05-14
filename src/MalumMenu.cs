@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using System.IO;
+using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using UnityEngine.SceneManagement;
 using System;
@@ -18,6 +19,7 @@ public partial class MalumMenu : BasePlugin
     public Harmony Harmony { get; } = new(Id);
     public static MalumMenu Plugin;
     public new static ManualLogSource Log;
+    public static readonly string ProfilePath = Path.Combine(Paths.ConfigPath, "MalumProfile.txt");
 
     public static MenuUI menuUI;
     public static ConsoleUI consoleUI;
@@ -28,7 +30,7 @@ public partial class MalumMenu : BasePlugin
     public static ProtectUI protectUI;
     public static KeybindListener keybindListener;
 
-    public static string malumVersion = "3.1.0";
+    public static string malumVersion = "3.1.1";
     public static List<string> supportedAU = new List<string> { "2026.3.31" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
@@ -122,10 +124,10 @@ public partial class MalumMenu : BasePlugin
 
         adaptMaxStrength = Config.Bind("MalumMenu.Overload",
                                 "AdaptMaxStrength",
-                                500,
+                                18000,
                                 new ConfigDescription(
-                                    "Maximum total number of RPCs sent during one overload cycle in AutoAdapt mode. Automatically divided between targets and reduced based on ping. IMPORTANT: Only goes from 1 to 1000 RPCs",
-                                    new AcceptableValueRange<int>(1, 1000)
+                                    "Maximum total number of RPCs sent during one overload cycle in AutoAdapt mode. Automatically divided between targets and reduced based on ping. IMPORTANT: Only goes from 1 to 100K RPCs",
+                                    new AcceptableValueRange<int>(1, 100000)
                                 ));
 
         adaptMaxCooldown = Config.Bind("MalumMenu.Overload",
@@ -143,10 +145,10 @@ public partial class MalumMenu : BasePlugin
 
         defaultStrength = Config.Bind("MalumMenu.Overload",
                                 "DefaultStrength",
-                                500,
+                                18000,
                                 new ConfigDescription(
-                                    "Default number of malformed RPCs sent to each target during an overload cycle. Overridden if AutoAdapt mode is enabled. IMPORTANT: Only goes from 1 to 1000 RPCs",
-                                    new AcceptableValueRange<int>(1, 1000)
+                                    "Default number of malformed RPCs sent to each target during an overload cycle. Overridden if AutoAdapt mode is enabled. IMPORTANT: Only goes from 1 to 100K RPCs",
+                                    new AcceptableValueRange<int>(1, 100000)
                                 ));
 
         defaultCooldown = Config.Bind("MalumMenu.Overload",
@@ -202,7 +204,13 @@ public partial class MalumMenu : BasePlugin
             PerformanceReporting.enabled = false;
         }
 
-        // Load profile on start
+        // Create profile file if it is missing
+        if (!File.Exists(ProfilePath))
+        {
+            CheatToggles.SaveTogglesToProfile();
+        }
+
+        // Auto load profile on start if needed
         if (autoLoadProfile.Value)
         {
             CheatToggles.LoadTogglesFromProfile();

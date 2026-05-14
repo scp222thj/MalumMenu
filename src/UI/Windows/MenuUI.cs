@@ -126,7 +126,6 @@ public class MenuUI : MonoBehaviour
             if (CheatToggles.runOverload)
             {
                 OverloadUI.StopOverload();
-                OverloadHandler.ClearCustomTargets();
             }
         }
 
