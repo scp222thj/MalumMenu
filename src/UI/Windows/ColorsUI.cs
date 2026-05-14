@@ -43,7 +43,7 @@ public class ColorsUI : MonoBehaviour
     {
         GUILayout.BeginVertical();
 
-        if (!Utils.isShip)
+        if (!(Utils.isLobby || Utils.isInGame))
         {
             GUILayout.Label("You're not in a lobby, join one to change people's colors", GUIStylePreset.TabSubtitle);
             GUILayout.EndVertical();
