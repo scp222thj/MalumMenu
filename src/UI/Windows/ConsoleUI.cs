@@ -42,6 +42,14 @@ public class ConsoleUI : MonoBehaviour
 
     private void ConsoleWindow(int windowID)
     {
+        var buttonSize = new Vector2(40f, 15f);
+        var buttonPos = new Vector2(windowWidth - buttonSize.x, 2f);
+        var buttonRect = new Rect(buttonPos, buttonSize);
+        if (GUI.Button(buttonRect, "✕", GUIStylePreset.FlatButton))
+        {
+            CheatToggles.showConsole = false;
+        }
+
         GUILayout.BeginVertical(GUI.skin.box);
 
         _scrollPosition = GUILayout.BeginScrollView(_scrollPosition, false, false);
