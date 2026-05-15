@@ -35,6 +35,8 @@ public class HostOnlyTab : ITab
 
     private void DrawGeneral()
     {
+        CheatToggles.showForceRoleMenu = GUILayout.Toggle(CheatToggles.showForceRoleMenu, " Show Force Role Menu");
+
         CheatToggles.killVanished = GUILayout.Toggle(CheatToggles.killVanished, " Kill While Vanished");
 
         CheatToggles.killAnyone = GUILayout.Toggle(CheatToggles.killAnyone, " Kill Anyone");
@@ -43,7 +45,7 @@ public class HostOnlyTab : ITab
 
         CheatToggles.showProtectMenu = GUILayout.Toggle(CheatToggles.showProtectMenu, " Show Protect Menu");
 
-        // CheatToggles.forceRole = GUILayout.Toggle(CheatToggles.forceRole, " Force Role");
+        // CheatToggles.forceRoleOld = GUILayout.Toggle(CheatToggles.forceRoleOld, " Force Role (Legacy)");
 
         // CheatToggles.noOptionsLimits = GUILayout.Toggle(CheatToggles.noOptionsLimits, " No Options Limits");
     }

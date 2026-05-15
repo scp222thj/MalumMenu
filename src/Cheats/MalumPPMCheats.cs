@@ -16,7 +16,6 @@ public static class MalumPPMCheats
     private static bool _ejectPlayerActive;
     private static bool _setFakeRoleActive;
     private static bool _setFakeAliveActive;
-    private static bool _forceRoleActive;
     private static RoleTypes? _oldRole = null;
 
     public static void ReportBodyPPM()
@@ -397,56 +396,6 @@ public static class MalumPPMCheats
             if (_setFakeAliveActive)
             {
                 _setFakeAliveActive = false;
-            }
-        }
-    }
-
-    public static void ForceRolePPM()
-    {
-        if (CheatToggles.forceRole)
-        {
-            if (!_forceRoleActive)
-            {
-                if (PlayerPickMenu.playerpickMenu != null)
-                {
-                    PlayerPickMenu.playerpickMenu.Close();
-                    CheatToggles.DisablePPMCheats("forceRole");
-                }
-
-                List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
-
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Shapeshifter", OutfitPreset.Shapeshifter, Utils.GetBehaviourByRoleType(RoleTypes.Shapeshifter)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Phantom", OutfitPreset.Phantom, Utils.GetBehaviourByRoleType(RoleTypes.Phantom)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Viper", OutfitPreset.Viper, Utils.GetBehaviourByRoleType(RoleTypes.Viper)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Impostor", OutfitPreset.Impostor, Utils.GetBehaviourByRoleType(RoleTypes.Impostor)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Tracker", OutfitPreset.Tracker, Utils.GetBehaviourByRoleType(RoleTypes.Tracker)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Noisemaker", OutfitPreset.Noisemaker, Utils.GetBehaviourByRoleType(RoleTypes.Noisemaker)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Engineer", OutfitPreset.Engineer, Utils.GetBehaviourByRoleType(RoleTypes.Engineer)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Scientist", OutfitPreset.Scientist, Utils.GetBehaviourByRoleType(RoleTypes.Scientist)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Detective", OutfitPreset.Detective, Utils.GetBehaviourByRoleType(RoleTypes.Detective)));
-                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.GetBehaviourByRoleType(RoleTypes.Crewmate)));
-
-                // Player pick menu made for forcing a role onto another player
-                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action)(() =>
-                {
-                    CheatToggles.forcedRole = PlayerPickMenu.targetPlayerData.Role.Role;
-                }));
-
-                _forceRoleActive = true;
-            }
-
-            // Deactivate cheat if menu is closed
-            if (PlayerPickMenu.playerpickMenu == null)
-            {
-                CheatToggles.forceRole = false;
-            }
-
-        }
-        else
-        {
-            if (_forceRoleActive)
-            {
-                _forceRoleActive = false;
             }
         }
     }

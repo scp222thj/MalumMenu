@@ -337,34 +337,162 @@ public static class MushroomDoorSabotageMinigame_Begin
 [HarmonyPatch(typeof(IntroCutscene), "CoBegin")]
 public static class IntroCutscene_CoBegin
 {
-    // Prefix patch of IntroCutscene.CoBegin to force the LocalPlayer's role to a specified role
+    // Prefix patch of IntroCutscene.CoBegin to force a specific role
     public static void Prefix()
     {
-        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue) return;
+        if (!Utils.isHost) return;
 
-        var forcedRole = CheatToggles.forcedRole.Value;
-
-        // If LocalPlayer already has the forced role, do nothing
-        if (PlayerControl.LocalPlayer.Data.RoleType == forcedRole)
+        // Handle forceRole
+        if (CheatToggles.forceRole)
         {
-            return;
-        }
+            var localPlayer = PlayerControl.LocalPlayer;
+            var localRole = localPlayer.Data.RoleType;
 
-        // Find a player with the forced role to swap roles with
-        PlayerControl roleSwapTarget = null;
-        foreach (var player in PlayerControl.AllPlayerControls)
+            // Determine target role based on forced role selection
+            RoleTypes targetRole = CheatToggles.forcedRoleSelection switch
+            {
+                CheatToggles.ForcedRole.Crewmate => RoleTypes.Crewmate,
+                CheatToggles.ForcedRole.Engineer => RoleTypes.Engineer,
+                CheatToggles.ForcedRole.Scientist => RoleTypes.Scientist,
+                CheatToggles.ForcedRole.Tracker => RoleTypes.Tracker,
+                CheatToggles.ForcedRole.Noisemaker => RoleTypes.Noisemaker,
+                CheatToggles.ForcedRole.Detective => RoleTypes.Detective,
+                CheatToggles.ForcedRole.Impostor => RoleTypes.Impostor,
+                CheatToggles.ForcedRole.Shapeshifter => RoleTypes.Shapeshifter,
+                CheatToggles.ForcedRole.Phantom => RoleTypes.Phantom,
+                CheatToggles.ForcedRole.Viper => RoleTypes.Viper,
+                _ => RoleTypes.Crewmate
+            };
+
+            // If we already have the forced role, do nothing
+            if (localRole == targetRole)
+            {
+                return;
+            }
+
+            // Step 1: Try to swap with a player who has the exact target role
+            PlayerControl roleSwapTarget = null;
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player == localPlayer) continue;
+
+                if (player.Data.RoleType == targetRole)
+                {
+                    roleSwapTarget = player;
+                    break;
+                }
+            }
+
+            if (roleSwapTarget != null)
+            {
+                // Swap roles using RpcSetRole for proper network sync
+                var targetPlayerRole = roleSwapTarget.Data.RoleType;
+                localPlayer.RpcSetRole(targetPlayerRole);
+                roleSwapTarget.RpcSetRole(localRole);
+                return;
+            }
+
+            // Step 2: If exact role not found, try to fix alignment
+            bool targetIsCrewmate = IsCrewmateRole(targetRole);
+            bool localIsCrewmate = IsCrewmateRole(localRole);
+
+            if (targetIsCrewmate != localIsCrewmate)
+            {
+                // Player is in wrong camp, try to swap to correct camp
+                PlayerControl campSwapTarget = null;
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player == localPlayer) continue;
+
+                    bool playerIsCrewmate = IsCrewmateRole(player.Data.RoleType);
+                    if (playerIsCrewmate == targetIsCrewmate)
+                    {
+                        campSwapTarget = player;
+                        break;
+                    }
+                }
+
+                if (campSwapTarget != null)
+                {
+                    var targetPlayerRole = campSwapTarget.Data.RoleType;
+                    localPlayer.RpcSetRole(targetPlayerRole);
+                    campSwapTarget.RpcSetRole(localRole);
+                    localRole = targetPlayerRole; // Update localRole for next step
+                }
+            }
+
+            // Step 3: Based on mode, either stop or force upgrade
+            if (!CheatToggles.forceRoleLegit)
+            {
+                // Normal Mode: force upgrade to exact role
+                // But only if we won't exceed the impostor count
+                if (!targetIsCrewmate)
+                {
+                    // Check if we would exceed impostor count
+                    int currentImpostorCount = 0;
+                    int configuredImpostorCount = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
+                    
+                    foreach (var player in PlayerControl.AllPlayerControls)
+                    {
+                        if (!IsCrewmateRole(player.Data.RoleType))
+                        {
+                            currentImpostorCount++;
+                        }
+                    }
+
+                    // If we're crewmate, forcing to impostor would increase count by 1
+                    if (localIsCrewmate && currentImpostorCount >= configuredImpostorCount)
+                    {
+                        // Would exceed impostor count, skip force upgrade
+                        return;
+                    }
+                }
+
+                // First, find a player to swap with (any role in the same camp)
+                PlayerControl forceUpgradeTarget = null;
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (player == localPlayer) continue;
+
+                    bool playerIsCrewmate = IsCrewmateRole(player.Data.RoleType);
+                    if (playerIsCrewmate == targetIsCrewmate)
+                    {
+                        forceUpgradeTarget = player;
+                        break;
+                    }
+                }
+
+                if (forceUpgradeTarget != null)
+                {
+                    // Swap to get into the camp, then force upgrade
+                    localPlayer.RpcSetRole(forceUpgradeTarget.Data.RoleType);
+                    forceUpgradeTarget.RpcSetRole(localRole);
+
+                    // Force upgrade to exact role using SetRole
+                    DestroyableSingleton<RoleManager>.Instance.SetRole(localPlayer, targetRole);
+                }
+                else
+                {
+                    // No one to swap with, just force upgrade directly
+                    DestroyableSingleton<RoleManager>.Instance.SetRole(localPlayer, targetRole);
+                }
+            }
+            // Legit Mode: stop here - player is now in correct camp with whatever role they got
+        }
+    }
+
+    private static bool IsCrewmateRole(RoleTypes role)
+    {
+        return role switch
         {
-            if (player.Data.RoleType != forcedRole) continue;
-            roleSwapTarget = player;
-            break;
-        }
-
-        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, forcedRole);
-
-        if (roleSwapTarget != null)
-        {
-            DestroyableSingleton<RoleManager>.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
-        }
+            RoleTypes.Crewmate => true,
+            RoleTypes.Engineer => true,
+            RoleTypes.Scientist => true,
+            RoleTypes.Tracker => true,
+            RoleTypes.Noisemaker => true,
+            RoleTypes.Detective => true,
+            _ => false
+        };
     }
 }
 

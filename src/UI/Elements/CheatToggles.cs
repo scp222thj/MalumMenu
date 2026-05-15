@@ -142,8 +142,9 @@ public struct CheatToggles
     // Host-Only
     public static bool voteImmune;
     public static bool forceRole;
-    public static RoleTypes? forcedRole;
-    public static bool showRolesMenu;
+    public static ForcedRole forcedRoleSelection;
+    public static bool forceRoleLegit;
+    public static bool showForceRoleMenu;
     public static bool skipMeeting;
     public static bool forceStartGame;
     public static bool noGameEnd;
@@ -155,6 +156,20 @@ public struct CheatToggles
     public static bool killAll;
     public static bool killAllCrew;
     public static bool killAllImps;
+
+    public enum ForcedRole
+    {
+        Crewmate,
+        Engineer,
+        Scientist,
+        Tracker,
+        Noisemaker,
+        Detective,
+        Impostor,
+        Shapeshifter,
+        Phantom,
+        Viper
+    }
 
     // Passive
     public static bool unlockFeatures;
@@ -203,13 +218,12 @@ public struct CheatToggles
         spectate = variableToKeep == "spectate" && spectate;
         setFakeRole = variableToKeep == "setFakeRole" && setFakeRole;
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
-        forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields
