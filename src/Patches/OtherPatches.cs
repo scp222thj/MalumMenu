@@ -7,6 +7,8 @@ using System;
 using System.Security.Cryptography;
 using InnerNet;
 using System.Collections.Generic;
+using System.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 
 namespace MalumMenu;
 
@@ -108,7 +110,7 @@ public static class FreeChatInputField_UpdateCharCount
 public static class ChatBubble_SetName
 {
     public static void Postfix(ChatBubble __instance)
-	{
+    {
         MalumESP.ChatNametags(__instance);
     }
 }
@@ -142,11 +144,11 @@ public static class VersionShower_Start
 
         if (MalumMenu.supportedAU.Contains(Application.version)) // Checks if Among Us version is supported
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
         }
         else
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
         }
     }
 }
@@ -272,7 +274,24 @@ public static class Mushroom_FixedUpdate
     }
 }
 
-// Found here: https://github.com/g0aty/SickoMenu/blob/main/hooks/PlainDoor.cpp
+public static class AutoDoorHelper
+{
+    public static IEnumerator DelayedDoorOpen(OpenableDoor door, float delay, Minigame minigame)
+    {
+        yield return new WaitForSeconds(delay);
+        if (door != null)
+        {
+            DoorsHandler.OpenDoor(door);
+            door.SetDoorway(true);
+        }
+
+        if (minigame != null)
+        {
+            minigame.Close();
+        }
+    }
+}
+
 [HarmonyPatch(typeof(DoorBreakerGame), nameof(DoorBreakerGame.Start))]
 public static class DoorBreakerGame_Start
 {
@@ -281,9 +300,16 @@ public static class DoorBreakerGame_Start
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
 
-        DoorsHandler.OpenDoor(__instance.MyDoor);
-        __instance.MyDoor.SetDoorway(true);
-        __instance.Close();
+        var delay = MalumMenu.autoDoorOpenDelaySeconds.Value;
+        if (delay <= 0f)
+        {
+            DoorsHandler.OpenDoor(__instance.MyDoor);
+            __instance.MyDoor.SetDoorway(true);
+            __instance.Close();
+            return false;
+        }
+
+        __instance.StartCoroutine(AutoDoorHelper.DelayedDoorOpen(__instance.MyDoor, delay, __instance).WrapToIl2Cpp());
 
         return false;
     }
@@ -298,9 +324,16 @@ public static class DoorCardSwipeGame_Begin
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
 
-        DoorsHandler.OpenDoor(__instance.MyDoor);
-        __instance.MyDoor.SetDoorway(true);
-        __instance.Close();
+        var delay = MalumMenu.autoDoorOpenDelaySeconds.Value;
+        if (delay <= 0f)
+        {
+            DoorsHandler.OpenDoor(__instance.MyDoor);
+            __instance.MyDoor.SetDoorway(true);
+            __instance.Close();
+            return false;
+        }
+
+        __instance.StartCoroutine(AutoDoorHelper.DelayedDoorOpen(__instance.MyDoor, delay, __instance).WrapToIl2Cpp());
 
         return false;
     }
@@ -315,9 +348,25 @@ public static class MushroomDoorSabotageMinigame_Begin
     {
         if (!CheatToggles.autoOpenDoorsOnUse) return true;
 
-        __instance.FixDoorAndCloseMinigame();
+        var delay = MalumMenu.autoDoorOpenDelaySeconds.Value;
+        if (delay <= 0f)
+        {
+            __instance.FixDoorAndCloseMinigame();
+            return false;
+        }
+
+        __instance.StartCoroutine(DelayedFix(__instance, delay).WrapToIl2Cpp());
 
         return false;
+    }
+
+    private static IEnumerator DelayedFix(MushroomDoorSabotageMinigame minigame, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (minigame != null)
+        {
+            minigame.FixDoorAndCloseMinigame();
+        }
     }
 }
 

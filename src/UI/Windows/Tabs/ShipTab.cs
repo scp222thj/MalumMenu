@@ -40,6 +40,18 @@ public class ShipTab : ITab
         CheatToggles.closeMeeting = GUILayout.Toggle(CheatToggles.closeMeeting, " Close Meeting");
 
         CheatToggles.autoOpenDoorsOnUse = GUILayout.Toggle(CheatToggles.autoOpenDoorsOnUse, " Auto-Open Doors On Use");
+
+        if (CheatToggles.autoOpenDoorsOnUse)
+        {
+            var seconds = MalumMenu.autoDoorOpenDelaySeconds.Value;
+            GUILayout.Label($" Door Auto-Open Delay: {seconds:0.00}s");
+            var newSeconds = GUILayout.HorizontalSlider(seconds, 0f, 5f);
+            if (Mathf.Abs(newSeconds - seconds) > 0.01f)
+            {
+                MalumMenu.autoDoorOpenDelaySeconds.Value = newSeconds;
+                MalumMenu.Plugin.Config.Save();
+            }
+        }
     }
 
     private void DrawSabotage()

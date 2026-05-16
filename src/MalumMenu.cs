@@ -47,6 +47,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<bool> guestMode;
     public static ConfigEntry<bool> autoLoadProfile;
     public static ConfigEntry<string> configEditor;
+    public static ConfigEntry<float> autoDoorOpenDelaySeconds;
     public static ConfigEntry<int> adaptMaxStrength;
     public static ConfigEntry<float> adaptMaxCooldown;
     public static ConfigEntry<float> attackLogDelay;
@@ -165,6 +166,14 @@ public partial class MalumMenu : BasePlugin
                                 new ConfigDescription(
                                     "Default level used by kill switch. Each level adds 500 ms to the max allowed ping before overload stops. Helps avoid lagging / disconnects. IMPORTANT: Only goes from level 1 (500 ms) to 6 (3000 ms)",
                                     new AcceptableValueRange<int>(1, 6)
+                                ));
+
+        autoDoorOpenDelaySeconds = Config.Bind("MalumMenu.Ship",
+                                "AutoDoorOpenDelaySeconds",
+                                0.25f,
+                                new ConfigDescription(
+                                    "Delay (in seconds) before Auto-Open Doors triggers when using a door console.",
+                                    new AcceptableValueRange<float>(0f, 5f)
                                 ));
 
         // Enabled by default
