@@ -142,8 +142,9 @@ public struct CheatToggles
     // Host-Only
     public static bool voteImmune;
     public static bool forceRole;
-    public static RoleTypes? forcedRole;
-    public static bool showRolesMenu;
+    public static ForcedRole forcedRoleSelection;
+    public static bool forceRoleLegit;
+    public static bool showForceRoleMenu;
     public static bool skipMeeting;
     public static bool forceStartGame;
     public static bool noGameEnd;
@@ -155,6 +156,20 @@ public struct CheatToggles
     public static bool killAll;
     public static bool killAllCrew;
     public static bool killAllImps;
+
+    public enum ForcedRole
+    {
+        Crewmate,
+        Engineer,
+        Scientist,
+        Tracker,
+        Noisemaker,
+        Detective,
+        Impostor,
+        Shapeshifter,
+        Phantom,
+        Viper
+    }
 
     // Passive
     public static bool unlockFeatures;
@@ -203,13 +218,12 @@ public struct CheatToggles
         spectate = variableToKeep == "spectate" && spectate;
         setFakeRole = variableToKeep == "setFakeRole" && setFakeRole;
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
-        forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields
@@ -240,6 +254,8 @@ public struct CheatToggles
             Keybinds.TryGetValue(field.Name, out var key);  // If no key is set then write KeyCode.None
             writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");
         }
+
+        writer.WriteLine($"forcedRoleSelection = {forcedRoleSelection}");
     }
 
     // Loads cheat toggles and their keybinds from MalumProfile.txt if the file is present
@@ -265,7 +281,17 @@ public struct CheatToggles
 
             // Gets the cheat's FieldInfo from its name
             var name = parts[0].Trim();
-            if (!ToggleFields.TryGetValue(name, out var field)) continue;
+            if (!ToggleFields.TryGetValue(name, out var field))
+            {
+                LoadNonBoolToggles(line);
+                continue;
+            }
+
+            if (name == nameof(forceRole))
+            {
+                Keybinds[name] = KeyCode.None;
+                continue;
+            }
 
             // Loads whether the cheat is enabled or disabled by default
             if (bool.TryParse(parts[1].Trim(), out var boolVal))
@@ -290,6 +316,20 @@ public struct CheatToggles
             }
 
             Keybinds[name] = key;
+        }
+    }
+
+    public static void LoadNonBoolToggles(string line)
+    {
+        var parts = line.Split('=', 2);
+        if (parts.Length < 2) return;
+
+        var name = parts[0].Trim();
+        var value = parts[1].Trim();
+
+        if (name == "forcedRoleSelection" && System.Enum.TryParse<ForcedRole>(value, true, out var role))
+        {
+            forcedRoleSelection = role;
         }
     }
 }

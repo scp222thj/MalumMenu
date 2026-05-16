@@ -166,9 +166,11 @@ public class MenuUI : MonoBehaviour
             CheatToggles.forceStartGame = false;
             CheatToggles.skipMeeting = false;
             CheatToggles.voteImmune = false;
+            CheatToggles.forceRole = false;
+            CheatToggles.forceRoleLegit = false;
             CheatToggles.noGameEnd = false;
             CheatToggles.showProtectMenu = false;
-            CheatToggles.showRolesMenu = false;
+            CheatToggles.showForceRoleMenu = false;
             CheatToggles.noOptionsLimits = false;
         }
 
