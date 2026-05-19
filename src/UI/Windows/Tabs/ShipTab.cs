@@ -35,6 +35,8 @@ public class ShipTab : ITab
 
         // CheatToggles.reportBody = GUILayout.Toggle(CheatToggles.reportBody, " Report Body");
 
+        CheatToggles.autoReport  = GUILayout.Toggle(CheatToggles.autoReport,  " Auto Report Bodies");
+
         CheatToggles.callMeeting = GUILayout.Toggle(CheatToggles.callMeeting, " Call Meeting");
 
         CheatToggles.closeMeeting = GUILayout.Toggle(CheatToggles.closeMeeting, " Close Meeting");

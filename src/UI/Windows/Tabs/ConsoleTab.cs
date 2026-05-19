@@ -23,6 +23,14 @@ public class ConsoleTab : ITab
 
         CheatToggles.logShapeshifts = GUILayout.Toggle(CheatToggles.logShapeshifts, " Log Shapeshifts");
 
-        CheatToggles.logVents = GUILayout.Toggle(CheatToggles.logVents, " Log Vents");
+        CheatToggles.logVents        = GUILayout.Toggle(CheatToggles.logVents,        " Log Vents");
+
+        CheatToggles.killSoundAlert  = GUILayout.Toggle(CheatToggles.killSoundAlert,  " Kill Sound Alert");
+
+        CheatToggles.sabotageAlert   = GUILayout.Toggle(CheatToggles.sabotageAlert,   " Sabotage Alert");
+
+        CheatToggles.bodyIntelLogger = GUILayout.Toggle(CheatToggles.bodyIntelLogger, " Body Intel Logger");
+
+        CheatToggles.chatLogger      = GUILayout.Toggle(CheatToggles.chatLogger,      " Chat Logger (MalumChat.txt)");
     }
 }

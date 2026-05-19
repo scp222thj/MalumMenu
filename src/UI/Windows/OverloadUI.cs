@@ -140,7 +140,7 @@ public class OverloadUI : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!CheatToggles.showOverload || !MenuUI.isGUIActive || MalumMenu.isPanicked) return;
+        if (!CheatToggles.showOverload || !MenuUI.isGUIActive || MalumMenu.isPanicked || CheatToggles.streamerMode) return;
 
         InitStyles();
 

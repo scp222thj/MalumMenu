@@ -17,6 +17,10 @@ public class MovementTab : ITab
 
         DrawTeleport();
 
+        GUILayout.Space(15);
+
+        DrawExtras();
+
         GUILayout.EndVertical();
     }
 
@@ -47,8 +51,19 @@ public class MovementTab : ITab
     {
         GUILayout.Label("Teleport", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.teleportCursor = GUILayout.Toggle(CheatToggles.teleportCursor, " to Cursor");
+        CheatToggles.teleportCursor = GUILayout.Toggle(CheatToggles.teleportCursor, " to Cursor (RMB)");
 
         CheatToggles.teleportPlayer = GUILayout.Toggle(CheatToggles.teleportPlayer, " to Player");
+
+        CheatToggles.blink = GUILayout.Toggle(CheatToggles.blink, " Blink to Cursor (MMB)");
+    }
+
+    private void DrawExtras()
+    {
+        GUILayout.Label("Extras", GUIStylePreset.TabSubtitle);
+
+        CheatToggles.visionBoost      = GUILayout.Toggle(CheatToggles.visionBoost,      " Vision Boost");
+
+        CheatToggles.showMeetingTimer = GUILayout.Toggle(CheatToggles.showMeetingTimer, " Meeting Timer");
     }
 }

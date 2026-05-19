@@ -1,18 +1,56 @@
 using HarmonyLib;
 using System;
+using System.IO;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace MalumMenu;
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
 public static class ChatController_AddChat
 {
-	// Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
-	// Basically does what the original method did with the required modifications
-	public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
+    // Tracks message timestamps per player (playerId → list of Time.time values)
+    private static readonly Dictionary<byte, List<float>> _msgTimes = new();
+
+    // Prefix patch of ChatController.AddChat to receive ghost messages if CheatSettings.seeGhosts is enabled even if LocalPlayer is alive
+    // Basically does what the original method did with the required modifications
+    public static bool Prefix(PlayerControl sourcePlayer, string chatText, bool censor, ChatController __instance)
     {
-		// Simply run original method if seeGhosts is disabled or LocalPlayer already dead
+        // Anti-Bot Kick: rate-limit chat messages per player when host (Feature 2)
+        if (CheatToggles.antiBotKick && Utils.isHost && sourcePlayer != null && sourcePlayer != PlayerControl.LocalPlayer && sourcePlayer.Data != null)
+        {
+            byte pid = sourcePlayer.PlayerId;
+            float now = Time.time;
+
+            if (!_msgTimes.ContainsKey(pid))
+                _msgTimes[pid] = new List<float>();
+
+            _msgTimes[pid].Add(now);
+            _msgTimes[pid].RemoveAll(t => now - t > 1.5f);
+
+            if (_msgTimes[pid].Count > 4)
+            {
+                int clientId = sourcePlayer.Data.ClientId;
+                ConsoleUI.Log($"[AntiBotKick] Kicked {sourcePlayer.Data.PlayerName} for spamming ({_msgTimes[pid].Count} msgs/1.5s)");
+                AmongUsClient.Instance.KickPlayer(clientId, false);
+                _msgTimes.Remove(pid);
+            }
+        }
+
+        // Chat Logger
+        if (CheatToggles.chatLogger && sourcePlayer != null && sourcePlayer.Data != null)
+        {
+            try
+            {
+                string logPath = Path.Combine(BepInEx.Paths.ConfigPath, "MalumChat.txt");
+                string line    = $"[{DateTime.Now:HH:mm:ss}] {sourcePlayer.Data.PlayerName}: {chatText}";
+                File.AppendAllText(logPath, line + Environment.NewLine);
+            }
+            catch { }
+        }
+
+        // Simply run original method if seeGhosts is disabled or LocalPlayer already dead
         if (!CheatToggles.seeGhosts || PlayerControl.LocalPlayer.Data.IsDead) return true;
 
         if (!sourcePlayer || !PlayerControl.LocalPlayer) return true;

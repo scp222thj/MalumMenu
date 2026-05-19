@@ -421,6 +421,49 @@ public static class MalumCheats
         }
     }
 
+    public static void BlinkCheat()
+    {
+        if (!CheatToggles.blink || PlayerControl.LocalPlayer?.NetTransform == null || Camera.main == null) return;
+        if (Input.GetKeyDown(KeyCode.Mouse2))
+            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+    }
+
+    public static void VisionBoostCheat()
+    {
+        if (!CheatToggles.visionBoost || !Utils.isInGame) return;
+        try
+        {
+            // Override local options light multipliers without broadcasting (no RpcSyncSettings call)
+            GameOptionsManager.Instance.currentGameOptions.SetFloat(FloatOptionNames.CrewLightMod,     10f);
+            GameOptionsManager.Instance.currentGameOptions.SetFloat(FloatOptionNames.ImpostorLightMod, 10f);
+        }
+        catch { }
+    }
+
+    private static bool _wasSabotageActive;
+    public static void SabotageAlertCheat()
+    {
+        if (!Utils.isShip) { _wasSabotageActive = false; return; }
+        bool now = Utils.isAnySabotageActive;
+        if (CheatToggles.sabotageAlert && now && !_wasSabotageActive)
+        {
+            ConsoleUI.Log("[!] Sabotage activated!");
+            try { SoundManager.Instance.PlaySound(DestroyableSingleton<HudManager>.Instance.Chat.messageSound, false); } catch { }
+        }
+        _wasSabotageActive = now;
+    }
+
+    public static void ForceEndGameCheat(bool impostorsWin)
+    {
+        if (!Utils.isHost || !Utils.isInGame) return;
+        try
+        {
+            var reason = impostorsWin ? GameOverReason.ImpostorsByKill : GameOverReason.CrewmatesByTask;
+            GameManager.Instance.RpcEndGame(reason, false);
+        }
+        catch { }
+    }
+
     public static void StopShipAnimCheats()
     {
         CheatToggles.animShields = false;
@@ -434,5 +477,6 @@ public static class MalumCheats
 
         _isCamsAnimActive = false;
         _isScanAnimActive = false;
+        _wasSabotageActive = false;
     }
 }

@@ -110,6 +110,7 @@ public static class MeetingHud_PopulateResults
         }
 
         MeetingHud_Update.votedPlayers.Clear();
+        MeetingHistoryUI.RecordRound(__instance);
     }
 }
 

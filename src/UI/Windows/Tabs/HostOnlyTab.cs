@@ -43,6 +43,18 @@ public class HostOnlyTab : ITab
 
         CheatToggles.showProtectMenu = GUILayout.Toggle(CheatToggles.showProtectMenu, " Show Protect Menu");
 
+        CheatToggles.showForceTeleportMenu = GUILayout.Toggle(CheatToggles.showForceTeleportMenu, " Force Teleport");
+
+        CheatToggles.freezePlayer = GUILayout.Toggle(CheatToggles.freezePlayer, " Freeze Player");
+
+        CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Kill CD Overlay");
+
+        CheatToggles.showMeetingHistory = GUILayout.Toggle(CheatToggles.showMeetingHistory, " Meeting History");
+
+        CheatToggles.antiBotKick = GUILayout.Toggle(CheatToggles.antiBotKick, " Anti-Bot Kick");
+
+        CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Auto Kick Vent Impostors");
+
         // CheatToggles.forceRole = GUILayout.Toggle(CheatToggles.forceRole, " Force Role");
 
         // CheatToggles.noOptionsLimits = GUILayout.Toggle(CheatToggles.noOptionsLimits, " No Options Limits");
@@ -70,6 +82,12 @@ public class HostOnlyTab : ITab
         CheatToggles.forceStartGame = GUILayout.Toggle(CheatToggles.forceStartGame, " Force Start Game");
 
         CheatToggles.noGameEnd = GUILayout.Toggle(CheatToggles.noGameEnd, " No Game End");
+
+        GUILayout.Label("Force End Game", GUIStylePreset.TabSubtitle);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Impostors Win", GUIStylePreset.NormalButton)) MalumCheats.ForceEndGameCheat(true);
+        if (GUILayout.Button("Crewmates Win", GUIStylePreset.NormalButton)) MalumCheats.ForceEndGameCheat(false);
+        GUILayout.EndHorizontal();
     }
 
     private void DrawMeetings()
@@ -81,5 +99,7 @@ public class HostOnlyTab : ITab
         CheatToggles.voteImmune = GUILayout.Toggle(CheatToggles.voteImmune, " Vote Immune");
 
         CheatToggles.ejectPlayer = GUILayout.Toggle(CheatToggles.ejectPlayer, " Eject Player");
+
+        CheatToggles.infiniteMeetings = GUILayout.Toggle(CheatToggles.infiniteMeetings, " Infinite Meetings");
     }
 }

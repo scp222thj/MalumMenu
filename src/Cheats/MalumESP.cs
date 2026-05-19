@@ -81,6 +81,7 @@ public static class MalumESP
     {
         try
         {
+            if (CheatToggles.streamerMode) return;
             foreach (var playerState in meetingHud.playerStates)
             {
                 // Fetch the NetworkedPlayerInfo of each playerState
@@ -116,7 +117,21 @@ public static class MalumESP
     {
         try
         {
-            playerPhysics.myPlayer.cosmetics.SetName(Utils.GetNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
+            if (CheatToggles.streamerMode) return;
+
+            var tag = Utils.GetNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName);
+
+            // Kill cooldown overlay: append remaining CD above impostors' heads (host only, has the data)
+            if (CheatToggles.showKillCdOverlay && Utils.isHost && playerPhysics.myPlayer.Data.Role?.IsImpostor == true)
+            {
+                float cd = Mathf.CeilToInt(playerPhysics.myPlayer.killTimer);
+                if (cd > 0f) tag = $"<size=70%><color=#ff4444>🗡 {cd}s</color></size>\n{tag}";
+            }
+
+            // Player notes suffix
+            tag += PlayerNotesUI.GetNoteSuffix(playerPhysics.myPlayer.PlayerId);
+
+            playerPhysics.myPlayer.cosmetics.SetName(tag);
             // Move the nameText up to prevent it overlapping with colorblind text
             if (CheatToggles.seeRoles && CheatToggles.seePlayerInfo)
             {

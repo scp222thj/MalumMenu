@@ -72,6 +72,8 @@ public class RolesTab : ITab
         CheatToggles.noShapeshiftAnim = GUILayout.Toggle(CheatToggles.noShapeshiftAnim, " No Ss Animation");
 
         CheatToggles.endlessSsDuration = GUILayout.Toggle(CheatToggles.endlessSsDuration, " Endless Ss Duration");
+
+        CheatToggles.fakeShapeshift = GUILayout.Toggle(CheatToggles.fakeShapeshift, " Fake Shapeshift");
     }
 
     private void DrawCrewmate()

@@ -17,6 +17,7 @@ public struct CheatToggles
     // Roles
     public static bool setFakeRole;
     public static bool setFakeAlive;
+    public static bool fakeShapeshift;
     public static bool noKillCd;
     public static bool showTasksMenu;
     public static bool completeMyTasks;
@@ -60,12 +61,16 @@ public struct CheatToggles
     public static bool colorBasedMap;
 
     // Tracers
+    public static bool footprints;
+    public static bool playerTrail;
+    public static bool killRangeIndicator;
     public static bool tracersImps;
     public static bool tracersCrew;
     public static bool tracersGhosts;
     public static bool tracersBodies;
     public static bool colorBasedTracers;
     public static bool distanceBasedTracers;
+    public static bool ventTracers;
 
     // Chat
     public static bool enableChat;
@@ -76,6 +81,7 @@ public struct CheatToggles
     public static bool lowerRateLimits;
 
     // Ship
+    public static bool autoReport;
     public static bool closeMeeting;
     public static bool autoOpenDoorsOnUse;
     public static bool unfixableLights;
@@ -134,12 +140,23 @@ public struct CheatToggles
     public static bool overloadReset;
 
     // Console
+    public static bool killSoundAlert;
+    public static bool sabotageAlert;
+    public static bool chatLogger;
+    public static bool bodyIntelLogger;
     public static bool showConsole;
     public static bool logDeaths;
     public static bool logShapeshifts;
     public static bool logVents;
 
     // Host-Only
+    public static bool showForceTeleportMenu;
+    public static bool freezePlayer;
+    public static bool showKillCdOverlay;
+    public static bool showMeetingHistory;
+    public static bool antiBotKick;
+    public static bool autoKickVentImpostors;
+    public static bool infiniteMeetings;
     public static bool voteImmune;
     public static bool forceRole;
     public static RoleTypes? forcedRole;
@@ -163,10 +180,20 @@ public struct CheatToggles
     public static bool copyLobbyCodeOnDisconnect;
     public static bool spoofAprilFoolsDate;
 
+    // Movement extras
+    public static bool blink;
+    public static bool visionBoost;
+    public static bool showMeetingTimer;
+    public static bool showPlayerNotes;
+
+    // Name spoof (not a bool toggle, lives outside reflection dict)
+    public static string spoofedName = "";
+
     // Modes
     public static bool rgbMode;
     public static bool stealthMode;
     public static bool panicMode;
+    public static bool streamerMode;
 
     // Config
     public static bool reloadConfig;
@@ -205,11 +232,13 @@ public struct CheatToggles
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
         forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
+        fakeShapeshift = variableToKeep == "fakeShapeshift" && fakeShapeshift;
+        freezePlayer   = variableToKeep == "freezePlayer"   && freezePlayer;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !fakeShapeshift && !freezePlayer;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields
@@ -219,6 +248,7 @@ public struct CheatToggles
         {
             field.SetValue(null, false);
         }
+        forcedRole = null;
     }
 
     // Saves cheat toggles and their keybinds to MalumProfile.txt

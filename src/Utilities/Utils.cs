@@ -165,6 +165,23 @@ public static class Utils
         PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(position);
     }
 
+    // Broadcasts a raw Shapeshift RPC from LocalPlayer into the target with animation,
+    // bypassing CmdCheckShapeshift so no shapeshifter role is required.
+    public static void SendFakeShapeshift(PlayerControl target)
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            var writer = AmongUsClient.Instance.StartRpcImmediately(
+                PlayerControl.LocalPlayer.NetId,
+                (byte)RpcCalls.Shapeshift,
+                SendOption.None,
+                AmongUsClient.Instance.GetClientIdFromCharacter(player));
+            writer.WriteNetObject(target);
+            writer.Write(true); // shouldAnimate
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+    }
+
     // Kills any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
@@ -235,14 +252,15 @@ public static class Utils
             lineRenderer = sourceObject.AddComponent<LineRenderer>();
         }
 
-        lineRenderer.SetVertexCount(2);
+        lineRenderer.positionCount = 2;
         lineRenderer.SetWidth(0.02F, 0.02F);
 
         // I just picked an already existing material from the game
         Material material = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
 
         lineRenderer.material = material;
-        lineRenderer.SetColors(color, color);
+        lineRenderer.startColor = color;
+        lineRenderer.endColor   = color;
 
         lineRenderer.SetPosition(0, sourceObject.transform.position);
         lineRenderer.SetPosition(1, targetObject.transform.position);
@@ -781,6 +799,11 @@ public static class Utils
         UnityEngine.Object.Destroy(MalumMenu.doorsUI);
         UnityEngine.Object.Destroy(MalumMenu.tasksUI);
         UnityEngine.Object.Destroy(MalumMenu.protectUI);
+        UnityEngine.Object.Destroy(MalumMenu.forceTeleportUI);
+        UnityEngine.Object.Destroy(MalumMenu.meetingHistoryUI);
+        UnityEngine.Object.Destroy(MalumMenu.playerNotesUI);
+        FootprintHandler.Clear();
+        BodyIntelHandler.Clear();
         // UnityEngine.Object.Destroy(MalumMenu.rolesUI);
 
         UnityEngine.Object.Destroy(MalumMenu.keybindListener);

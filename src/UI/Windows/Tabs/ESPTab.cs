@@ -73,6 +73,12 @@ public class ESPTab : ITab
 
         CheatToggles.tracersBodies = GUILayout.Toggle(CheatToggles.tracersBodies, " Dead Bodies");
 
+        CheatToggles.ventTracers       = GUILayout.Toggle(CheatToggles.ventTracers,       " Vent Paths");
+        CheatToggles.footprints        = GUILayout.Toggle(CheatToggles.footprints,        " Footprints");
+        CheatToggles.playerTrail       = GUILayout.Toggle(CheatToggles.playerTrail,       " Player Trail");
+        CheatToggles.killRangeIndicator = GUILayout.Toggle(CheatToggles.killRangeIndicator, " Kill Range Ring");
+        CheatToggles.showPlayerNotes   = GUILayout.Toggle(CheatToggles.showPlayerNotes,   " Player Notes");
+
         CheatToggles.colorBasedTracers = GUILayout.Toggle(CheatToggles.colorBasedTracers, " Color-based");
 
         CheatToggles.distanceBasedTracers = GUILayout.Toggle(CheatToggles.distanceBasedTracers, " Distance-based");

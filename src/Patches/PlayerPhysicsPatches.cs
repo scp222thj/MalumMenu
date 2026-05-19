@@ -12,31 +12,37 @@ public static class PlayerPhysics_LateUpdate
         MalumESP.PlayerNametags(__instance);
         MalumESP.SeeGhostsCheat(__instance);
 
-        MalumCheats.NoClipCheat();
-        MalumCheats.ProtectCheat();
-        MalumCheats.KillAllCheat();
-        MalumCheats.KillAllCrewCheat();
-        MalumCheats.KillAllImpsCheat();
-        MalumCheats.ForceStartGameCheat();
-        MalumCheats.TeleportCursorCheat();
-        MalumCheats.CompleteMyTasksCheat();
-        MalumCheats.PlayAnimationCheat();
-        MalumCheats.PlayScannerCheat();
-
-        MalumPPMCheats.EjectPlayerPPM();
-        MalumPPMCheats.SpectatePPM();
-        MalumPPMCheats.KillPlayerPPM();
-        MalumPPMCheats.TelekillPlayerPPM();
-        MalumPPMCheats.TeleportPlayerPPM();
-        MalumPPMCheats.SetFakeRolePPM();
-        MalumPPMCheats.SetFakeAlivePPM();
-        // MalumPPMCheats.ForceRolePPM();
-
-        // This check ensures there is only one run per frame
-        // so that OverloadHandler._timer progression remains accurate
+        // AmOwner guard ensures these run exactly once per frame (not once per player object)
         if (__instance.AmOwner)
         {
+            MalumCheats.NoClipCheat();
+            MalumCheats.ProtectCheat();
+            MalumCheats.KillAllCheat();
+            MalumCheats.KillAllCrewCheat();
+            MalumCheats.KillAllImpsCheat();
+            MalumCheats.ForceStartGameCheat();
+            MalumCheats.TeleportCursorCheat();
+            MalumCheats.CompleteMyTasksCheat();
+            MalumCheats.PlayAnimationCheat();
+            MalumCheats.PlayScannerCheat();
+
+            MalumPPMCheats.EjectPlayerPPM();
+            MalumPPMCheats.SpectatePPM();
+            MalumPPMCheats.KillPlayerPPM();
+            MalumPPMCheats.TelekillPlayerPPM();
+            MalumPPMCheats.TeleportPlayerPPM();
+            MalumPPMCheats.SetFakeRolePPM();
+            MalumPPMCheats.SetFakeAlivePPM();
+            MalumPPMCheats.FakeShapeshiftPPM();
+            MalumPPMCheats.ForceRolePPM();
+            MalumPPMCheats.FreezePlayerPPM();
+
             OverloadHandler.Run();
+            TracersHandler.DrawVentTracers();
+            MalumCheats.BlinkCheat();
+            MalumCheats.VisionBoostCheat();
+            MalumPPMCheats.TickFreezePlayer();
+            FootprintHandler.Update();
         }
 
         TracersHandler.DrawPlayerTracer(__instance);

@@ -1,3 +1,4 @@
+using AmongUs.GameOptions;
 using HarmonyLib;
 using UnityEngine;
 
@@ -30,18 +31,37 @@ public static class Vent_CanUse
 public static class Vent_EnterVent
 {
     // Postfix patch of Vent.EnterVent to log on ConsoleUI when a player enters a vent
-    // along with the room they entered it in
+    // along with the room they entered it in, and optionally kick impostor venters (host-only).
     public static void Postfix(Vent __instance, PlayerControl pc)
     {
-        if (!CheatToggles.logVents || !Utils.isShip) return;
+        if (!Utils.isShip || pc == null || pc.Data == null) return;
 
-        var (realPlayerName, displayPlayerName, isDisguised) = Utils.GetPlayerIdentity(pc);
-        var room = Utils.GetRoomFromPosition(__instance.transform.position); //- (Vector3) pc.Collider.offset);
-        var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
+        if (CheatToggles.logVents)
+        {
+            var (realPlayerName, displayPlayerName, isDisguised) = Utils.GetPlayerIdentity(pc);
+            var room = Utils.GetRoomFromPosition(__instance.transform.position);
+            var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
 
-        ConsoleUI.Log(isDisguised
-            ? $"{realPlayerName} (as {displayPlayerName}) entered a vent in {roomName}"
-            : $"{realPlayerName} entered a vent in {roomName}");
+            ConsoleUI.Log(isDisguised
+                ? $"{realPlayerName} (as {displayPlayerName}) entered a vent in {roomName}"
+                : $"{realPlayerName} entered a vent in {roomName}");
+        }
+
+        // Auto Kick Vent Impostors: host kicks any impostor/phantom who vents — Engineers are exempt
+        if (CheatToggles.autoKickVentImpostors && Utils.isHost && pc != PlayerControl.LocalPlayer)
+        {
+            var role = pc.Data.Role;
+            if (role == null) return;
+
+            // Engineers are allowed to vent; never kick them
+            if (role.Role == RoleTypes.Engineer) return;
+
+            // Only kick confirmed impostors/phantoms
+            if (!role.IsImpostor) return;
+
+            ConsoleUI.Log($"[AutoKickVent] Kicked impostor {pc.Data.PlayerName} for venting");
+            AmongUsClient.Instance.KickPlayer(pc.Data.ClientId, false);
+        }
     }
 }
 

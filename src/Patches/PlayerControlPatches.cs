@@ -62,7 +62,19 @@ public static class PlayerControl_MurderPlayer
     // Also logs when a kill gets saved by a guardian angel.
     public static void Prefix(PlayerControl __instance, PlayerControl target)
     {
-        if (!CheatToggles.logDeaths || target == null) return;
+        if (target == null) return;
+
+        // Body intel tracking
+        BodyIntelHandler.OnMurder(target, __instance);
+
+        // Kill Sound Alert
+        if (CheatToggles.killSoundAlert)
+        {
+            ConsoleUI.Log($"[!] Kill detected near {target.Data?.PlayerName ?? "?"}");
+            try { SoundManager.Instance.PlaySound(DestroyableSingleton<HudManager>.Instance.Chat.messageSound, false); } catch { }
+        }
+
+        if (!CheatToggles.logDeaths) return;
 
         var (realKillerName, displayKillerName, isDisguised) = Utils.GetPlayerIdentity(__instance);
         var targetName = $"<color=#{ColorUtility.ToHtmlStringRGB(target.Data.Color)}>{target.CurrentOutfit.PlayerName}</color>";

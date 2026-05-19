@@ -12,7 +12,26 @@ public class PassiveTab : ITab
 
         DrawGeneral();
 
+        GUILayout.Space(15);
+
+        DrawNameSpoof();
+
         GUILayout.EndVertical();
+    }
+
+    private void DrawNameSpoof()
+    {
+        GUILayout.Label("Name Spoof", GUIStylePreset.TabSubtitle);
+        CheatToggles.spoofedName = GUILayout.TextField(CheatToggles.spoofedName, 20, GUILayout.Width(200f));
+        if (GUILayout.Button("Apply Name", GUIStylePreset.NormalButton))
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(CheatToggles.spoofedName))
+                    PlayerControl.LocalPlayer.RpcSetName(CheatToggles.spoofedName);
+            }
+            catch { }
+        }
     }
 
     private void DrawGeneral()

@@ -6,5 +6,8 @@ public enum WindowId
     TasksUI = 3,
     RolesUI = 4,
     ProtectUI = 5,
-    OverloadUI = 6
+    OverloadUI = 6,
+    ForceTeleportUI = 7,
+    MeetingHistoryUI = 8,
+    PlayerNotesUI = 9
 }

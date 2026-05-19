@@ -28,6 +28,9 @@ public partial class MalumMenu : BasePlugin
     public static DoorsUI doorsUI;
     public static TasksUI tasksUI;
     public static ProtectUI protectUI;
+    public static ForceTeleportUI    forceTeleportUI;
+    public static MeetingHistoryUI   meetingHistoryUI;
+    public static PlayerNotesUI      playerNotesUI;
     public static KeybindListener keybindListener;
 
     public static string malumVersion = "3.1.1";
@@ -191,6 +194,9 @@ public partial class MalumMenu : BasePlugin
         doorsUI = AddComponent<DoorsUI>();
         tasksUI = AddComponent<TasksUI>();
         protectUI = AddComponent<ProtectUI>();
+        forceTeleportUI  = AddComponent<ForceTeleportUI>();
+        meetingHistoryUI = AddComponent<MeetingHistoryUI>();
+        playerNotesUI    = AddComponent<PlayerNotesUI>();
         // rolesUI = AddComponent<RolesUI>();
 
         // Components

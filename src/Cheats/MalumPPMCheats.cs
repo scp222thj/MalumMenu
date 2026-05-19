@@ -17,6 +17,10 @@ public static class MalumPPMCheats
     private static bool _setFakeRoleActive;
     private static bool _setFakeAliveActive;
     private static bool _forceRoleActive;
+    private static bool _fakeShapeshiftActive;
+    private static bool _freezePlayerActive;
+    private static PlayerControl _frozenTarget;
+    private static Vector2 _frozenPos;
     private static RoleTypes? _oldRole = null;
 
     public static void ReportBodyPPM()
@@ -220,7 +224,8 @@ public static class MalumPPMCheats
                 // Player pick menu made for teleporting LocalPlayer to any player's position
                 PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action)(() =>
                 {
-                    PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(PlayerPickMenu.targetPlayerData.Object.transform.position);
+                    var target = PlayerPickMenu.targetPlayerData.Object;
+                    if (target != null) PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(target.GetTruePosition());
                 }));
 
                 _teleportPlayerActive = true;
@@ -278,7 +283,9 @@ public static class MalumPPMCheats
 
                 // Impostor role can only be used if it was already assigned at the start of the game or as host
                 // This is done to prevent the anticheat from kicking players
-                if ((_oldRole != null && Utils.GetBehaviourByRoleType((RoleTypes)_oldRole).TeamType == RoleTeamTypes.Impostor) || Utils.isFreePlay || Utils.isHost)
+                bool wasImpostor = false;
+                try { wasImpostor = _oldRole != null && Utils.GetBehaviourByRoleType((RoleTypes)_oldRole)?.TeamType == RoleTeamTypes.Impostor; } catch { }
+                if (wasImpostor || Utils.isFreePlay || Utils.isHost)
                 {
                     playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Impostor", OutfitPreset.Impostor, Utils.GetBehaviourByRoleType(RoleTypes.Impostor)));
                 }
@@ -506,6 +513,106 @@ public static class MalumPPMCheats
                 _spectateActive = false;
                 PlayerControl.LocalPlayer.moveable = true;
                 Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
+            }
+        }
+    }
+
+    // Each frame: if freeze is active, snap the frozen target back to their captured position
+    public static void TickFreezePlayer()
+    {
+        if (!CheatToggles.freezePlayer || _frozenTarget == null) return;
+        if (_frozenTarget.Data == null || _frozenTarget.Data.IsDead || _frozenTarget.Data.Disconnected)
+        {
+            CheatToggles.freezePlayer = false;
+            _frozenTarget = null;
+            return;
+        }
+        try { _frozenTarget.NetTransform.RpcSnapTo(_frozenPos); } catch { }
+    }
+
+    public static void FreezePlayerPPM()
+    {
+        if (CheatToggles.freezePlayer)
+        {
+            if (!_freezePlayerActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("freezePlayer");
+                }
+
+                var playerList = new Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo>();
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player.AmOwner && player.Data != null && !player.Data.IsDead)
+                        playerList.Add(player.Data);
+                }
+
+                PlayerPickMenu.OpenPlayerPickMenu(playerList, (Action)(() =>
+                {
+                    _frozenTarget = PlayerPickMenu.targetPlayerData?.Object;
+                    if (_frozenTarget != null)
+                    {
+                        _frozenPos = _frozenTarget.GetTruePosition();
+                        ConsoleUI.Log($"[Freeze] Froze {_frozenTarget.Data.PlayerName}");
+                    }
+                    CheatToggles.freezePlayer = _frozenTarget != null;
+                }));
+
+                _freezePlayerActive = true;
+            }
+
+            if (PlayerPickMenu.playerpickMenu == null && _frozenTarget == null)
+                CheatToggles.freezePlayer = false;
+        }
+        else
+        {
+            if (_freezePlayerActive)
+            {
+                _freezePlayerActive = false;
+                _frozenTarget = null;
+            }
+        }
+    }
+
+    // Opens a PlayerPickMenu to select a target, then broadcasts a fake Shapeshift RPC
+    // making all clients see LocalPlayer appear to shapeshift into the chosen target.
+    public static void FakeShapeshiftPPM()
+    {
+        if (CheatToggles.fakeShapeshift)
+        {
+            if (!_fakeShapeshiftActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("fakeShapeshift");
+                }
+
+                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
+                {
+                    var target = PlayerPickMenu.targetPlayerData?.Object;
+                    if (target != null)
+                    {
+                        Utils.SendFakeShapeshift(target);
+                    }
+                    CheatToggles.fakeShapeshift = false;
+                }));
+
+                _fakeShapeshiftActive = true;
+            }
+
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.fakeShapeshift = false;
+            }
+        }
+        else
+        {
+            if (_fakeShapeshiftActive)
+            {
+                _fakeShapeshiftActive = false;
             }
         }
     }

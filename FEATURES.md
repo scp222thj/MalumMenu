@@ -22,6 +22,7 @@
 |------------|-------------|------|--------|
 | to Cursor | Teleport by right-clicking with your cursor. Works best with the ZoomOut cheat | Toggle | Off |
 | to Player | Teleport to a player's position by selecting them | Menu |
+| Blink to Cursor | Snap-teleport to your cursor position using middle mouse button | Toggle | Off |
 
 ## 👁️ ESP
 
@@ -34,6 +35,8 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | No Shadows | Removes all shadows, allowing you to see during blackouts and even through walls<br>Also, lets you see through spore clouds in the Fungle Jungle | Toggle | Off |
 | Reveal Votes | Reveals votes as they are being cast rather than at the end of the meeting<br>Also, lets you see colored votes even if votes are set to anonymous | Toggle | Off |
 | Always Chat | Keeps the chat icon always enabled, allowing you to chat at any time (even while not in a meeting or the lobby) | Toggle | Off |
+| Vision Boost | Massively increases your vision range, ignoring light modifiers | Toggle | Off |
+| Player Notes | Attach private notes to any player, visible only to you on their nametag | Toggle | Off |
 
 #### Camera
     
@@ -52,6 +55,10 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Ghosts | Shows tracer lines for ghosts (color: white) | Toggle | Off |
 | Dead Bodies | Shows tracer lines for dead bodies on the ground (color: yellow) | Toggle | Off |
 | Color-based | Changes the color of tracer lines to the color of their players| Toggle | Off |
+| Vent Paths | Shows lines connecting all vents on the current map | Toggle | Off |
+| Footprints | Leaves fading colored footprints showing where each player has walked | Toggle | Off |
+| Player Trail | Draws a fading trail behind your own movement | Toggle | Off |
+| Kill Range Indicator | Draws a circle around you showing your current kill range | Toggle | Off |
 
 #### Minimap
 
@@ -67,6 +74,8 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
 | Set Fake Role | Change your current role to any role you want<br>(Shapeshifter & Phantom are disabled by default to prevent getting detected by the anticheat) | Menu |
+| Fake Shapeshift | Shapeshift into any player visually without being Shapeshifter — works for any role including crewmates, non-hosts | Menu |
+| Force Role | (Host only) Assign any role to any player | Menu |
 
 #### Impostor
 
@@ -75,6 +84,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Kill Anyone | Allows you to kill anyone, regardless if they are protected, impostors, crawling in a vent, or a ghost | Toggle | Off |
 | No Kill Cooldown | Removes the cooldown period after kills, allowing you to spam-kill as much as you please | Toggle | Off |
 | Kill Reach | Allows you to kill players regardless of how far they are on the map | Toggle | Off |
+| Kill Cooldown Overlay | (Host only) Shows each impostor's current kill cooldown on their nametag | Toggle | Off |
 
 #### Phantom
 
@@ -122,8 +132,13 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
 | Unfixable Lights | Disables lights completely (they cannot be fixed manually by players)<br>You can enable them again by clicking the button | Toggle | Off |
-| Report Body | Report any player as a dead body to start a meeting | Button |
+| Auto Report Bodies | Automatically reports dead bodies when you walk near them | Toggle | Off |
 | Close Meeting | Forcefully closes the meeting window (only for you), allowing you to move and interact with the game during meetings | Button |
+| Auto-Open Doors On Use | Automatically opens doors when you interact with them | Toggle | Off |
+| Force Teleport | (Host only) Teleport any player to a specific room or your current position | Menu |
+| Freeze Player | (Host only) Lock a player in place, preventing them from moving | Menu |
+| Force End Game | (Host only) Immediately end the game as an impostor win or crewmate win | Button |
+| Infinite Meetings | (Host only) Removes the emergency meeting call limit | Toggle | Off |
 
 #### Sabotage
 
@@ -147,6 +162,22 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 | UseVents | Allows you to use vents even if you are not an impostor or an engineer | Toggle | Off
 | KickVents | Forcefully kicks all players from vents | Button |
 | WalkInVents | Allows you to move and interact with the game even though you are inside of a vent<br>This gives you a sort of invisibility until you disable the setting and leave the vent<br>(*Some activites such as killing will forcefully make you visible again*) | Toggle | Off
+| Auto-Kick Vent Impostors | (Host only) Automatically kicks impostors from vents | Toggle | Off |
+
+## 📟 Console
+
+| Cheat | Description | Type | Default|
+|------------|-------------|------|--------|
+| Show Console | Opens an in-game console window showing real-time cheat logs | Toggle | Off |
+| Log Deaths | Logs every player death to the console as it happens | Toggle | Off |
+| Log Shapeshifts | Logs every shapeshift event to the console | Toggle | Off |
+| Log Vents | Logs every vent entry/exit to the console | Toggle | Off |
+| Kill Sound Alert | Plays an alert sound and logs a message when someone is killed | Toggle | Off |
+| Sabotage Alert | Plays an alert sound and logs a message when a sabotage activates | Toggle | Off |
+| Body Intel Logger | Logs who died, where, who was nearby at death, and who later walked past the body | Toggle | Off |
+| Chat Logger | Saves all chat messages to `BepInEx/config/MalumChat.txt` | Toggle | Off |
+| Meeting History | Opens a sub-window showing every vote cast in all previous meetings this game | Toggle | Off |
+| Meeting Timer | Displays a live countdown timer on-screen during meetings | Toggle | Off |
 
 ## 💤 Passive
 
@@ -157,6 +188,10 @@ These cheats are constantly running in the background and **cannot be disabled t
 | Free Cosmetics | Gives you access to all of the game's cosmetics for free, including:<br><br>- Hats<br>- Visors<br>- Skins<br>- Pets<br>- Nameplates<br>- Bundles<br>- Cosmicubes | Toggle | On |
 | Avoid Penalties | Removes the penalty you receive when disconnecting from games early | Toggle | On |
 | Unlock Extra Features | Unlocks many of the game's special features automatically, including:<br><br>- Freechat<br>- Friend list<br>- Custom name<br>- Online gameplay | Toggle | On |
+| Name Spoof | Set a custom display name visible to all players | Input | |
+| Anti-Bot Kick | (Host only) Automatically kicks suspected bot accounts from your lobby | Toggle | Off |
+| Copy Lobby Code on Disconnect | Copies your current lobby code to clipboard when you disconnect | Toggle | Off |
+| Spoof Date to April 1st | Tricks the game into thinking it is April Fools' Day | Toggle | Off |
 
 ## 📃 Config
 
@@ -171,7 +206,7 @@ You can change all of the following settings in `BepInEx/config/MalumMenu.cfg`
 | Privacy.HideDeviceId | When enabled, it will hide your unique deviceId from Among Us<br><br>Could **potentially** help bypass hardware bans in the future | Boolean | true |
 | Privacy.NoTelemetry | When enabled, it will stop Among Us from collecting analytics of your games using Unity Analytics and sending them to Innersloth | Boolean | true |
 | Spoofing.Level | Sets a custom player level to display to others in online games, masking your real level<br><br>**IMPORTANT**: Only integers between 0 and 4294967295 are valid. Decimal values are not accepted | String | |
-| Spoofing.Platform | Sets a different gaming platform in online lobbies to disguise your actual platform<br><br>**IMPORTANT**: You may only use platform names from this [list](https://skeld.js.org/enums/constant.Platform.html) | String | |
+| Spoofing.Platform | Sets a different gaming platform in online lobbies to disguise your actual platform<br><br>**IMPORTANT**: You may only use platform names from this [list](https://skeld.js.org/enums/platform.html) | String | |
 
 ## Other relevant features of MalumMenu:
 

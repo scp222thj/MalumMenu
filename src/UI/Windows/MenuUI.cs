@@ -15,6 +15,9 @@ public class MenuUI : MonoBehaviour
     private int _selectedTab;
     public static float hue; // For RGB mode
 
+    private static bool _streamerModeWasActive = false;
+    private static bool _savedGUIActive = false;
+
     private void Start()
     {
         // Add all tabs on start
@@ -61,6 +64,27 @@ public class MenuUI : MonoBehaviour
             }
         }
 
+        // F12 toggles streamer mode (soft panic — hides UI and censors lobby code without destroying it)
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            CheatToggles.streamerMode = !CheatToggles.streamerMode;
+        }
+
+        // Sync GUI visibility when streamer mode changes
+        if (CheatToggles.streamerMode != _streamerModeWasActive)
+        {
+            _streamerModeWasActive = CheatToggles.streamerMode;
+            if (CheatToggles.streamerMode)
+            {
+                _savedGUIActive = isGUIActive;
+                isGUIActive = false;
+            }
+            else
+            {
+                isGUIActive = _savedGUIActive;
+            }
+        }
+
         if (CheatToggles.rgbMode)
         {
             hue += Time.deltaTime * 0.3f; // Adjust speed of color change, higher multiplier = faster
@@ -82,7 +106,7 @@ public class MenuUI : MonoBehaviour
         if (CheatToggles.panicMode) Utils.Panic();
 
         var stamp = ModManager.Instance.ModStamp;
-        if (stamp) stamp.enabled = !(MalumMenu.inStealthMode || MalumMenu.isPanicked);
+        if (stamp) stamp.enabled = !(MalumMenu.inStealthMode || MalumMenu.isPanicked || CheatToggles.streamerMode);
 
         if (CheatToggles.openConfig)
         {
@@ -170,6 +194,14 @@ public class MenuUI : MonoBehaviour
             CheatToggles.showProtectMenu = false;
             CheatToggles.showRolesMenu = false;
             CheatToggles.noOptionsLimits = false;
+            CheatToggles.antiBotKick = false;
+            CheatToggles.autoKickVentImpostors = false;
+            CheatToggles.infiniteMeetings     = false;
+            CheatToggles.showForceTeleportMenu = false;
+            CheatToggles.freezePlayer          = false;
+            CheatToggles.showKillCdOverlay     = false;
+            CheatToggles.showMeetingHistory    = false;
+            CheatToggles.forceRole             = false;
         }
 
         // Some cheats only work if in a meeting, so they are turned off if it does not
@@ -182,7 +214,9 @@ public class MenuUI : MonoBehaviour
 
     public void OnGUI()
     {
-        if (!isGUIActive || MalumMenu.isPanicked) return;
+        FootprintHandler.DrawGUI();
+
+        if (!isGUIActive || MalumMenu.isPanicked || CheatToggles.streamerMode) return;
 
         InitStyles();
 
