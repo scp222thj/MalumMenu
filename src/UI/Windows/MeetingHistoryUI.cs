@@ -101,7 +101,7 @@ public class MeetingHistoryUI : MonoBehaviour
             string votedFor;
             if      (ps.VotedFor == PlayerVoteArea.SkippedVote) votedFor = "Skip";
             else if (ps.VotedFor == PlayerVoteArea.HasNotVoted)  votedFor = "(no vote)";
-            else if (ps.VotedFor == PlayerVoteArea.DeadVote)     continue;
+            else if (ps.VotedFor < 0)                            continue; // DeadVote, MissedVote, or any negative sentinel
             else
             {
                 var t = GameData.Instance.GetPlayerById((byte)ps.VotedFor);

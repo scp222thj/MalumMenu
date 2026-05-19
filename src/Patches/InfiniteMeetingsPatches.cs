@@ -9,7 +9,7 @@ public static class PlayerControl_RpcStartMeeting
     // remaining emergency meeting count after each use, enabling infinite meetings.
     public static void Postfix()
     {
-        if (!CheatToggles.infiniteMeetings || !Utils.isHost) return;
+        if (!CheatToggles.infiniteMeetings || !Utils.isHost || PlayerControl.LocalPlayer == null) return;
 
         PlayerControl.LocalPlayer.RemainingEmergencies = 99;
     }

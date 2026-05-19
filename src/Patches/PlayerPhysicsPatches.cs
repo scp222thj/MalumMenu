@@ -56,7 +56,7 @@ public static class PlayerPhysics_LateUpdate
             TracersHandler.DrawBodyTracer(deadBody);
         }
 
-        try
+        if (__instance.AmOwner && PlayerControl.LocalPlayer != null)
         {
             if (CheatToggles.invertControls)
             {
@@ -68,7 +68,7 @@ public static class PlayerPhysics_LateUpdate
                 PlayerControl.LocalPlayer.MyPhysics.Speed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.Speed);
                 PlayerControl.LocalPlayer.MyPhysics.GhostSpeed = Mathf.Abs(PlayerControl.LocalPlayer.MyPhysics.GhostSpeed);
             }
-        } catch (NullReferenceException) { }
+        }
     }
 }
 

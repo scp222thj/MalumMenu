@@ -174,6 +174,7 @@ public class MenuUI : MonoBehaviour
             CheatToggles.mushSpore = false;
 
             MalumCheats.StopShipAnimCheats();
+            MalumPPMCheats.ResetOldRole();
         }
 
         if(!Utils.isHost && !Utils.isFreePlay)

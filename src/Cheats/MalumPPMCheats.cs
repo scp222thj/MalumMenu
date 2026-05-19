@@ -23,6 +23,8 @@ public static class MalumPPMCheats
     private static Vector2 _frozenPos;
     private static RoleTypes? _oldRole = null;
 
+    public static void ResetOldRole() => _oldRole = null;
+
     public static void ReportBodyPPM()
     {
         if (CheatToggles.reportBody)
@@ -84,6 +86,7 @@ public static class MalumPPMCheats
                 List<NetworkedPlayerInfo> playerInfo = new List<NetworkedPlayerInfo>();
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
+                    if (player == null || player.Data == null) continue;
                     if (!player.Data.IsDead && !player.Data.Disconnected)
                     {
                         playerInfo.Add(player.Data);
@@ -215,6 +218,7 @@ public static class MalumPPMCheats
                 // All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
+                    if (player == null || player.Data == null) continue;
                     if (!player.AmOwner)
                     {
                         playerDataList.Add(player.Data);
@@ -478,6 +482,7 @@ public static class MalumPPMCheats
                 // All players are saved to playerList apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
+                    if (player == null || player.Data == null) continue;
                     if (!player.AmOwner)
                     {
                         playerDataList.Add(player.Data);
@@ -487,7 +492,8 @@ public static class MalumPPMCheats
                 // Player pick menu made for spectating the targeted player
                 PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerPickMenu.targetPlayerData.Object);
+                    var target = PlayerPickMenu.targetPlayerData?.Object;
+                    if (target != null) Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(target);
                 }));
 
                 _spectateActive = true;

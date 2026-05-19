@@ -53,7 +53,7 @@ public static class FootprintHandler
         // Player Trail
         if (CheatToggles.playerTrail && PlayerControl.LocalPlayer != null)
         {
-            if (_trailObj == null)
+            if (_trailObj == null && DestroyableSingleton<HatManager>.Instance != null)
             {
                 _trailObj = new GameObject("MM_Trail");
                 _trailLr  = _trailObj.AddComponent<LineRenderer>();
@@ -84,7 +84,7 @@ public static class FootprintHandler
         // Kill Range Indicator
         if (CheatToggles.killRangeIndicator && Utils.isInGame && PlayerControl.LocalPlayer != null)
         {
-            if (_rangeObj == null)
+            if (_rangeObj == null && DestroyableSingleton<HatManager>.Instance != null)
             {
                 _rangeObj = new GameObject("MM_KillRange");
                 _rangeLr  = _rangeObj.AddComponent<LineRenderer>();
@@ -147,7 +147,7 @@ public static class FootprintHandler
         _lastSample.Clear();
         _trailPts.Clear();
         _lastTrailT = 0f;
-        if (_trailObj != null) { Object.Destroy(_trailObj); _trailObj = null; }
-        if (_rangeObj != null) { Object.Destroy(_rangeObj); _rangeObj = null; }
+        if (_trailObj != null) { Object.Destroy(_trailObj); _trailObj = null; _trailLr = null; }
+        if (_rangeObj != null) { Object.Destroy(_rangeObj); _rangeObj = null; _rangeLr = null; }
     }
 }

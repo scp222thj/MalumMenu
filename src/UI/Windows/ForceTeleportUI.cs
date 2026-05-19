@@ -83,9 +83,23 @@ public class ForceTeleportUI : MonoBehaviour
         if (GUILayout.Button(_selectedDestName == "My Location" ? "> My Location <" : "My Location", GUIStylePreset.NormalButton))
         {
             _selectedDestName = "My Location";
-            _selectedDest = PlayerControl.LocalPlayer.GetTruePosition();
+            if (PlayerControl.LocalPlayer != null)
+                _selectedDest = PlayerControl.LocalPlayer.GetTruePosition();
         }
 
+        GUILayout.Label("── Players ──", GUIStylePreset.TabSubtitle);
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.Data == null || player.Data.IsDead || player.Data.Disconnected) continue;
+            var label = $"@ {player.Data.PlayerName}";
+            if (GUILayout.Button(_selectedDestName == label ? $"> {label} <" : label, GUIStylePreset.NormalButton))
+            {
+                _selectedDestName = label;
+                _selectedDest = player.GetTruePosition();
+            }
+        }
+
+        GUILayout.Label("── Rooms ──", GUIStylePreset.TabSubtitle);
         foreach (var (roomName, pos) in ForceTeleportHandler.GetRoomsForCurrentMap())
         {
             if (GUILayout.Button(_selectedDestName == roomName ? $"> {roomName} <" : roomName, GUIStylePreset.NormalButton))
@@ -108,9 +122,27 @@ public class ForceTeleportUI : MonoBehaviour
         GUI.enabled = _selectedTarget != null && _selectedDestName.Length > 0;
         if (GUILayout.Button("Teleport", GUIStylePreset.NormalButton))
         {
-            // Refresh "My Location" at the moment of click
+            // Refresh position-based destinations at click time
             if (_selectedDestName == "My Location")
-                _selectedDest = PlayerControl.LocalPlayer.GetTruePosition();
+            {
+                if (PlayerControl.LocalPlayer != null)
+                    _selectedDest = PlayerControl.LocalPlayer.GetTruePosition();
+            }
+            else if (_selectedDestName.StartsWith("@ "))
+            {
+                var destName = _selectedDestName.Substring(2);
+                bool found = false;
+                foreach (var p in PlayerControl.AllPlayerControls)
+                {
+                    if (p != null && p.Data != null && p.Data.PlayerName == destName)
+                    {
+                        _selectedDest = p.GetTruePosition();
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) { ConsoleUI.Log("[ForceTeleport] Destination player not found (disconnected?)"); return; }
+            }
 
             ForceTeleportHandler.TeleportPlayer(_selectedTarget, _selectedDest);
         }
