@@ -36,6 +36,9 @@ public static class PlayerPhysics_LateUpdate
             MalumPPMCheats.FakeShapeshiftPPM();
             MalumPPMCheats.ForceRolePPM();
             MalumPPMCheats.FreezePlayerPPM();
+            MalumPPMCheats.FrameAsShapeshifterPPM();
+            MalumPPMCheats.TeleportPlayerToPlayerPPM();
+            MalumPPMCheats.FakeVentOnPlayerPPM();
 
             OverloadHandler.Run();
             TracersHandler.DrawVentTracers();

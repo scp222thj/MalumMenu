@@ -16,10 +16,6 @@ public class HostOnlyTab : ITab
 
         GUILayout.Space(15);
 
-        DrawMurder();
-
-        GUILayout.Space(15);
-
         DrawGameState();
 
         GUILayout.EndVertical();
@@ -28,10 +24,6 @@ public class HostOnlyTab : ITab
 
         DrawMeetings();
 
-        GUILayout.Space(15);
-
-        DrawSmartKill();
-
         GUILayout.EndVertical();
 
         GUILayout.EndHorizontal();
@@ -39,17 +31,11 @@ public class HostOnlyTab : ITab
 
     private void DrawGeneral()
     {
-        CheatToggles.killVanished = GUILayout.Toggle(CheatToggles.killVanished, " Kill While Vanished");
-
-        CheatToggles.killAnyone = GUILayout.Toggle(CheatToggles.killAnyone, " Kill Anyone");
-
         CheatToggles.noKillCd = GUILayout.Toggle(CheatToggles.noKillCd, " No Kill Cooldown");
 
         CheatToggles.showProtectMenu = GUILayout.Toggle(CheatToggles.showProtectMenu, " Show Protect Menu");
 
-        CheatToggles.showForceTeleportMenu = GUILayout.Toggle(CheatToggles.showForceTeleportMenu, " Force Teleport");
-
-        CheatToggles.freezePlayer = GUILayout.Toggle(CheatToggles.freezePlayer, " Freeze Player");
+        CheatToggles.showForceTeleportMenu = GUILayout.Toggle(CheatToggles.showForceTeleportMenu, " Force Teleport Menu");
 
         CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Show Kill Cooldown on Players");
 
@@ -59,26 +45,11 @@ public class HostOnlyTab : ITab
 
         CheatToggles.antiBotKick = GUILayout.Toggle(CheatToggles.antiBotKick, " Auto-Kick Bots");
 
-        CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Kick Players Who Vent");
+        CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Disconnect Players Who Vent");
 
         // CheatToggles.forceRole = GUILayout.Toggle(CheatToggles.forceRole, " Force Role");
 
         // CheatToggles.noOptionsLimits = GUILayout.Toggle(CheatToggles.noOptionsLimits, " No Options Limits");
-    }
-
-    private void DrawMurder()
-    {
-        GUILayout.Label("Murder", GUIStylePreset.TabSubtitle);
-
-        CheatToggles.killPlayer = GUILayout.Toggle(CheatToggles.killPlayer, " Kill Player");
-
-        CheatToggles.telekillPlayer = GUILayout.Toggle(CheatToggles.telekillPlayer, " Telekill Player");
-
-        CheatToggles.killAllCrew = GUILayout.Toggle(CheatToggles.killAllCrew, " Kill All Crewmates");
-
-        CheatToggles.killAllImps = GUILayout.Toggle(CheatToggles.killAllImps, " Kill All Impostors");
-
-        CheatToggles.killAll = GUILayout.Toggle(CheatToggles.killAll, " Kill Everyone");
     }
 
     private void DrawGameState()
@@ -107,22 +78,5 @@ public class HostOnlyTab : ITab
         CheatToggles.ejectPlayer = GUILayout.Toggle(CheatToggles.ejectPlayer, " Eject Player");
 
         CheatToggles.infiniteMeetings = GUILayout.Toggle(CheatToggles.infiniteMeetings, " Infinite Meetings");
-    }
-
-    private void DrawSmartKill()
-    {
-        GUILayout.Label("Smart Kill", GUIStylePreset.TabSubtitle);
-
-        var (canExecute, statusText) = MalumCheats.SmartKillStatus();
-
-        var prevColor = GUI.contentColor;
-        GUI.contentColor = canExecute ? Color.green : new Color(1f, 0.4f, 0.4f);
-        GUILayout.Label(statusText);
-        GUI.contentColor = prevColor;
-
-        GUI.enabled = canExecute;
-        if (GUILayout.Button("Close Door + Kill + Vent", GUIStylePreset.NormalButton))
-            MalumCheats.SmartKillCombo();
-        GUI.enabled = true;
     }
 }

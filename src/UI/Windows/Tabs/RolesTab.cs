@@ -16,14 +16,6 @@ public class RolesTab : ITab
 
         GUILayout.Space(15);
 
-        DrawImpostor();
-
-        GUILayout.Space(15);
-
-        DrawShapeshifter();
-
-        GUILayout.Space(15);
-
         DrawCrewmate();
 
         GUILayout.Space(15);
@@ -54,26 +46,6 @@ public class RolesTab : ITab
         CheatToggles.setFakeRole = GUILayout.Toggle(CheatToggles.setFakeRole, " Set Fake Role");
 
         CheatToggles.setFakeAlive = GUILayout.Toggle(CheatToggles.setFakeAlive, " Set Fake Alive");
-    }
-
-    private void DrawImpostor()
-    {
-        GUILayout.Label("Impostor", GUIStylePreset.TabSubtitle);
-
-        CheatToggles.killReach = GUILayout.Toggle(CheatToggles.killReach, " Infinite Kill Range");
-
-        // CheatToggles.impostorTasks = GUILayout.Toggle(CheatToggles.impostorTasks, " Allow Tasks");
-    }
-
-    private void DrawShapeshifter()
-    {
-        GUILayout.Label("Shapeshifter", GUIStylePreset.TabSubtitle);
-
-        CheatToggles.noShapeshiftAnim = GUILayout.Toggle(CheatToggles.noShapeshiftAnim, " No Shapeshift Animation");
-
-        CheatToggles.endlessSsDuration = GUILayout.Toggle(CheatToggles.endlessSsDuration, " Endless Shapeshift Duration");
-
-        CheatToggles.fakeShapeshift = GUILayout.Toggle(CheatToggles.fakeShapeshift, " Disguise as Another Player");
     }
 
     private void DrawCrewmate()

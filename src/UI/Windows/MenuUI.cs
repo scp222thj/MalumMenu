@@ -26,6 +26,8 @@ public class MenuUI : MonoBehaviour
         _tabs.Add(new MovementTab());
         _tabs.Add(new ESPTab());
         _tabs.Add(new RolesTab());
+        _tabs.Add(new ImpostorTab());
+        _tabs.Add(new TrollTab());
         _tabs.Add(new ShipTab());
         _tabs.Add(new ChatTab());
         _tabs.Add(new AnimationsTab());
@@ -216,6 +218,7 @@ public class MenuUI : MonoBehaviour
 
         UIHelpers.ApplyUIColor();
 
+        _windowRect.height = windowHeight;
         _windowRect = GUI.Window((int)WindowId.MenuUI, _windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
 

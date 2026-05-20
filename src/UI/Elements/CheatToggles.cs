@@ -197,6 +197,11 @@ public struct CheatToggles
     public static bool panicMode;
     public static bool streamerMode;
 
+    // Troll
+    public static bool frameAsShapeshifter;
+    public static bool teleportPlayerToPlayer;
+    public static bool fakeVentOnPlayer;
+
     // Config
     public static bool reloadConfig;
     public static bool openConfig;
@@ -236,11 +241,14 @@ public struct CheatToggles
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
         fakeShapeshift = variableToKeep == "fakeShapeshift" && fakeShapeshift;
         freezePlayer   = variableToKeep == "freezePlayer"   && freezePlayer;
+        frameAsShapeshifter    = variableToKeep == "frameAsShapeshifter"    && frameAsShapeshifter;
+        teleportPlayerToPlayer = variableToKeep == "teleportPlayerToPlayer" && teleportPlayerToPlayer;
+        fakeVentOnPlayer       = variableToKeep == "fakeVentOnPlayer"       && fakeVentOnPlayer;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !fakeShapeshift && !freezePlayer;
+        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !fakeShapeshift && !freezePlayer && !frameAsShapeshifter && !teleportPlayerToPlayer && !fakeVentOnPlayer;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields

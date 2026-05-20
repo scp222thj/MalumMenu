@@ -624,4 +624,152 @@ public static class MalumPPMCheats
             }
         }
     }
+
+    private static bool _frameAsShapeshifterActive;
+    private static bool _teleportPlayerToPlayerActive;
+    private static PlayerControl _teleportP2PSource;
+    private static bool _fakeVentOnPlayerActive;
+
+    public static void FrameAsShapeshifterPPM()
+    {
+        if (CheatToggles.frameAsShapeshifter)
+        {
+            if (!_frameAsShapeshifterActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("frameAsShapeshifter");
+                }
+
+                // Step 1: pick the victim (they will appear to shapeshift)
+                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
+                {
+                    var victim = PlayerPickMenu.targetPlayerData?.Object;
+                    if (victim == null) { CheatToggles.frameAsShapeshifter = false; return; }
+
+                    // Step 2: pick what they shapeshift into
+                    PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
+                    {
+                        var target = PlayerPickMenu.targetPlayerData?.Object;
+                        if (target != null) Utils.FrameAsShapeshifter(victim, target);
+                        CheatToggles.frameAsShapeshifter = false;
+                    }));
+                }));
+
+                _frameAsShapeshifterActive = true;
+            }
+
+            if (PlayerPickMenu.playerpickMenu == null)
+                CheatToggles.frameAsShapeshifter = false;
+        }
+        else if (_frameAsShapeshifterActive)
+        {
+            _frameAsShapeshifterActive = false;
+        }
+    }
+
+    public static void TeleportPlayerToPlayerPPM()
+    {
+        if (CheatToggles.teleportPlayerToPlayer)
+        {
+            if (!_teleportPlayerToPlayerActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("teleportPlayerToPlayer");
+                }
+
+                var allOthers = new Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo>();
+                foreach (var p in PlayerControl.AllPlayerControls)
+                {
+                    if (p == null || p.Data == null || p.AmOwner) continue;
+                    allOthers.Add(p.Data);
+                }
+
+                // Step 1: pick the player to move
+                PlayerPickMenu.OpenPlayerPickMenu(allOthers, (Action)(() =>
+                {
+                    _teleportP2PSource = PlayerPickMenu.targetPlayerData?.Object;
+                    if (_teleportP2PSource == null) { CheatToggles.teleportPlayerToPlayer = false; return; }
+
+                    // Step 2: pick the destination player
+                    var destList = new Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo>();
+                    foreach (var p in PlayerControl.AllPlayerControls)
+                    {
+                        if (p == null || p.Data == null || p == _teleportP2PSource) continue;
+                        destList.Add(p.Data);
+                    }
+
+                    PlayerPickMenu.OpenPlayerPickMenu(destList, (Action)(() =>
+                    {
+                        var dest = PlayerPickMenu.targetPlayerData?.Object;
+                        if (dest != null && _teleportP2PSource != null)
+                            _teleportP2PSource.NetTransform.RpcSnapTo(dest.GetTruePosition());
+                        _teleportP2PSource = null;
+                        CheatToggles.teleportPlayerToPlayer = false;
+                    }));
+                }));
+
+                _teleportPlayerToPlayerActive = true;
+            }
+
+            if (PlayerPickMenu.playerpickMenu == null && _teleportP2PSource == null)
+                CheatToggles.teleportPlayerToPlayer = false;
+        }
+        else if (_teleportPlayerToPlayerActive)
+        {
+            _teleportPlayerToPlayerActive = false;
+            _teleportP2PSource = null;
+        }
+    }
+
+    public static void FakeVentOnPlayerPPM()
+    {
+        if (CheatToggles.fakeVentOnPlayer)
+        {
+            if (!_fakeVentOnPlayerActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("fakeVentOnPlayer");
+                }
+
+                var others = new Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo>();
+                foreach (var p in PlayerControl.AllPlayerControls)
+                {
+                    if (p == null || p.Data == null || p.AmOwner || p.Data.IsDead) continue;
+                    others.Add(p.Data);
+                }
+
+                PlayerPickMenu.OpenPlayerPickMenu(others, (Action)(() =>
+                {
+                    var victim = PlayerPickMenu.targetPlayerData?.Object;
+                    if (victim != null && ShipStatus.Instance?.AllVents != null)
+                    {
+                        Vent nearest = null;
+                        float best = float.MaxValue;
+                        foreach (var v in ShipStatus.Instance.AllVents)
+                        {
+                            float d = Vector2.Distance(victim.GetTruePosition(), (Vector2)v.transform.position);
+                            if (d < best) { best = d; nearest = v; }
+                        }
+                        if (nearest != null) Utils.FakeVentOnPlayer(victim, nearest.Id);
+                    }
+                    CheatToggles.fakeVentOnPlayer = false;
+                }));
+
+                _fakeVentOnPlayerActive = true;
+            }
+
+            if (PlayerPickMenu.playerpickMenu == null)
+                CheatToggles.fakeVentOnPlayer = false;
+        }
+        else if (_fakeVentOnPlayerActive)
+        {
+            _fakeVentOnPlayerActive = false;
+        }
+    }
 }

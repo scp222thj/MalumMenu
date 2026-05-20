@@ -193,6 +193,43 @@ public static class Utils
         }
     }
 
+    // Sends Shapeshift RPC appearing to come FROM victim — other clients see victim do shapeshift animation
+    public static void FrameAsShapeshifter(PlayerControl victim, PlayerControl shapeshiftTarget)
+    {
+        var host = AmongUsClient.Instance.GetHost();
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (host?.Character != null && player == host.Character) continue;
+            if (player == victim) continue;
+            var writer = AmongUsClient.Instance.StartRpcImmediately(
+                victim.NetId,
+                (byte)RpcCalls.Shapeshift,
+                SendOption.None,
+                AmongUsClient.Instance.GetClientIdFromCharacter(player));
+            writer.WriteNetObject(shapeshiftTarget);
+            writer.Write(true);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+    }
+
+    // Sends EnterVent RPC appearing to come FROM victim — other clients see victim enter a vent
+    public static void FakeVentOnPlayer(PlayerControl victim, int ventId)
+    {
+        var host = AmongUsClient.Instance.GetHost();
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (host?.Character != null && player == host.Character) continue;
+            if (player == victim) continue;
+            var writer = AmongUsClient.Instance.StartRpcImmediately(
+                victim.MyPhysics.NetId,
+                (byte)RpcCalls.EnterVent,
+                SendOption.None,
+                AmongUsClient.Instance.GetClientIdFromCharacter(player));
+            writer.Write(ventId);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }
+    }
+
     // Kills any player using RPC calls
     public static void MurderPlayer(PlayerControl target, MurderResultFlags result)
     {
