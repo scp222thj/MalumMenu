@@ -37,7 +37,7 @@ public class HostOnlyTab : ITab
 
         CheatToggles.showForceTeleportMenu = GUILayout.Toggle(CheatToggles.showForceTeleportMenu, " Force Teleport Menu");
 
-        CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Show Kill Cooldown on Players");
+        CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Show Impostor Kill Timer Above Players");
 
         CheatToggles.showMeetingHistory = GUILayout.Toggle(CheatToggles.showMeetingHistory, " Meeting History");
 

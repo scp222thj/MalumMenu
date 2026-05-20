@@ -36,6 +36,10 @@ public static class Vent_EnterVent
     {
         if (!Utils.isShip || pc == null || pc.Data == null) return;
 
+        var roleInfo = pc.Data?.Role;
+        bool isImp = roleInfo != null && roleInfo.IsImpostor;
+        string roleLabel = isImp ? "Imp" : "Crew";
+
         if (CheatToggles.logVents)
         {
             var (realPlayerName, displayPlayerName, isDisguised) = Utils.GetPlayerIdentity(pc);
@@ -43,31 +47,26 @@ public static class Vent_EnterVent
             var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
 
             ConsoleUI.Log(isDisguised
-                ? $"{realPlayerName} (as {displayPlayerName}) entered a vent in {roomName}"
-                : $"{realPlayerName} entered a vent in {roomName}");
-
-            // Auto-boot: when an impostor (not engineer) vents while autoBootVents is on, eject all from vents
-            if (CheatToggles.autoBootVents && pc.Data?.Role != null
-                && pc.Data.Role.IsImpostor && pc.Data.Role.Role != RoleTypes.Engineer)
-            {
-                foreach (var vent in ShipStatus.Instance.AllVents)
-                    VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
-            }
+                ? $"[{roleLabel}] {realPlayerName} (as {displayPlayerName}) entered a vent in {roomName}"
+                : $"[{roleLabel}] {realPlayerName} entered a vent in {roomName}");
         }
 
-        // Auto Kick Vent Impostors: host kicks any impostor/phantom who vents — Engineers are exempt
+        // Auto-boot: eject all impostors from vents when an impostor (not engineer) vents
+        if (CheatToggles.autoBootVents && roleInfo != null
+            && isImp && roleInfo.Role != RoleTypes.Engineer)
+        {
+            foreach (var vent in ShipStatus.Instance.AllVents)
+                VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
+        }
+
+        // Auto-kick: host kicks any impostor/phantom who vents — Engineers are exempt
         if (CheatToggles.autoKickVentImpostors && Utils.isHost && pc != PlayerControl.LocalPlayer)
         {
-            var role = pc.Data.Role;
-            if (role == null) return;
+            if (roleInfo == null) return;
+            if (roleInfo.Role == RoleTypes.Engineer) return;
+            if (!isImp) return;
 
-            // Engineers are allowed to vent; never kick them
-            if (role.Role == RoleTypes.Engineer) return;
-
-            // Only kick confirmed impostors/phantoms
-            if (!role.IsImpostor) return;
-
-            ConsoleUI.Log($"[AutoKickVent] Kicked impostor {pc.Data.PlayerName} for venting");
+            ConsoleUI.Log($"[Imp] Kicked {pc.Data.PlayerName} for venting");
             AmongUsClient.Instance.KickPlayer(pc.Data.ClientId, false);
         }
     }
