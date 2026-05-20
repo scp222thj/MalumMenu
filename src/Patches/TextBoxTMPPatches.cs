@@ -64,6 +64,11 @@ public static class TextBoxTMP_IsCharAllowed
             return false;
         }
 
+        // Let the vanilla handler deal with control characters (Enter = '\r', etc.)
+        // Blocking '\r' prevents chat submission entirely
+        if (input.Length == 1 && input[0] < ' ')
+            return true;
+
         // Track position within the typed input, not the full reconstructed text.
         // The vanilla SetText loop calls IsCharAllowed once per char in input, in order.
         _currentCharPos = Mathf.Clamp(_currentCharPos, 0, input.Length - 1);
