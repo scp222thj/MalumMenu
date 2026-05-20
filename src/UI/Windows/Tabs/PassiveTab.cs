@@ -14,13 +14,28 @@ public class PassiveTab : ITab
 
         DrawGeneral();
 
-        GUILayout.Space(15);
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical(GUILayout.Width(MenuUI.windowWidth * 0.425f));
 
         DrawNameSpoof();
 
         GUILayout.EndVertical();
 
         GUILayout.EndHorizontal();
+    }
+
+    private void DrawGeneral()
+    {
+        CheatToggles.freeCosmetics = GUILayout.Toggle(CheatToggles.freeCosmetics, " Unlock All Cosmetics Free");
+
+        CheatToggles.avoidPenalties = GUILayout.Toggle(CheatToggles.avoidPenalties, " Skip Vote/Ban Penalties");
+
+        CheatToggles.unlockFeatures = GUILayout.Toggle(CheatToggles.unlockFeatures, " Unlock Hidden Game Features");
+
+        CheatToggles.copyLobbyCodeOnDisconnect = GUILayout.Toggle(CheatToggles.copyLobbyCodeOnDisconnect, " Copy Lobby Code When Disconnected");
+
+        CheatToggles.spoofAprilFoolsDate = GUILayout.Toggle(CheatToggles.spoofAprilFoolsDate, " Enable April Fools Mode");
     }
 
     private void DrawNameSpoof()
@@ -36,18 +51,5 @@ public class PassiveTab : ITab
             }
             catch { }
         }
-    }
-
-    private void DrawGeneral()
-    {
-        CheatToggles.freeCosmetics = GUILayout.Toggle(CheatToggles.freeCosmetics, " Unlock All Cosmetics Free");
-
-        CheatToggles.avoidPenalties = GUILayout.Toggle(CheatToggles.avoidPenalties, " Skip Vote/Ban Penalties");
-
-        CheatToggles.unlockFeatures = GUILayout.Toggle(CheatToggles.unlockFeatures, " Unlock Hidden Game Features");
-
-        CheatToggles.copyLobbyCodeOnDisconnect = GUILayout.Toggle(CheatToggles.copyLobbyCodeOnDisconnect, " Copy Lobby Code When Disconnected");
-
-        CheatToggles.spoofAprilFoolsDate = GUILayout.Toggle(CheatToggles.spoofAprilFoolsDate, " Enable April Fools Mode");
     }
 }

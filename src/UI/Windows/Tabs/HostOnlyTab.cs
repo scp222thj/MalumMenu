@@ -31,36 +31,36 @@ public class HostOnlyTab : ITab
 
     private void DrawGeneral()
     {
-        CheatToggles.noKillCd = GUILayout.Toggle(CheatToggles.noKillCd, " No Kill Cooldown");
+        CheatToggles.noKillCd = GUILayout.Toggle(CheatToggles.noKillCd, " No Kill Cooldown (Host Only)");
 
-        CheatToggles.showProtectMenu = GUILayout.Toggle(CheatToggles.showProtectMenu, " Show Protect Menu");
+        CheatToggles.showProtectMenu = GUILayout.Toggle(CheatToggles.showProtectMenu, " Show Protect Menu (Host Only)");
 
-        CheatToggles.showForceTeleportMenu = GUILayout.Toggle(CheatToggles.showForceTeleportMenu, " Force Teleport Menu");
+        CheatToggles.showForceTeleportMenu = GUILayout.Toggle(CheatToggles.showForceTeleportMenu, " Force Teleport Menu (Host Only)");
 
-        CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Show Impostor Kill Timer Above Players");
+        CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Show Impostor Kill Timer Above Players (Host Only)");
 
-        CheatToggles.showMeetingHistory = GUILayout.Toggle(CheatToggles.showMeetingHistory, " Meeting History");
+        CheatToggles.showMeetingHistory = GUILayout.Toggle(CheatToggles.showMeetingHistory, " Meeting History (Host Only)");
 
-        CheatToggles.alwaysImpostor = GUILayout.Toggle(CheatToggles.alwaysImpostor, " Always Impostor");
+        CheatToggles.alwaysImpostor = GUILayout.Toggle(CheatToggles.alwaysImpostor, " Always Impostor (Host Only)");
 
-        CheatToggles.antiBotKick = GUILayout.Toggle(CheatToggles.antiBotKick, " Auto-Kick Bots");
+        CheatToggles.antiBotKick = GUILayout.Toggle(CheatToggles.antiBotKick, " Auto-Kick Bots (Host Only)");
 
-        CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Disconnect Players Who Vent");
+        CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Disconnect Players Who Vent (Host Only)");
 
-        // CheatToggles.forceRole = GUILayout.Toggle(CheatToggles.forceRole, " Force Role");
+        // CheatToggles.forceRole = GUILayout.Toggle(CheatToggles.forceRole, " Force Role (Host Only)");
 
-        // CheatToggles.noOptionsLimits = GUILayout.Toggle(CheatToggles.noOptionsLimits, " No Options Limits");
+        // CheatToggles.noOptionsLimits = GUILayout.Toggle(CheatToggles.noOptionsLimits, " No Options Limits (Host Only)");
     }
 
     private void DrawGameState()
     {
         GUILayout.Label("Game State", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.forceStartGame = GUILayout.Toggle(CheatToggles.forceStartGame, " Force Start Game");
+        CheatToggles.forceStartGame = GUILayout.Toggle(CheatToggles.forceStartGame, " Force Start Game (Host Only)");
 
-        CheatToggles.noGameEnd = GUILayout.Toggle(CheatToggles.noGameEnd, " No Game End");
+        CheatToggles.noGameEnd = GUILayout.Toggle(CheatToggles.noGameEnd, " No Game End (Host Only)");
 
-        GUILayout.Label("Force End Game", GUIStylePreset.TabSubtitle);
+        GUILayout.Label("Force End Game (Host Only)", GUIStylePreset.TabSubtitle);
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Impostors Win", GUIStylePreset.NormalButton)) MalumCheats.ForceEndGameCheat(true);
         if (GUILayout.Button("Crewmates Win", GUIStylePreset.NormalButton)) MalumCheats.ForceEndGameCheat(false);
@@ -71,12 +71,12 @@ public class HostOnlyTab : ITab
     {
         GUILayout.Label("Meetings", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.skipMeeting = GUILayout.Toggle(CheatToggles.skipMeeting, " Skip Meeting");
+        CheatToggles.skipMeeting = GUILayout.Toggle(CheatToggles.skipMeeting, " Skip Meeting (Host Only)");
 
-        CheatToggles.voteImmune = GUILayout.Toggle(CheatToggles.voteImmune, " Vote Immune");
+        CheatToggles.voteImmune = GUILayout.Toggle(CheatToggles.voteImmune, " Vote Immune (Host Only)");
 
-        CheatToggles.ejectPlayer = GUILayout.Toggle(CheatToggles.ejectPlayer, " Eject Player");
+        CheatToggles.ejectPlayer = GUILayout.Toggle(CheatToggles.ejectPlayer, " Eject Player (Host Only)");
 
-        CheatToggles.infiniteMeetings = GUILayout.Toggle(CheatToggles.infiniteMeetings, " Infinite Meetings");
+        CheatToggles.infiniteMeetings = GUILayout.Toggle(CheatToggles.infiniteMeetings, " Infinite Meetings (Host Only)");
     }
 }
