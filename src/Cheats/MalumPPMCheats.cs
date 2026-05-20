@@ -528,6 +528,13 @@ public static class MalumPPMCheats
     public static void TickFreezePlayer()
     {
         if (!CheatToggles.freezePlayer || _frozenTarget == null) return;
+        if (!Utils.isHost)
+        {
+            CheatToggles.freezePlayer = false;
+            _frozenTarget = null;
+            HudManager.Instance?.Notifier?.AddDisconnectMessage("Freeze Player requires host");
+            return;
+        }
         if (_frozenTarget.Data == null || _frozenTarget.Data.IsDead || _frozenTarget.Data.Disconnected)
         {
             CheatToggles.freezePlayer = false;
@@ -543,6 +550,13 @@ public static class MalumPPMCheats
         {
             if (!_freezePlayerActive)
             {
+                if (!Utils.isHost)
+                {
+                    HudManager.Instance?.Notifier?.AddDisconnectMessage("Freeze Player requires host");
+                    CheatToggles.freezePlayer = false;
+                    return;
+                }
+
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
                     PlayerPickMenu.playerpickMenu.Close();
@@ -675,6 +689,13 @@ public static class MalumPPMCheats
         {
             if (!_teleportPlayerToPlayerActive)
             {
+                if (!Utils.isHost)
+                {
+                    HudManager.Instance?.Notifier?.AddDisconnectMessage("Teleport Player to Player requires host");
+                    CheatToggles.teleportPlayerToPlayer = false;
+                    return;
+                }
+
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
                     PlayerPickMenu.playerpickMenu.Close();

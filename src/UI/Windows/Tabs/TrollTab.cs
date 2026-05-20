@@ -50,7 +50,7 @@ public class TrollTab : ITab
     {
         GUILayout.Label("Force Teleport", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.teleportPlayerToPlayer = GUILayout.Toggle(CheatToggles.teleportPlayerToPlayer, " Teleport Player to Player");
+        CheatToggles.teleportPlayerToPlayer = GUILayout.Toggle(CheatToggles.teleportPlayerToPlayer, " Teleport Player to Player (Host Only)");
         GUILayout.Label("<size=10>Pick player A → pick player B\nMoves A to B's position</size>");
     }
 
@@ -66,7 +66,7 @@ public class TrollTab : ITab
     {
         GUILayout.Label("Control", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.freezePlayer = GUILayout.Toggle(CheatToggles.freezePlayer, " Freeze Player");
+        CheatToggles.freezePlayer = GUILayout.Toggle(CheatToggles.freezePlayer, " Freeze Player (Host Only)");
         GUILayout.Label("<size=10>Continuously snap a player back to one spot</size>");
     }
 }
