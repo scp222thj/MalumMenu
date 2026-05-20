@@ -43,6 +43,9 @@ public class HostOnlyTab : ITab
 
         CheatToggles.alwaysImpostor = GUILayout.Toggle(CheatToggles.alwaysImpostor, " Always Impostor (Host Only)");
 
+        if (Utils.isHost)
+            CheatToggles.assignImpostor = GUILayout.Toggle(CheatToggles.assignImpostor, " Assign Impostor (Host Only)");
+
         CheatToggles.antiBotKick = GUILayout.Toggle(CheatToggles.antiBotKick, " Auto-Kick Bots (Host Only)");
 
         CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Disconnect Players Who Vent (Host Only)");

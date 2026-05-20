@@ -26,11 +26,15 @@ public static class BodyIntelHandler
     public static void OnMurder(PlayerControl victim, PlayerControl killer)
     {
         if (victim == null || victim.Data == null) return;
-        if (!CheatToggles.bodyIntelLogger && !CheatToggles.autoReport) return;
 
         var room     = Utils.GetRoomFromPosition(victim.GetTruePosition());
         var roomName = room != null ? room.RoomId.ToString() : "Unknown";
         var pos      = victim.GetTruePosition();
+
+        // Always notify avenger mode regardless of other logger toggles
+        AvengerHandler.OnKill(victim, killer, pos, roomName);
+
+        if (!CheatToggles.bodyIntelLogger && !CheatToggles.autoReport) return;
 
         var victimRoom = Utils.GetRoomFromPosition(pos);
 

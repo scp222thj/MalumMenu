@@ -150,6 +150,8 @@ public class MenuUI : MonoBehaviour
             CheatToggles.freecam = false;
             CheatToggles.killPlayer = false;
             CheatToggles.callMeeting = false;
+            CheatToggles.noClip = false;
+            CheatToggles.freezePlayer = false;
 
             if (CheatToggles.runOverload)
             {
@@ -198,6 +200,7 @@ public class MenuUI : MonoBehaviour
             CheatToggles.infiniteMeetings     = false;
             CheatToggles.alwaysImpostor       = false;
             CheatToggles.forceRole            = false;
+            CheatToggles.assignImpostor       = false;
         }
 
         // Some cheats only work if in a meeting, so they are turned off if it does not
@@ -211,6 +214,7 @@ public class MenuUI : MonoBehaviour
     public void OnGUI()
     {
         FootprintHandler.DrawGUI();
+        AvengerHandler.DrawAlert();
 
         if (!isGUIActive || MalumMenu.isPanicked || CheatToggles.streamerMode) return;
 
@@ -251,6 +255,13 @@ public class MenuUI : MonoBehaviour
 
         // Right tab content and controls (85% width)
         GUILayout.BeginVertical(GUILayout.Width(windowWidth * 0.85f));
+
+        // Close button row
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("✕ Close", GUILayout.Width(80), GUILayout.Height(20)))
+            isGUIActive = false;
+        GUILayout.EndHorizontal();
 
         // Tab-specific content
         if (_selectedTab >= 0 && _selectedTab < _tabs.Count)

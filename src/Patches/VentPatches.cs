@@ -59,6 +59,9 @@ public static class Vent_EnterVent
                 VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
         }
 
+        // Always notify avenger mode when someone vents
+        AvengerHandler.OnVent(pc);
+
         // Auto-kick: host kicks any impostor/phantom who vents — Engineers are exempt
         if (CheatToggles.autoKickVentImpostors && Utils.isHost && pc != PlayerControl.LocalPlayer)
         {

@@ -64,29 +64,16 @@ public static class TextBoxTMP_IsCharAllowed
             return false;
         }
 
-        // Reconstruct the full string being processed by TextBoxTMP.SetText
+        // Track position within the typed input, not the full reconstructed text.
+        // The vanilla SetText loop calls IsCharAllowed once per char in input, in order.
+        _currentCharPos = Mathf.Clamp(_currentCharPos, 0, input.Length - 1);
 
-        string currentText = __instance.text ?? string.Empty;
+        char currentChar = input[_currentCharPos];
 
-        int caretPos = Mathf.Clamp(__instance.caretPos, 0, currentText.Length);
-
-        string text = currentText.Insert(caretPos, input);
-
-        // Get character that is currently being checked by keeping track
-        // of each TextBoxTMP.IsCharAllowed call made within TextBoxTMP.SetText foreach loop
-
-        _currentCharPos = Mathf.Clamp(_currentCharPos, 0, text.Length - 1);
-
-        char currentChar = text[_currentCharPos];
-
-        if (_currentCharPos >= text.Length - 1)
-        {
-            _currentCharPos = 0; // Reset position when loop finishes
-        }
+        if (_currentCharPos >= input.Length - 1)
+            _currentCharPos = 0;
         else
-        {
-            _currentCharPos++; // Increment position to next character in loop
-        }
+            _currentCharPos++;
 
         if (CheatToggles.unlockCharacters)
         {

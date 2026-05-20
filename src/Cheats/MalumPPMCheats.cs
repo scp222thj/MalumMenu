@@ -462,6 +462,46 @@ public static class MalumPPMCheats
         }
     }
 
+    private static bool _assignImpostorActive;
+
+    public static void AssignImpostorPPM()
+    {
+        if (CheatToggles.assignImpostor)
+        {
+            if (!_assignImpostorActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("assignImpostor");
+                }
+
+                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
+                {
+                    var target = PlayerPickMenu.targetPlayerData?.Object;
+                    if (target != null)
+                    {
+                        RoleManager.Instance.SetRole(target, RoleTypes.Impostor);
+                    }
+                }));
+
+                _assignImpostorActive = true;
+            }
+
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.assignImpostor = false;
+            }
+        }
+        else
+        {
+            if (_assignImpostorActive)
+            {
+                _assignImpostorActive = false;
+            }
+        }
+    }
+
     public static void SpectatePPM()
     {
         if (CheatToggles.spectate)
@@ -518,8 +558,9 @@ public static class MalumPPMCheats
             if (_spectateActive)
             {
                 _spectateActive = false;
-                PlayerControl.LocalPlayer.moveable = true;
-                Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
+                if (PlayerControl.LocalPlayer != null) PlayerControl.LocalPlayer.moveable = true;
+                var fc = Camera.main?.gameObject.GetComponent<FollowerCamera>();
+                if (fc != null && PlayerControl.LocalPlayer != null) fc.SetTarget(PlayerControl.LocalPlayer);
             }
         }
     }

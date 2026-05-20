@@ -152,6 +152,7 @@ public struct CheatToggles
 
     // Host-Only
     public static bool alwaysImpostor;
+    public static bool assignImpostor;
     public static bool showForceTeleportMenu;
     public static bool freezePlayer;
     public static bool showKillCdOverlay;
@@ -169,6 +170,7 @@ public struct CheatToggles
     public static bool showProtectMenu;
     public static bool noOptionsLimits;
     public static bool ejectPlayer;
+    public static bool avengerMode;
     public static bool killPlayer;
     public static bool telekillPlayer;
     public static bool killAll;
@@ -244,11 +246,12 @@ public struct CheatToggles
         frameAsShapeshifter    = variableToKeep == "frameAsShapeshifter"    && frameAsShapeshifter;
         teleportPlayerToPlayer = variableToKeep == "teleportPlayerToPlayer" && teleportPlayerToPlayer;
         fakeVentOnPlayer       = variableToKeep == "fakeVentOnPlayer"       && fakeVentOnPlayer;
+        assignImpostor = variableToKeep == "assignImpostor" && assignImpostor;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !fakeShapeshift && !freezePlayer && !frameAsShapeshifter && !teleportPlayerToPlayer && !fakeVentOnPlayer;
+        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !fakeShapeshift && !freezePlayer && !frameAsShapeshifter && !teleportPlayerToPlayer && !fakeVentOnPlayer && !assignImpostor;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields

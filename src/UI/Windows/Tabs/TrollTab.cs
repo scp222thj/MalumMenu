@@ -68,5 +68,9 @@ public class TrollTab : ITab
 
         CheatToggles.freezePlayer = GUILayout.Toggle(CheatToggles.freezePlayer, " Freeze Player (Host Only)");
         GUILayout.Label("<size=10>Continuously snap a player back to one spot</size>");
+
+        GUILayout.Space(5);
+        CheatToggles.avengerMode = GUILayout.Toggle(CheatToggles.avengerMode, " Avenger Mode");
+        GUILayout.Label("<size=10>On kill: teleport to body, start overload on killer, report</size>");
     }
 }

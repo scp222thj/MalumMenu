@@ -19,6 +19,7 @@ public static class ShipStatus_FixedUpdate
         MalumPPMCheats.ReportBodyPPM();
         MalumCheats.SabotageAlertCheat();
         BodyIntelHandler.Update();
+        AvengerHandler.Update();
     }
 }
 

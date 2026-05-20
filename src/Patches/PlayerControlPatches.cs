@@ -141,9 +141,12 @@ public static class PlayerControl_Shapeshift
     // and who they shapeshifted into. Also logs when a shapeshift gets reverted.
     public static void Postfix(PlayerControl __instance, PlayerControl targetPlayer, bool animate)
     {
-        if (!CheatToggles.logShapeshifts) return;
-
         if (__instance.CurrentOutfitType == PlayerOutfitType.MushroomMixup) return;
+
+        // Always notify avenger mode regardless of logShapeshifts toggle
+        AvengerHandler.OnShapeshift(__instance);
+
+        if (!CheatToggles.logShapeshifts) return;
 
         var targetPlayerInfo = targetPlayer.Data;
 
