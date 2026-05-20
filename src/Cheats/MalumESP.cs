@@ -25,7 +25,9 @@ public static class MalumESP
         // Fullbright is automatically activated when zooming out, spectating other players, or "freecamming"
         // This is done to avoid issues with shadows
 
-        return CheatToggles.noShadows || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
+        if (Camera.main == null) return false;
+        var follower = Camera.main.gameObject.GetComponent<FollowerCamera>();
+        return CheatToggles.noShadows || Camera.main.orthographicSize > 3f || (follower != null && follower.Target != PlayerControl.LocalPlayer);
     }
 
     public static void ZoomOut(HudManager hudManager)
@@ -180,34 +182,30 @@ public static class MalumESP
         if (CheatToggles.freecam)
         {
             // Completely disable FollowerCamera
+            if (Camera.main == null || PlayerControl.LocalPlayer == null) return;
+
             if (!_freecamActive)
             {
-
-                Camera.main.gameObject.GetComponent<FollowerCamera>().enabled = false;
-                Camera.main.gameObject.GetComponent<FollowerCamera>().Target = null;
-
+                var fc = Camera.main.gameObject.GetComponent<FollowerCamera>();
+                if (fc != null) { fc.enabled = false; fc.Target = null; }
                 _freecamActive = true;
-
             }
 
-            // Prevent the player from moving while in freecam
             PlayerControl.LocalPlayer.moveable = false;
 
-            // Get keyboard input
             var movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
-
-            // Change the camera's position depending on the keyboard input
-            // Speed: 10f
             Camera.main.transform.position = Camera.main.transform.position + movement * 10f * Time.deltaTime;
 
         }
         else
         {
-            // Re-enable FollowerCamera & movement once freecam is disabled
             if (!_freecamActive) return;
-            PlayerControl.LocalPlayer.moveable = true;
-            Camera.main.gameObject.GetComponent<FollowerCamera>().enabled = true;
-            Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
+            if (Camera.main != null && PlayerControl.LocalPlayer != null)
+            {
+                PlayerControl.LocalPlayer.moveable = true;
+                var fc = Camera.main.gameObject.GetComponent<FollowerCamera>();
+                if (fc != null) { fc.enabled = true; fc.SetTarget(PlayerControl.LocalPlayer); }
+            }
             _freecamActive = false;
         }
     }

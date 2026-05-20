@@ -60,7 +60,7 @@ public class RolesTab : ITab
     {
         GUILayout.Label("Impostor", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.killReach = GUILayout.Toggle(CheatToggles.killReach, " Kill Reach");
+        CheatToggles.killReach = GUILayout.Toggle(CheatToggles.killReach, " Infinite Kill Range");
 
         // CheatToggles.impostorTasks = GUILayout.Toggle(CheatToggles.impostorTasks, " Allow Tasks");
     }
@@ -69,11 +69,11 @@ public class RolesTab : ITab
     {
         GUILayout.Label("Shapeshifter", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.noShapeshiftAnim = GUILayout.Toggle(CheatToggles.noShapeshiftAnim, " No Ss Animation");
+        CheatToggles.noShapeshiftAnim = GUILayout.Toggle(CheatToggles.noShapeshiftAnim, " No Shapeshift Animation");
 
-        CheatToggles.endlessSsDuration = GUILayout.Toggle(CheatToggles.endlessSsDuration, " Endless Ss Duration");
+        CheatToggles.endlessSsDuration = GUILayout.Toggle(CheatToggles.endlessSsDuration, " Endless Shapeshift Duration");
 
-        CheatToggles.fakeShapeshift = GUILayout.Toggle(CheatToggles.fakeShapeshift, " Fake Shapeshift");
+        CheatToggles.fakeShapeshift = GUILayout.Toggle(CheatToggles.fakeShapeshift, " Disguise as Another Player");
     }
 
     private void DrawCrewmate()
@@ -87,13 +87,13 @@ public class RolesTab : ITab
     {
         GUILayout.Label("Tracker", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.endlessTracking = GUILayout.Toggle(CheatToggles.endlessTracking, " Endless Tracking");
+        CheatToggles.endlessTracking = GUILayout.Toggle(CheatToggles.endlessTracking, " Endless Tracker Duration");
 
-        CheatToggles.noTrackingDelay = GUILayout.Toggle(CheatToggles.noTrackingDelay, " No Track Delay");
+        CheatToggles.noTrackingDelay = GUILayout.Toggle(CheatToggles.noTrackingDelay, " No Tracker Delay");
 
-        CheatToggles.noTrackingCooldown = GUILayout.Toggle(CheatToggles.noTrackingCooldown, " No Track Cooldown");
+        CheatToggles.noTrackingCooldown = GUILayout.Toggle(CheatToggles.noTrackingCooldown, " No Tracker Cooldown");
 
-        CheatToggles.trackReach = GUILayout.Toggle(CheatToggles.trackReach, " Track Reach");
+        CheatToggles.trackReach = GUILayout.Toggle(CheatToggles.trackReach, " Infinite Track Range");
     }
 
     private void DrawEngineer()
@@ -118,6 +118,6 @@ public class RolesTab : ITab
     {
         GUILayout.Label("Detective", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.interrogateReach = GUILayout.Toggle(CheatToggles.interrogateReach, " Interrogate Reach");
+        CheatToggles.interrogateReach = GUILayout.Toggle(CheatToggles.interrogateReach, " Infinite Interrogate Range");
     }
 }

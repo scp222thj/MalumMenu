@@ -466,7 +466,7 @@ public static class MalumCheats
     // Returns whether the smart-kill combo can fire right now, plus a human-readable reason string.
     public static (bool canExecute, string reason) SmartKillStatus()
     {
-        if (!Utils.isHost || !Utils.isInGame) return (false, "Requires host");
+        if (!Utils.isInGame) return (false, "Not in game");
         if (!Utils.isShip) return (false, "Not in ship");
         var localData = PlayerControl.LocalPlayer?.Data;
         if (localData == null || localData.IsDead) return (false, "You are dead");

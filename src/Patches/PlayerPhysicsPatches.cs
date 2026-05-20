@@ -39,6 +39,15 @@ public static class PlayerPhysics_LateUpdate
 
             OverloadHandler.Run();
             TracersHandler.DrawVentTracers();
+
+            GameObject[] bodyObjects = GameObject.FindGameObjectsWithTag("DeadBody");
+            foreach (GameObject bodyObject in bodyObjects)
+            {
+                DeadBody deadBody = bodyObject.GetComponent<DeadBody>();
+                if (!deadBody || deadBody.Reported) continue;
+                TracersHandler.DrawBodyTracer(deadBody);
+            }
+
             MalumCheats.BlinkCheat();
             MalumCheats.VisionBoostCheat();
             MalumPPMCheats.TickFreezePlayer();
@@ -46,15 +55,6 @@ public static class PlayerPhysics_LateUpdate
         }
 
         TracersHandler.DrawPlayerTracer(__instance);
-
-        GameObject[] bodyObjects = GameObject.FindGameObjectsWithTag("DeadBody");
-        foreach(GameObject bodyObject in bodyObjects) // Finds and loops through all dead bodies
-        {
-            DeadBody deadBody = bodyObject.GetComponent<DeadBody>();
-
-            if (!deadBody || deadBody.Reported) continue;  // Only draw tracers for unreported dead bodies
-            TracersHandler.DrawBodyTracer(deadBody);
-        }
 
         if (__instance.AmOwner && PlayerControl.LocalPlayer != null)
         {

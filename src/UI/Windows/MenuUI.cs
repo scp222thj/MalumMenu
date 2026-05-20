@@ -181,16 +181,10 @@ public class MenuUI : MonoBehaviour
 
         if(!Utils.isHost && !Utils.isFreePlay)
         {
-            CheatToggles.killAll = false;
-            CheatToggles.telekillPlayer = false;
-            CheatToggles.killAllCrew = false;
-            CheatToggles.killAllImps = false;
-            CheatToggles.killPlayer = false;
-            CheatToggles.ejectPlayer = false;
-            CheatToggles.noKillCd = false;
-            CheatToggles.killAnyone = false;
-            CheatToggles.killVanished = false;
+            // Only cheats that truly require the host role are blocked here.
+            // Kill/teleport/display cheats use direct RPCs and work for any client.
             CheatToggles.forceStartGame = false;
+            CheatToggles.ejectPlayer = false;
             CheatToggles.skipMeeting = false;
             CheatToggles.voteImmune = false;
             CheatToggles.noGameEnd = false;
@@ -200,11 +194,8 @@ public class MenuUI : MonoBehaviour
             CheatToggles.antiBotKick = false;
             CheatToggles.autoKickVentImpostors = false;
             CheatToggles.infiniteMeetings     = false;
-            CheatToggles.showForceTeleportMenu = false;
-            CheatToggles.freezePlayer          = false;
-            CheatToggles.showKillCdOverlay     = false;
-            CheatToggles.showMeetingHistory    = false;
-            CheatToggles.forceRole             = false;
+            CheatToggles.alwaysImpostor       = false;
+            CheatToggles.forceRole            = false;
         }
 
         // Some cheats only work if in a meeting, so they are turned off if it does not

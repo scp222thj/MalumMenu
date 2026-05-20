@@ -69,7 +69,7 @@ public static class MeetingHud_Update
         MalumESP.MeetingNametags(__instance);
 
         // Bugfix: NoClip staying active if meeting is called whilst climbing ladder
-        PlayerControl.LocalPlayer.onLadder = false;
+        if (PlayerControl.LocalPlayer != null) PlayerControl.LocalPlayer.onLadder = false;
     }
 }
 

@@ -51,13 +51,15 @@ public class HostOnlyTab : ITab
 
         CheatToggles.freezePlayer = GUILayout.Toggle(CheatToggles.freezePlayer, " Freeze Player");
 
-        CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Kill CD Overlay");
+        CheatToggles.showKillCdOverlay = GUILayout.Toggle(CheatToggles.showKillCdOverlay, " Show Kill Cooldown on Players");
 
         CheatToggles.showMeetingHistory = GUILayout.Toggle(CheatToggles.showMeetingHistory, " Meeting History");
 
-        CheatToggles.antiBotKick = GUILayout.Toggle(CheatToggles.antiBotKick, " Anti-Bot Kick");
+        CheatToggles.alwaysImpostor = GUILayout.Toggle(CheatToggles.alwaysImpostor, " Always Impostor");
 
-        CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Auto Kick Vent Impostors");
+        CheatToggles.antiBotKick = GUILayout.Toggle(CheatToggles.antiBotKick, " Auto-Kick Bots");
+
+        CheatToggles.autoKickVentImpostors = GUILayout.Toggle(CheatToggles.autoKickVentImpostors, " Kick Players Who Vent");
 
         // CheatToggles.forceRole = GUILayout.Toggle(CheatToggles.forceRole, " Force Role");
 

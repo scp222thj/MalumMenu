@@ -8,6 +8,7 @@ public class AnimationsTab : ITab
 
     public void Draw()
     {
+        GUILayout.BeginHorizontal();
         GUILayout.BeginVertical(GUILayout.Width(MenuUI.windowWidth * 0.425f));
 
         DrawGeneral();
@@ -17,6 +18,7 @@ public class AnimationsTab : ITab
         DrawClientSided();
 
         GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
     }
 
     private void DrawGeneral()
@@ -29,7 +31,7 @@ public class AnimationsTab : ITab
 
         CheatToggles.animMedScan = GUILayout.Toggle(CheatToggles.animMedScan, " Medbay Scan");
 
-        CheatToggles.animCamsInUse = GUILayout.Toggle(CheatToggles.animCamsInUse, " Cams In Use");
+        CheatToggles.animCamsInUse = GUILayout.Toggle(CheatToggles.animCamsInUse, " Show Cameras as Active");
 
         // CheatToggles.animPet = GUILayout.Toggle(CheatToggles.animPet, " Pet");
     }

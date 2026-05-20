@@ -340,9 +340,15 @@ public static class IntroCutscene_CoBegin
     // Prefix patch of IntroCutscene.CoBegin to force the LocalPlayer's role to a specified role
     public static void Prefix()
     {
-        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue) return;
+        if (!Utils.isHost) return;
 
-        var forcedRole = CheatToggles.forcedRole.Value;
+        // alwaysImpostor overrides forcedRole when no specific role is set
+        var roleToForce = CheatToggles.forcedRole
+            ?? (CheatToggles.alwaysImpostor ? RoleTypes.Impostor : (RoleTypes?)null);
+
+        if (!roleToForce.HasValue) return;
+
+        var forcedRole = roleToForce.Value;
 
         // If LocalPlayer already has the forced role, do nothing
         if (PlayerControl.LocalPlayer.Data.RoleType == forcedRole)

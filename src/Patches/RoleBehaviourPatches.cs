@@ -90,7 +90,10 @@ public static class ImpostorRole_FindClosestTarget
     {
         if (!CheatToggles.killReach) return true;
 
-        var playerList = Utils.GetPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        var sorted = Utils.GetPlayersSortedByDistance();
+        if (sorted == null) return true;
+        var playerList = sorted.Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        if (playerList.Count == 0) return true;
 
         __result = playerList[0];
 
@@ -106,7 +109,10 @@ public static class DetectiveRole_FindClosestTarget
     {
         if (!CheatToggles.interrogateReach) return true;
 
-        var playerList = Utils.GetPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        var sorted = Utils.GetPlayersSortedByDistance();
+        if (sorted == null) return true;
+        var playerList = sorted.Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        if (playerList.Count == 0) return true;
 
         __result = playerList[0];
 
@@ -122,7 +128,10 @@ public static class TrackerRole_FindClosestTarget
     {
         if (!CheatToggles.trackReach) return true;
 
-        var playerList = Utils.GetPlayersSortedByDistance().Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        var sorted = Utils.GetPlayersSortedByDistance();
+        if (sorted == null) return true;
+        var playerList = sorted.Where(player => !player.IsNull() && __instance.IsValidTarget(player.Data) && player.Collider.enabled).ToList();
+        if (playerList.Count == 0) return true;
 
         __result = playerList[0];
 

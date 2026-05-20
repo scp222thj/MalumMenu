@@ -8,6 +8,7 @@ public class ChatTab : ITab
 
     public void Draw()
     {
+        GUILayout.BeginHorizontal();
         GUILayout.BeginVertical(GUILayout.Width(MenuUI.windowWidth * 0.425f));
 
         DrawGeneral();
@@ -17,25 +18,26 @@ public class ChatTab : ITab
         DrawTextbox();
 
         GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
     }
 
     private void DrawGeneral()
     {
         CheatToggles.enableChat = GUILayout.Toggle(CheatToggles.enableChat, " Enable Chat");
 
-        CheatToggles.bypassUrlBlock = GUILayout.Toggle(CheatToggles.bypassUrlBlock, " Bypass URL Block");
+        CheatToggles.bypassUrlBlock = GUILayout.Toggle(CheatToggles.bypassUrlBlock, " Allow Sending Links");
 
-        CheatToggles.lowerRateLimits = GUILayout.Toggle(CheatToggles.lowerRateLimits, " Lower Rate Limits");
+        CheatToggles.lowerRateLimits = GUILayout.Toggle(CheatToggles.lowerRateLimits, " Reduce Chat Cooldown");
     }
 
     private void DrawTextbox()
     {
         GUILayout.Label("Textbox", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.unlockCharacters = GUILayout.Toggle(CheatToggles.unlockCharacters, " Unlock Extra Characters");
+        CheatToggles.unlockCharacters = GUILayout.Toggle(CheatToggles.unlockCharacters, " Allow Special Characters");
 
         CheatToggles.longerMessages = GUILayout.Toggle(CheatToggles.longerMessages, " Allow Longer Messages");
 
-        CheatToggles.unlockClipboard = GUILayout.Toggle(CheatToggles.unlockClipboard, " Unlock Clipboard");
+        CheatToggles.unlockClipboard = GUILayout.Toggle(CheatToggles.unlockClipboard, " Allow Pasting (Clipboard)");
     }
 }

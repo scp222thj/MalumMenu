@@ -505,7 +505,8 @@ public static class MalumPPMCheats
             }
 
             // Deactivate cheat if menu is closed and no one is getting spectated
-            if (PlayerPickMenu.playerpickMenu == null && Camera.main.gameObject.GetComponent<FollowerCamera>().Target == PlayerControl.LocalPlayer)
+            var followerCam = Camera.main?.gameObject.GetComponent<FollowerCamera>();
+            if (PlayerPickMenu.playerpickMenu == null && followerCam != null && followerCam.Target == PlayerControl.LocalPlayer)
             {
                 CheatToggles.spectate = false;
                 PlayerControl.LocalPlayer.moveable = true;
@@ -551,7 +552,8 @@ public static class MalumPPMCheats
                 var playerList = new Il2CppSystem.Collections.Generic.List<NetworkedPlayerInfo>();
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    if (!player.AmOwner && player.Data != null && !player.Data.IsDead)
+                    if (player == null || player.Data == null) continue;
+                    if (!player.AmOwner && !player.Data.IsDead)
                         playerList.Add(player.Data);
                 }
 

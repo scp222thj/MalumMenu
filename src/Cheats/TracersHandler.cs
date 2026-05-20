@@ -123,7 +123,8 @@ public static class TracersHandler
             }
             else if (CheatToggles.colorBasedTracers)
             {
-                color = GameData.Instance.GetPlayerById(deadBody.ParentId).Color; // Color-Based Tracer
+                var deadBodyInfo = GameData.Instance.GetPlayerById(deadBody.ParentId);
+                color = deadBodyInfo != null ? deadBodyInfo.Color : Color.yellow; // Color-Based Tracer
             }
             else
             {

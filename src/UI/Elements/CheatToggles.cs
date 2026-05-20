@@ -151,6 +151,7 @@ public struct CheatToggles
     public static bool logVents;
 
     // Host-Only
+    public static bool alwaysImpostor;
     public static bool showForceTeleportMenu;
     public static bool freezePlayer;
     public static bool showKillCdOverlay;

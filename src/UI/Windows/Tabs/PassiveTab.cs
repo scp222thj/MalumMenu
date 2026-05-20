@@ -40,14 +40,14 @@ public class PassiveTab : ITab
 
     private void DrawGeneral()
     {
-        CheatToggles.freeCosmetics = GUILayout.Toggle(CheatToggles.freeCosmetics, " Free Cosmetics");
+        CheatToggles.freeCosmetics = GUILayout.Toggle(CheatToggles.freeCosmetics, " Unlock All Cosmetics Free");
 
-        CheatToggles.avoidPenalties = GUILayout.Toggle(CheatToggles.avoidPenalties, " Avoid Penalties");
+        CheatToggles.avoidPenalties = GUILayout.Toggle(CheatToggles.avoidPenalties, " Skip Vote/Ban Penalties");
 
-        CheatToggles.unlockFeatures = GUILayout.Toggle(CheatToggles.unlockFeatures, " Unlock Extra Features");
+        CheatToggles.unlockFeatures = GUILayout.Toggle(CheatToggles.unlockFeatures, " Unlock Hidden Game Features");
 
-        CheatToggles.copyLobbyCodeOnDisconnect = GUILayout.Toggle(CheatToggles.copyLobbyCodeOnDisconnect, " Copy Lobby Code on Disconnect");
+        CheatToggles.copyLobbyCodeOnDisconnect = GUILayout.Toggle(CheatToggles.copyLobbyCodeOnDisconnect, " Copy Lobby Code When Disconnected");
 
-        CheatToggles.spoofAprilFoolsDate = GUILayout.Toggle(CheatToggles.spoofAprilFoolsDate, " Spoof Date to April 1st");
+        CheatToggles.spoofAprilFoolsDate = GUILayout.Toggle(CheatToggles.spoofAprilFoolsDate, " Enable April Fools Mode");
     }
 }

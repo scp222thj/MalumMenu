@@ -150,17 +150,22 @@ public static class PlayerControl_Shapeshift
         var room = Utils.GetRoomFromPosition(__instance.GetTruePosition());
         var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
 
+        var shifterInfo = GameData.Instance.GetPlayerById(__instance.PlayerId);
+        if (shifterInfo == null || shifterInfo._object == null) return;
+        var shifterName = shifterInfo._object.Data?.PlayerName ?? "?";
+        var shifterColor = ColorUtility.ToHtmlStringRGB(shifterInfo.Color);
+
         if (targetPlayerInfo.PlayerId == __instance.Data.PlayerId)
         {
-            ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
-                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> undid their shapeshift in {roomName}");
+            ConsoleUI.Log($"<color=#{shifterColor}>{shifterName}</color> undid their shapeshift in {roomName}");
         }
         else
         {
-            ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
-                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> shapeshifted into " +
-                          $"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId).Color)}>" +
-                          $"{GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId)._object.Data.PlayerName}</color> in {roomName}");
+            var targetInfo = GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId);
+            if (targetInfo == null || targetInfo._object == null) return;
+            var targetName = targetInfo._object.Data?.PlayerName ?? "?";
+            var targetColor = ColorUtility.ToHtmlStringRGB(targetInfo.Color);
+            ConsoleUI.Log($"<color=#{shifterColor}>{shifterName}</color> shapeshifted into <color=#{targetColor}>{targetName}</color> in {roomName}");
         }
     }
 }
