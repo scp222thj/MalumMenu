@@ -109,6 +109,7 @@ public static class PlayerControl_CmdCheckShapeshift
     }
 }
 
+
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CmdCheckRevertShapeshift))]
 public static class PlayerControl_CmdCheckRevertShapeshift
 {

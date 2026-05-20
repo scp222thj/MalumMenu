@@ -148,6 +148,18 @@ public static class MalumCheats
         }
     }
 
+    public static void HandlePhantomCheats(PhantomRole phantomRole)
+    {
+        if (CheatToggles.endlessPhantomDuration)
+        {
+            phantomRole.durationSecondsRemaining = float.MaxValue;
+        }
+        else if (phantomRole.durationSecondsRemaining > GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.PhantomDuration))
+        {
+            phantomRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.PhantomDuration);
+        }
+    }
+
     public static void HandleScientistCheats(ScientistRole scientistRole)
     {
         if (CheatToggles.noVitalsCooldown)

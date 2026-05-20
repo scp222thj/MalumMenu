@@ -24,6 +24,7 @@ public struct CheatToggles
     public static bool killReach;
     public static bool killAnyone;
     public static bool endlessSsDuration;
+    public static bool endlessPhantomDuration;
     public static bool endlessBattery;
     public static bool endlessTracking;
     public static bool noTrackingCooldown;
@@ -36,6 +37,7 @@ public struct CheatToggles
     public static bool endlessVanish;
     public static bool killVanished;
     public static bool noVanishAnim;
+    public static bool noPhantomAnim;
     public static bool noShapeshiftAnim;
 
     // ESP

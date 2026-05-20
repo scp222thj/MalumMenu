@@ -24,6 +24,10 @@ public class RolesTab : ITab
 
         GUILayout.Space(15);
 
+        DrawPhantom();
+
+        GUILayout.Space(15);
+
         DrawCrewmate();
 
         GUILayout.Space(15);
@@ -72,6 +76,15 @@ public class RolesTab : ITab
         CheatToggles.noShapeshiftAnim = GUILayout.Toggle(CheatToggles.noShapeshiftAnim, " No Ss Animation");
 
         CheatToggles.endlessSsDuration = GUILayout.Toggle(CheatToggles.endlessSsDuration, " Endless Ss Duration");
+    }
+
+    private void DrawPhantom()
+    {
+        GUILayout.Label("Phantom", GUIStylePreset.TabSubtitle);
+
+        CheatToggles.noPhantomAnim = GUILayout.Toggle(CheatToggles.noPhantomAnim, " No Phantom Animation");
+
+        CheatToggles.endlessPhantomDuration = GUILayout.Toggle(CheatToggles.endlessPhantomDuration, " Endless Phantom Duration");
     }
 
     private void DrawCrewmate()

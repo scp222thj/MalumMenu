@@ -55,6 +55,21 @@ public static class TrackerRole_FixedUpdate
     }
 }
 
+[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.FixedUpdate))]
+public static class PhantomRole_FixedUpdate
+{
+    public static void Postfix(PhantomRole __instance)
+    {
+        try
+        {
+            if(__instance.Player.AmOwner)
+            {
+                MalumCheats.HandlePhantomCheats(__instance);
+            }
+        } catch { }
+    }
+}
+
 [HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.IsValidTarget))]
 public static class PhantomRole_IsValidTarget
 {
@@ -65,6 +80,73 @@ public static class PhantomRole_IsValidTarget
         {
             __result = Utils.IsValidTarget(target);
         }
+    }
+}
+
+[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.MakePlayerVisible))]
+public static class PhantomRole_MakePlayerVisible
+{
+    public static void Prefix(ref bool shouldAnimate)
+    {
+        if (shouldAnimate && CheatToggles.noPhantomAnim)
+        {
+            shouldAnimate = false;
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), "SetRoleInvisibility")]
+public static class PlayerControl_SetRoleInvisibility
+{
+    public static void Prefix(ref bool shouldAnimate)
+    {
+        if (shouldAnimate && CheatToggles.noPhantomAnim)
+        {
+            shouldAnimate = false;
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.SetFading))]
+public static class PhantomRole_SetFading
+{
+    public static void Postfix(PhantomRole __instance, bool isFading)
+    {
+        if (CheatToggles.noPhantomAnim)
+        {
+            if (isFading)
+            {
+                // Force state to fully vanished immediately
+                __instance.fading = false;
+                __instance.isInvisible = true;
+                __instance.SetInvisible(true);
+            }
+            else
+            {
+                // Force state to fully visible immediately
+                __instance.fading = false;
+                __instance.isInvisible = false;
+                __instance.SetInvisible(false);
+            }
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.PlayPhantomVanishSound))]
+public static class PhantomRole_PlayPhantomVanishSound
+{
+    public static bool Prefix()
+    {
+        return !CheatToggles.noPhantomAnim;
+    }
+}
+
+[HarmonyPatch(typeof(PhantomRole), nameof(PhantomRole.PlayPhantomAppearSound))]
+public static class PhantomRole_PlayPhantomAppearSound
+{
+    public static bool Prefix()
+    {
+        return !CheatToggles.noPhantomAnim;
     }
 }
 
