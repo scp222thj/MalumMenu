@@ -32,12 +32,20 @@ public static class BodyIntelHandler
         var roomName = room != null ? room.RoomId.ToString() : "Unknown";
         var pos      = victim.GetTruePosition();
 
+        var victimRoom = Utils.GetRoomFromPosition(pos);
+
         var nearby = new List<string>();
         foreach (var p in PlayerControl.AllPlayerControls)
         {
             if (p == null || p == victim || p == killer || p.Data == null || p.Data.IsDead) continue;
-            if (Vector2.Distance(p.GetTruePosition(), pos) <= NearRadius)
-                nearby.Add(p.Data.PlayerName);
+            if (Vector2.Distance(p.GetTruePosition(), pos) > NearRadius) continue;
+            // Only count players confirmed in the same room — prevents adjacent-room false positives
+            if (victimRoom != null)
+            {
+                var pRoom = Utils.GetRoomFromPosition(p.GetTruePosition());
+                if (pRoom == null || pRoom.RoomId != victimRoom.RoomId) continue;
+            }
+            nearby.Add(p.Data.PlayerName);
         }
 
         var record = new BodyRecord
@@ -80,10 +88,19 @@ public static class BodyIntelHandler
 
                 if (!_loggedPass.TryGetValue(idx, out var already)) { already = new(); _loggedPass[idx] = already; }
 
+                var bodyPos  = (Vector2)bodyObj.transform.position;
+                var bodyRoom = Utils.GetRoomFromPosition(bodyPos);
+
                 foreach (var p in PlayerControl.AllPlayerControls)
                 {
                     if (p == null || p.Data == null || p.Data.IsDead) continue;
-                    if (Vector2.Distance(p.GetTruePosition(), (Vector2)bodyObj.transform.position) > NearRadius) continue;
+                    if (Vector2.Distance(p.GetTruePosition(), bodyPos) > NearRadius) continue;
+                    // Reject players in a different room — prevents door/wall false positives
+                    if (bodyRoom != null)
+                    {
+                        var pRoom = Utils.GetRoomFromPosition(p.GetTruePosition());
+                        if (pRoom == null || pRoom.RoomId != bodyRoom.RoomId) continue;
+                    }
                     string name = p.Data.PlayerName;
                     if (already.Add(name))
                     {

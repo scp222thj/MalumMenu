@@ -28,6 +28,10 @@ public class HostOnlyTab : ITab
 
         DrawMeetings();
 
+        GUILayout.Space(15);
+
+        DrawSmartKill();
+
         GUILayout.EndVertical();
 
         GUILayout.EndHorizontal();
@@ -101,5 +105,22 @@ public class HostOnlyTab : ITab
         CheatToggles.ejectPlayer = GUILayout.Toggle(CheatToggles.ejectPlayer, " Eject Player");
 
         CheatToggles.infiniteMeetings = GUILayout.Toggle(CheatToggles.infiniteMeetings, " Infinite Meetings");
+    }
+
+    private void DrawSmartKill()
+    {
+        GUILayout.Label("Smart Kill", GUIStylePreset.TabSubtitle);
+
+        var (canExecute, statusText) = MalumCheats.SmartKillStatus();
+
+        var prevColor = GUI.contentColor;
+        GUI.contentColor = canExecute ? Color.green : new Color(1f, 0.4f, 0.4f);
+        GUILayout.Label(statusText);
+        GUI.contentColor = prevColor;
+
+        GUI.enabled = canExecute;
+        if (GUILayout.Button("Close Door + Kill + Vent", GUIStylePreset.NormalButton))
+            MalumCheats.SmartKillCombo();
+        GUI.enabled = true;
     }
 }

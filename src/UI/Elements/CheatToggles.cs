@@ -106,6 +106,7 @@ public struct CheatToggles
     public static bool unlockVents;
     public static bool walkInVents;
     public static bool kickVents;
+    public static bool autoBootVents;
 
     // Animations
     public static bool animShields;

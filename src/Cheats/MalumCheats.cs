@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using AmongUs.InnerNet.GameDataMessages;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using BepInEx.Unity.IL2CPP.Utils;
 
 namespace MalumMenu;
 public static class MalumCheats
@@ -25,7 +26,7 @@ public static class MalumCheats
             DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear, 0.2f, false));
             PlayerControl.LocalPlayer.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown());
             ShipStatus.Instance.EmergencyCooldown = GameManager.Instance.LogicOptions.GetEmergencyCooldown();
-            Camera.main.GetComponent<FollowerCamera>().Locked = false;
+            if (Camera.main != null) Camera.main.GetComponent<FollowerCamera>().Locked = false;
             DestroyableSingleton<HudManager>.Instance.SetMapButtonEnabled(true);
             DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
             ControllerManager.Instance.CloseAndResetAll();
@@ -269,10 +270,9 @@ public static class MalumCheats
             // Kill all players by sending a successful MurderPlayer RPC call
             foreach (var player in PlayerControl.AllPlayerControls)
             {
+                if (player == null || player.Data == null || player.Data.Role == null) continue;
                 if (player.Data.Role.TeamType == RoleTeamTypes.Crewmate)
-                {
                     Utils.MurderPlayer(player, MurderResultFlags.Succeeded);
-                }
             }
         }
 
@@ -292,10 +292,9 @@ public static class MalumCheats
             // Kill all players by sending a successful MurderPlayer RPC call
             foreach (var player in PlayerControl.AllPlayerControls)
             {
+                if (player == null || player.Data == null || player.Data.Role == null) continue;
                 if (player.Data.Role.TeamType == RoleTeamTypes.Impostor)
-                {
                     Utils.MurderPlayer(player, MurderResultFlags.Succeeded);
-                }
             }
         }
 
@@ -462,6 +461,85 @@ public static class MalumCheats
             GameManager.Instance.RpcEndGame(reason, false);
         }
         catch { }
+    }
+
+    // Returns whether the smart-kill combo can fire right now, plus a human-readable reason string.
+    public static (bool canExecute, string reason) SmartKillStatus()
+    {
+        if (!Utils.isHost || !Utils.isInGame) return (false, "Requires host");
+        if (!Utils.isShip) return (false, "Not in ship");
+        var localData = PlayerControl.LocalPlayer?.Data;
+        if (localData == null || localData.IsDead) return (false, "You are dead");
+        if (localData.Role?.TeamType != RoleTeamTypes.Impostor) return (false, "Not impostor");
+
+        var myRoom = Utils.GetRoomFromPosition(PlayerControl.LocalPlayer.GetTruePosition());
+        if (myRoom == null) return (false, "Unknown room");
+
+        PlayerControl target = null;
+        int othersInRoom = 0;
+        foreach (var p in PlayerControl.AllPlayerControls)
+        {
+            if (p == null || p.AmOwner || p.Data == null || p.Data.IsDead || p.Data.Disconnected) continue;
+            var pRoom = Utils.GetRoomFromPosition(p.GetTruePosition());
+            if (pRoom?.RoomId != myRoom.RoomId) continue;
+            othersInRoom++;
+            target = p;
+        }
+
+        if (othersInRoom == 0) return (false, "No target in room");
+        if (othersInRoom > 1) return (false, $"{othersInRoom} others in room");
+
+        // Vent-camper check: reject if any third player is within 3.5 u of a vent in this room
+        foreach (var vent in ShipStatus.Instance.AllVents)
+        {
+            var ventRoom = Utils.GetRoomFromPosition((Vector2)vent.transform.position);
+            if (ventRoom?.RoomId != myRoom.RoomId) continue;
+            foreach (var p in PlayerControl.AllPlayerControls)
+            {
+                if (p == null || p.AmOwner || p == target || p.Data == null || p.Data.IsDead) continue;
+                if (Vector2.Distance(p.GetTruePosition(), (Vector2)vent.transform.position) < 3.5f)
+                    return (false, "Witness near vent");
+            }
+        }
+
+        return (true, $"Target: {target.Data.PlayerName}");
+    }
+
+    // Combo: close current room doors → murder the lone target → vent out.
+    public static void SmartKillCombo()
+    {
+        var (canExecute, reason) = SmartKillStatus();
+        if (!canExecute) { ConsoleUI.Log($"[SmartKill] {reason}"); return; }
+
+        var myRoom = Utils.GetRoomFromPosition(PlayerControl.LocalPlayer.GetTruePosition());
+
+        PlayerControl target = null;
+        foreach (var p in PlayerControl.AllPlayerControls)
+        {
+            if (p == null || p.AmOwner || p.Data == null || p.Data.IsDead || p.Data.Disconnected) continue;
+            if (Utils.GetRoomFromPosition(p.GetTruePosition())?.RoomId == myRoom.RoomId) { target = p; break; }
+        }
+        if (target == null) return;
+
+        DoorsHandler.CloseDoorsInRoom(myRoom.RoomId);
+        Utils.MurderPlayer(target, MurderResultFlags.Succeeded);
+
+        // Snap to nearest vent and enter it
+        Vent nearest = null;
+        float minDist = float.MaxValue;
+        foreach (var vent in ShipStatus.Instance.AllVents)
+        {
+            float d = Vector2.Distance(PlayerControl.LocalPlayer.GetTruePosition(), (Vector2)vent.transform.position);
+            if (d < minDist) { minDist = d; nearest = vent; }
+        }
+
+        if (nearest != null)
+        {
+            PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(nearest.transform.position);
+            AmongUsClient.Instance.StartCoroutine(Utils.DelayedEnterVent(nearest.Id));
+        }
+
+        ConsoleUI.Log($"[SmartKill] Executed on {target.Data.PlayerName} in {myRoom.RoomId}");
     }
 
     public static void StopShipAnimCheats()

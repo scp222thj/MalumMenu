@@ -73,6 +73,8 @@ public class ShipTab : ITab
 
         CheatToggles.kickVents = GUILayout.Toggle(CheatToggles.kickVents, " Kick All From Vents");
 
+        CheatToggles.autoBootVents = GUILayout.Toggle(CheatToggles.autoBootVents, " Auto Boot Impostors From Vents");
+
         CheatToggles.walkInVents = GUILayout.Toggle(CheatToggles.walkInVents, " Walk In Vents");
     }
 }

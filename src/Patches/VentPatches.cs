@@ -45,6 +45,14 @@ public static class Vent_EnterVent
             ConsoleUI.Log(isDisguised
                 ? $"{realPlayerName} (as {displayPlayerName}) entered a vent in {roomName}"
                 : $"{realPlayerName} entered a vent in {roomName}");
+
+            // Auto-boot: when an impostor (not engineer) vents while autoBootVents is on, eject all from vents
+            if (CheatToggles.autoBootVents && pc.Data?.Role != null
+                && pc.Data.Role.IsImpostor && pc.Data.Role.Role != RoleTypes.Engineer)
+            {
+                foreach (var vent in ShipStatus.Instance.AllVents)
+                    VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
+            }
         }
 
         // Auto Kick Vent Impostors: host kicks any impostor/phantom who vents — Engineers are exempt
@@ -73,6 +81,7 @@ public static class Vent_ExitVent
     public static void Postfix(Vent __instance, PlayerControl pc)
     {
         if (!CheatToggles.logVents || !Utils.isShip) return;
+        if (pc == null || pc.Data == null) return;
 
         var (realPlayerName, displayPlayerName, isDisguised) = Utils.GetPlayerIdentity(pc);
 

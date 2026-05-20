@@ -20,6 +20,8 @@ public class MenuUI : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
+
         // Add all tabs on start
         _tabs.Add(new MovementTab());
         _tabs.Add(new ESPTab());

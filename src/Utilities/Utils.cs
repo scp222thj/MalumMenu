@@ -128,7 +128,7 @@ public static class Utils
     // Gets RoleBehaviour from a RoleType
     public static RoleBehaviour GetBehaviourByRoleType(RoleTypes roleType)
     {
-        return RoleManager.Instance.AllRoles.ToArray().First(r => r.Role == roleType);
+        return RoleManager.Instance.AllRoles.ToArray().FirstOrDefault(r => r.Role == roleType);
     }
 
     // Gets RoleBehaviour from a TeamType
@@ -165,12 +165,23 @@ public static class Utils
         PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(position);
     }
 
+    // Coroutine to enter a vent after a brief delay (lets position sync first)
+    public static System.Collections.IEnumerator DelayedEnterVent(int ventId, float delay = 0.15f)
+    {
+        yield return new WaitForSeconds(delay);
+        try { PlayerControl.LocalPlayer.MyPhysics.RpcEnterVent(ventId); } catch { }
+    }
+
     // Broadcasts a raw Shapeshift RPC from LocalPlayer into the target with animation,
     // bypassing CmdCheckShapeshift so no shapeshifter role is required.
     public static void SendFakeShapeshift(PlayerControl target)
     {
+        var host = AmongUsClient.Instance.GetHost();
         foreach (var player in PlayerControl.AllPlayerControls)
         {
+            // Skip the host — host validates Shapeshift RPCs and will kick non-shapeshifters
+            if (!isHost && host?.Character != null && player == host.Character) continue;
+
             var writer = AmongUsClient.Instance.StartRpcImmediately(
                 PlayerControl.LocalPlayer.NetId,
                 (byte)RpcCalls.Shapeshift,
@@ -411,7 +422,7 @@ public static class Utils
 
         outputList = outputList.OrderBy(target => GetDistanceBetween(source, target)).ToList();
 
-        return outputList.Count <= 0 ? null : outputList;
+        return outputList;
     }
 
     // Returns current map ID if available
@@ -661,7 +672,8 @@ public static class Utils
     // Found here: https://github.com/NuclearPowered/Reactor/blob/6eb0bf19c30733b78532dada41db068b2b247742/Reactor/Networking/Patches/HttpPatches.cs
     public static void ShowPopup(string text)
     {
-        var popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main!.transform);
+        if (Camera.main == null) return;
+        var popup = UnityEngine.Object.Instantiate(DiscordManager.Instance.discordPopup, Camera.main.transform);
 
         var background = popup.transform.Find("Background").GetComponent<SpriteRenderer>();
         var size = background.size;
