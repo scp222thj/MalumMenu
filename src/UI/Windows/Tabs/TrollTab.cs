@@ -37,12 +37,12 @@ public class TrollTab : ITab
     {
         GUILayout.Label("Frame Players", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.frameAsShapeshifter = GUILayout.Toggle(CheatToggles.frameAsShapeshifter, " Frame as Shapeshifter");
+        CheatToggles.frameAsShapeshifter = GUILayout.Toggle(CheatToggles.frameAsShapeshifter, " Frame as Shapeshifter (Host Only)");
         GUILayout.Label("<size=10>Pick victim → pick disguise target\nOthers see victim shapeshift (looks like hacking)</size>");
 
         GUILayout.Space(5);
 
-        CheatToggles.fakeVentOnPlayer = GUILayout.Toggle(CheatToggles.fakeVentOnPlayer, " Fake Vent on Player");
+        CheatToggles.fakeVentOnPlayer = GUILayout.Toggle(CheatToggles.fakeVentOnPlayer, " Fake Vent on Player (Host Only)");
         GUILayout.Label("<size=10>Others see the player enter a vent</size>");
     }
 

@@ -194,40 +194,43 @@ public static class Utils
     }
 
     // Sends Shapeshift RPC appearing to come FROM victim — other clients see victim do shapeshift animation
+    // Requires host: non-host clients sending RPCs with another player's NetId get kicked by anticheat
     public static void FrameAsShapeshifter(PlayerControl victim, PlayerControl shapeshiftTarget)
     {
-        var host = AmongUsClient.Instance.GetHost();
-        foreach (var player in PlayerControl.AllPlayerControls)
+        if (!isHost)
         {
-            if (host?.Character != null && player == host.Character) continue;
-            if (player == victim) continue;
-            var writer = AmongUsClient.Instance.StartRpcImmediately(
-                victim.NetId,
-                (byte)RpcCalls.Shapeshift,
-                SendOption.None,
-                AmongUsClient.Instance.GetClientIdFromCharacter(player));
-            writer.WriteNetObject(shapeshiftTarget);
-            writer.Write(true);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            HudManager.Instance?.Notifier?.AddDisconnectMessage("Frame as Shapeshifter requires host");
+            return;
         }
+
+        // As host we have server authority — broadcast with targetClientId=-1 so all clients receive it
+        var writer = AmongUsClient.Instance.StartRpcImmediately(
+            victim.NetId,
+            (byte)RpcCalls.Shapeshift,
+            SendOption.None,
+            -1);
+        writer.WriteNetObject(shapeshiftTarget);
+        writer.Write(true);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
     // Sends EnterVent RPC appearing to come FROM victim — other clients see victim enter a vent
+    // Requires host: same anticheat reason as FrameAsShapeshifter
     public static void FakeVentOnPlayer(PlayerControl victim, int ventId)
     {
-        var host = AmongUsClient.Instance.GetHost();
-        foreach (var player in PlayerControl.AllPlayerControls)
+        if (!isHost)
         {
-            if (host?.Character != null && player == host.Character) continue;
-            if (player == victim) continue;
-            var writer = AmongUsClient.Instance.StartRpcImmediately(
-                victim.MyPhysics.NetId,
-                (byte)RpcCalls.EnterVent,
-                SendOption.None,
-                AmongUsClient.Instance.GetClientIdFromCharacter(player));
-            writer.Write(ventId);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            HudManager.Instance?.Notifier?.AddDisconnectMessage("Fake Vent on Player requires host");
+            return;
         }
+
+        var writer = AmongUsClient.Instance.StartRpcImmediately(
+            victim.MyPhysics.NetId,
+            (byte)RpcCalls.EnterVent,
+            SendOption.None,
+            -1);
+        writer.Write(ventId);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
     // Kills any player using RPC calls
