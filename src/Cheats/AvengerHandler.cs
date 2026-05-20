@@ -9,10 +9,12 @@ public static class AvengerHandler
     private static string _victimName;
     private static string _killerName;
     private static string _roomName;
+    private static byte _killerColorId;
     private static float _killTime;
     private static string _postKillAction;
     private static bool _active;
     private static bool _reported;
+    private static bool _chatSent;
 
     private const float DisplayTime = 8f;
     private const float TrackWindow = 5f;
@@ -27,15 +29,17 @@ public static class AvengerHandler
         if (PlayerControl.LocalPlayer == null || PlayerControl.LocalPlayer.Data.IsDead) return;
         if (killer == null || victim == null) return;
 
-        _killer       = killer;
-        _victimData   = victim.Data;
-        _victimName   = victim.Data?.PlayerName ?? "?";
-        _killerName   = killer.Data?.PlayerName ?? "?";
-        _roomName     = roomName;
-        _killTime     = Time.time;
+        _killer         = killer;
+        _victimData     = victim.Data;
+        _victimName     = victim.Data?.PlayerName ?? "?";
+        _killerName     = killer.Data?.PlayerName ?? "?";
+        _killerColorId  = (byte)(killer.Data?.DefaultOutfit?.ColorId ?? 0);
+        _roomName       = roomName;
+        _killTime       = Time.time;
         _postKillAction = "Walking away...";
-        _active       = true;
-        _reported     = false;
+        _active         = true;
+        _reported       = false;
+        _chatSent       = false;
 
         // Teleport to body
         try { PlayerControl.LocalPlayer.NetTransform.RpcSnapTo(bodyPos); } catch { }
@@ -78,11 +82,28 @@ public static class AvengerHandler
                 _postKillAction = "Vanished (Phantom)";
         }
 
-        // Auto-report on first update tick (we're now at the body position)
+        // Auto-report and send chat message on first update tick
         if (!_reported && _victimData != null && PlayerControl.LocalPlayer != null && !Utils.isMeeting)
         {
             try { PlayerControl.LocalPlayer.CmdReportDeadBody(_victimData); } catch { }
             _reported = true;
+        }
+
+        // Send chat once the meeting is active so the message lands in meeting chat
+        if (_reported && !_chatSent && Utils.isMeeting && PlayerControl.LocalPlayer != null)
+        {
+            try
+            {
+                string colorName = _killerColorId < Palette.ColorNames.Length
+                    ? DestroyableSingleton<TranslationController>.Instance
+                        .GetString(Palette.ColorNames[_killerColorId], Il2CppSystem.Array.Empty<Il2CppSystem.Object>())
+                        .ToUpperInvariant()
+                    : _killerColorId.ToString();
+                string msg = $"{colorName} KILLED IN FRONT OF ME IN {_roomName.ToUpperInvariant()}";
+                PlayerControl.LocalPlayer.RpcSendChat(msg);
+                _chatSent = true; // only mark sent on success
+            }
+            catch { }
         }
 
         if (elapsed > DisplayTime)
