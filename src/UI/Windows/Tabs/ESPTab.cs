@@ -37,15 +37,24 @@ public class ESPTab : ITab
     {
         CheatToggles.seePlayerInfo = GUILayout.Toggle(CheatToggles.seePlayerInfo, " See Player Info");
 
-        CheatToggles.seeRoles = GUILayout.Toggle(CheatToggles.seeRoles, " See Roles");
+        DrawMinimapToggle(ref CheatToggles.mapCrew, " Crewmates");
 
-        CheatToggles.seeGhosts = GUILayout.Toggle(CheatToggles.seeGhosts, " See Ghosts");
+        DrawMinimapToggle(ref CheatToggles.mapImps, " Impostors");
 
-        CheatToggles.noShadows = GUILayout.Toggle(CheatToggles.noShadows, " No Shadows");
+        DrawMinimapToggle(ref CheatToggles.mapGhosts, " Ghosts");
 
-        CheatToggles.taskArrows = GUILayout.Toggle(CheatToggles.taskArrows, " Task Arrows");
+        DrawMinimapToggle(ref CheatToggles.colorBasedMap, " Color-based");
 
-        CheatToggles.revealVotes = GUILayout.Toggle(CheatToggles.revealVotes, " Reveal Votes");
+        DrawMinimapToggle(ref CheatToggles.mapSabotage, " Show in Sabotage Map");
+    }
+
+    private static void DrawMinimapToggle(ref bool toggleValue, string label)
+    {
+        var newValue = GUILayout.Toggle(toggleValue, label);
+        if (newValue == toggleValue) return;
+
+        toggleValue = newValue;
+        MinimapHandler.RefreshHerePoints();
 
         CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
     }
@@ -82,12 +91,13 @@ public class ESPTab : ITab
     {
         GUILayout.Label("Minimap", GUIStylePreset.TabSubtitle);
 
+        CheatToggles.mapSabotage = GUILayout.Toggle(CheatToggles.mapSabotage, " Show in Sabotage Map");
+
         CheatToggles.mapCrew = GUILayout.Toggle(CheatToggles.mapCrew, " Crewmates");
 
         CheatToggles.mapImps = GUILayout.Toggle(CheatToggles.mapImps, " Impostors");
 
         CheatToggles.mapGhosts = GUILayout.Toggle(CheatToggles.mapGhosts, " Ghosts");
 
-        CheatToggles.colorBasedMap = GUILayout.Toggle(CheatToggles.colorBasedMap, " Color-based");
     }
 }
