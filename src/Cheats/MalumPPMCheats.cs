@@ -18,6 +18,7 @@ public static class MalumPPMCheats
     private static bool _setFakeAliveActive;
     private static bool _forceRoleActive;
     private static RoleTypes? _oldRole = null;
+    private static bool _logRoomsTargetActive;
 
     public static void ReportBodyPPM()
     {
@@ -506,6 +507,52 @@ public static class MalumPPMCheats
                 _spectateActive = false;
                 PlayerControl.LocalPlayer.moveable = true;
                 Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
+            }
+        }
+    }
+
+    public static void LogRoomsTargetPPM()
+    {
+        if (CheatToggles.logRoomsTarget)
+        {
+            if (!_logRoomsTargetActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("logRoomsTarget");
+                }
+
+                List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
+
+                // Add all players
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    playerDataList.Add(player.Data);
+                }
+
+                // Player pick menu made for selecting the logged player
+                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (System.Action) (() =>
+                {
+                    // No immediate action needed, targetPlayerData is set
+                }));
+
+                _logRoomsTargetActive = true;
+            }
+
+            // If user closed the menu without picking anyone, disable the toggle
+            if (PlayerPickMenu.playerpickMenu == null && PlayerPickMenu.targetPlayerData == null)
+            {
+                CheatToggles.logRoomsTarget = false;
+                _logRoomsTargetActive = false;
+            }
+        }
+        else
+        {
+            if (_logRoomsTargetActive)
+            {
+                _logRoomsTargetActive = false;
             }
         }
     }

@@ -138,6 +138,11 @@ public struct CheatToggles
     public static bool logDeaths;
     public static bool logShapeshifts;
     public static bool logVents;
+    public static bool logRooms;
+    public static bool logRoomsCrew;
+    public static bool logRoomsImps;
+    public static bool logRoomsGhosts;
+    public static bool logRoomsTarget;
 
     // Host-Only
     public static bool voteImmune;
@@ -205,11 +210,12 @@ public struct CheatToggles
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
         forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
+        logRoomsTarget = variableToKeep == "logRoomsTarget" && logRoomsTarget;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !logRoomsTarget;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields

@@ -3,12 +3,15 @@ using AmongUs.GameOptions;
 using AmongUs.InnerNet.GameDataMessages;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MalumMenu;
 public static class MalumCheats
 {
     private static bool _isScanAnimActive;
     private static bool _isCamsAnimActive;
+    private static Dictionary<byte, SystemTypes> _playerRooms = new();
 
     public static void CloseMeetingCheat()
     {
@@ -434,5 +437,95 @@ public static class MalumCheats
 
         _isCamsAnimActive = false;
         _isScanAnimActive = false;
+    }
+
+    public static void TrackRooms()
+    {
+        if (!CheatToggles.logRooms) return;
+        if (PlayerControl.AllPlayerControls == null || PlayerControl.LocalPlayer == null) return;
+
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player.Data == null || player.Data.Disconnected) continue;
+            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+
+            bool isGhost = player.Data.IsDead;
+            if (isGhost && !CheatToggles.logRoomsGhosts) continue;
+
+            bool shouldLog = false;
+
+            // If no specific filter is active, log everyone (default behavior)
+            if (!CheatToggles.logRoomsCrew && !CheatToggles.logRoomsImps && !CheatToggles.logRoomsTarget)
+            {
+                shouldLog = true;
+            }
+            else
+            {
+                if (CheatToggles.logRoomsCrew && player.Data.Role.TeamType == RoleTeamTypes.Crewmate) shouldLog = true;
+                if (CheatToggles.logRoomsImps && player.Data.Role.TeamType == RoleTeamTypes.Impostor) shouldLog = true;
+                if (CheatToggles.logRoomsTarget && PlayerPickMenu.targetPlayerData != null && player.PlayerId == PlayerPickMenu.targetPlayerData.PlayerId) shouldLog = true;
+            }
+
+            if (!shouldLog) continue;
+
+            var room = Utils.GetRoomFromPosition(player.GetTruePosition());
+            var currentRoomType = room != null ? room.RoomId : SystemTypes.Hallway;
+
+            if (_playerRooms.TryGetValue(player.PlayerId, out var previousRoomType))
+            {
+                if (previousRoomType != currentRoomType)
+                {
+                    _playerRooms[player.PlayerId] = currentRoomType;
+
+                    if (currentRoomType != SystemTypes.Hallway && currentRoomType != previousRoomType)
+                    {
+                        var playersInRoom = new List<string>();
+                        foreach (var otherPlayer in PlayerControl.AllPlayerControls)
+                        {
+                            if (otherPlayer != null && otherPlayer.Data != null && !otherPlayer.Data.Disconnected && otherPlayer.PlayerId != player.PlayerId)
+                            {
+                                if (otherPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+                                if (otherPlayer.Data.IsDead && !CheatToggles.logRoomsGhosts) continue;
+
+                                var otherRoom = Utils.GetRoomFromPosition(otherPlayer.GetTruePosition());
+                                if (otherRoom != null && otherRoom.RoomId == currentRoomType)
+                                {
+                                    playersInRoom.Add($"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(otherPlayer.PlayerId).Color)}>{otherPlayer.CurrentOutfit.PlayerName}</color>");
+                                }
+                            }
+                        }
+
+                        string othersText = "";
+                        if (playersInRoom.Count > 0)
+                        {
+                            if (playersInRoom.Count == 1)
+                            {
+                                othersText = $" ({playersInRoom[0]} also in room)";
+                            }
+                            else if (playersInRoom.Count == 2)
+                            {
+                                othersText = $" ({playersInRoom[0]} and {playersInRoom[1]} also in room)";
+                            }
+                            else
+                            {
+                                var last = playersInRoom.Last();
+                                var allButLast = playersInRoom.Take(playersInRoom.Count - 1);
+                                othersText = $" ({string.Join(", ", allButLast)} and {last} also in room)";
+                            }
+                        }
+
+                        ConsoleUI.Log($"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(player.PlayerId).Color)}>{player.CurrentOutfit.PlayerName}</color> entered {currentRoomType}{othersText}");
+                    }
+                    else if (currentRoomType == SystemTypes.Hallway && previousRoomType != SystemTypes.Hallway)
+                    {
+                        ConsoleUI.Log($"<color=#{UnityEngine.ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(player.PlayerId).Color)}>{player.CurrentOutfit.PlayerName}</color> left {previousRoomType}");
+                    }
+                }
+            }
+            else
+            {
+                _playerRooms[player.PlayerId] = currentRoomType;
+            }
+        }
     }
 }

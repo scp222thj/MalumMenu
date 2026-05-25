@@ -44,6 +44,7 @@ public static class HudManager_Update
 		MalumCheats.UseVentCheat(__instance);
 		MalumESP.ZoomOut(__instance);
 		MalumESP.FreecamCheat();
+		MalumCheats.TrackRooms();
 
 		// Close PlayerPickMenu if there is no PPM cheat enabled
 		if (PlayerPickMenu.playerpickMenu != null && CheatToggles.ShouldPPMClose())
