@@ -526,10 +526,13 @@ public static class MalumPPMCheats
 
                 List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
 
-                // Add all players
+                // Add all players apart from LocalPlayer
                 foreach (var player in PlayerControl.AllPlayerControls)
                 {
-                    playerDataList.Add(player.Data);
+                    if (!player.AmOwner)
+                    {
+                        playerDataList.Add(player.Data);
+                    }
                 }
 
                 // Player pick menu made for selecting the logged player
