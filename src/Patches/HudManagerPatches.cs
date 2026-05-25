@@ -9,6 +9,8 @@ public static class HudManager_Start
 	// Postfix patch of HudManager.Start to give minimap access to impostors too
 	public static void Postfix(HudManager __instance)
 	{
+		CheatToggles.logRoomsTarget = false;
+
 		__instance.MapButton.OnClick.RemoveAllListeners(); // Remove previous OnClick action
 
 		// Always open normal map when map button is clicked
