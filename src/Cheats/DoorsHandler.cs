@@ -49,9 +49,9 @@ public static class DoorsHandler
     // Opens all doors on the map
     public static void OpenAllDoors()
     {
-        foreach (var door in ShipStatus.Instance.AllDoors)
+        foreach (var doorRoom in GetRoomsWithDoors())
         {
-            OpenDoor(door);
+            OpenDoorsInRoom(doorRoom);
         }
     }
 
@@ -67,6 +67,19 @@ public static class DoorsHandler
     // Opens a specific door
     public static void OpenDoor(OpenableDoor openableDoor)
     {
-        try { ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Doors, (byte)(openableDoor.Id | 64)); } catch { }
+        if (openableDoor == null) return;
+
+        try
+        {
+            if (openableDoor.TryCast<PlainDoor>() != null)
+            {
+                openableDoor.TryCast<PlainDoor>().SetDoorway(true);
+            }
+            else
+            {
+                ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Doors, (byte)(openableDoor.Id | 64));
+            }
+        }
+        catch { }
     }
 }

@@ -58,20 +58,23 @@ public class DoorsUI : MonoBehaviour
 
             GUILayout.BeginHorizontal();
 
+            var roomDoorStatus = DoorsHandler.GetStatusOfDoorsInRoom(doorRoom, false);
             GUILayout.Label($"{DoorsHandler.GetStatusOfDoorsInRoom(doorRoom, true)}");
 
             GUILayout.FlexibleSpace();
 
-            if (GUILayout.Button("Close", GUIStylePreset.NormalButton, GUILayout.Width(50f)))
-            {
-                DoorsHandler.CloseDoorsInRoom(doorRoom);
-            }
+            var canOpenDoorRoom = map is MapNames.Skeld or MapNames.Polus or MapNames.Airship or MapNames.Fungle;
+            var shouldShowOpenAction = roomDoorStatus == "Closed" && canOpenDoorRoom;
 
-            if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
+            if (GUILayout.Button(shouldShowOpenAction ? "Open" : "Close", GUIStylePreset.NormalButton, GUILayout.Width(60f)))
             {
-                if (GUILayout.Button("Open", GUIStylePreset.NormalButton, GUILayout.Width(50f)))
+                if (shouldShowOpenAction)
                 {
                     DoorsHandler.OpenDoorsInRoom(doorRoom);
+                }
+                else
+                {
+                    DoorsHandler.CloseDoorsInRoom(doorRoom);
                 }
             }
 
@@ -131,12 +134,9 @@ public class DoorsUI : MonoBehaviour
             CheatToggles.closeAllDoors = true;
         }
 
-        if (map is MapNames.Polus or MapNames.Airship or MapNames.Fungle)
+        if (GUILayout.Button("Open All", GUIStylePreset.NormalButton))
         {
-            if (GUILayout.Button("Open All", GUIStylePreset.NormalButton))
-            {
-                CheatToggles.openAllDoors = true;
-            }
+            CheatToggles.openAllDoors = true;
         }
 
         GUILayout.FlexibleSpace();
