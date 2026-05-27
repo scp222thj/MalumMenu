@@ -337,33 +337,35 @@ public static class MushroomDoorSabotageMinigame_Begin
 [HarmonyPatch(typeof(IntroCutscene), "CoBegin")]
 public static class IntroCutscene_CoBegin
 {
-    // Prefix patch of IntroCutscene.CoBegin to force the LocalPlayer's role to a specified role
+    // Prefix patch of IntroCutscene.CoBegin to force assigned roles onto designated players
     public static void Prefix()
     {
-        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue) return;
+        if (!Utils.isHost || CheatToggles.forcedRoles.Count == 0) return;
 
-        var forcedRole = CheatToggles.forcedRole.Value;
-
-        // If LocalPlayer already has the forced role, do nothing
-        if (PlayerControl.LocalPlayer.Data.RoleType == forcedRole)
+        foreach (var kvp in CheatToggles.forcedRoles)
         {
-            return;
-        }
+            byte playerId = kvp.Key;
+            RoleTypes targetRole = kvp.Value;
 
-        // Find a player with the forced role to swap roles with
-        PlayerControl roleSwapTarget = null;
-        foreach (var player in PlayerControl.AllPlayerControls)
-        {
-            if (player.Data.RoleType != forcedRole) continue;
-            roleSwapTarget = player;
-            break;
-        }
+            // Find the player by their ID
+            PlayerControl targetPlayer = null;
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (player.PlayerId == playerId)
+                {
+                    targetPlayer = player;
+                    break;
+                }
+            }
 
-        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, forcedRole);
+            // Skip if player not found or disconnected
+            if (targetPlayer == null || targetPlayer.Data == null || targetPlayer.Data.Disconnected) continue;
 
-        if (roleSwapTarget != null)
-        {
-            DestroyableSingleton<RoleManager>.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
+            // Skip if player already has the desired role
+            if (targetPlayer.Data.RoleType == targetRole) continue;
+
+            // Assign the forced role
+            DestroyableSingleton<RoleManager>.Instance.SetRole(targetPlayer, targetRole);
         }
     }
 }

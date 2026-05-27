@@ -141,8 +141,7 @@ public struct CheatToggles
 
     // Host-Only
     public static bool voteImmune;
-    public static bool forceRole;
-    public static RoleTypes? forcedRole;
+    public static Dictionary<byte, RoleTypes> forcedRoles = new();
     public static bool showRolesMenu;
     public static bool skipMeeting;
     public static bool forceStartGame;
@@ -203,13 +202,12 @@ public struct CheatToggles
         spectate = variableToKeep == "spectate" && spectate;
         setFakeRole = variableToKeep == "setFakeRole" && setFakeRole;
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
-        forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields

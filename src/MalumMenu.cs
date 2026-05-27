@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using BepInEx;
 using BepInEx.Unity.IL2CPP;
 using UnityEngine.SceneManagement;
@@ -191,7 +191,7 @@ public partial class MalumMenu : BasePlugin
         doorsUI = AddComponent<DoorsUI>();
         tasksUI = AddComponent<TasksUI>();
         protectUI = AddComponent<ProtectUI>();
-        // rolesUI = AddComponent<RolesUI>();
+        rolesUI = AddComponent<RolesUI>();
 
         // Components
         keybindListener = AddComponent<KeybindListener>();

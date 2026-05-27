@@ -781,7 +781,7 @@ public static class Utils
         UnityEngine.Object.Destroy(MalumMenu.doorsUI);
         UnityEngine.Object.Destroy(MalumMenu.tasksUI);
         UnityEngine.Object.Destroy(MalumMenu.protectUI);
-        // UnityEngine.Object.Destroy(MalumMenu.rolesUI);
+        UnityEngine.Object.Destroy(MalumMenu.rolesUI);
 
         UnityEngine.Object.Destroy(MalumMenu.keybindListener);
 
