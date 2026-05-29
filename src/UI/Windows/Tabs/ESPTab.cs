@@ -44,8 +44,6 @@ public class ESPTab : ITab
         DrawMinimapToggle(ref CheatToggles.mapGhosts, " Ghosts");
 
         DrawMinimapToggle(ref CheatToggles.colorBasedMap, " Color-based");
-
-        DrawMinimapToggle(ref CheatToggles.mapSabotage, " Show in Sabotage Map");
     }
 
     private static void DrawMinimapToggle(ref bool toggleValue, string label)
