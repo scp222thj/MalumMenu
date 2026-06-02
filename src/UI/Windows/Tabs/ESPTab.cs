@@ -58,8 +58,6 @@ public class ESPTab : ITab
 
         toggleValue = newValue;
         MinimapHandler.RefreshHerePoints();
-
-        CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
     }
 
     private void DrawCamera()
