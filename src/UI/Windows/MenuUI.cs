@@ -15,6 +15,8 @@ public class MenuUI : MonoBehaviour
     private int _selectedTab;
     public static float hue; // For RGB mode
     private bool _gameWasStarted;
+    private bool _pendingSwapVerify;
+    private float _swapVerifyTimer;
 
     private void Start()
     {
@@ -110,7 +112,7 @@ public class MenuUI : MonoBehaviour
         }
 
         // Some cheats only work if the LocalPlayer exists, so they are turned off if it does not
-        if(!Utils.isPlayer)
+        if (!Utils.isPlayer)
         {
             CheatToggles.setFakeRole = false;
             CheatToggles.setFakeAlive = false;
@@ -132,7 +134,7 @@ public class MenuUI : MonoBehaviour
         }
 
         // Some cheats only work if the ship exists, so they are turned off if it does not
-        if(!Utils.isShip)
+        if (!Utils.isShip)
         {
             CheatToggles.sabotageMap = false;
             CheatToggles.unfixableLights = false;
@@ -154,7 +156,7 @@ public class MenuUI : MonoBehaviour
             MalumCheats.StopShipAnimCheats();
         }
 
-        if(!Utils.isHost && !Utils.isFreePlay)
+        if (!Utils.isHost && !Utils.isFreePlay)
         {
             CheatToggles.killAll = false;
             CheatToggles.telekillPlayer = false;
@@ -184,10 +186,22 @@ public class MenuUI : MonoBehaviour
             CheatToggles.ejectPlayer = false;
         }
 
+        if (_pendingSwapVerify)
+        {
+            _swapVerifyTimer -= Time.deltaTime;
+            if (_swapVerifyTimer <= 0f)
+            {
+                _pendingSwapVerify = false;
+                HostRoleSwapManager.VerifySwap();
+            }
+        }
+
         if (AmongUsClient.Instance != null && AmongUsClient.Instance.IsGameStarted && !_gameWasStarted)
         {
             _gameWasStarted = true;
-            HostRoleSwapManager.ResetState();
+            HostRoleSwapManager.ResetStateForNewGame();
+            _pendingSwapVerify = CheatToggles.roleSwap;
+            _swapVerifyTimer = 2f;
         }
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.IsGameStarted)
             _gameWasStarted = false;

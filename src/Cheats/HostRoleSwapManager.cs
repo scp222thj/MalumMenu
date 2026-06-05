@@ -4,73 +4,53 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using BepInEx.Logging;
 
 namespace MalumMenu;
 
 /// <summary>
-/// HostRoleSwapManager — intercepts and rewrites role assignments at game start.
-///
-/// WHY BUFFER THE ENTIRE LOBBY:
-/// Among Us naively sends RpcSetRole immediately for each player as the host iterates
-/// through the role assignment list. There is no "batch" concept — each RPC fires as
-/// soon as the host decides a player's role. If we only intercepted our own assignment,
-/// we'd have no way to know who got what role, making a clean swap impossible.
-///
-/// By buffering ALL RpcSetRole calls until every player has been assigned (or a timeout
-/// fires), we can see the complete lobby state and perform a proper 1:1 swap instead of
-/// just force-overwriting our own role (which would leave the lobby in an inconsistent
-/// state — two players with the same role, or a role that "vanished").
-///
-/// FUTURE-PROOFING:
-/// This buffering approach is resilient to Among Us updates that change role assignment
-/// order, add new roles, or modify the RPC flow. As long as RpcSetRole is called once
-/// per player at game start, the swap logic works regardless of underlying changes.
+/// Intercepts RpcSetRole at game start so the host can swap roles safely.
+/// Buffers assignments, applies swap logic once, then releases. Never leaves clients
+/// without a role RPC — timeout, disconnect, and ResetState all flush the buffer.
 /// </summary>
-
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
 public static class HostRoleSwapManager
 {
-    // ---- Logging ----
     private static readonly ManualLogSource Log = BepInEx.Logging.Logger.CreateLogSource("HostRoleSwap");
 
-    // ---- State Machine ----
     private enum SwapState
     {
-        Inactive,   // Not armed, not buffering — idle
-        Buffering,  // Collecting RpcSetRole calls, blocking originals
-        Releasing,  // Sending swapped assignments
-        Done        // Batch complete, passing through all subsequent calls
+        Inactive,
+        Buffering,
+        Releasing,
+        Done
     }
 
     private static SwapState _state = SwapState.Inactive;
 
-    // ---- Buffers ----
     private static readonly Dictionary<byte, RoleTypes> _bufferedAssignments = new();
     private static readonly Dictionary<byte, bool> _bufferedOverrideFlags = new();
     private static readonly HashSet<byte> _seenPlayers = new();
 
-    // ---- Timing ----
     private static float _bufferStartTime;
     private const float BUFFER_TIMEOUT_SEC = 3f;
 
-    // ---- Post-swap verification ----
     private static RoleTypes _expectedLocalRole;
     private static bool _pendingVerification;
+    private static bool _swapLogicApplied;
 
     // ========================================================================
-    // HARMONY PREFIX — intercepts every RpcSetRole call
+    // HARMONY PREFIX
     // ========================================================================
 
     private static RoleTypes GetTargetRole() => CheatToggles.roleSwapTarget ?? RoleTypes.Crewmate;
 
     public static bool Prefix(PlayerControl __instance, ref RoleTypes roleType, bool canOverrideRole)
     {
-        // Fast-path: not host or feature disabled — pass through
         if (!Utils.isHost || !CheatToggles.roleSwap)
             return true;
 
-        // Already done or currently releasing this batch — pass through
         if (_state == SwapState.Done || _state == SwapState.Releasing)
             return true;
 
@@ -80,233 +60,365 @@ public static class HostRoleSwapManager
 
         var targetRole = GetTargetRole();
 
-        // ---- State: Inactive → Buffering (first call in batch) ----
         if (_state == SwapState.Inactive)
         {
             _state = SwapState.Buffering;
             _bufferStartTime = Time.time;
+            _swapLogicApplied = false;
 
-            Log.LogInfo($"[HostRoleSwap] Buffering started | target={targetRole} | timeout={BUFFER_TIMEOUT_SEC}s");
+            Log.LogInfo(
+                $"[HostRoleSwap] Buffering started | target={targetRole} | players={PlayerControl.AllPlayerControls.Count} | timeout={BUFFER_TIMEOUT_SEC}s");
         }
 
-        // ---- Edge case: we naturally got the target role — abort swap, release cleanly ----
         if (__instance == localPlayer && roleType == targetRole)
         {
-            Log.LogInfo("[HostRoleSwap] Local player already has target role — releasing without swap");
-            _state = SwapState.Done;
-            if (_bufferedAssignments.Count > 0)
-                ReleaseOriginalAssignments();
+            Log.LogInfo("[HostRoleSwap] Local player already has target role — flushing unchanged");
+            FlushBuffer(applyRoleSwap: false);
             return true;
         }
 
-        // ---- Buffer this assignment ----
-        _seenPlayers.Add(__instance.PlayerId);
-        _bufferedAssignments[__instance.PlayerId] = roleType;
-        _bufferedOverrideFlags[__instance.PlayerId] = canOverrideRole;
+        BufferAssignment(__instance, roleType, canOverrideRole);
 
-        Log.LogDebug($"[HostRoleSwap] Buffered player {__instance.PlayerId} → {roleType} | seen={_seenPlayers.Count}/{PlayerControl.AllPlayerControls.Count}");
+        if (ShouldReleaseBatch(localPlayer))
+            FlushBuffer(applyRoleSwap: true);
 
-        // ---- Check release conditions ----
-        bool allPlayersSeen = _seenPlayers.Count >= PlayerControl.AllPlayerControls.Count;
-        bool timedOut = Time.time - _bufferStartTime > BUFFER_TIMEOUT_SEC;
-
-        if (allPlayersSeen || timedOut)
-        {
-            if (timedOut && !allPlayersSeen)
-                Log.LogWarning($"[HostRoleSwap] Timeout reached ({BUFFER_TIMEOUT_SEC}s) — releasing with {_seenPlayers.Count}/{PlayerControl.AllPlayerControls.Count} players seen");
-
-            ReleaseBufferedAssignments(localPlayer, targetRole);
-        }
-
-        return false; // Block original — we'll send the (potentially swapped) version
+        return false;
     }
 
     // ========================================================================
-    // SWAP LOGIC
+    // FRAME TICK — timeout even when no more RpcSetRole calls arrive (disconnect)
     // ========================================================================
 
-    /// <summary>
-    /// Calculates and executes the role swap after all assignments have been buffered.
-    ///
-    /// SWAP PRIORITY (best → acceptable):
-    /// 1. EXACT MATCH: Somebody already has the exact role we want → perfect 1:1 swap
-    /// 2. LEGIT FALLBACK: Any same-team player (looks natural, we get their random role)
-    /// 3. NORMAL FALLBACK: Force upgrade to exact role, swap target gets our original
-    /// </summary>
-    private static void ReleaseBufferedAssignments(PlayerControl localPlayer, RoleTypes targetRole)
+    public static void Tick()
     {
-        _state = SwapState.Releasing;
+        if (_state != SwapState.Buffering)
+            return;
 
-        // Safety: if local player wasn't buffered, something went wrong — release as-is
-        if (!_bufferedAssignments.TryGetValue(localPlayer.PlayerId, out var localOriginalRole))
+        if (!Utils.isHost || !CheatToggles.roleSwap)
         {
-            Log.LogError("[HostRoleSwap] Local player not found in buffer — releasing original assignments");
-            ReleaseOriginalAssignments();
+            Log.LogWarning("[HostRoleSwap] Tick: feature off while buffering — flushing unchanged");
+            FlushBuffer(applyRoleSwap: false);
             return;
         }
 
-        // PRIORITY 1: Look for EXACT MATCH (somebody already has the role we want)
-        var exactMatch = _bufferedAssignments
-            .FirstOrDefault(a => a.Key != localPlayer.PlayerId && a.Value == targetRole);
-        byte swapPartnerId = exactMatch.Key != 0 ? exactMatch.Key : byte.MaxValue;
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null)
+            return;
+
+        if (!HasTimedOut())
+            return;
+
+        var activeCount = PlayerControl.AllPlayerControls.Count;
+        Log.LogWarning(
+            $"[HostRoleSwap] Tick timeout ({BUFFER_TIMEOUT_SEC}s) | buffered={_bufferedAssignments.Count} | seen={_seenPlayers.Count}/{activeCount}");
+
+        FlushBuffer(applyRoleSwap: true);
+    }
+
+    // ========================================================================
+    // DISCONNECT / LOBBY LIFECYCLE
+    // ========================================================================
+
+    public static void OnPlayerDisconnected(PlayerControl player)
+    {
+        if (_state != SwapState.Buffering)
+            return;
+
+        if (player == null)
+            return;
+
+        var playerId = player.PlayerId;
+        var activeCount = PlayerControl.AllPlayerControls.Count;
+
+        Log.LogWarning(
+            $"[HostRoleSwap] Player disconnected during buffering | id={playerId} | seen={_seenPlayers.Count} | active={activeCount} | buffered={_bufferedAssignments.Count}");
+
+        _seenPlayers.Remove(playerId);
+        _bufferedAssignments.Remove(playerId);
+        _bufferedOverrideFlags.Remove(playerId);
+
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null)
+            return;
+
+        if (!ShouldReleaseBatch(localPlayer))
+            return;
+
+        Log.LogInfo("[HostRoleSwap] Disconnect reduced lobby — releasing batch now");
+        FlushBuffer(applyRoleSwap: true);
+    }
+
+    /// <summary>Call when joining a lobby or leaving a game — always safe to clear.</summary>
+    public static void ResetState()
+    {
+        if (_state == SwapState.Buffering || _state == SwapState.Releasing)
+        {
+            Log.LogWarning(
+                $"[HostRoleSwap] ResetState during {_state} — flushing buffer first (swapApplied={_swapLogicApplied})");
+
+            FlushBuffer(applyRoleSwap: _swapLogicApplied && CheatToggles.roleSwap);
+            return;
+        }
+
+        ClearAll(SwapState.Inactive, "ResetState");
+    }
+
+    /// <summary>Call on game start — do not abort an in-flight role assignment batch.</summary>
+    public static void ResetStateForNewGame()
+    {
+        if (_state == SwapState.Buffering || _state == SwapState.Releasing)
+        {
+            Log.LogInfo($"[HostRoleSwap] ResetStateForNewGame skipped — batch in progress ({_state})");
+            return;
+        }
+
+        ClearAll(SwapState.Inactive, "new game");
+    }
+
+    // ========================================================================
+    // BUFFER / RELEASE
+    // ========================================================================
+
+    private static void BufferAssignment(PlayerControl player, RoleTypes roleType, bool canOverrideRole)
+    {
+        var playerId = player.PlayerId;
+        _seenPlayers.Add(playerId);
+        _bufferedAssignments[playerId] = roleType;
+        _bufferedOverrideFlags[playerId] = canOverrideRole;
+
+        Log.LogInfo(
+            $"[HostRoleSwap] Buffered id={playerId} name={player.Data?.PlayerName ?? "?"} role={roleType} override={canOverrideRole} | progress={_seenPlayers.Count}/{PlayerControl.AllPlayerControls.Count}");
+    }
+
+    private static bool ShouldReleaseBatch(PlayerControl localPlayer)
+    {
+        var activeCount = PlayerControl.AllPlayerControls.Count;
+        if (activeCount <= 0)
+            return false;
+
+        var allPlayersSeen = _seenPlayers.Count >= activeCount;
+        var hasLocal = _bufferedAssignments.ContainsKey(localPlayer.PlayerId);
+        var timedOut = HasTimedOut();
+
+        if (allPlayersSeen && hasLocal)
+        {
+            Log.LogInfo($"[HostRoleSwap] All {activeCount} active players buffered — releasing");
+            return true;
+        }
+
+        if (timedOut)
+        {
+            Log.LogWarning(
+                $"[HostRoleSwap] Timeout with partial batch | seen={_seenPlayers.Count}/{activeCount} | hasLocal={hasLocal} | will release buffered as-is or swapped");
+            return _bufferedAssignments.Count > 0;
+        }
+
+        return false;
+    }
+
+    private static bool HasTimedOut() => Time.time - _bufferStartTime > BUFFER_TIMEOUT_SEC;
+
+    private static void FlushBuffer(bool applyRoleSwap)
+    {
+        if (_state != SwapState.Buffering)
+            return;
+
+        if (_bufferedAssignments.Count == 0)
+        {
+            Log.LogWarning("[HostRoleSwap] FlushBuffer called with empty buffer — clearing state");
+            ClearAll(SwapState.Inactive, "empty flush");
+            return;
+        }
+
+        var localPlayer = PlayerControl.LocalPlayer;
+        if (localPlayer == null)
+        {
+            Log.LogError("[HostRoleSwap] FlushBuffer: no local player — releasing unchanged");
+            ReleaseAssignments(applySwap: false);
+            return;
+        }
+
+        if (applyRoleSwap && CheatToggles.roleSwap)
+            ApplySwapAndRelease(localPlayer, GetTargetRole());
+        else
+            ReleaseAssignments(applySwap: false);
+    }
+
+    private static void ApplySwapAndRelease(PlayerControl localPlayer, RoleTypes targetRole)
+    {
+        _state = SwapState.Releasing;
+
+        if (!_bufferedAssignments.TryGetValue(localPlayer.PlayerId, out var localOriginalRole))
+        {
+            Log.LogError("[HostRoleSwap] Local player missing from buffer — releasing all unchanged");
+            ReleaseAssignments(applySwap: false);
+            return;
+        }
+
+        Log.LogInfo($"[HostRoleSwap] Applying swap logic | target={targetRole} | localOriginal={localOriginalRole} | batch={DescribeBuffer()}");
 
         if (localOriginalRole == targetRole)
         {
-            // Edge case: we already have the target role naturally
-            Log.LogInfo("[HostRoleSwap] Local player already has target role — no swap needed");
+            Log.LogInfo("[HostRoleSwap] Local already has target role — no swap");
         }
-        else if (swapPartnerId != byte.MaxValue)
+        else if (TryFindExactMatchPartner(localPlayer.PlayerId, targetRole, out var exactPartnerId))
         {
-            // PRIORITY 1: Perfect 1:1 swap with exact match
+            var partnerOriginal = _bufferedAssignments[exactPartnerId];
             _bufferedAssignments[localPlayer.PlayerId] = targetRole;
-            _bufferedAssignments[swapPartnerId] = localOriginalRole;
+            _bufferedAssignments[exactPartnerId] = localOriginalRole;
             _expectedLocalRole = targetRole;
-            Log.LogInfo($"[HostRoleSwap] EXACT MATCH swap: local({localOriginalRole}→{targetRole}) ↔ player{swapPartnerId}({targetRole}→{localOriginalRole})");
+            Log.LogInfo(
+                $"[HostRoleSwap] EXACT swap: local({localOriginalRole}→{targetRole}) ↔ id{exactPartnerId}({partnerOriginal}→{localOriginalRole})");
         }
-        else if (CheatToggles.roleSwapLegit)
+        else if (CheatToggles.roleSwapLegit && TryFindSameTeamPartner(localPlayer.PlayerId, targetRole, out var legitPartnerId))
         {
-            // PRIORITY 2: LEGIT MODE — swap with any same-team player
-            byte teamSwapTargetId = FindPlayerOnSameTeam(targetRole, localPlayer.PlayerId);
-            if (teamSwapTargetId != byte.MaxValue)
-            {
-                var theirRole = _bufferedAssignments[teamSwapTargetId];
-                _bufferedAssignments[localPlayer.PlayerId] = theirRole;
-                _bufferedAssignments[teamSwapTargetId] = localOriginalRole;
-                _expectedLocalRole = theirRole;
-                Log.LogInfo($"[HostRoleSwap] LEGIT swap: local({localOriginalRole}→{theirRole}) ↔ player{teamSwapTargetId}({theirRole}→{localOriginalRole})");
-            }
-            else
-            {
-                Log.LogWarning("[HostRoleSwap] LEGIT mode: no same-team player found — releasing unchanged");
-            }
+            var theirRole = _bufferedAssignments[legitPartnerId];
+            _bufferedAssignments[localPlayer.PlayerId] = theirRole;
+            _bufferedAssignments[legitPartnerId] = localOriginalRole;
+            _expectedLocalRole = theirRole;
+            Log.LogInfo(
+                $"[HostRoleSwap] LEGIT swap: local({localOriginalRole}→{theirRole}) ↔ id{legitPartnerId}({theirRole}→{localOriginalRole})");
         }
         else
         {
-            // PRIORITY 3: NORMAL MODE — force upgrade to exact role
-            byte teamSwapTargetId = FindPlayerOnSameTeam(targetRole, localPlayer.PlayerId);
-            if (teamSwapTargetId != byte.MaxValue)
+            if (TryFindSameTeamPartner(localPlayer.PlayerId, targetRole, out var teamPartnerId))
             {
-                var teamRole = _bufferedAssignments[teamSwapTargetId];
+                var teamRole = _bufferedAssignments[teamPartnerId];
                 _bufferedAssignments[localPlayer.PlayerId] = teamRole;
-                _bufferedAssignments[teamSwapTargetId] = localOriginalRole;
-                Log.LogInfo($"[HostRoleSwap] NORMAL team-swap: local({localOriginalRole}→{teamRole}) ↔ player{teamSwapTargetId}({teamRole}→{localOriginalRole})");
+                _bufferedAssignments[teamPartnerId] = localOriginalRole;
+                Log.LogInfo(
+                    $"[HostRoleSwap] NORMAL team swap: local({localOriginalRole}→{teamRole}) ↔ id{teamPartnerId}({teamRole}→{localOriginalRole})");
             }
-            // Force upgrade to exact target role
+
             _bufferedAssignments[localPlayer.PlayerId] = targetRole;
             _expectedLocalRole = targetRole;
             Log.LogInfo($"[HostRoleSwap] NORMAL force-upgrade: local → {targetRole}");
         }
 
+        _swapLogicApplied = true;
         _pendingVerification = true;
-        ReleaseOriginalAssignments();
+        ReleaseAssignments(applySwap: true);
     }
 
-    // ========================================================================
-    // RPC SENDING
-    // ========================================================================
-
-    /// <summary>
-    /// Sends the actual RpcSetRole call with the preserved canOverrideRole flag.
-    /// Uses the stored flag from _bufferedOverrideFlags to ensure the RPC is identical
-    /// to what the game originally sent (prevents role assignment bugs).
-    /// </summary>
-    private static void ForceSetRoleNetworked(PlayerControl player, RoleTypes role)
+    private static void ReleaseAssignments(bool applySwap)
     {
-        _bufferedOverrideFlags.TryGetValue(player.PlayerId, out var canOverrideRole);
-        player.RpcSetRole(role, canOverrideRole);
-    }
+        if (_state == SwapState.Inactive && _bufferedAssignments.Count == 0)
+            return;
 
-    /// <summary>
-    /// Sends all buffered RpcSetRole calls with potentially modified (swapped) roles.
-    /// Clears all buffers when complete.
-    /// </summary>
-    private static void ReleaseOriginalAssignments()
-    {
-        foreach (var assignment in _bufferedAssignments)
+        var previousState = _state;
+        _state = SwapState.Releasing;
+
+        Log.LogInfo($"[HostRoleSwap] Releasing {_bufferedAssignments.Count} assignment(s) | applySwap={applySwap} | was={previousState}");
+
+        foreach (var assignment in _bufferedAssignments.ToList())
         {
-            foreach (var player in PlayerControl.AllPlayerControls)
+            var player = FindPlayerById(assignment.Key);
+            if (player == null)
             {
-                if (player.PlayerId != assignment.Key) continue;
+                Log.LogWarning($"[HostRoleSwap] Skip release — player id={assignment.Key} not in scene (disconnected?)");
+                continue;
+            }
 
-                try
-                {
-                    ForceSetRoleNetworked(player, assignment.Value);
-                }
-                catch (Exception ex)
-                {
-                    Log.LogWarning($"[HostRoleSwap] Failed to release assignment for player {assignment.Key}: {ex.Message}");
-                }
+            try
+            {
+                _bufferedOverrideFlags.TryGetValue(assignment.Key, out var canOverrideRole);
+                Log.LogInfo(
+                    $"[HostRoleSwap] RpcSetRole → id={assignment.Key} name={player.Data?.PlayerName ?? "?"} role={assignment.Value} override={canOverrideRole}");
 
-                break;
+                player.RpcSetRole(assignment.Value, canOverrideRole);
+            }
+            catch (Exception ex)
+            {
+                Log.LogError($"[HostRoleSwap] Release failed for id={assignment.Key}: {ex}");
             }
         }
 
-        _bufferedAssignments.Clear();
-        _bufferedOverrideFlags.Clear();
-        _seenPlayers.Clear();
-        _state = SwapState.Done;
-
-        Log.LogInfo("[HostRoleSwap] All assignments released — batch complete");
+        ClearAll(SwapState.Done, "release complete");
+        Log.LogInfo("[HostRoleSwap] Batch done — further RpcSetRole calls pass through unchanged");
     }
 
     // ========================================================================
     // HELPERS
     // ========================================================================
 
-    /// <summary>
-    /// Finds a player on the same team as targetRole, excluding the specified player.
-    /// Used as fallback when no exact role match is available.
-    /// </summary>
-    /// <returns>PlayerId of found player, or byte.MaxValue if none found</returns>
-    private static byte FindPlayerOnSameTeam(RoleTypes targetRole, byte excludedPlayerId)
+    private static PlayerControl FindPlayerById(byte playerId)
     {
-        var match = _bufferedAssignments
-            .FirstOrDefault(a => a.Key != excludedPlayerId && IsSameTeam(a.Value, targetRole));
-        return match.Key != 0 ? match.Key : byte.MaxValue;
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            if (player.PlayerId == playerId)
+                return player;
+        }
+
+        return null;
     }
 
-    private static bool IsSameTeam(RoleTypes role, RoleTypes targetRole)
+    private static bool TryFindExactMatchPartner(byte localPlayerId, RoleTypes targetRole, out byte partnerId)
     {
-        return IsImpostorRole(role) == IsImpostorRole(targetRole);
+        foreach (var entry in _bufferedAssignments)
+        {
+            if (entry.Key == localPlayerId)
+                continue;
+            if (entry.Value != targetRole)
+                continue;
+
+            partnerId = entry.Key;
+            return true;
+        }
+
+        partnerId = byte.MaxValue;
+        return false;
     }
 
-    private static bool IsImpostorRole(RoleTypes role)
+    private static bool TryFindSameTeamPartner(byte localPlayerId, RoleTypes targetRole, out byte partnerId)
     {
-        return role == RoleTypes.Impostor
-            || role == RoleTypes.Shapeshifter
-            || role == RoleTypes.Phantom
-            || role == RoleTypes.Viper;
+        foreach (var entry in _bufferedAssignments)
+        {
+            if (entry.Key == localPlayerId)
+                continue;
+            if (!IsSameTeam(entry.Value, targetRole))
+                continue;
+
+            partnerId = entry.Key;
+            return true;
+        }
+
+        partnerId = byte.MaxValue;
+        return false;
     }
 
-    // ========================================================================
-    // STATE MANAGEMENT
-    // ========================================================================
-
-    /// <summary>
-    /// Aggressively resets all state. Call on: game start, game end, host change,
-    /// lobby leave, scene load — anywhere stale state could cause issues.
-    /// </summary>
-    public static void ResetState()
+    private static string DescribeBuffer()
     {
-        if (_state == SwapState.Inactive && _bufferedAssignments.Count == 0)
-            return; // Already clean
+        var sb = new StringBuilder();
+        foreach (var entry in _bufferedAssignments.OrderBy(e => e.Key))
+            sb.Append($"[{entry.Key}:{entry.Value}] ");
 
-        Log.LogInfo($"[HostRoleSwap] ResetState called | was={_state} | buffered={_bufferedAssignments.Count}");
+        return sb.ToString().TrimEnd();
+    }
+
+    private static bool IsSameTeam(RoleTypes role, RoleTypes targetRole) =>
+        IsImpostorRole(role) == IsImpostorRole(targetRole);
+
+    private static bool IsImpostorRole(RoleTypes role) =>
+        role == RoleTypes.Impostor
+        || role == RoleTypes.Shapeshifter
+        || role == RoleTypes.Phantom
+        || role == RoleTypes.Viper;
+
+    private static void ClearAll(SwapState nextState, string reason)
+    {
+        if (_bufferedAssignments.Count > 0 || _state != SwapState.Inactive)
+            Log.LogInfo($"[HostRoleSwap] Clear ({reason}) | was={_state} | next={nextState}");
 
         _bufferedAssignments.Clear();
         _bufferedOverrideFlags.Clear();
         _seenPlayers.Clear();
-        _state = SwapState.Inactive;
+        _state = nextState;
         _bufferStartTime = 0f;
         _expectedLocalRole = default;
         _pendingVerification = false;
+        _swapLogicApplied = false;
     }
 
-    /// <summary>
-    /// Post-swap verification: checks if the local player actually received the
-    /// expected role after the swap. Call this after a short delay (e.g. in Update
-    /// or via a coroutine) once roles should be settled.
-    /// </summary>
     public static void VerifySwap()
     {
         if (!_pendingVerification)
@@ -323,12 +435,8 @@ public static class HostRoleSwapManager
 
         var actualRole = localPlayer.Data.RoleType;
         if (actualRole == _expectedLocalRole)
-        {
-            Log.LogInfo($"[HostRoleSwap] VERIFIED: local role is {actualRole} (expected {_expectedLocalRole})");
-        }
+            Log.LogInfo($"[HostRoleSwap] VERIFIED local role={actualRole}");
         else
-        {
-            Log.LogError($"[HostRoleSwap] MISMATCH: local role is {actualRole} but expected {_expectedLocalRole} — swap may have failed!");
-        }
+            Log.LogError($"[HostRoleSwap] MISMATCH local role={actualRole} expected={_expectedLocalRole}");
     }
 }

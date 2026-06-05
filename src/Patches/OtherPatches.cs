@@ -49,6 +49,8 @@ public static class GameData_HandleDisconnect
     // (Avoids race-condition double counting)
     public static void Postfix(PlayerControl player)
     {
+        HostRoleSwapManager.OnPlayerDisconnected(player);
+
         if (!CheatToggles.runOverload) return;
 
         NetworkedPlayerInfo playerData = player?.Data;
@@ -108,7 +110,7 @@ public static class FreeChatInputField_UpdateCharCount
 public static class ChatBubble_SetName
 {
     public static void Postfix(ChatBubble __instance)
-	{
+    {
         MalumESP.ChatNametags(__instance);
     }
 }
@@ -142,11 +144,11 @@ public static class VersionShower_Start
 
         if (MalumMenu.supportedAU.Contains(Application.version)) // Checks if Among Us version is supported
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (v{Application.version})"; // Supported
         }
         else
         {
-            __instance.text.text =  $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
+            __instance.text.text = $"MalumMenu v{MalumMenu.malumVersion} (<color=red>v{Application.version}</color>)"; // Unsupported
         }
     }
 }

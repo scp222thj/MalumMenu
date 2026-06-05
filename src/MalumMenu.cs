@@ -30,7 +30,7 @@ public partial class MalumMenu : BasePlugin
     public static ProtectUI protectUI;
     public static KeybindListener keybindListener;
 
-    public static string malumVersion = "3.1.0";
+    public static string malumVersion = "3.2.0";
     public static List<string> supportedAU = new List<string> { "2026.3.31" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
@@ -216,7 +216,7 @@ public partial class MalumMenu : BasePlugin
             CheatToggles.LoadTogglesFromProfile();
         }
 
-        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((scene, _) =>
+        SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>)((scene, _) =>
         {
             if (scene.name == "MainMenu" && !(inStealthMode || isPanicked))
             {
