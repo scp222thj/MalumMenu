@@ -4,6 +4,7 @@ using System;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
+using Hazel;
 
 namespace MalumMenu;
 public static class MalumPPMCheats
@@ -18,6 +19,10 @@ public static class MalumPPMCheats
     private static bool _setFakeAliveActive;
     private static bool _forceRoleActive;
     private static RoleTypes? _oldRole = null;
+    private static bool _voteKickActive;
+    public static bool _handlingVoteKick;
+    private static int _kickNum;
+    private static int _voteKickTarget;
 
     public static void ReportBodyPPM()
     {
@@ -506,6 +511,89 @@ public static class MalumPPMCheats
                 _spectateActive = false;
                 PlayerControl.LocalPlayer.moveable = true;
                 Camera.main.gameObject.GetComponent<FollowerCamera>().SetTarget(PlayerControl.LocalPlayer);
+            }
+        }
+    }
+
+    public static void VoteKickPPM()
+    {
+        // PPM Handling System
+        if (CheatToggles.voteKick)
+        {
+            if (!_voteKickActive)
+            {
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("voteKick");
+                }
+
+                if (!Utils.isLobby)
+                {
+                    HudManager.Instance.Notifier.AddDisconnectMessage("You cannot use votekick target outside a lobby");
+                    CheatToggles.voteKick = false;
+                    return;
+                }
+
+                if (Utils.isHost)
+                {
+                    HudManager.Instance.Notifier.AddDisconnectMessage("You cannot use votekick target as host");
+                    CheatToggles.voteKick = false;
+                    return;
+                }
+
+                List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
+
+                foreach (var player in PlayerControl.AllPlayerControls)
+                {
+                    if (!player.AmOwner)
+                    {
+                        playerDataList.Add(player.Data);
+                    }
+                }
+
+                PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action)(() =>
+                {
+                    _voteKickTarget = PlayerPickMenu.targetPlayerData.ClientId;
+                }));
+
+                _voteKickActive = true;
+            }
+
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.voteKick = false;
+            }
+        }
+        else if (_voteKickActive)
+        {
+            _voteKickActive = false;
+        }
+
+        // Votekick Handling System
+        if (_voteKickTarget != 0 && !_handlingVoteKick)
+        {
+            _handlingVoteKick = true;
+
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(VoteBanSystem.Instance.NetId, (byte)RpcCalls.AddVote, SendOption.Reliable, AmongUsClient.Instance.GetHost().Id);
+            writer.Write(AmongUsClient.Instance.GetClientIdFromCharacter(PlayerControl.LocalPlayer));
+            writer.Write(_voteKickTarget);
+
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+            // Determine what to do
+            if (++_kickNum <= 2)
+            {
+                // Votekick needed. Leave and rejoin to refresh Votekick.
+                AmongUsClient.Instance.ExitGame(DisconnectReasons.ExitGame);
+                AmongUsClient.Instance.StartCoroutine(AmongUsClient.Instance.CoJoinOnlineGameFromCode(AmongUsClient.Instance.GameId));
+            }
+            else
+            {
+                // Votekick unneeded. Reset Variables
+                _kickNum = 0;
+                _voteKickTarget = 0;
+                _handlingVoteKick = false;
             }
         }
     }

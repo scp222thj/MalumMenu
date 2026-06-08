@@ -133,6 +133,7 @@ public struct CheatToggles
     public static bool overloadCrew;
     public static bool overloadImps;
     public static bool overloadReset;
+    public static bool voteKick;
 
     // Console
     public static bool showConsole;
@@ -206,11 +207,12 @@ public struct CheatToggles
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
         forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
+        voteKick = variableToKeep == "voteKick" && voteKick;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !voteKick;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields

@@ -31,6 +31,7 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.SetFakeRolePPM();
         MalumPPMCheats.SetFakeAlivePPM();
         // MalumPPMCheats.ForceRolePPM();
+        MalumPPMCheats.VoteKickPPM();
 
         // This check ensures there is only one run per frame
         // so that OverloadHandler._timer progression remains accurate

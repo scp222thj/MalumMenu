@@ -26,6 +26,10 @@ public class OverloadTab : ITab
 
         DrawSettingsToggle();
 
+        GUILayout.Space(15);
+
+        DrawMiscToggle();
+
         GUILayout.EndVertical();
 
         if (CheatToggles.showOverloadSettings)
@@ -59,6 +63,13 @@ public class OverloadTab : ITab
         GUILayout.Label("Settings", GUIStylePreset.TabSubtitle);
 
         CheatToggles.showOverloadSettings = GUILayout.Toggle(CheatToggles.showOverloadSettings, " Show Overload Settings");
+    }
+
+    private void DrawMiscToggle()
+    {
+        GUILayout.Label("Kick Players", GUIStylePreset.TabSubtitle);
+
+        CheatToggles.voteKick = GUILayout.Toggle(CheatToggles.voteKick, " Votekick Target");
     }
 
     private void DrawSettingsSection()

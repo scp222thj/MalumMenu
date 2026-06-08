@@ -163,3 +163,17 @@ public static class PlayerControl_RpcSyncSettings
         return !CheatToggles.noOptionsLimits;
     }
 }
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetLevel))]
+public static class PlayerControl_SetLevel
+{
+    // Prefix patch of PlayerControl.SetLevel, which is called simultaneously as a PlayerControl is created
+    // This Patch ensures your PlayerControl exists, and is a reliable method to reapply Votekicks after joining a game
+    public static void Prefix(PlayerControl __instance)
+    {
+        if (__instance == PlayerControl.LocalPlayer)
+        {
+            MalumPPMCheats._handlingVoteKick = false;
+        }
+    }
+}
