@@ -44,6 +44,8 @@ public class ESPTab : ITab
         CheatToggles.noShadows = GUILayout.Toggle(CheatToggles.noShadows, " No Shadows");
 
         CheatToggles.taskArrows = GUILayout.Toggle(CheatToggles.taskArrows, " Task Arrows");
+
+        CheatToggles.revealVotes = GUILayout.Toggle(CheatToggles.revealVotes, " Reveal Votes");
     }
 
     private static void DrawMinimapToggle(ref bool toggleValue, string label)
