@@ -1,8 +1,10 @@
 using HarmonyLib;
 using System.Collections.Generic;
 namespace MalumMenu;
+
 [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.ShowNormalMap))]
 public static class MapBehaviour_ShowNormalMap
+
 {
     public static void Postfix(MapBehaviour __instance)
     {
@@ -22,6 +24,7 @@ public static class MapBehaviour_ShowSabotageMap
         MinimapHandler.RefreshHerePoints();
     }
 }
+
 [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
 public static class MapBehaviour_FixedUpdate
 {
@@ -30,6 +33,7 @@ public static class MapBehaviour_FixedUpdate
         MinimapHandler.RefreshHerePoints();
     }
 }
+
 [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Close))]
 public static class MapBehaviour_Close
 {

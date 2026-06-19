@@ -33,18 +33,18 @@ public class ESPTab : ITab
         GUILayout.EndHorizontal();
     }
 
-    private void DrawGeneral()
-    {
-        CheatToggles.seePlayerInfo = GUILayout.Toggle(CheatToggles.seePlayerInfo, " See Player Info");
+private void DrawGeneral()
+{
+    CheatToggles.seePlayerInfo = GUILayout.Toggle(CheatToggles.seePlayerInfo, " See Player Info");
 
-        DrawMinimapToggle(ref CheatToggles.mapCrew, " Crewmates");
+    CheatToggles.seeRoles = GUILayout.Toggle(CheatToggles.seeRoles, " See Roles");
 
-        DrawMinimapToggle(ref CheatToggles.mapImps, " Impostors");
+    CheatToggles.seeGhosts = GUILayout.Toggle(CheatToggles.seeGhosts, " See Ghosts");
 
-        DrawMinimapToggle(ref CheatToggles.mapGhosts, " Ghosts");
+    CheatToggles.noShadows = GUILayout.Toggle(CheatToggles.noShadows, " No Shadows");
 
-        DrawMinimapToggle(ref CheatToggles.colorBasedMap, " Color-based");
-    }
+    CheatToggles.taskArrows = GUILayout.Toggle(CheatToggles.taskArrows, " Task Arrows");
+}
 
     private static void DrawMinimapToggle(ref bool toggleValue, string label)
     {
