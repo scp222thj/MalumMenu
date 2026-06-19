@@ -37,8 +37,6 @@ public class ESPTab : ITab
     {
         CheatToggles.seePlayerInfo = GUILayout.Toggle(CheatToggles.seePlayerInfo, " See Player Info");
 
-        CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
-
         DrawMinimapToggle(ref CheatToggles.mapCrew, " Crewmates");
 
         DrawMinimapToggle(ref CheatToggles.mapImps, " Impostors");
@@ -55,6 +53,8 @@ public class ESPTab : ITab
 
         toggleValue = newValue;
         MinimapHandler.RefreshHerePoints();
+
+        CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
     }
 
     private void DrawCamera()
