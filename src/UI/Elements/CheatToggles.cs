@@ -221,7 +221,8 @@ public struct CheatToggles
         }
     }
 
-    // Generates the customized configuration path strings securely.
+    // Saves cheat toggles and their keybinds to MalumProfile.txt
+    // Format per line: ToggleName = True/False = KeyCode.KEY
     private static string GetCustomProfilePath(string profileName)
     {
         string directory = Path.GetDirectoryName(MalumMenu.ProfilePath);
@@ -262,11 +263,12 @@ public struct CheatToggles
         foreach (var field in ToggleFields.Values)
         {
             Keybinds.TryGetValue(field.Name, out var key);
-            writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");
+            writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");  // If no key is set then write KeyCode.None
         }
     }
 
-    // Explicit overload to catch parameterless calls from MalumMenu.cs or MenuUI.cs securely.
+    // Loads cheat toggles and their keybinds from MalumProfile.txt if the file is present
+    // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void LoadTogglesFromProfile()
     {
         LoadTogglesFromProfile("Default");
@@ -283,22 +285,28 @@ public struct CheatToggles
 
         while (reader.ReadLine() is { } line)
         {
+            // Skips empty lines
             if (string.IsNullOrWhiteSpace(line)) continue;
 
+            // Skips lines that are commented out
             line = line.Trim();
             if (line.StartsWith("#")) continue;
 
+            // Extracts the three relevant config values for each remaining line
             var parts = line.Split('=', 3);
             if (parts.Length < 2) continue;
 
+            // Gets the cheat's FieldInfo from its name
             var name = parts[0].Trim();
             if (!ToggleFields.TryGetValue(name, out var field)) continue;
 
+            // Loads whether the cheat is enabled or disabled by default
             if (bool.TryParse(parts[1].Trim(), out var boolVal))
             {
                 field.SetValue(null, boolVal);
             }
 
+            // Loads the keybind associated with each cheat
             KeyCode key = KeyCode.None;
             if (parts.Length >= 3)
             {
