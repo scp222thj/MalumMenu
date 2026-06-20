@@ -221,13 +221,37 @@ public struct CheatToggles
         }
     }
 
-    // Saves cheat toggles and their keybinds to MalumProfile.txt
-    // Format per line: ToggleName = True/False = KeyCode.KEY
+    // Generates the customized configuration path strings securely.
+    private static string GetCustomProfilePath(string profileName)
+    {
+        string directory = Path.GetDirectoryName(MalumMenu.ProfilePath);
+        if (string.IsNullOrWhiteSpace(directory))
+        {
+            directory = Directory.GetCurrentDirectory();
+        }
+
+        if (profileName == "1" || profileName == "Default" || string.IsNullOrWhiteSpace(profileName))
+        {
+            return Path.Combine(directory, "MalumProfile.txt");
+        }
+
+        return Path.Combine(directory, $"MalumProfile{profileName}.txt");
+    }
+
+    // Explicit overload to catch parameterless calls from MalumMenu.cs or MenuUI.cs securely.
     public static void SaveTogglesToProfile()
     {
-        using var writer = new StreamWriter(MalumMenu.ProfilePath);
+        SaveTogglesToProfile("Default");
+    }
 
-        writer.WriteLine("# MalumProfile");
+    // Profile serialization containing full execution blocks.
+    public static void SaveTogglesToProfile(string profileName)
+    {
+        string profilePath = GetCustomProfilePath(profileName);
+
+        using var writer = new StreamWriter(profilePath);
+
+        writer.WriteLine($"# MalumProfile - Slot {profileName}");
         writer.WriteLine("# Format: ToggleName = True/False = KeyCode.KEY");
         writer.WriteLine("# - List of supported keycodes: https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html");
         writer.WriteLine("# - Setting a keybind is optional. Use KeyCode.None to not set a keybind");
@@ -237,43 +261,44 @@ public struct CheatToggles
 
         foreach (var field in ToggleFields.Values)
         {
-            Keybinds.TryGetValue(field.Name, out var key);  // If no key is set then write KeyCode.None
+            Keybinds.TryGetValue(field.Name, out var key);
             writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");
         }
     }
 
-    // Loads cheat toggles and their keybinds from MalumProfile.txt if the file is present
-    // Format per line: ToggleName = True/False = KeyCode.KEY
+    // Explicit overload to catch parameterless calls from MalumMenu.cs or MenuUI.cs securely.
     public static void LoadTogglesFromProfile()
     {
-        if (!File.Exists(MalumMenu.ProfilePath)) return;
+        LoadTogglesFromProfile("Default");
+    }
 
-        using var reader = new StreamReader(MalumMenu.ProfilePath);
+    // Profile deserialization containing full execution blocks.
+    public static void LoadTogglesFromProfile(string profileName)
+    {
+        string profilePath = GetCustomProfilePath(profileName);
+
+        if (!File.Exists(profilePath)) return;
+
+        using var reader = new StreamReader(profilePath);
 
         while (reader.ReadLine() is { } line)
         {
-            // Skips empty lines
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            // Skips lines that are commented out
             line = line.Trim();
             if (line.StartsWith("#")) continue;
 
-            // Extracts the three relevant config values for each remaining line
             var parts = line.Split('=', 3);
             if (parts.Length < 2) continue;
 
-            // Gets the cheat's FieldInfo from its name
             var name = parts[0].Trim();
             if (!ToggleFields.TryGetValue(name, out var field)) continue;
 
-            // Loads whether the cheat is enabled or disabled by default
             if (bool.TryParse(parts[1].Trim(), out var boolVal))
             {
                 field.SetValue(null, boolVal);
             }
 
-            // Loads the keybind associated with each cheat
             KeyCode key = KeyCode.None;
             if (parts.Length >= 3)
             {
