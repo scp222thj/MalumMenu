@@ -262,7 +262,7 @@ public struct CheatToggles
 
         foreach (var field in ToggleFields.Values)
         {
-            Keybinds.TryGetValue(field.Name, out var key);   // If no key is set then write KeyCode.None
+            Keybinds.TryGetValue(field.Name, out var key);  // If no key is set then write KeyCode.None
             writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");
         }
     }
