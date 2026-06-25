@@ -30,8 +30,8 @@ public partial class MalumMenu : BasePlugin
     public static ProtectUI protectUI;
     public static KeybindListener keybindListener;
 
-    public static string malumVersion = "3.1.1";
-    public static List<string> supportedAU = new List<string> { "2026.3.31" };
+    public static string malumVersion = "3.2.0";
+    public static List<string> supportedAU = new List<string> { "2026.6.5", "2026.3.31" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
 
@@ -122,50 +122,50 @@ public partial class MalumMenu : BasePlugin
                                 true,
                                 "When enabled, it will stop Among Us from collecting analytics of your games and sending them to Innersloth using Unity Analytics");
 
-        adaptMaxStrength = Config.Bind("MalumMenu.Overload",
-                                "AdaptMaxStrength",
-                                18000,
-                                new ConfigDescription(
-                                    "Maximum total number of RPCs sent during one overload cycle in AutoAdapt mode. Automatically divided between targets and reduced based on ping. IMPORTANT: Only goes from 1 to 100K RPCs",
-                                    new AcceptableValueRange<int>(1, 100000)
-                                ));
+        // adaptMaxStrength = Config.Bind("MalumMenu.Overload",
+        //                         "AdaptMaxStrength",
+        //                         18000,
+        //                         new ConfigDescription(
+        //                             "Maximum total number of RPCs sent during one overload cycle in AutoAdapt mode. Automatically divided between targets and reduced based on ping. IMPORTANT: Only goes from 1 to 100K RPCs",
+        //                             new AcceptableValueRange<int>(1, 100000)
+        //                         ));
 
-        adaptMaxCooldown = Config.Bind("MalumMenu.Overload",
-                                "AdaptMaxCooldown",
-                                1f,
-                                new ConfigDescription(
-                                    "Maximum time (in seconds) for one full overload cycle to complete in AutoAdapt mode. Automatically distributed across targets (more targets = shorter delay per target). IMPORTANT: Only goes from 0s to 10s",
-                                    new AcceptableValueRange<float>(0f, 10f)
-                                ));
+        // adaptMaxCooldown = Config.Bind("MalumMenu.Overload",
+        //                         "AdaptMaxCooldown",
+        //                         1f,
+        //                         new ConfigDescription(
+        //                             "Maximum time (in seconds) for one full overload cycle to complete in AutoAdapt mode. Automatically distributed across targets (more targets = shorter delay per target). IMPORTANT: Only goes from 0s to 10s",
+        //                             new AcceptableValueRange<float>(0f, 10f)
+        //                         ));
 
-        attackLogDelay = Config.Bind("MalumMenu.Overload",
-                                "AttackLogDelay",
-                                2f,
-                                "Minimum time (in seconds) between attack logs in normal (non-verbose) mode");
+        // attackLogDelay = Config.Bind("MalumMenu.Overload",
+        //                         "AttackLogDelay",
+        //                         2f,
+        //                         "Minimum time (in seconds) between attack logs in normal (non-verbose) mode");
 
-        defaultStrength = Config.Bind("MalumMenu.Overload",
-                                "DefaultStrength",
-                                18000,
-                                new ConfigDescription(
-                                    "Default number of malformed RPCs sent to each target during an overload cycle. Overridden if AutoAdapt mode is enabled. IMPORTANT: Only goes from 1 to 100K RPCs",
-                                    new AcceptableValueRange<int>(1, 100000)
-                                ));
+        // defaultStrength = Config.Bind("MalumMenu.Overload",
+        //                         "DefaultStrength",
+        //                         18000,
+        //                         new ConfigDescription(
+        //                             "Default number of malformed RPCs sent to each target during an overload cycle. Overridden if AutoAdapt mode is enabled. IMPORTANT: Only goes from 1 to 100K RPCs",
+        //                             new AcceptableValueRange<int>(1, 100000)
+        //                         ));
 
-        defaultCooldown = Config.Bind("MalumMenu.Overload",
-                                "DefaultCooldown",
-                                1f,
-                                new ConfigDescription(
-                                    "Default cooldown (in seconds) between each target during an overload cycle. Overridden if AutoAdapt mode is enabled. IMPORTANT: Only goes from 0s to 10s",
-                                    new AcceptableValueRange<float>(0f, 10f)
-                                ));
+        // defaultCooldown = Config.Bind("MalumMenu.Overload",
+        //                         "DefaultCooldown",
+        //                         1f,
+        //                         new ConfigDescription(
+        //                             "Default cooldown (in seconds) between each target during an overload cycle. Overridden if AutoAdapt mode is enabled. IMPORTANT: Only goes from 0s to 10s",
+        //                             new AcceptableValueRange<float>(0f, 10f)
+        //                         ));
 
-        killSwitchLvl = Config.Bind("MalumMenu.Overload",
-                                "DefaultKillSwitchLevel",
-                                1,
-                                new ConfigDescription(
-                                    "Default level used by kill switch. Each level adds 500 ms to the max allowed ping before overload stops. Helps avoid lagging / disconnects. IMPORTANT: Only goes from level 1 (500 ms) to 6 (3000 ms)",
-                                    new AcceptableValueRange<int>(1, 6)
-                                ));
+        // killSwitchLvl = Config.Bind("MalumMenu.Overload",
+        //                         "DefaultKillSwitchLevel",
+        //                         1,
+        //                         new ConfigDescription(
+        //                             "Default level used by kill switch. Each level adds 500 ms to the max allowed ping before overload stops. Helps avoid lagging / disconnects. IMPORTANT: Only goes from level 1 (500 ms) to 6 (3000 ms)",
+        //                             new AcceptableValueRange<int>(1, 6)
+        //                         ));
 
         // Enabled by default
         CheatToggles.unlockFeatures = true;
@@ -187,10 +187,10 @@ public partial class MalumMenu : BasePlugin
         // UI
         menuUI = AddComponent<MenuUI>();
         consoleUI = AddComponent<ConsoleUI>();
-        overloadUI = AddComponent<OverloadUI>();
         doorsUI = AddComponent<DoorsUI>();
         tasksUI = AddComponent<TasksUI>();
         protectUI = AddComponent<ProtectUI>();
+        // overloadUI = AddComponent<OverloadUI>();
         // rolesUI = AddComponent<RolesUI>();
 
         // Components
