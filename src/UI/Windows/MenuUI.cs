@@ -24,12 +24,12 @@ public class MenuUI : MonoBehaviour
         _tabs.Add(new ShipTab());
         _tabs.Add(new ChatTab());
         _tabs.Add(new AnimationsTab());
-        _tabs.Add(new OverloadTab());
         _tabs.Add(new ConsoleTab());
         _tabs.Add(new HostOnlyTab());
         _tabs.Add(new PassiveTab());
         _tabs.Add(new ModesTab());
         _tabs.Add(new ConfigTab());
+        // _tabs.Add(new OverloadTab());
 
         // Instantiate 2D area of MenuUI
         _windowRect = new(
