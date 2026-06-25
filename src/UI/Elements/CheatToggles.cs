@@ -81,6 +81,7 @@ public struct CheatToggles
     public static bool unfixableLights;
     public static bool callMeeting;
     public static bool reportBody;
+    public static bool autoReportBodies;
 
     // Sabotage
     public static bool commsSab;
