@@ -175,6 +175,36 @@ public struct CheatToggles
     public static bool loadProfile;
     public static bool saveProfile;
 
+    private static bool _autoLoadConfig = PlayerPrefs.GetInt("Malum_AutoLoadConfig", 0) == 1;
+    public static bool autoLoadConfig
+    {
+        get => _autoLoadConfig;
+        set
+        {
+            if (_autoLoadConfig != value)
+            {
+                _autoLoadConfig = value;
+                PlayerPrefs.SetInt("Malum_AutoLoadConfig", value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    private static int _autoLoadSlotIndex = PlayerPrefs.GetInt("Malum_AutoLoadSlot", 0);
+    public static int autoLoadSlotIndex
+    {
+        get => _autoLoadSlotIndex;
+        set
+        {
+            if (_autoLoadSlotIndex != value)
+            {
+                _autoLoadSlotIndex = value;
+                PlayerPrefs.SetInt("Malum_AutoLoadSlot", value);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
     // Keybind Map: Toggle Name -> KeyCode (KeyCode.None == No Key)
     public static readonly Dictionary<string, KeyCode> Keybinds = new();
 
@@ -324,6 +354,17 @@ public struct CheatToggles
             }
 
             Keybinds[name] = key;
+        }
+    }
+
+    //execute the auto load on startup
+    public static void ExecuteAutoLoad()
+    {
+        if (autoLoadConfig)
+        {
+            string[] profileSlots = { "1", "2", "3" };
+            int safeIndex = Mathf.Clamp(autoLoadSlotIndex, 0, profileSlots.Length - 1);
+            LoadTogglesFromProfile(profileSlots[safeIndex]);
         }
     }
 }
