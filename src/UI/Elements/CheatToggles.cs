@@ -10,6 +10,7 @@ public struct CheatToggles
 {
     // Movement
     public static bool noClip;
+    public static bool showRoomsMenu;
     public static bool teleportPlayer;
     public static bool teleportCursor;
     public static bool invertControls;
