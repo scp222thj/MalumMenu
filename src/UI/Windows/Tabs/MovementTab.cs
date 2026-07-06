@@ -47,6 +47,8 @@ public class MovementTab : ITab
     {
         GUILayout.Label("Teleport", GUIStylePreset.TabSubtitle);
 
+        CheatToggles.showRoomsMenu = GUILayout.Toggle(CheatToggles.showRoomsMenu, " Show Rooms Menu");
+
         CheatToggles.teleportCursor = GUILayout.Toggle(CheatToggles.teleportCursor, " to Cursor");
 
         CheatToggles.teleportPlayer = GUILayout.Toggle(CheatToggles.teleportPlayer, " to Player");
