@@ -20,6 +20,7 @@ public static class PlayerPhysics_LateUpdate
         MalumCheats.ForceStartGameCheat();
         MalumCheats.TeleportCursorCheat();
         MalumCheats.CompleteMyTasksCheat();
+        MalumCheats.SpamCompleteTaskCheat();
         MalumCheats.PlayAnimationCheat();
         MalumCheats.PlayScannerCheat();
 

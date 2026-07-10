@@ -132,6 +132,8 @@ public class TasksUI : MonoBehaviour
             CheatToggles.completeMyTasks = true;
         }
 
+        CheatToggles.spamCompleteTask = GUILayout.Toggle(CheatToggles.spamCompleteTask, "Spam Complete Task", GUIStylePreset.NormalButton);
+
         GUILayout.EndVertical();
 
         GUI.DragWindow();
