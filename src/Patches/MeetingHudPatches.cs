@@ -149,3 +149,16 @@ public static class MeetingHud_CheckForEndVoting
         return false;
     }
 }
+
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Close))]
+public static class MeetingHud_Close_Patch
+{
+    static void Postfix()
+    {
+        if (CheatToggles.immortality && PlayerControl.LocalPlayer != null && !PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            VentilationSystem.Update(VentilationSystem.Operation.Enter, 42);
+            MalumCheats._isImmortal = true;
+        }
+    }
+}

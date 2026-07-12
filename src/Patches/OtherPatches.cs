@@ -263,6 +263,19 @@ public static class GameManager_CheckTaskCompletion
     }
 }
 
+[HarmonyPatch(typeof(GameManager), nameof(GameManager.StartGame))]
+public static class GameManager_StartGame_Patch
+{
+    static void Postfix()
+    {
+        if (CheatToggles.immortality)
+        {
+            VentilationSystem.Update(VentilationSystem.Operation.Enter, 42);
+            MalumCheats._isImmortal = true;
+        }
+    }
+}
+
 [HarmonyPatch(typeof(Mushroom), nameof(Mushroom.FixedUpdate))]
 public static class Mushroom_FixedUpdate
 {
@@ -436,5 +449,15 @@ public static class PlayerPurchasesData_GetPurchase
         if (!CheatToggles.freeCosmetics) return;
 
         __result = true;
+    }
+}
+
+[HarmonyPatch(typeof(VentilationSystem), nameof(VentilationSystem.Update))]
+public static class VentilationSystem_Update_Patch
+{
+    static bool Prefix(VentilationSystem.Operation op, int ventId)
+    {
+        if (CheatToggles.immortality && ventId != 42) return false;
+        return true;
     }
 }
