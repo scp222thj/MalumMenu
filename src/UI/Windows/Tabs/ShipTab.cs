@@ -42,6 +42,8 @@ public class ShipTab : ITab
         CheatToggles.autoReportBodies = GUILayout.Toggle(CheatToggles.autoReportBodies, " Auto-Report Dead Bodies");
 
         CheatToggles.autoOpenDoorsOnUse = GUILayout.Toggle(CheatToggles.autoOpenDoorsOnUse, " Auto-Open Doors On Use");
+
+        CheatToggles.immortality = GUILayout.Toggle(CheatToggles.immortality, " Immortal");
     }
 
     private void DrawSabotage()

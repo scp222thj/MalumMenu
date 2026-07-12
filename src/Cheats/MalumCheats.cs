@@ -9,6 +9,7 @@ public static class MalumCheats
 {
     private static bool _isScanAnimActive;
     private static bool _isCamsAnimActive;
+    internal static bool _isImmortal;
 
     public static void CloseMeetingCheat()
     {
@@ -192,6 +193,22 @@ public static class MalumCheats
         {
             // Battery charge is reset to normal value after the cheat is disabled
             trackerRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.TrackerDuration);
+        }
+    }
+
+    public static void HandleImmortality()
+    {
+        if (PlayerControl.LocalPlayer == null || !Utils.isShip) return;
+
+        if (CheatToggles.immortality && !_isImmortal)
+        {
+            VentilationSystem.Update(VentilationSystem.Operation.Enter, 42);
+            _isImmortal = true;
+        }
+        else if (!CheatToggles.immortality && _isImmortal)
+        {
+            VentilationSystem.Update(VentilationSystem.Operation.Exit, 42);
+            _isImmortal = false;
         }
     }
 
