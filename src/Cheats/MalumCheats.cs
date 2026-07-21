@@ -3,8 +3,11 @@ using AmongUs.GameOptions;
 using AmongUs.InnerNet.GameDataMessages;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Hazel;
+using InnerNet;
 
 namespace MalumMenu;
+
 public static class MalumCheats
 {
     private static bool _isScanAnimActive;
@@ -16,7 +19,6 @@ public static class MalumCheats
 
         if (Utils.isMeeting) // Closes MeetingHud window if it's open
         {
-
             // Destroy MeetingHud window gameobject
             MeetingHud.Instance.DespawnOnDestroy = false;
             Object.Destroy(MeetingHud.Instance.gameObject);
@@ -29,7 +31,6 @@ public static class MalumCheats
             DestroyableSingleton<HudManager>.Instance.SetMapButtonEnabled(true);
             DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
             ControllerManager.Instance.CloseAndResetAll();
-
         }
         else if (ExileController.Instance) // Ends exile cutscene if it's playing
         {
@@ -96,6 +97,64 @@ public static class MalumCheats
         }
     }
 
+    public static void BanEveryoneCheat()
+    {
+        if (!CheatToggles.BanEveryone) return;
+
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        writer.Write((ushort)0);
+        writer.Write((byte)VentilationSystem.Operation.Enter);
+        writer.Write((byte)0);
+
+        BatchedMessage batch = new BatchedMessage();
+        batch.QueueUpdateSystem(PlayerControl.LocalPlayer, SystemTypes.Ventilation, writer);
+        batch.FinishBatch();
+
+        writer.Recycle();
+
+        foreach (PlayerControl player in PlayerControl.AllPlayerControls)
+        {
+            if (player == null || player == PlayerControl.LocalPlayer || player.OwnerId == AmongUsClient.Instance.HostId) continue;
+
+            BanPlayer(player, true);
+        }
+
+        CheatToggles.BanEveryone = false;
+    }
+
+    public static void BanPlayer(PlayerControl player, bool force = true)
+    {
+        if (player == null || player.OwnerId == AmongUsClient.Instance.HostId)
+        {
+            return;
+        }
+
+        if (ShipStatus.Instance == null)
+        {
+            return;
+        }
+
+        BatchedMessage batch = new BatchedMessage(player.OwnerId);
+
+        MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+        writer.Write((ushort)0);
+        writer.Write((byte)VentilationSystem.Operation.Enter);
+        writer.Write((byte)0);
+
+        batch.QueueUpdateSystem(PlayerControl.LocalPlayer, SystemTypes.Ventilation, writer);
+        writer.Recycle();
+
+        MessageWriter writer2 = MessageWriter.Get(SendOption.Reliable);
+        writer2.Write((ushort)1);
+        writer2.Write((byte)VentilationSystem.Operation.BootImpostors);
+        writer2.Write((byte)0);
+
+        batch.QueueUpdateSystem(PlayerControl.LocalPlayer, SystemTypes.Ventilation, writer2);
+        writer2.Recycle();
+
+        batch.FinishBatch();
+    }
+
     public static void OpenSabotageMapCheat()
     {
         if (!CheatToggles.sabotageMap) return;
@@ -144,7 +203,6 @@ public static class MalumCheats
         {
             // Shapeshift duration is reset to normal value after the cheat is disabled
             shapeshifterRole.durationSecondsRemaining = GameManager.Instance.LogicOptions.GetRoleFloat(FloatOptionNames.ShapeshifterDuration);
-
         }
     }
 
@@ -200,16 +258,15 @@ public static class MalumCheats
         // try-catch to prevent errors when role is null
         try
         {
+            // Engineers & Impostors don't need this cheat so it is disabled for them
+            // Ghost venting causes issues so it is also disabled
 
-			// Engineers & Impostors don't need this cheat so it is disabled for them
-			// Ghost venting causes issues so it is also disabled
-
-			if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead)
+            if (!PlayerControl.LocalPlayer.Data.Role.CanVent && !PlayerControl.LocalPlayer.Data.IsDead)
             {
-				hudManager.ImpostorVentButton.gameObject.SetActive(CheatToggles.unlockVents);
-			}
-
-        } catch { }
+                hudManager.ImpostorVentButton.gameObject.SetActive(CheatToggles.unlockVents);
+            }
+        }
+        catch { }
     }
 
     public static void WalkInVentCheat()
@@ -220,15 +277,15 @@ public static class MalumCheats
 
             PlayerControl.LocalPlayer.inVent = false;
             PlayerControl.LocalPlayer.moveable = true;
-
-        } catch { }
+        }
+        catch { }
     }
 
     public static void KickVentsCheat()
     {
         if (!CheatToggles.kickVents) return;
 
-        foreach(var vent in ShipStatus.Instance.AllVents)
+        foreach (var vent in ShipStatus.Instance.AllVents)
         {
             VentilationSystem.Update(VentilationSystem.Operation.BootImpostors, vent.Id);
         }
@@ -332,10 +389,9 @@ public static class MalumCheats
     {
         try
         {
-
             PlayerControl.LocalPlayer.Collider.enabled = !(CheatToggles.noClip || PlayerControl.LocalPlayer.onLadder);
-
-        } catch { }
+        }
+        catch { }
     }
 
     public static void PlayScannerCheat()
@@ -434,5 +490,47 @@ public static class MalumCheats
 
         _isCamsAnimActive = false;
         _isScanAnimActive = false;
+    }
+}
+
+public class BatchedMessage
+{
+    private MessageWriter writer;
+    private int targetClientId;
+
+    public BatchedMessage(int targetClientId = -1)
+    {
+        writer = MessageWriter.Get(SendOption.Reliable);
+
+        this.targetClientId = targetClientId;
+        if (targetClientId == -1)
+        {
+            writer.StartMessage((byte)InnerNet.Tags.GameData);
+            writer.Write(AmongUsClient.Instance.GameId);
+        }
+        else
+        {
+            writer.StartMessage((byte)InnerNet.Tags.GameDataTo);
+            writer.Write(AmongUsClient.Instance.GameId);
+            writer.WritePacked(targetClientId);
+        }
+    }
+
+    public void FinishBatch()
+    {
+        writer.EndMessage();
+        AmongUsClient.Instance.SendOrDisconnect(writer);
+        writer.Recycle();
+    }
+
+    public void QueueUpdateSystem(PlayerControl source, SystemTypes system, MessageWriter msg)
+    {
+        writer.StartMessage((byte)GameDataTypes.RpcFlag);
+        writer.WritePacked(ShipStatus.Instance.NetId);
+        writer.Write((byte)RpcCalls.UpdateSystem);
+        writer.Write((byte)system);
+        writer.WriteNetObject(source);
+        writer.Write(msg, false);
+        writer.EndMessage();
     }
 }
