@@ -1,29 +1,16 @@
-using AmongUs.Data;
-
 namespace MalumMenu;
 public static class MalumSpoof
 {
     public static void SpoofLevel()
     {
-        // Parse Spoofing.Level config entry and turn it into a uint
+        if (!SpoofingService.EnableLevelSpoof) return;
+
         if (!string.IsNullOrEmpty(MalumMenu.spoofLevel.Value) &&
-            uint.TryParse(MalumMenu.spoofLevel.Value, out uint parsedLevel) &&
-            parsedLevel != DataManager.Player.Stats.Level)
+            uint.TryParse(MalumMenu.spoofLevel.Value, out uint parsedLevel))
         {
-
-            // Store the spoofed level using DataManager
-            DataManager.Player.stats.level = parsedLevel - 1;
-            DataManager.Player.Save();
+            SpoofingService.SpoofedLevel = parsedLevel;
         }
-    }
 
-    public static string SpoofFriendCode()
-    {
-        string friendCode = MalumMenu.guestFriendCode.Value;
-        if (string.IsNullOrWhiteSpace(friendCode))
-        {
-            friendCode = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
-        }
-        return friendCode;
+        SpoofingService.ApplyLevelSpoof();
     }
 }

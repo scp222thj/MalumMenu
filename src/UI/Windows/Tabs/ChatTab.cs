@@ -26,6 +26,8 @@ public class ChatTab : ITab
         CheatToggles.bypassUrlBlock = GUILayout.Toggle(CheatToggles.bypassUrlBlock, " Bypass URL Block");
 
         CheatToggles.lowerRateLimits = GUILayout.Toggle(CheatToggles.lowerRateLimits, " Lower Rate Limits");
+
+        CheatToggles.chatDarkMode = GUILayout.Toggle(CheatToggles.chatDarkMode, " Dark Mode Chat");
     }
 
     private void DrawTextbox()

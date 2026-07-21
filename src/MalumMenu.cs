@@ -41,6 +41,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<bool> menuKeepSubwindowsOpen;
     public static ConfigEntry<string> spoofLevel;
     public static ConfigEntry<string> spoofPlatform;
+    public static ConfigEntry<string> spoofFriendCode;
     public static ConfigEntry<bool> spoofDeviceId;
     public static ConfigEntry<bool> noTelemetry;
     public static ConfigEntry<string> guestFriendCode;
@@ -112,6 +113,11 @@ public partial class MalumMenu : BasePlugin
                                 "",
                                 "A custom gaming platform to display to others in online lobbies to hide your actual platform. List of supported platforms: https://skeld.js.org/enums/_skeldjs_constant.Platform.html");
 
+        spoofFriendCode = Config.Bind("MalumMenu.Spoofing",
+                                "FriendCode",
+                                "",
+                                "A custom friend code to display to others. Leave empty to generate a random one.");
+
         spoofDeviceId = Config.Bind("MalumMenu.Privacy",
                                 "HideDeviceId",
                                 true,
@@ -166,6 +172,10 @@ public partial class MalumMenu : BasePlugin
         //                             "Default level used by kill switch. Each level adds 500 ms to the max allowed ping before overload stops. Helps avoid lagging / disconnects. IMPORTANT: Only goes from level 1 (500 ms) to 6 (3000 ms)",
         //                             new AcceptableValueRange<int>(1, 6)
         //                         ));
+
+        // Initialize configs
+        CheatConfig.Initialize(Config);
+        MiscConfig.Initialize(Config);
 
         // Enabled by default
         CheatToggles.unlockFeatures = true;

@@ -74,6 +74,7 @@ public struct CheatToggles
     public static bool longerMessages;
     public static bool unlockClipboard;
     public static bool lowerRateLimits;
+    public static bool chatDarkMode;
 
     // Ship
     public static bool closeMeeting;
@@ -163,6 +164,51 @@ public struct CheatToggles
     public static bool avoidPenalties;
     public static bool copyLobbyCodeOnDisconnect;
     public static bool spoofAprilFoolsDate;
+
+    // Spoofing
+    public static bool spoofLevel;
+    public static bool spoofPlatform;
+    public static bool spoofFriendCode;
+    public static bool shuffleColor;
+    public static bool shuffleCosmetics;
+
+    // Gameplay
+    public static bool allowVenting;
+    public static bool impostorCanDoTasks;
+    public static bool immortality;
+
+    // Animations (looping)
+    public static bool loopIdle;
+    public static bool loopRun;
+    public static bool loopClimbUp;
+    public static bool loopClimbDown;
+    public static bool loopEnterVent;
+    public static bool loopExitVent;
+    public static bool loopJump;
+    public static bool loopSpawn;
+    public static bool loopGhostIdle;
+    public static bool loopGuardianAngelIdle;
+    public static bool loopShapeshift;
+    public static bool loopVanish;
+    public static bool loopAppear;
+    public static bool loopProtectFlash;
+    public static bool loopProtectLoop;
+    public static bool loopPetIdle;
+    public static bool loopPetWalk;
+    public static bool loopPetScared;
+    public static bool loopPetMourn;
+    public static bool loopPetSequence;
+    public static bool loopSkinIdle;
+    public static bool loopSkinJump;
+    public static bool loopSkinClimbUp;
+    public static bool loopSkinClimbDown;
+    public static bool loopSkinSpawn;
+    public static bool loopSkinGhost;
+    public static bool loopHatClimb;
+    public static bool loopHatFloor;
+    public static bool loopAlertFlash;
+    public static bool loopKillBlur;
+    public static bool loopParticleBurst;
 
     // Modes
     public static bool rgbMode;
