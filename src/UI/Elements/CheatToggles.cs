@@ -11,7 +11,6 @@ public struct CheatToggles
 
     // Exploits
     public static bool BanEveryone;
-    public static bool BanPlayer;
     
     // Movement
     public static bool noClip;
