@@ -8,7 +8,7 @@ public class MenuUI : MonoBehaviour
 {
     public static int windowHeight = 550;
     public static int windowWidth = 700;
-    private Rect _windowRect;
+    public static Rect WindowRect;
 
     public static bool isGUIActive = false;
     private List<ITab> _tabs = new();
@@ -32,7 +32,7 @@ public class MenuUI : MonoBehaviour
         // _tabs.Add(new OverloadTab());
 
         // Instantiate 2D area of MenuUI
-        _windowRect = new(
+        WindowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
             windowWidth,
@@ -57,7 +57,7 @@ public class MenuUI : MonoBehaviour
             {
                 // Teleport the window to the mouse for immediate use
                 Vector2 mousePosition = Input.mousePosition;
-                _windowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
+                WindowRect.position = new Vector2(mousePosition.x, Screen.height - mousePosition.y);
             }
         }
 
@@ -188,7 +188,7 @@ public class MenuUI : MonoBehaviour
 
         UIHelpers.ApplyUIColor();
 
-        _windowRect = GUI.Window((int)WindowId.MenuUI, _windowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
+        WindowRect = GUI.Window((int)WindowId.MenuUI, WindowRect, (GUI.WindowFunction)WindowFunction, "MalumMenu v" + MalumMenu.malumVersion);
     }
 
     public void WindowFunction(int windowID)

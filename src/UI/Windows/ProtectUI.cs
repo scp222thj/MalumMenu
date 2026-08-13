@@ -7,7 +7,7 @@ public class ProtectUI : MonoBehaviour
 {
     public static int windowHeight = 300;
     public static int windowWidth = 500;
-    private Rect _windowRect;
+    public static Rect WindowRect;
 
     private Vector2 _scrollPosition = Vector2.zero;
     public static List<PlayerControl> playersToProtect = new();
@@ -16,7 +16,7 @@ public class ProtectUI : MonoBehaviour
     private void Start()
     {
         // Instantiate 2D area of ProtectUI
-        _windowRect = new(
+        WindowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
             windowWidth,
@@ -30,7 +30,7 @@ public class ProtectUI : MonoBehaviour
 
         UIHelpers.ApplyUIColor();
 
-        _windowRect = GUI.Window((int)WindowId.ProtectUI, _windowRect, (GUI.WindowFunction)ProtectWindow, "Protect Players");
+        WindowRect = GUI.Window((int)WindowId.ProtectUI, WindowRect, (GUI.WindowFunction)ProtectWindow, "Protect Players");
     }
 
     private void ProtectWindow(int windowID)

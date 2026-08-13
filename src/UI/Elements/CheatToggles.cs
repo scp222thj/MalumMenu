@@ -163,6 +163,7 @@ public struct CheatToggles
     public static bool avoidPenalties;
     public static bool copyLobbyCodeOnDisconnect;
     public static bool spoofAprilFoolsDate;
+    public static bool clickThroughMenu;
 
     // Modes
     public static bool rgbMode;

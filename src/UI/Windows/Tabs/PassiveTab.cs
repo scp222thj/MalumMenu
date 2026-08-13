@@ -26,5 +26,7 @@ public class PassiveTab : ITab
         CheatToggles.copyLobbyCodeOnDisconnect = GUILayout.Toggle(CheatToggles.copyLobbyCodeOnDisconnect, " Copy Lobby Code on Disconnect");
 
         CheatToggles.spoofAprilFoolsDate = GUILayout.Toggle(CheatToggles.spoofAprilFoolsDate, " Spoof Date to April 1st");
+
+        CheatToggles.clickThroughMenu = GUILayout.Toggle(CheatToggles.clickThroughMenu, " Allow clicks through menu");
     }
 }

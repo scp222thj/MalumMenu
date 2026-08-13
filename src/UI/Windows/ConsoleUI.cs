@@ -8,7 +8,7 @@ public class ConsoleUI : MonoBehaviour
 {
     public static int windowHeight = 350;
     public static int windowWidth = 550;
-    private Rect _windowRect;
+    public static Rect WindowRect;
 
     private GUIStyle _logStyle;
     private static Vector2 _scrollPosition = Vector2.zero;
@@ -18,7 +18,7 @@ public class ConsoleUI : MonoBehaviour
     private void Start()
     {
         // Instantiate 2D area of ConsoleUI
-        _windowRect = new(
+        WindowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
             windowWidth,
@@ -37,7 +37,7 @@ public class ConsoleUI : MonoBehaviour
 
         UIHelpers.ApplyUIColor();
 
-        _windowRect = GUI.Window((int)WindowId.ConsoleUI, _windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
+        WindowRect = GUI.Window((int)WindowId.ConsoleUI, WindowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
     }
 
     private void ConsoleWindow(int windowID)

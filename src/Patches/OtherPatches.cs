@@ -438,3 +438,34 @@ public static class PlayerPurchasesData_GetPurchase
         __result = true;
     }
 }
+
+[HarmonyPatch]
+public static class PassiveUiElementPatches
+{
+    // Patch everything that inherits from PassiveUiElement to prevent clicks from going through Malum's UI
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveClickDown))]
+    [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveClickUp))]
+    [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveMouseOver))]
+    [HarmonyPatch(typeof(GameOptionButton), nameof(GameOptionButton.ReceiveClickDown))]
+    [HarmonyPatch(typeof(GameOptionButton), nameof(GameOptionButton.ReceiveClickUp))]
+    [HarmonyPatch(typeof(GameOptionButton), nameof(GameOptionButton.ReceiveMouseOver))]
+    [HarmonyPatch(typeof(SlideBar), nameof(SlideBar.ReceiveClickDrag))]
+    [HarmonyPatch(typeof(Scrollbar), nameof(Scrollbar.ReceiveClickDrag))]
+    [HarmonyPatch(typeof(Scroller), nameof(Scroller.UpdateScrollBars))]
+    public static bool Prefix()
+    {
+        if (CheatToggles.clickThroughMenu) return true;
+
+        // Input.mousePosition has a bottom-left origin, Rect.Contains() uses GUI coordinates (top-left origin)
+        Vector2 mousePosition = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+
+        return !((MenuUI.isGUIActive && MenuUI.WindowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showConsole && ConsoleUI.WindowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showDoorsMenu && DoorsUI.WindowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showOverload && OverloadUI.WindowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showProtectMenu && ProtectUI.WindowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showRolesMenu && RolesUI.WindowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showTasksMenu && TasksUI.WindowRect.Contains(mousePosition)));
+    }
+}
