@@ -261,6 +261,18 @@ public static class Utils
         }
     }
 
+    public static string GetRpcName(byte callId)
+    {
+        string rpcName;
+
+        if ((rpcName = Enum.GetName(typeof(RpcCalls), callId)) == null)
+        {
+            rpcName = callId.ToString();
+        }
+
+        return rpcName;
+    }
+
     // Returns the max number of nested RPCs that can be in a GameData message
     // without getting kicked by AC
     public static int GetMaxRpcPackingLimit()

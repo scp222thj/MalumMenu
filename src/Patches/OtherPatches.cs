@@ -7,6 +7,7 @@ using System;
 using System.Security.Cryptography;
 using InnerNet;
 using System.Collections.Generic;
+using Hazel;
 
 namespace MalumMenu;
 
@@ -246,6 +247,51 @@ public static class InnerNetClient_JoinGame
         {
             DataManager.Player.Account.LoginStatus = EOSManager.AccountLoginStatus.LoggedIn;
         }
+    }
+}
+
+[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.StartRpcImmediately))]
+public static class InnerNetClient_StartRpcImmediately
+{
+    public static void Postfix(uint targetNetId, byte callId, SendOption option, int targetClientId = -1)
+    {
+        if (!CheatToggles.logOutgoingRPCs) return;
+
+        string senderText;
+
+        // Sometimes the InnerNetObject is not a PlayerControl
+        var senderObject = AmongUsClient.Instance.FindObjectByNetId<InnerNetObject>(targetNetId);
+        var sender = senderObject.TryCast<PlayerControl>();
+
+        if (sender == null || sender.Data == null)
+        {
+            senderText = $"{targetNetId}";
+        }
+        else
+        {
+            var senderName = sender.Data.PlayerName;
+            var senderColorHex = ColorUtility.ToHtmlStringRGB(sender.Data.Color);
+            senderText = $"<color=#{senderColorHex}>{senderName}</color>";
+        }
+
+        string receiverText;
+        var targetPlayerData = AmongUsClient.Instance.GetClient(targetClientId);
+        if (targetClientId == -1)
+        {
+            receiverText = "all clients";
+        }
+        else if (targetPlayerData == null || targetPlayerData.Character == null || targetPlayerData.Character.Data == null)
+        {
+            receiverText = $"{targetClientId}";
+        }
+        else
+        {
+            var targetPlayerName = targetPlayerData.Character.Data.PlayerName;
+            var targetPlayerColorHex = ColorUtility.ToHtmlStringRGB(targetPlayerData.Character.Data.Color);
+            receiverText = $"<color=#{targetPlayerColorHex}>{targetPlayerName}</color>";
+        }
+
+        ConsoleUI.Log($"Starting RPC: <color=#ff0000>{Utils.GetRpcName(callId)}</color> as {senderText} with SendOption <color=#0000ff>{option}</color> to {receiverText}");
     }
 }
 

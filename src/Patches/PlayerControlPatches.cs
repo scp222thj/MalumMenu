@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Hazel;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -161,5 +162,29 @@ public static class PlayerControl_RpcSyncSettings
     public static bool Prefix(PlayerControl __instance, byte[] optionsByteArray)
     {
         return !CheatToggles.noOptionsLimits;
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
+public static class PlayerControl_HandleRpc
+{
+    public static void Postfix(PlayerControl __instance, byte callId, MessageReader reader)
+    {
+        if (!CheatToggles.logIncomingRPCs) return;
+
+        if (__instance == null || __instance.Data == null)
+        {
+            ConsoleUI.Log($"Received RPC from unknown player: <color=#ff0000>{Utils.GetRpcName(callId)}</color>");
+            return;
+        }
+
+        var isSenderHost = __instance.Data.ClientId == AmongUsClient.Instance.HostId;
+        var senderName = __instance.Data.PlayerName;
+        var senderColorHex = ColorUtility.ToHtmlStringRGB(__instance.Data.Color);
+
+        ConsoleUI.Log($"Received RPC from " +
+                      $"{(isSenderHost ? $"<color=#{senderColorHex}>{senderName}</color> (Host)" :
+                          $"<color=#{senderColorHex}>{senderName}</color>")}" +
+                      $": <color=#ff0000>{Utils.GetRpcName(callId)}</color>");
     }
 }
