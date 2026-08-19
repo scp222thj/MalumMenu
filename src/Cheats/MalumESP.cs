@@ -22,10 +22,10 @@ public static class MalumESP
 
     public static bool IsFullbrightActive()
     {
-        // Fullbright is automatically activated when zooming out, spectating other players, or "freecamming"
+        // Fullbright is automatically activated when being a ghost, zooming out, spectating other players, or "freecamming"
         // This is done to avoid issues with shadows
 
-        return CheatToggles.noShadows || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
+        return CheatToggles.noShadows || (PlayerControl.LocalPlayer?.Data && PlayerControl.LocalPlayer.Data.IsDead) || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
     }
 
     public static void ZoomOut(HudManager hudManager)
