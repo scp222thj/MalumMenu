@@ -81,6 +81,8 @@ public class MenuUI : MonoBehaviour
 
         if (CheatToggles.panicMode) Utils.Panic();
 
+        MalumMenu.ApplyConsoleVisibility();
+
         var stamp = ModManager.Instance.ModStamp;
         if (stamp) stamp.enabled = !(MalumMenu.inStealthMode || MalumMenu.isPanicked);
 

@@ -228,4 +228,24 @@ public partial class MalumMenu : BasePlugin
             }
         }));
     }
+
+    // Shows or hides the BepInEx console window based on the hideBepInExConsole cheat toggle
+    public static void ApplyConsoleVisibility()
+    {
+        try
+        {
+            if (!CheatToggles.hideBepInExConsole && !ConsoleManager.ConsoleActive)
+            {
+                ConsoleManager.CreateConsole();
+            }
+            else if (CheatToggles.hideBepInExConsole && ConsoleManager.ConsoleActive)
+            {
+                ConsoleManager.DetachConsole();
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.LogWarning($"Could not apply console visibility: {ex.Message}");
+        }
+    }
 }

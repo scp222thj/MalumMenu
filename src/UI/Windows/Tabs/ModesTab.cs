@@ -22,5 +22,7 @@ public class ModesTab : ITab
         CheatToggles.stealthMode = GUILayout.Toggle(CheatToggles.stealthMode, " Stealth Mode");
 
         CheatToggles.panicMode = GUILayout.Toggle(CheatToggles.panicMode, " Panic Mode");
+
+        CheatToggles.hideBepInExConsole = GUILayout.Toggle(CheatToggles.hideBepInExConsole, " Hide Console");
     }
 }
