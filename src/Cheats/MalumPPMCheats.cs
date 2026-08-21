@@ -288,6 +288,7 @@ public static class MalumPPMCheats
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Engineer", OutfitPreset.Engineer, Utils.GetBehaviourByRoleType(RoleTypes.Engineer)));
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Scientist", OutfitPreset.Scientist, Utils.GetBehaviourByRoleType(RoleTypes.Scientist)));
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Detective", OutfitPreset.Detective, Utils.GetBehaviourByRoleType(RoleTypes.Detective)));
+                playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Judge", OutfitPreset.Judge, Utils.GetBehaviourByRoleType(RoleTypes.Judge)));
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.GetBehaviourByRoleType(RoleTypes.Crewmate)));
 
                 // Player pick menu made for changing your roles with a custom choice list
