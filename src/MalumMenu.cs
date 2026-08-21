@@ -34,6 +34,7 @@ public partial class MalumMenu : BasePlugin
     public static List<string> supportedAU = new List<string> { "2026.8.18", "2026.6.5", "2026.3.31" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
+    public static bool hideConsoleWindow = true;
 
     public static ConfigEntry<string> menuKeybind;
     public static ConfigEntry<string> menuHtmlColor;
@@ -58,6 +59,8 @@ public partial class MalumMenu : BasePlugin
     {
         Log = base.Log;
         Plugin = this;
+
+        ApplyConsoleVisibility();
 
         // Loads config settings
         menuKeybind = Config.Bind("MalumMenu.GUI",
@@ -227,5 +230,25 @@ public partial class MalumMenu : BasePlugin
                 }
             }
         }));
+    }
+
+    // Shows or hides the console window based on hideConsoleWindow
+    public static void ApplyConsoleVisibility()
+    {
+        try
+        {
+            if (!hideConsoleWindow && !ConsoleManager.ConsoleActive)
+            {
+                ConsoleManager.CreateConsole();
+            }
+            else if (hideConsoleWindow && ConsoleManager.ConsoleActive)
+            {
+                ConsoleManager.DetachConsole();
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.LogWarning($"Could not apply console visibility: {ex.Message}");
+        }
     }
 }
