@@ -7,6 +7,7 @@ namespace MalumMenu;
 public static class MatchInfoGuide_Open
 {
     // Prefix patch of MatchInfoGuide.Open to recreate player entries each time MatchInfo opens
+    // Without this, entries are only created on the first open, making player names difficult to update afterward
     public static void Prefix(MatchInfoGuide __instance)
     {
         if (__instance.NormalModeSettings.Count > 0 || __instance.HnSModeSettings.Count > 0) // If not the first open...
@@ -35,7 +36,8 @@ public static class MatchInfoGuide_CreatePlayerEntries
 
             component.NameText.text = Utils.GetNameTag(networkedPlayerInfo, networkedPlayerInfo.PlayerName, false, true);
 
-            // Shift text position on first open to improve readability
+            // Adjust the text position to improve readability
+            // Always start from the original anchoredPosition to prevent cumulative shifting on each open
             if (_anchoredPosition == Vector2.zero)
             {
                 _anchoredPosition = component.NameText.rectTransform.anchoredPosition;
