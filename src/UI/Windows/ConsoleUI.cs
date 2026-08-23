@@ -6,8 +6,8 @@ namespace MalumMenu;
 
 public class ConsoleUI : MonoBehaviour
 {
-    public static int windowHeight = 350;
-    public static int windowWidth = 550;
+    public static int windowHeight = 380;
+    public static int windowWidth = 600;
     public static Rect WindowRect;
 
     private GUIStyle _logStyle;
@@ -32,7 +32,7 @@ public class ConsoleUI : MonoBehaviour
 
         _logStyle ??= new GUIStyle(GUI.skin.label)
         {
-            fontSize = 16
+            fontSize = 15
         };
 
         UIHelpers.ApplyUIColor();
@@ -57,7 +57,7 @@ public class ConsoleUI : MonoBehaviour
 
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Clear Log", GUILayout.Width(260)))
+        if (GUILayout.Button("Clear Log", GUILayout.Width(285)))
         {
             _logEntries.Clear();
         }
@@ -79,7 +79,9 @@ public class ConsoleUI : MonoBehaviour
             _logEntries.RemoveAt(0); // Remove the oldest log entry
         }
 
-        _logEntries.Add(message);
+        var currentTime = DateTime.Now.ToString("HH:mm:ss");
+
+        _logEntries.Add($"<b>[ {currentTime} ]  {message}</b>");
 
         // Scroll to the bottom
         _scrollPosition.y = float.MaxValue;
