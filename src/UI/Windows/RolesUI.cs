@@ -6,14 +6,14 @@ public class RolesUI : MonoBehaviour
 {
     public static int windowHeight = 100;
     public static int windowWidth = 450;
-    public static Rect WindowRect;
+    public static Rect windowRect;
 
     private Vector2 _scrollPosition = Vector2.zero;
 
     private void Start()
     {
         // Instantiate 2D area of RolesUI
-        WindowRect = new(
+        windowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
             windowWidth,
@@ -27,7 +27,7 @@ public class RolesUI : MonoBehaviour
 
         UIHelpers.ApplyUIColor();
 
-        WindowRect = GUI.Window((int)WindowId.RolesUI, WindowRect, (GUI.WindowFunction)RolesWindow, "Assign Roles");
+        windowRect = GUI.Window((int)WindowId.RolesUI, windowRect, (GUI.WindowFunction)RolesWindow, "Assign Roles");
     }
 
     private void RolesWindow(int windowID)

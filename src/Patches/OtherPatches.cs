@@ -440,9 +440,8 @@ public static class PlayerPurchasesData_GetPurchase
 }
 
 [HarmonyPatch]
-public static class PassiveUiElementPatches
+public static class PassiveUiElement_Patches
 {
-    // Patch everything that inherits from PassiveUiElement to prevent clicks from going through Malum's UI
     [HarmonyPrefix]
     [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveClickDown))]
     [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveClickUp))]
@@ -453,19 +452,23 @@ public static class PassiveUiElementPatches
     [HarmonyPatch(typeof(SlideBar), nameof(SlideBar.ReceiveClickDrag))]
     [HarmonyPatch(typeof(Scrollbar), nameof(Scrollbar.ReceiveClickDrag))]
     [HarmonyPatch(typeof(Scroller), nameof(Scroller.UpdateScrollBars))]
+
+    // Prefix patch for all classes that inherit from PassiveUiElement to prevent clicks from going through Malum's UI
     public static bool Prefix()
     {
         if (CheatToggles.clickThroughMenu) return true;
 
-        // Input.mousePosition has a bottom-left origin, Rect.Contains() uses GUI coordinates (top-left origin)
+        // Input.mousePosition has a bottom-left origin
+        // Convert it to a top-left origin by flipping the Y coordinate
         Vector2 mousePosition = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
 
-        return !((MenuUI.isGUIActive && MenuUI.WindowRect.Contains(mousePosition)) ||
-                 (CheatToggles.showConsole && ConsoleUI.WindowRect.Contains(mousePosition)) ||
-                 (CheatToggles.showDoorsMenu && DoorsUI.WindowRect.Contains(mousePosition)) ||
-                 (CheatToggles.showOverload && OverloadUI.WindowRect.Contains(mousePosition)) ||
-                 (CheatToggles.showProtectMenu && ProtectUI.WindowRect.Contains(mousePosition)) ||
-                 (CheatToggles.showRolesMenu && RolesUI.WindowRect.Contains(mousePosition)) ||
-                 (CheatToggles.showTasksMenu && TasksUI.WindowRect.Contains(mousePosition)));
+        // Rect.Contains() uses GUI coordinates (top-left origin)
+        return !((MenuUI.isGUIActive && MenuUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showConsole && ConsoleUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showDoorsMenu && DoorsUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showOverload && OverloadUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showProtectMenu && ProtectUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showRolesMenu && RolesUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showTasksMenu && TasksUI.windowRect.Contains(mousePosition)));
     }
 }
