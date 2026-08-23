@@ -417,13 +417,30 @@ public static class BanMenu_SetVisible
 public static class IGameOptionsExtensions_GetAdjustedNumImpostors
 {
     // Prefix patch of IGameOptionsExtensions.GetAdjustedNumImpostors to remove impostor limits
-    public static bool Prefix(IGameOptions __instance, ref int __result)
+    public static bool Prefix(ref int __result)
     {
         if (!CheatToggles.noOptionsLimits) return true;
 
         __result = GameOptionsManager.Instance.CurrentGameOptions.NumImpostors;
 
         return false;
+    }
+}
+
+[HarmonyPatch(typeof(MatchInfoHudButton), nameof(MatchInfoHudButton.Update))]
+public static class MatchInfoHudButton_Update
+{
+    // Prefix patch of MatchInfoHudButton.Update to prevent the MatchInfo and Chat buttons from overlapping
+    public static bool Prefix(MatchInfoHudButton __instance)
+    {
+        if (CheatToggles.enableChat)
+        {
+            __instance.aspectPosition.DistanceFromEdge = MatchInfoHudButton.adjustedDistanceFromEdge;
+
+            return false;
+        }
+
+        return true;
     }
 }
 
