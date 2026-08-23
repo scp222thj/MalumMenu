@@ -31,7 +31,7 @@ public partial class MalumMenu : BasePlugin
     public static KeybindListener keybindListener;
 
     public static string malumVersion = "3.2.0";
-    public static List<string> supportedAU = new List<string> { "2026.6.5", "2026.3.31" };
+    public static List<string> supportedAU = new List<string> { "2026.8.18" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
 
