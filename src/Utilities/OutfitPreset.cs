@@ -40,6 +40,12 @@ public static class OutfitPreset
         SkinId = "skin_rhm"
     };
 
+    public static NetworkedPlayerInfo.PlayerOutfit Judge = new()
+    {
+        ColorId = 10,
+        HatId = "hat_wigJudge",
+    };
+
     public static NetworkedPlayerInfo.PlayerOutfit Noisemaker = new()
     {
         ColorId = 10,
