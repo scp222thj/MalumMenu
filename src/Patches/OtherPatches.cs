@@ -456,7 +456,7 @@ public static class PassiveUiElement_Patches
     // Prefix patch for all classes that inherit from PassiveUiElement to prevent clicks from going through Malum's UI
     public static bool Prefix()
     {
-        if (CheatToggles.clickThroughMenu) return true;
+        if (MalumMenu.menuAllowClickThrough.Value) return true;
 
         // Input.mousePosition has a bottom-left origin
         // Convert it to a top-left origin by flipping the Y coordinate
