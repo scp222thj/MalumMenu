@@ -455,3 +455,37 @@ public static class PlayerPurchasesData_GetPurchase
         __result = true;
     }
 }
+
+[HarmonyPatch]
+public static class PassiveUiElement_Patches
+{
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveClickDown))]
+    [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveClickUp))]
+    [HarmonyPatch(typeof(PassiveButton), nameof(PassiveButton.ReceiveMouseOver))]
+    [HarmonyPatch(typeof(GameOptionButton), nameof(GameOptionButton.ReceiveClickDown))]
+    [HarmonyPatch(typeof(GameOptionButton), nameof(GameOptionButton.ReceiveClickUp))]
+    [HarmonyPatch(typeof(GameOptionButton), nameof(GameOptionButton.ReceiveMouseOver))]
+    [HarmonyPatch(typeof(SlideBar), nameof(SlideBar.ReceiveClickDrag))]
+    [HarmonyPatch(typeof(Scrollbar), nameof(Scrollbar.ReceiveClickDrag))]
+    [HarmonyPatch(typeof(Scroller), nameof(Scroller.UpdateScrollBars))]
+
+    // Prefix patch for all classes that inherit from PassiveUiElement to prevent clicks from going through Malum's UI
+    public static bool Prefix()
+    {
+        if (MalumMenu.menuAllowClickThrough.Value) return true;
+
+        // Input.mousePosition has a bottom-left origin
+        // Convert it to a top-left origin by flipping the Y coordinate
+        Vector2 mousePosition = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+
+        // Rect.Contains() uses GUI coordinates (top-left origin)
+        return !((MenuUI.isGUIActive && MenuUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showConsole && ConsoleUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showDoorsMenu && DoorsUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showOverload && OverloadUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showProtectMenu && ProtectUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showRolesMenu && RolesUI.windowRect.Contains(mousePosition)) ||
+                 (CheatToggles.showTasksMenu && TasksUI.windowRect.Contains(mousePosition)));
+    }
+}
