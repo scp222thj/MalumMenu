@@ -7,7 +7,7 @@ public class TasksUI : MonoBehaviour
 {
     public static int windowHeight = 300;
     public static int windowWidth = 500;
-    private Rect _windowRect;
+    public static Rect windowRect;
 
     private Vector2 _scrollPosition = Vector2.zero;
     private GUIStyle _playerHeaderStyle;
@@ -17,7 +17,7 @@ public class TasksUI : MonoBehaviour
     private void Start()
     {
         // Instantiate 2D area of TasksUI
-        _windowRect = new(
+        windowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
             windowWidth,
@@ -37,7 +37,7 @@ public class TasksUI : MonoBehaviour
 
         UIHelpers.ApplyUIColor();
 
-        _windowRect = GUI.Window((int)WindowId.TasksUI, _windowRect, (GUI.WindowFunction)TasksWindow, "Tasks");
+        windowRect = GUI.Window((int)WindowId.TasksUI, windowRect, (GUI.WindowFunction)TasksWindow, "Tasks");
     }
 
     private void TasksWindow(int windowID)

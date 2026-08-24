@@ -32,8 +32,8 @@ public static class Utils
     public static bool isHost => AmongUsClient.Instance && AmongUsClient.Instance.AmHost;
     public static bool isInGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started && isPlayer;
     public static bool isMeeting => MeetingHud.Instance;
-    public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Voted or MeetingHud.VoteStates.NotVoted;
-    public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.VoteStates.Proceeding;
+    public static bool isMeetingVoting => isMeeting && MeetingHud.Instance.state is MeetingHud.MeetingStates.Voted or MeetingHud.MeetingStates.NotVoted;
+    public static bool isMeetingProceeding => isMeeting && MeetingHud.Instance.state is MeetingHud.MeetingStates.Proceeding;
     public static bool isExiling => ExileController.Instance && !(isAirshipMap && SpawnInMinigame.Instance.isActiveAndEnabled);
     public static bool isAnySabotageActive => ShipStatus.Instance && SabotageSystem.AnyActive;
     public static bool isNormalGame => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.Normal;
@@ -516,7 +516,7 @@ public static class Utils
     }
 
     // Gets the appropriate nametag for a player
-    public static string GetNameTag(NetworkedPlayerInfo playerInfo, string playerName, bool isChat = false)
+    public static string GetNameTag(NetworkedPlayerInfo playerInfo, string playerName, bool isChat = false, bool isMatchInfo = false)
     {
         var nameTag = playerName;
 
@@ -548,12 +548,17 @@ public static class Utils
                     return nameTag;
                 }
 
-                nameTag =
-                    $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{roleColor}><size=70%>{GetRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
+                if (isMatchInfo)
+                {
+                    nameTag = $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{roleColor}>{nameTag} <size=70%>{GetRoleName(playerInfo)}</size></color>";
+                    return nameTag;
+                }
+
+                nameTag = $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{roleColor}><size=70%>{GetRoleName(playerInfo)}</size>\r\n{nameTag}</color>";
             }
             else
             {
-                if (isChat)
+                if (isChat || isMatchInfo)
                 {
                     nameTag = $"<color=#{roleColor}>{nameTag} <size=70%>{GetRoleName(playerInfo)}</size></color>";
                     return nameTag;
@@ -570,13 +575,17 @@ public static class Utils
                 {
                     if (isChat)
                     {
-                        nameTag =
-                            $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color> <size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>";
+                        nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color> <size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>";
                         return nameTag;
                     }
 
-                    nameTag =
-                        $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}";
+                    if (isMatchInfo)
+                    {
+                        nameTag = $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n{nameTag}";
+                        return nameTag;
+                    }
+
+                    nameTag = $"<size=70%><color=#fb0>{hostString}Lv:{level} - {platform}</color></size>\r\n<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}";
                 }
                 else
                 {
@@ -591,8 +600,7 @@ public static class Utils
             }
             else
             {
-                if (PlayerControl.LocalPlayer.Data.Role.NameColor != playerInfo.Role.NameColor || isChat)
-                    return nameTag;
+                if (PlayerControl.LocalPlayer.Data.Role.NameColor != playerInfo.Role.NameColor || isMatchInfo) return nameTag;
 
                 nameTag = $"<color=#{ColorUtility.ToHtmlStringRGB(playerInfo.Role.NameColor)}>{nameTag}</color>";
             }
