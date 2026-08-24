@@ -523,6 +523,7 @@ public static class Utils
         if (playerInfo.Role.IsNull() || playerInfo.IsNull() || playerInfo.Disconnected ||
             playerInfo.Object.CurrentOutfit.IsNull()) return nameTag;
 
+
         var player = AmongUsClient.Instance.GetClientFromPlayerInfo(playerInfo);
         var host = AmongUsClient.Instance.GetHost();
         var level = playerInfo.PlayerLevel + 1;

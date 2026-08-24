@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Sentry.Internal.Extensions;
 
@@ -117,21 +120,195 @@ public static class MalumESP
     {
         try
         {
-            playerPhysics.myPlayer.cosmetics.SetName(Utils.GetNameTag(playerPhysics.myPlayer.Data, playerPhysics.myPlayer.CurrentOutfit.PlayerName));
-            // Move the nameText up to prevent it overlapping with colorblind text
-            if (CheatToggles.seeRoles && CheatToggles.seePlayerInfo)
-            {
-                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.186f, 0f);
-            }
-            else if (CheatToggles.seeRoles || CheatToggles.seePlayerInfo)
-            {
-                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.093f, 0f);
-            }
-            else
-            {
-                playerPhysics.myPlayer.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0f, 0f);
-            }
+            UpdateVentAppearance(playerPhysics.myPlayer);
         } catch { }
+    }
+
+    public static void RefreshVentOpacity()
+    {
+        foreach (var player in PlayerControl.AllPlayerControls)
+        {
+            try { UpdateVentAppearance(player); } catch { }
+        }
+    }
+
+    private static void UpdateVentAppearance(PlayerControl player)
+    {
+        if (player == null) return;
+
+        if (player.cosmetics != null && player.Data != null)
+        {
+            player.cosmetics.SetName(Utils.GetNameTag(player.Data, player.CurrentOutfit.PlayerName));
+        }
+
+        // The vent visibility feature should only affect remote players.
+        // Touching local vent rendering can interfere with vent travel controls.
+        if (player.AmOwner) return;
+
+        float ventOpacity = Mathf.Clamp(CheatToggles.ventPlayerOpacity, 0f, 100f) / 100f;
+
+        if (!player.inVent || ventOpacity <= 0f)
+        {
+            if (player.inVent && ventOpacity <= 0f)
+            {
+                if (player.cosmetics?.nameText != null)
+                {
+                    player.cosmetics.nameText.enabled = false;
+                    player.cosmetics.nameText.gameObject.SetActive(false);
+                }
+
+                if (player.cosmetics?.colorBlindText != null)
+                {
+                    player.cosmetics.colorBlindText.enabled = false;
+                    player.cosmetics.colorBlindText.gameObject.SetActive(false);
+                }
+            }
+
+            if (!player.inVent && player.Data != null && !player.Data.IsDead)
+            {
+                RestoreVentAppearance(player);
+
+                if (player.cosmetics != null && player.cosmetics.nameText != null)
+                {
+                    if (CheatToggles.seeRoles && CheatToggles.seePlayerInfo)
+                    {
+                        player.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.186f, 0f);
+                    }
+                    else if (CheatToggles.seeRoles || CheatToggles.seePlayerInfo)
+                    {
+                        player.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0.093f, 0f);
+                    }
+                    else
+                    {
+                        player.cosmetics.nameText.transform.localPosition = new Vector3(0f, 0f, 0f);
+                    }
+                }
+            }
+
+            return;
+        }
+
+        // Keep the vented player visible while the vented state is rendered locally.
+        player.Visible = true;
+
+        if (player.cosmetics != null)
+        {
+            player.cosmetics.gameObject.SetActive(true);
+        }
+
+        // Apply the configured opacity to the cosmetic layer so body parts, hats, and pets share the same fade.
+        ApplyVentOpacity(player, ventOpacity);
+
+        // Show nametag
+        if (player.cosmetics?.nameText != null)
+        {
+            player.cosmetics.nameText.gameObject.SetActive(true);
+            player.cosmetics.nameText.enabled = true;
+        }
+
+        if (player.cosmetics?.colorBlindText != null)
+        {
+            player.cosmetics.colorBlindText.gameObject.SetActive(true);
+            player.cosmetics.colorBlindText.enabled = true;
+        }
+    }
+
+    private static void RestoreVentAppearance(PlayerControl player)
+    {
+        if (player == null) return;
+
+        if (player.Collider != null) player.Collider.enabled = true;
+
+        TrySetCosmeticsOpacity(player, 1f);
+
+        if (player.cosmetics != null)
+        {
+            player.cosmetics.gameObject.SetActive(true);
+        }
+
+        foreach (var spriteRenderer in GetVentSpriteRenderers(player))
+        {
+            if (!Mathf.Approximately(spriteRenderer.color.a, 1f))
+            {
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1f);
+            }
+        }
+
+        if (player.cosmetics?.nameText != null)
+        {
+            player.cosmetics.nameText.gameObject.SetActive(true);
+            player.cosmetics.nameText.enabled = true;
+        }
+
+        if (player.cosmetics?.colorBlindText != null)
+        {
+            player.cosmetics.colorBlindText.gameObject.SetActive(true);
+            player.cosmetics.colorBlindText.enabled = true;
+        }
+    }
+
+    private static void ApplyVentOpacity(PlayerControl player, float opacity)
+    {
+        if (player == null) return;
+
+        TrySetCosmeticsOpacity(player, opacity);
+
+        foreach (var spriteRenderer in GetVentSpriteRenderers(player))
+        {
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, opacity);
+        }
+    }
+
+    private static IEnumerable<SpriteRenderer> GetVentSpriteRenderers(PlayerControl player)
+    {
+        if (player == null) yield break;
+
+        var seenRenderers = new HashSet<int>();
+
+        if (player.cosmetics != null && player.cosmetics.transform != null)
+        {
+            foreach (var spriteRenderer in player.cosmetics.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                if (spriteRenderer != null && seenRenderers.Add(spriteRenderer.GetInstanceID()))
+                {
+                    yield return spriteRenderer;
+                }
+            }
+        }
+
+        foreach (var spriteRenderer in player.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            if (spriteRenderer == null) continue;
+
+            if (IsSafeFallbackRenderer(spriteRenderer.gameObject.name) && seenRenderers.Add(spriteRenderer.GetInstanceID()))
+            {
+                yield return spriteRenderer;
+            }
+        }
+    }
+
+    private static bool IsSafeFallbackRenderer(string objectName)
+    {
+        if (string.IsNullOrEmpty(objectName)) return true;
+
+        return objectName.IndexOf("camera", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+               objectName.IndexOf("canvas", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+               objectName.IndexOf("screen", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+               objectName.IndexOf("rendertexture", System.StringComparison.OrdinalIgnoreCase) < 0 &&
+               objectName.IndexOf("ui", System.StringComparison.OrdinalIgnoreCase) < 0;
+    }
+
+    private static bool TrySetCosmeticsOpacity(PlayerControl player, float opacity)
+    {
+        var cosmetics = player?.cosmetics;
+        if (cosmetics == null) return false;
+
+        var method = cosmetics.GetType().GetMethod("SetAlpha", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(float) }, null);
+        if (method == null) return false;
+
+        // Callers pass normalized alpha (0..1), matching the expected SetAlpha input.
+        method.Invoke(cosmetics, new object[] { Mathf.Clamp01(opacity) });
+        return true;
     }
 
     public static void ChatNametags(ChatBubble chatBubble)

@@ -48,6 +48,19 @@ public class ESPTab : ITab
         CheatToggles.revealVotes = GUILayout.Toggle(CheatToggles.revealVotes, " Reveal Votes");
 
         CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
+
+        GUILayout.Label(" See Vented Players");
+
+        GUILayout.BeginHorizontal();
+
+        CheatToggles.ventPlayerOpacity = GUILayout.HorizontalSlider(CheatToggles.ventPlayerOpacity, 0f, 100f, GUILayout.Width(250f));
+
+        GUILayout.Label(CheatToggles.ventPlayerOpacity == 0f ? " Off" : $" {Mathf.RoundToInt(CheatToggles.ventPlayerOpacity)}%");
+
+        MalumESP.RefreshVentOpacity();
+
+        GUILayout.EndHorizontal();
+
     }
 
     private void DrawCamera()

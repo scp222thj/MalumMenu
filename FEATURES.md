@@ -31,6 +31,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 |------------|-------------|------|--------|
 | See Roles | See every player's role through their nametag | Toggle | Off |
 | See Ghosts | Allows you to see ghosts, protections, and ghost chat even if you are alive | Toggle | Off
+| See Vented Players | Shows players inside vents with a customizable opacity | Slider | 0% |
 | No Shadows | Removes all shadows, allowing you to see during blackouts and even through walls<br>Also, lets you see through spore clouds in the Fungle Jungle | Toggle | Off |
 | Reveal Votes | Reveals votes as they are being cast rather than at the end of the meeting<br>Also, lets you see colored votes even if votes are set to anonymous | Toggle | Off |
 | Always Chat | Keeps the chat icon always enabled, allowing you to chat at any time (even while not in a meeting or the lobby) | Toggle | Off |
