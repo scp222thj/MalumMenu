@@ -30,6 +30,8 @@ public static class PlayerPhysics_LateUpdate
         MalumPPMCheats.TeleportPlayerPPM();
         MalumPPMCheats.SetFakeRolePPM();
         MalumPPMCheats.SetFakeAlivePPM();
+        MalumPPMCheats.ColorRandomizePlayerPPM();
+        MalumPPMCheats.ColorSetPlayerPPM();
         // MalumPPMCheats.ForceRolePPM();
 
         // This check ensures there is only one run per frame

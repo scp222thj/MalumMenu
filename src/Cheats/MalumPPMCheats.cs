@@ -516,4 +516,93 @@ public static class MalumPPMCheats
             }
         }
     }
+
+    private static bool _colorRandomizePlayerActive = false;
+    private static bool _colorSetPlayerActive = false;
+
+    public static void ColorRandomizePlayerPPM()
+    {
+        if (CheatToggles.colorRandomizePlayer)
+        {
+            if (!_colorRandomizePlayerActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("colorRandomizePlayer");
+                }
+
+                // Palette.PlayerColors.Length gives us available colors
+                int colorsCount = 0;
+                try
+                {
+                    colorsCount = Palette.PlayerColors.Length;
+                }
+                catch
+                {
+                    colorsCount = 0;
+                }
+
+                if (colorsCount == 0)
+                {
+                    CheatToggles.colorRandomizePlayer = false;
+                    return;
+                }
+
+                // Player pick menu made for randomizing a player's color
+                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
+                {
+                    var rnd = UnityEngine.Random.Range(0, colorsCount);
+                    PlayerPickMenu.targetPlayerData.Object.RpcSetColor((byte)rnd);
+                }));
+
+                _colorRandomizePlayerActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.colorRandomizePlayer = false;
+            }
+        }
+        else if (_colorRandomizePlayerActive)
+        {
+            _colorRandomizePlayerActive = false;
+        }
+    }
+
+    public static void ColorSetPlayerPPM()
+    {
+        if (CheatToggles.colorSetPlayer)
+        {
+            if (!_colorSetPlayerActive)
+            {
+                // Close any player pick menus already open & their cheats
+                if (PlayerPickMenu.playerpickMenu != null)
+                {
+                    PlayerPickMenu.playerpickMenu.Close();
+                    CheatToggles.DisablePPMCheats("colorSetPlayer");
+                }
+
+                // Player pick menu made for setting a player's color to the selected ID
+                PlayerPickMenu.OpenPlayerPickMenu(Utils.GetAllPlayerData(), (Action)(() =>
+                {
+                    PlayerPickMenu.targetPlayerData.Object.RpcSetColor(CheatToggles.colorSetPlayerId);
+                }));
+
+                _colorSetPlayerActive = true;
+            }
+
+            // Deactivate cheat if menu is closed
+            if (PlayerPickMenu.playerpickMenu == null)
+            {
+                CheatToggles.colorSetPlayer = false;
+            }
+        }
+        else if (_colorSetPlayerActive)
+        {
+            _colorSetPlayerActive = false;
+        }
+    }
 }
