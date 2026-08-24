@@ -90,7 +90,7 @@ public static class MalumPPMCheats
                 PlayerPickMenu.OpenPlayerPickMenu(playerInfo, (Action)(() =>
                 {
                     NetworkedPlayerInfo playerToEject = PlayerPickMenu.targetPlayerData;
-                    MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), playerToEject, false);
+                    MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), playerToEject, false, false, ushort.MinValue);
                 }));
 
                 _ejectPlayerActive = true;
@@ -281,6 +281,13 @@ public static class MalumPPMCheats
                 if ((_oldRole != null && Utils.GetBehaviourByRoleType((RoleTypes)_oldRole).TeamType == RoleTeamTypes.Impostor) || Utils.isFreePlay || Utils.isHost)
                 {
                     playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Impostor", OutfitPreset.Impostor, Utils.GetBehaviourByRoleType(RoleTypes.Impostor)));
+                }
+
+                // Judge role can only be used if it was already assigned at the start of the game
+                // This is done to prevent the anticheat from kicking players
+                if (_oldRole == RoleTypes.Judge || Utils.isFreePlay)
+                {
+                    playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Judge", OutfitPreset.Judge, Utils.GetBehaviourByRoleType(RoleTypes.Judge)));
                 }
 
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Tracker", OutfitPreset.Tracker, Utils.GetBehaviourByRoleType(RoleTypes.Tracker)));

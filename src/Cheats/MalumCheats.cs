@@ -26,7 +26,7 @@ public static class MalumCheats
             PlayerControl.LocalPlayer.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown());
             ShipStatus.Instance.EmergencyCooldown = GameManager.Instance.LogicOptions.GetEmergencyCooldown();
             Camera.main.GetComponent<FollowerCamera>().Locked = false;
-            DestroyableSingleton<HudManager>.Instance.SetMapButtonEnabled(true);
+            DestroyableSingleton<HudManager>.Instance.SetMapAndInfoButtonsEnabled(true);
             DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
             ControllerManager.Instance.CloseAndResetAll();
 
@@ -46,7 +46,7 @@ public static class MalumCheats
 
         if (Utils.isMeeting)
         {
-            MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), null, true);
+            MeetingHud.Instance.RpcVotingComplete(new Il2CppStructArray<MeetingHud.VoterState>(0L), null, true, false, ushort.MinValue);
         }
 
         CheatToggles.skipMeeting = false;

@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Il2CppSystem;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -141,7 +142,7 @@ public static class PlayerControl_Shapeshift
         if (targetPlayerInfo.PlayerId == __instance.Data.PlayerId)
         {
             ConsoleUI.Log($"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(__instance.PlayerId).Color)}>" +
-                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> undid their shapeshift in {roomName}");
+                          $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> unshapeshifted in {roomName}");
         }
         else
         {
@@ -149,6 +150,25 @@ public static class PlayerControl_Shapeshift
                           $"{GameData.Instance.GetPlayerById(__instance.PlayerId)._object.Data.PlayerName}</color> shapeshifted into " +
                           $"<color=#{ColorUtility.ToHtmlStringRGB(GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId).Color)}>" +
                           $"{GameData.Instance.GetPlayerById(targetPlayerInfo.PlayerId)._object.Data.PlayerName}</color> in {roomName}");
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CompleteTask))]
+public static class PlayerControl_CompleteTask
+{
+    public static void Postfix(PlayerControl __instance, uint idx)
+    {
+        if (!CheatToggles.logTasks) return;
+
+        var task = __instance.myTasks.Find((Predicate<PlayerTask>)(p => (int)p.Id == (int)idx));
+        var room = Utils.GetRoomFromPosition(__instance.GetTruePosition());
+        var roomName = room != null ? room.RoomId.ToString() : "an unknown location";
+
+        if (task)
+        {
+            ConsoleUI.Log(
+                $"<color=#{ColorUtility.ToHtmlStringRGB(__instance.Data.Color)}>{__instance.Data.PlayerName}</color> completed task {task.TaskType} in {roomName}");
         }
     }
 }
