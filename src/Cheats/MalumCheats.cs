@@ -10,16 +10,36 @@ public static class MalumCheats
     private static bool _isScanAnimActive;
     private static bool _isCamsAnimActive;
 
+    public static bool isServerInMeeting = false;
+
+    public static void OpenMeetingCheat()
+    {
+        if (!CheatToggles.openMeeting) return;
+
+        if (!Utils.isMeeting && isServerInMeeting && _meetingHudInstance != null)
+        {
+            MeetingHud.Instance = _meetingHudInstance;
+            _meetingHudInstance.gameObject.SetActive(true);
+
+            Camera.main.GetComponent<FollowerCamera>().Locked = true;
+            DestroyableSingleton<HudManager>.Instance.SetMapButtonEnabled(false);
+            DestroyableSingleton<HudManager>.Instance.SetHudActive(false);
+        }
+
+        CheatToggles.openMeeting = false;
+    }
+
+    private static MeetingHud _meetingHudInstance;
+
     public static void CloseMeetingCheat()
     {
         if (!CheatToggles.closeMeeting) return;
 
         if (Utils.isMeeting) // Closes MeetingHud window if it's open
         {
-
-            // Destroy MeetingHud window gameobject
-            MeetingHud.Instance.DespawnOnDestroy = false;
-            Object.Destroy(MeetingHud.Instance.gameObject);
+            _meetingHudInstance = MeetingHud.Instance;
+            _meetingHudInstance.gameObject.SetActive(false);
+            MeetingHud.Instance = null;
 
             // Gameplay must be reenabled
             DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear, 0.2f, false));
