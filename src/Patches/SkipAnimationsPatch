@@ -1,0 +1,63 @@
+using HarmonyLib;
+using Il2CppSystem.Data.Common;
+using Sentry.Unity.NativeUtils;
+using UnityEngine;
+
+namespace MalumMenu.features
+{
+    internal class SkipAnimationPatch
+    {
+        // Skip Shhh Animation
+        [HarmonyPatch(typeof(ShhhBehaviour), nameof(ShhhBehaviour.PlayAnimation))]
+        public static class SkipShhhAnimPatch
+        {
+            public static bool Prefix()
+            {
+                if (!CheatToggles.NoShhScreenAnimation)
+                
+                    return true;
+                
+                // Hide the Shhh emblem
+                if (HudManager.Instance?.shhhEmblem != null)
+                {
+                    HudManager.Instance.shhhEmblem.gameObject.SetActive(false);
+                }
+
+                return false; // Skip original animation
+            }
+        }
+
+        // Skip Seeker Animation
+        [HarmonyPatch(typeof(LogicOptionsHnS), nameof(LogicOptionsHnS.GetCrewmateLeadTime))]
+        public static class SkipSeekerAnimPatch
+        {
+            public static bool Prefix(ref int __result)
+            {
+                if (!CheatToggles.SkipSeekerAnimation)
+
+                    return true;
+
+                // Skip 10 seconds given to crewmates to hide from the seeker
+                __result = 0;
+                
+                return false;        
+            }
+        }
+
+        // Skip Death/kill Animation 
+        [HarmonyPatch(typeof(KillOverlay), "ShowKillAnimation")]
+        [HarmonyPatch(new[] { typeof(NetworkedPlayerInfo), typeof(NetworkedPlayerInfo) })]
+        public static class SkipKillAnimationPatch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(NetworkedPlayerInfo killer, NetworkedPlayerInfo victim)
+            {
+                if (!CheatToggles.SkipKillAnimation)
+                    return true;   // Show normal animation
+
+                // Skip kill animation 
+                return false;
+            }
+        }   
+    }
+}

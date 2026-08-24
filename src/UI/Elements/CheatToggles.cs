@@ -110,7 +110,10 @@ public struct CheatToggles
     public static bool animCamsInUse;
     public static bool animPet;
     public static bool moonWalk;
-
+    public static bool NoShhScreenAnimation;
+    public static bool SkipSeekerAnimation;
+    public static bool SkipKillAnimation;
+   
     // Overload
     public static bool showOverload;
     public static bool showOverloadSettings;
