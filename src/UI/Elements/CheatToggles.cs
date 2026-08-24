@@ -139,6 +139,8 @@ public struct CheatToggles
     public static bool logDeaths;
     public static bool logShapeshifts;
     public static bool logVents;
+    public static bool logTasks;
+    public static bool logGameState;
 
     // Host-Only
     public static bool voteImmune;

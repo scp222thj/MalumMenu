@@ -22,18 +22,19 @@ public static class MalumESP
 
     public static bool IsFullbrightActive()
     {
-        // Fullbright is automatically activated when zooming out, spectating other players, or "freecamming"
+        // Fullbright is automatically activated when being a ghost, zooming out, spectating other players, or "freecamming"
         // This is done to avoid issues with shadows
 
-        return CheatToggles.noShadows || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
+        return CheatToggles.noShadows || (PlayerControl.LocalPlayer?.Data && PlayerControl.LocalPlayer.Data.IsDead) || Camera.main.orthographicSize > 3f || Camera.main.gameObject.GetComponent<FollowerCamera>().Target != PlayerControl.LocalPlayer;
     }
 
     public static void ZoomOut(HudManager hudManager)
     {
         if (CheatToggles.zoomOut)
         {
-            if (hudManager.Chat.IsOpenOrOpening || PlayerCustomizationMenu.Instance || (Utils.isLobby && (FriendsListUI.Instance.IsOpen ||
-                GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active || GameStartManager.Instance.RulesEditPanel))) return;
+            // Suspend zoomOut whenever a UI screen requires scrolling
+            if (hudManager.Chat.IsOpenOrOpening || MatchInfoGuide.Instance.IsActive || PlayerCustomizationMenu.Instance ||
+            (Utils.isLobby && (FriendsListUI.Instance.IsOpen || GameStartManager.Instance.LobbyInfoPane.LobbyViewSettingsPane.gameObject.active || GameStartManager.Instance.RulesEditPanel))) return;
 
             _resolutionChangeNeeded = true;
 
@@ -84,7 +85,7 @@ public static class MalumESP
             foreach (var playerState in meetingHud.playerStates)
             {
                 // Fetch the NetworkedPlayerInfo of each playerState
-                var data = GameData.Instance.GetPlayerById(playerState.TargetPlayerId);
+                var data = GameData.Instance.GetPlayerById(playerState.PlayerId);
 
                 if (data.IsNull() || data.Disconnected || data.Outfits[PlayerOutfitType.Default].IsNull()) continue;
 
