@@ -9,6 +9,7 @@ public static class MalumCheats
 {
     private static bool _isScanAnimActive;
     private static bool _isCamsAnimActive;
+    private static float _spamTaskCooldown;
 
     public static void CloseMeetingCheat()
     {
@@ -93,6 +94,19 @@ public static class MalumCheats
             }
 
             CheatToggles.completeMyTasks = false;
+        }
+    }
+
+    public static void SpamCompleteTaskCheat()
+    {
+        if (CheatToggles.spamCompleteTask && PlayerControl.LocalPlayer != null && PlayerControl.LocalPlayer.myTasks != null && PlayerControl.LocalPlayer.myTasks.Count > 0)
+        {
+            if (Time.time > _spamTaskCooldown)
+            {
+                var taskToSpam = PlayerControl.LocalPlayer.myTasks[0];
+                PlayerControl.LocalPlayer.RpcCompleteTask(taskToSpam.Id);
+                _spamTaskCooldown = Time.time + 0.1f;
+            }
         }
     }
 
