@@ -4,8 +4,10 @@
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| NoClip     | Allows you to walk through walls like a ghost | Toggle | Off
+| NoClip     | Allows you to walk through walls like a ghost | Toggle | Off |
 | Invert Controls | Inverts your player's controls | Toggle | Off |
+| Current speed | Changes your player's movement speed | Slider |
+
 
 #### Murder
 
