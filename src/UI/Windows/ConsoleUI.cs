@@ -6,9 +6,9 @@ namespace MalumMenu;
 
 public class ConsoleUI : MonoBehaviour
 {
-    public static int windowHeight = 350;
-    public static int windowWidth = 550;
-    private Rect _windowRect;
+    public static int windowHeight = 380;
+    public static int windowWidth = 600;
+    public static Rect windowRect;
 
     private GUIStyle _logStyle;
     private static Vector2 _scrollPosition = Vector2.zero;
@@ -18,7 +18,7 @@ public class ConsoleUI : MonoBehaviour
     private void Start()
     {
         // Instantiate 2D area of ConsoleUI
-        _windowRect = new(
+        windowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
             windowWidth,
@@ -32,12 +32,12 @@ public class ConsoleUI : MonoBehaviour
 
         _logStyle ??= new GUIStyle(GUI.skin.label)
         {
-            fontSize = 16
+            fontSize = 15
         };
 
         UIHelpers.ApplyUIColor();
 
-        _windowRect = GUI.Window((int)WindowId.ConsoleUI, _windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
+        windowRect = GUI.Window((int)WindowId.ConsoleUI, windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
     }
 
     private void ConsoleWindow(int windowID)
@@ -57,7 +57,7 @@ public class ConsoleUI : MonoBehaviour
 
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Clear Log", GUILayout.Width(260)))
+        if (GUILayout.Button("Clear Log", GUILayout.Width(285)))
         {
             _logEntries.Clear();
         }
@@ -79,7 +79,9 @@ public class ConsoleUI : MonoBehaviour
             _logEntries.RemoveAt(0); // Remove the oldest log entry
         }
 
-        _logEntries.Add(message);
+        var currentTime = DateTime.Now.ToString("HH:mm:ss");
+
+        _logEntries.Add($"<b>[ {currentTime} ]  {message}</b>");
 
         // Scroll to the bottom
         _scrollPosition.y = float.MaxValue;
