@@ -12,8 +12,6 @@ public static class MeetingHud_Update
 {
     public static List<int> votedPlayers = new List<int>();
 
-    private static readonly Dictionary<int, List<GameObject>> _voteLabels = new Dictionary<int, List<GameObject>>();
-
     public static void Prefix(MeetingHud __instance)
     {
         if (__instance.state < MeetingHud.MeetingStates.Results)
@@ -62,12 +60,11 @@ public static class MeetingHud_Update
     {
         if (!CheatToggles.revealVotes) return;
 
-        PlayerVoteArea target = null;
-        GameObject skipTarget = null;
+        Transform parent = null;
 
         if (area.VotedForId == PlayerVoteArea.SkippedVote)
         {
-            skipTarget = __instance.SkippedVoting;
+            parent = __instance.SkippedVoting ? __instance.SkippedVoting.transform : null;
         }
         else
         {
@@ -75,61 +72,24 @@ public static class MeetingHud_Update
             {
                 if (a.PlayerId == area.VotedForId)
                 {
-                    target = a;
+                    parent = a.transform;
                     break;
                 }
             }
         }
 
-        Transform parent = target != null ? target.transform : (skipTarget != null ? skipTarget.transform : null);
         if (parent == null) return;
 
-        int key = target != null ? (int)target.PlayerId : -1;
-        _voteLabels.TryGetValue(key, out var existing);
-        int stack = existing != null ? existing.Count : 0;
+        __instance.BloopAVoteIcon(voter, 0, parent);
 
-        TextMeshPro template = target != null ? target.NameText : null;
-        if (template == null) template = __instance.playerStates.FirstOrDefault(p => p && p.NameText)?.NameText;
-        if (template == null) return;
-
-        var label = Object.Instantiate(template, parent);
-        label.name = "Reveal_" + voter.PlayerName;
-        label.text = voter.PlayerName;
-        label.color = Palette.PlayerColors[voter.DefaultOutfit.ColorId];
-        label.alignment = TextAlignmentOptions.Center;
-        label.fontSize = 2.0f;
-        label.fontSizeMin = 1.2f;
-        label.fontSizeMax = 2.0f;
-        label.enableWordWrapping = false;
-        label.overflowMode = TextOverflowModes.Overflow;
-        label.outlineWidth = 0.22f;
-        label.outlineColor = Color.black;
-        label.transform.localScale = Vector3.one * 0.95f;
-        label.transform.localPosition = new Vector3(0f, 0.55f + stack * 0.30f, -0.5f);
-        label.gameObject.SetActive(true);
-        label.enabled = true;
-        label.sortingOrder = 20;
-        label.maskable = false;
-
-        if (!_voteLabels.TryGetValue(key, out var list))
+        var voteSpreader = parent.GetComponent<VoteSpreader>();
+        if (voteSpreader && voteSpreader.Votes != null)
         {
-            list = new List<GameObject>();
-            _voteLabels[key] = list;
-        }
-        list.Add(label.gameObject);
-    }
-
-    public static void ClearVoteLabels()
-    {
-        foreach (var list in _voteLabels.Values)
-        {
-            foreach (var label in list)
+            foreach (var spriteRenderer in voteSpreader.Votes)
             {
-                if (label) Object.Destroy(label);
+                if (spriteRenderer) spriteRenderer.gameObject.SetActive(true);
             }
-            list.Clear();
         }
-        _voteLabels.Clear();
     }
 }
 
@@ -169,7 +129,6 @@ public static class MeetingHud_PopulateResults
         }
 
         MeetingHud_Update.votedPlayers.Clear();
-        MeetingHud_Update.ClearVoteLabels();
     }
 }
 
