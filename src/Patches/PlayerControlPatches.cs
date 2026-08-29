@@ -47,11 +47,6 @@ public static class PlayerControl_CmdCheckMurder
         return false;*/
 
         if (!Utils.isHost) return true;
-		if (Utils.isLobby)
-{
-    HudManager.Instance.Notifier.AddDisconnectMessage("Killing in lobby disabled for being too buggy");
-    return false;
-}
 
         // __instance.isKilling = true;
         PlayerControl.LocalPlayer.RpcMurderPlayer(target, true);
