@@ -6,6 +6,7 @@ using System;
 using System.Security.Cryptography;
 using InnerNet;
 using System.Collections.Generic;
+using AmongUs.GameOptions;
 
 namespace MalumMenu;
 
@@ -333,37 +334,93 @@ public static class MushroomDoorSabotageMinigame_Begin
 //     }
 // }
 
-[HarmonyPatch(typeof(IntroCutscene), "CoBegin")]
-public static class IntroCutscene_CoBegin
+[HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
+public static class RoleManager_SelectRoles
 {
-    // Prefix patch of IntroCutscene.CoBegin to force the LocalPlayer's role to a specified role
-    public static void Prefix()
+    public static bool Prefix()
     {
-        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue) return;
+        if (!Utils.isHost || !CheatToggles.forcedRole.HasValue) return true;
 
-        var forcedRole = CheatToggles.forcedRole.Value;
-
-        // If LocalPlayer already has the forced role, do nothing
-        if (PlayerControl.LocalPlayer.Data.RoleType == forcedRole)
-        {
-            return;
-        }
-
-        // Find a player with the forced role to swap roles with
-        PlayerControl roleSwapTarget = null;
+        var options = GameOptionsManager.Instance.CurrentGameOptions;
+        var allPlayers = new List<PlayerControl>();
         foreach (var player in PlayerControl.AllPlayerControls)
         {
-            if (player.Data.RoleType != forcedRole) continue;
-            roleSwapTarget = player;
-            break;
+            allPlayers.Add(player);
         }
 
-        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, forcedRole);
+        var assigned = new HashSet<byte>();
+        int playerAmount = allPlayers.Count;
+        int maxImpostors = options.GetAdjustedNumImpostors(playerAmount);
+        int impostorsAssigned = 0;
 
-        if (roleSwapTarget != null)
+        var forcedRole = CheatToggles.forcedRole.Value;
+        PlayerControl.LocalPlayer.RpcSetRole(forcedRole, false);
+        assigned.Add(PlayerControl.LocalPlayer.PlayerId);
+        if (IsImpostorRole(forcedRole)) impostorsAssigned++;
+
+        RoleTypes[] impostorRoles = { RoleTypes.Shapeshifter, RoleTypes.Phantom, RoleTypes.Viper, RoleTypes.Impostor };
+        foreach (var role in impostorRoles)
         {
-            DestroyableSingleton<RoleManager>.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
+            int count = options.RoleOptions.GetNumPerGame(role);
+            int chance = options.RoleOptions.GetChancePerGame(role);
+            for (int i = 0; i < count && impostorsAssigned < maxImpostors; i++)
+            {
+                if (chance < 100 && UnityEngine.Random.Range(1, 101) > chance) continue;
+                var candidate = GetRandomUnassigned(allPlayers, assigned);
+                if (candidate == null) break;
+                candidate.RpcSetRole(role, false);
+                assigned.Add(candidate.PlayerId);
+                impostorsAssigned++;
+            }
         }
+
+        while (impostorsAssigned < maxImpostors)
+        {
+            var candidate = GetRandomUnassigned(allPlayers, assigned);
+            if (candidate == null) break;
+            candidate.RpcSetRole(RoleTypes.Impostor, false);
+            assigned.Add(candidate.PlayerId);
+            impostorsAssigned++;
+        }
+
+        RoleTypes[] crewRoles = { RoleTypes.Scientist, RoleTypes.Engineer, RoleTypes.Noisemaker, RoleTypes.Tracker, RoleTypes.Detective, RoleTypes.Judge, RoleTypes.GuardianAngel };
+        foreach (var role in crewRoles)
+        {
+            int count = options.RoleOptions.GetNumPerGame(role);
+            int chance = options.RoleOptions.GetChancePerGame(role);
+            for (int i = 0; i < count; i++)
+            {
+                if (assigned.Count >= playerAmount) break;
+                if (chance < 100 && UnityEngine.Random.Range(1, 101) > chance) continue;
+                var candidate = GetRandomUnassigned(allPlayers, assigned);
+                if (candidate == null) break;
+                candidate.RpcSetRole(role, false);
+                assigned.Add(candidate.PlayerId);
+            }
+        }
+
+        foreach (var player in allPlayers)
+        {
+            if (assigned.Contains(player.PlayerId)) continue;
+            player.RpcSetRole(RoleTypes.Crewmate, false);
+            assigned.Add(player.PlayerId);
+        }
+
+        return false;
+    }
+
+    private static bool IsImpostorRole(RoleTypes role) =>
+        role == RoleTypes.Impostor || role == RoleTypes.Shapeshifter || role == RoleTypes.Phantom || role == RoleTypes.Viper;
+
+    private static PlayerControl GetRandomUnassigned(List<PlayerControl> allPlayers, HashSet<byte> assigned)
+    {
+        var pool = new List<PlayerControl>();
+        foreach (var player in allPlayers)
+        {
+            if (!assigned.Contains(player.PlayerId)) pool.Add(player);
+        }
+        if (pool.Count == 0) return null;
+        return pool[UnityEngine.Random.Range(0, pool.Count)];
     }
 }
 
