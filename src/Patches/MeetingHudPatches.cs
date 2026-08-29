@@ -170,3 +170,23 @@ public static class MeetingHud_CheckForEndVoting
         return false;
     }
 }
+
+// judge doesnt complete tasks 
+[HarmonyPatch(typeof(JudgeRole), nameof(JudgeRole.IsBlockedByTasks))] //IsBlockedByTasks
+public static class JudgeRole_IsBlockedByTasks
+{
+    public static bool Prefix(ref bool __result)
+    {
+        __result = false;
+        return false;
+    }
+}
+
+[HarmonyPatch(typeof(JudgeRole), nameof(JudgeRole.Initialize))]
+public static class JudgeRole_Initialize_GrantOverrule
+{
+    public static void Postfix(JudgeRole __instance)
+    {
+        __instance.HasAnOverruleUse = true;
+    }
+}
