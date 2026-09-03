@@ -28,6 +28,7 @@ public partial class MalumMenu : BasePlugin
     public static DoorsUI doorsUI;
     public static TasksUI tasksUI;
     public static ProtectUI protectUI;
+    public static SabotageUI sabotageUI;
     public static KeybindListener keybindListener;
 
     public static string malumVersion = "3.3.0";
@@ -196,6 +197,7 @@ public partial class MalumMenu : BasePlugin
         doorsUI = AddComponent<DoorsUI>();
         tasksUI = AddComponent<TasksUI>();
         protectUI = AddComponent<ProtectUI>();
+        sabotageUI = AddComponent<SabotageUI>();
         // overloadUI = AddComponent<OverloadUI>();
         // rolesUI = AddComponent<RolesUI>();
 
