@@ -1,30 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<LangVersion>latest</LangVersion>
-		<DebugType>embedded</DebugType>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <DebugType>embedded</DebugType>
 
-		<VersionPrefix>3.3.0</VersionPrefix>
-		<Description>all play and no cheats makes among us a dull game</Description>
-		<Authors>scp222thj, astra1dev</Authors>
+        <VersionPrefix>3.3.0</VersionPrefix>
+        <Description>all play and no cheats makes among us a dull game</Description>
+        <Authors>scp222thj, astra1dev</Authors>
+    </PropertyGroup>
 
-		<GameDirectory>E:\SteamLibrary\steamapps\common\Among Us</GameDirectory>
-		<BepInEx>E:\SteamLibrary\steamapps\common\Among Us\BepInEx</BepInEx>
-	</PropertyGroup>
+    <!--<ItemGroup>
+        <EmbeddedResource Include=".\Assets\**" />
+    </ItemGroup>-->
 
-	<ItemGroup>
-		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.735" Private="false" ExcludeAssets="runtime;native" />
-		<PackageReference Include="AmongUs.GameLibs.Steam" Version="2026.8.18" PrivateAssets="all" />
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.735" Private="false" ExcludeAssets="runtime;native" />
+        <PackageReference Include="AmongUs.GameLibs.Steam" Version="2026.8.18" PrivateAssets="all" />
 
-		<PackageReference Include="BepInEx.AutoPlugin" Version="1.1.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
-	</ItemGroup>
+        <PackageReference Include="BepInEx.AutoPlugin" Version="1.1.0" PrivateAssets="all" />
+        <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.1.0-rc.1" PrivateAssets="all" ExcludeAssets="runtime" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Reference Include="$(BepInEx)\interop\*.dll" Private="false" />
-	</ItemGroup>
-
-	<Target Name="Copy" AfterTargets="Build" Condition="'$(GameDirectory)' != ''">
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(GameDirectory)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
-	</Target>
+    <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
+        <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(AmongUs)/BepInEx/plugins/" UseSymboliclinksIfPossible="true" />
+    </Target>
 </Project>
