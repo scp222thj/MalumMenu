@@ -16,7 +16,16 @@ public class SabotageUI : MonoBehaviour
     private bool _keepElec;
     private bool _keepMush;
 
+    // Local UI states to prevent flickering
+    private bool _activeReactor;
+    private bool _activeOxygen;
+    private bool _activeComms;
+    private bool _activeElec;
+    private bool _activeMush;
+
     private float _mushTimer = 0f;
+    private float _uiLockTimer = 0f; // Prevents UI from syncing with game state for 1 second after clicking
+    private float _keepCooldown = 0f; // Prevents RPC spam when Keep mode re-activates a sabotage
 
     private void Start()
     {
@@ -30,11 +39,13 @@ public class SabotageUI : MonoBehaviour
 
     private void Update()
     {
-        // Check if we are actually in a game, not in a lobby
+        // Decrease timers
+        if (_uiLockTimer > 0f) _uiLockTimer -= Time.deltaTime;
+        if (_keepCooldown > 0f) _keepCooldown -= Time.deltaTime;
+
         bool isInGame = ShipStatus.Instance != null && !Utils.isLobby;
         byte mapId = isInGame ? Utils.GetCurrentMapID() : (byte)255;
 
-        // Determine availability based on map ID and game state
         bool canReactor = isInGame;
         bool canComms = isInGame;
         bool canOxygen = isInGame && (mapId != 4 && mapId != 2 && mapId != 5);
@@ -48,11 +59,18 @@ public class SabotageUI : MonoBehaviour
         if (!canElec) _keepElec = false;
         if (!canMush) _keepMush = false;
 
-        // Keep logic: force toggle true every frame
-        if (_keepReactor) CheatToggles.reactorSab = true;
-        if (_keepOxygen) CheatToggles.oxygenSab = true;
-        if (_keepComms) CheatToggles.commsSab = true;
-        if (_keepElec) CheatToggles.elecSab = true;
+        // Keep logic: only force true if the game reports it as false AND cooldown is 0
+        // This prevents sending 60 RPCs per second while the server processes the sabotage
+        if (_keepCooldown <= 0f)
+        {
+            bool triggered = false;
+            if (_keepReactor && !CheatToggles.reactorSab) { CheatToggles.reactorSab = true; triggered = true; }
+            if (_keepOxygen && !CheatToggles.oxygenSab) { CheatToggles.oxygenSab = true; triggered = true; }
+            if (_keepComms && !CheatToggles.commsSab) { CheatToggles.commsSab = true; triggered = true; }
+            if (_keepElec && !CheatToggles.elecSab) { CheatToggles.elecSab = true; triggered = true; }
+
+            if (triggered) _keepCooldown = 1.0f;
+        }
 
         // Use timer for mushrooms to avoid RPC spam
         if (_keepMush)
@@ -76,7 +94,6 @@ public class SabotageUI : MonoBehaviour
 
     private void SabotageWindow(int windowID)
     {
-        // Check if we are in-game. If not, leave the window empty (like DoorsUI does)
         bool isInGame = ShipStatus.Instance != null && !Utils.isLobby;
         if (!isInGame)
         {
@@ -86,7 +103,6 @@ public class SabotageUI : MonoBehaviour
 
         GUILayout.BeginVertical();
 
-        // We already know we are in game, so we just get the map ID
         byte mapId = Utils.GetCurrentMapID();
 
         bool canReactor = true;
@@ -95,13 +111,13 @@ public class SabotageUI : MonoBehaviour
         bool canElec = (mapId != 5);
         bool canMush = (mapId == 5);
 
-        DrawSabotageRow("Reactor", "reactorSab", ref _keepReactor, canReactor);
-        DrawSabotageRow("Oxygen", "oxygenSab", ref _keepOxygen, canOxygen);
-        DrawSabotageRow("Lights", "elecSab", ref _keepElec, canElec);
-        DrawSabotageRow("Comms", "commsSab", ref _keepComms, canComms);
-        DrawSabotageRow("Mushroom Mixup", "mushSab", ref _keepMush, canMush);
+        DrawSabotageRow("Reactor", "reactorSab", ref _activeReactor, ref _keepReactor, canReactor);
+        DrawSabotageRow("Oxygen", "oxygenSab", ref _activeOxygen, ref _keepOxygen, canOxygen);
+        DrawSabotageRow("Lights", "elecSab", ref _activeElec, ref _keepElec, canElec);
+        DrawSabotageRow("Comms", "commsSab", ref _activeComms, ref _keepComms, canComms);
+        DrawSabotageRow("Mushroom Mixup", "mushSab", ref _activeMush, ref _keepMush, canMush);
 
-        GUILayout.FlexibleSpace(); // Pushes buttons down
+        GUILayout.FlexibleSpace();
 
         GUILayout.Space(10);
 
@@ -109,29 +125,25 @@ public class SabotageUI : MonoBehaviour
 
         if (GUILayout.Button("Sabotage Everything", GUIStylePreset.NormalButton))
         {
-            if (canReactor) CheatToggles.reactorSab = true;
-            if (canComms) CheatToggles.commsSab = true;
-            if (canOxygen) CheatToggles.oxygenSab = true;
-            if (canElec) CheatToggles.elecSab = true;
-            if (canMush) CheatToggles.mushSab = true;
+            _uiLockTimer = 1.0f; // Lock UI updates
+            if (canReactor) { CheatToggles.reactorSab = true; _activeReactor = true; }
+            if (canComms) { CheatToggles.commsSab = true; _activeComms = true; }
+            if (canOxygen) { CheatToggles.oxygenSab = true; _activeOxygen = true; }
+            if (canElec) { CheatToggles.elecSab = true; _activeElec = true; }
+            if (canMush) { CheatToggles.mushSab = true; _activeMush = true; }
         }
 
         if (GUILayout.Button("Repair All", GUIStylePreset.NormalButton))
         {
-            // Turn off all keep states
+            _uiLockTimer = 1.0f; // Lock UI updates
             _keepEverythingSabotaged = false;
-            _keepReactor = false;
-            _keepOxygen = false;
-            _keepComms = false;
-            _keepElec = false;
-            _keepMush = false;
+            _keepReactor = false; _keepOxygen = false; _keepComms = false; _keepElec = false; _keepMush = false;
 
-            // Turn off all sabotages
-            CheatToggles.reactorSab = false;
-            CheatToggles.oxygenSab = false;
-            CheatToggles.elecSab = false;
-            CheatToggles.commsSab = false;
-            CheatToggles.mushSab = false;
+            CheatToggles.reactorSab = false; _activeReactor = false;
+            CheatToggles.oxygenSab = false; _activeOxygen = false;
+            CheatToggles.elecSab = false; _activeElec = false;
+            CheatToggles.commsSab = false; _activeComms = false;
+            CheatToggles.mushSab = false; _activeMush = false;
             CheatToggles.unfixableLights = false;
         }
 
@@ -156,32 +168,53 @@ public class SabotageUI : MonoBehaviour
         GUI.DragWindow();
     }
 
-    private void DrawSabotageRow(string displayName, string toggleName, ref bool keepState, bool isAvailable)
+    private void DrawSabotageRow(string displayName, string toggleName, ref bool activeState, ref bool keepState, bool isAvailable)
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label(displayName, GUILayout.Width(140f));
 
-        // Disable UI interaction if sabotage is not available on this map
         if (!isAvailable)
         {
             GUI.enabled = false;
         }
 
-        bool isActive = GetSabToggleValue(toggleName);
+        bool gameVal = GetSabToggleValue(toggleName);
 
-        bool newActive = GUILayout.Toggle(isActive, "Active", GUIStylePreset.NormalToggle, GUILayout.Width(80f));
-        if (newActive != isActive)
+        // Sync UI state with game state, but ignore sync if we recently clicked
+        if (_uiLockTimer <= 0f)
         {
-            SetSabToggleValue(toggleName, newActive);
+            activeState = keepState || gameVal;
         }
 
+        // Draw Active toggle
+        bool newActive = GUILayout.Toggle(activeState, "Active", GUIStylePreset.NormalToggle, GUILayout.Width(80f));
+        if (newActive != activeState)
+        {
+            _uiLockTimer = 1.0f; // Lock UI updates for 1 second to prevent flicker
+            activeState = newActive;
+            SetSabToggleValue(toggleName, newActive);
+
+            // If user unchecks Active, also uncheck Keep
+            if (!newActive && keepState)
+            {
+                keepState = false;
+            }
+        }
+
+        // Draw Keep toggle
         bool newKeep = GUILayout.Toggle(keepState, "Keep", GUIStylePreset.NormalToggle, GUILayout.Width(80f));
         if (newKeep != keepState)
         {
             keepState = newKeep;
+            if (newKeep && !activeState) // If turning on Keep, activate sabotage immediately
+            {
+                _uiLockTimer = 1.0f;
+                activeState = true;
+                SetSabToggleValue(toggleName, true);
+            }
         }
 
-        GUI.enabled = true; // Re-enable UI
+        GUI.enabled = true;
 
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
