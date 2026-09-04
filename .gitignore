@@ -403,4 +403,3 @@ FodyWeavers.xsd
 # QuickBuild
 package.json
 dist/
-src/MalumMenu.csproj
