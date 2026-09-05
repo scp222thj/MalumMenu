@@ -4,8 +4,8 @@ namespace MalumMenu;
 
 public class SabotageUI : MonoBehaviour
 {
-    public static int windowHeight = 300;
-    public static int windowWidth = 500;
+    public static int windowHeight = 230;
+    public static int windowWidth = 400;
     public static Rect windowRect;
 
     private bool _keepEverythingSabotaged;
@@ -24,7 +24,7 @@ public class SabotageUI : MonoBehaviour
     private bool _activeMush;
 
     private float _mushTimer = 0f;
-    private float _uiLockTimer = 0f; // Prevents UI from syncing with game state for 1 second after clicking
+    private float _uiLockTimer = 0f; // Prevents UI from syncing with game state for a short time after clicking
     private float _keepCooldown = 0f; // Prevents RPC spam when Keep mode re-activates a sabotage
 
     private void Start()
@@ -60,7 +60,6 @@ public class SabotageUI : MonoBehaviour
         if (!canMush) _keepMush = false;
 
         // Keep logic: only force true if the game reports it as false AND cooldown is 0
-        // This prevents sending 60 RPCs per second while the server processes the sabotage
         if (_keepCooldown <= 0f)
         {
             bool triggered = false;
@@ -119,7 +118,9 @@ public class SabotageUI : MonoBehaviour
 
         GUILayout.FlexibleSpace();
 
-        GUILayout.Space(10);
+        // Separator line
+        GUILayout.Box("", GUIStylePreset.Separator, GUILayout.Height(1f), GUILayout.ExpandWidth(true));
+        GUILayout.Space(5f);
 
         GUILayout.BeginHorizontal();
 
@@ -149,7 +150,7 @@ public class SabotageUI : MonoBehaviour
 
         GUILayout.FlexibleSpace();
 
-        bool newKeepAll = GUILayout.Toggle(_keepEverythingSabotaged, " Keep Everything Sabotaged", GUIStylePreset.NormalToggle);
+        bool newKeepAll = GUILayout.Toggle(_keepEverythingSabotaged, " Keep Everything", GUIStylePreset.NormalToggle);
 
         if (newKeepAll != _keepEverythingSabotaged)
         {
@@ -173,6 +174,9 @@ public class SabotageUI : MonoBehaviour
         GUILayout.BeginHorizontal();
         GUILayout.Label(displayName, GUILayout.Width(140f));
 
+        // Push toggles to the right side
+        GUILayout.FlexibleSpace();
+
         if (!isAvailable)
         {
             GUI.enabled = false;
@@ -186,8 +190,8 @@ public class SabotageUI : MonoBehaviour
             activeState = keepState || gameVal;
         }
 
-        // Draw Active toggle
-        bool newActive = GUILayout.Toggle(activeState, "Active", GUIStylePreset.NormalToggle, GUILayout.Width(80f));
+        // Draw Active toggle (slightly reduced width to bring them closer)
+        bool newActive = GUILayout.Toggle(activeState, "Active", GUIStylePreset.NormalToggle, GUILayout.Width(60f));
         if (newActive != activeState)
         {
             _uiLockTimer = 1.0f; // Lock UI updates for 1 second to prevent flicker
@@ -201,8 +205,8 @@ public class SabotageUI : MonoBehaviour
             }
         }
 
-        // Draw Keep toggle
-        bool newKeep = GUILayout.Toggle(keepState, "Keep", GUIStylePreset.NormalToggle, GUILayout.Width(80f));
+        // Draw Keep toggle (slightly reduced width)
+        bool newKeep = GUILayout.Toggle(keepState, "Keep", GUIStylePreset.NormalToggle, GUILayout.Width(60f));
         if (newKeep != keepState)
         {
             keepState = newKeep;
@@ -216,7 +220,6 @@ public class SabotageUI : MonoBehaviour
 
         GUI.enabled = true;
 
-        GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
     }
 
