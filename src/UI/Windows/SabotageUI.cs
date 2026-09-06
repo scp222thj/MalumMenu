@@ -44,15 +44,36 @@ public class SabotageUI : MonoBehaviour
         if (_keepCooldown > 0f) _keepCooldown -= Time.deltaTime;
 
         bool isInGame = ShipStatus.Instance != null && !Utils.isLobby;
-        byte mapId = isInGame ? Utils.GetCurrentMapID() : (byte)255;
 
-        bool canReactor = isInGame;
-        bool canComms = isInGame;
-        bool canOxygen = isInGame && (mapId != 4 && mapId != 2 && mapId != 5);
-        bool canElec = isInGame && (mapId != 5);
-        bool canMush = isInGame && (mapId == 5);
+        if (!isInGame)
+        {
+            if (_keepEverythingSabotaged || _keepReactor || _keepOxygen || _keepComms || _keepElec || _keepMush)
+            {
+                _keepEverythingSabotaged = false;
+                _keepReactor = false;
+                _keepOxygen = false;
+                _keepComms = false;
+                _keepElec = false;
+                _keepMush = false;
 
-        // Reset Keep states if the game ends or map changes
+                CheatToggles.reactorSab = false;
+                CheatToggles.oxygenSab = false;
+                CheatToggles.commsSab = false;
+                CheatToggles.elecSab = false;
+                CheatToggles.mushSab = false;
+                CheatToggles.unfixableLights = false;
+            }
+            return;
+        }
+
+        byte mapId = Utils.GetCurrentMapID();
+
+        bool canReactor = true;
+        bool canComms = true;
+        bool canOxygen = (mapId != 4 && mapId != 2 && mapId != 5);
+        bool canElec = (mapId != 5);
+        bool canMush = (mapId == 5);
+
         if (!canReactor) _keepReactor = false;
         if (!canComms) _keepComms = false;
         if (!canOxygen) _keepOxygen = false;
