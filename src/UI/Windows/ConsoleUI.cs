@@ -12,7 +12,7 @@ public class ConsoleUI : MonoBehaviour
 
     private GUIStyle _logStyle;
     private static Vector2 _scrollPosition = Vector2.zero;
-    private static List<string> _logEntries = new();
+    private static Queue<string> _logEntries = new();
     private const int MaxLogEntries = 300;
 
     private void Start()
@@ -76,12 +76,12 @@ public class ConsoleUI : MonoBehaviour
     {
         if (_logEntries.Count >= MaxLogEntries) // Limit the number of logs to keep memory usage in check
         {
-            _logEntries.RemoveAt(0); // Remove the oldest log entry
+            _logEntries.Dequeue(); // Remove the oldest log entry
         }
 
         var currentTime = DateTime.Now.ToString("HH:mm:ss");
 
-        _logEntries.Add($"<b>[ {currentTime} ]  {message}</b>");
+        _logEntries.Enqueue($"<b>[ {currentTime} ]  {message}</b>");
 
         // Scroll to the bottom
         _scrollPosition.y = float.MaxValue;
