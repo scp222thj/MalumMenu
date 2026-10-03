@@ -187,22 +187,7 @@ public static class Utils
 
     public static void CompleteTask(PlayerTask task)
     {
-        if (isFreePlay)
-        {
-            PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
-            return;
-        }
-
-        var hostData = AmongUsClient.Instance.GetHost();
-        if (hostData == null || hostData.Character.Data.Disconnected) return;
-
-        if (task.IsComplete) return;
-        foreach (var item in PlayerControl.AllPlayerControls)
-        {
-            var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.Reliable, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            messageWriter.WritePacked(task.Id);
-            AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
-        }
+        PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
     }
 
     // Opens Chat UI
