@@ -245,12 +245,17 @@ public static class MalumPPMCheats
 
             if (!_setFakeRoleActive)
             {
-
                 // Close any player pick menus already open & their cheats
                 if (PlayerPickMenu.playerpickMenu != null)
                 {
                     PlayerPickMenu.playerpickMenu.Close();
                     CheatToggles.DisablePPMCheats("setFakeRole");
+                }
+
+                // Log the originally assigned role
+                if (!Utils.isLobby && !Utils.isFreePlay && _oldRole == null)
+                {
+                    _oldRole = PlayerControl.LocalPlayer.Data.RoleType;
                 }
 
                 List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
@@ -300,12 +305,6 @@ public static class MalumPPMCheats
                 // Player pick menu made for changing your roles with a custom choice list
                 PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    // Log the originally assigned role before it gets changed by setFakeRole cheat
-                    if (!Utils.isLobby && !Utils.isFreePlay && _oldRole == null)
-                    {
-                        _oldRole = PlayerControl.LocalPlayer.Data.RoleType;
-                    }
-
                     if (PlayerControl.LocalPlayer.Data.IsDead) // Prevent accidential revives
                     {
                         if (PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor)
@@ -354,6 +353,11 @@ public static class MalumPPMCheats
                 _setFakeRoleActive = false;
             }
         }
+    }
+
+    public static void ClearFakeRoleCache()
+    {
+        _oldRole = null;
     }
 
     public static void SetFakeAlivePPM()
