@@ -18,6 +18,7 @@ public static class MalumPPMCheats
     private static bool _setFakeAliveActive;
     private static bool _forceRoleActive;
     private static RoleTypes? _oldRole = null;
+    private static RoleTypes? _oldGhostRole = null;
 
     public static void ReportBodyPPM()
     {
@@ -252,10 +253,24 @@ public static class MalumPPMCheats
                     CheatToggles.DisablePPMCheats("setFakeRole");
                 }
 
-                // Log the originally assigned role
-                if (!Utils.isLobby && !Utils.isFreePlay && _oldRole == null)
+                if (!Utils.isLobby && !Utils.isFreePlay)
                 {
-                    _oldRole = PlayerControl.LocalPlayer.Data.RoleType;
+                    if (PlayerControl.LocalPlayer.Data.IsDead)
+                    {
+                        // Log the originally assigned ghost role
+                        if (_oldGhostRole == null)
+                        {
+                            _oldGhostRole = PlayerControl.LocalPlayer.Data.RoleType;
+                        }
+                    }
+                    else
+                    {
+                        // Log the originally assigned role
+                        if (_oldRole == null)
+                        {
+                            _oldRole = PlayerControl.LocalPlayer.Data.RoleType;
+                        }
+                    }
                 }
 
                 List<NetworkedPlayerInfo> playerDataList = new List<NetworkedPlayerInfo>();
@@ -302,18 +317,39 @@ public static class MalumPPMCheats
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Detective", OutfitPreset.Detective, Utils.GetBehaviourByRoleType(RoleTypes.Detective)));
                 playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Crewmate", OutfitPreset.Crewmate, Utils.GetBehaviourByRoleType(RoleTypes.Crewmate)));
 
+                // GuardianAngel role can only be used by dead players if it was already assigned at moment of death
+                // This is done to prevent the anticheat from kicking players
+                if (PlayerControl.LocalPlayer.Data.IsDead && (_oldGhostRole == RoleTypes.GuardianAngel || Utils.isFreePlay))
+                {
+                    playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Guardian Angel", OutfitPreset.GuardianAngel, Utils.GetBehaviourByRoleType(RoleTypes.GuardianAngel)));
+                }
+
+                // SpiritGuide role can only be used by dead players if it was already assigned at moment of death
+                // This is done to prevent the anticheat from kicking players
+                if (PlayerControl.LocalPlayer.Data.IsDead && (_oldGhostRole == RoleTypes.SpiritGuide || Utils.isFreePlay))
+                {
+                    playerDataList.Add(PlayerPickMenu.CustomPPMChoice("Influencer", OutfitPreset.SpiritGuide, Utils.GetBehaviourByRoleType(RoleTypes.SpiritGuide)));
+                }
+
                 // Player pick menu made for changing your roles with a custom choice list
                 PlayerPickMenu.OpenPlayerPickMenu(playerDataList, (Action) (() =>
                 {
-                    if (PlayerControl.LocalPlayer.Data.IsDead) // Prevent accidential revives
+                    if (PlayerControl.LocalPlayer.Data.IsDead)
                     {
-                        if (PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor)
+                        if (PlayerPickMenu.targetPlayerData.Role.Role == RoleTypes.GuardianAngel || PlayerPickMenu.targetPlayerData.Role.Role == RoleTypes.SpiritGuide)
                         {
-                            RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.ImpostorGhost);
+                            RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, PlayerPickMenu.targetPlayerData.Role.Role);
                         }
-                        else
+                        else // Prevent accidential revives
                         {
-                            RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.CrewmateGhost);
+                            if (PlayerPickMenu.targetPlayerData.Role.TeamType == RoleTeamTypes.Impostor)
+                            {
+                                RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.ImpostorGhost);
+                            }
+                            else
+                            {
+                                RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, RoleTypes.CrewmateGhost);
+                            }
                         }
                     }
                     else
@@ -358,6 +394,7 @@ public static class MalumPPMCheats
     public static void ClearFakeRoleCache()
     {
         _oldRole = null;
+        _oldGhostRole = null;
     }
 
     public static void SetFakeAlivePPM()
