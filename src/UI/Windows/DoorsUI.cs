@@ -28,8 +28,17 @@ public class DoorsUI : MonoBehaviour
         if (!CheatToggles.showDoorsMenu || !(MenuUI.isGUIActive || MalumMenu.menuKeepSubwindowsOpen.Value) || MalumMenu.isPanicked) return;
 
         UIHelpers.ApplyUIColor();
+        GUIStylePreset.RefreshButtonTextColors();
+
+        Color savedBackground = GUI.backgroundColor;
+        Color savedContent = GUI.contentColor;
+        Color savedColor = GUI.color;
 
         windowRect = GUI.Window((int)WindowId.DoorsUI, windowRect, (GUI.WindowFunction)DoorsWindow, "Doors");
+
+        GUI.backgroundColor = savedBackground;
+        GUI.contentColor = savedContent;
+        GUI.color = savedColor;
     }
 
     private void DoorsWindow(int windowID)

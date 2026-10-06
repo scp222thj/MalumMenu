@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace MalumMenu;
@@ -5,6 +6,18 @@ namespace MalumMenu;
 public class KeybindListener : MonoBehaviour
 {
     public void Update()
+    {
+        try
+        {
+            UpdateKeybinds();
+        }
+        catch (Exception ex)
+        {
+            WiniLogListener.Record(nameof(KeybindListener) + ".Update", ex);
+        }
+    }
+
+    private void UpdateKeybinds()
     {
         if (MalumMenu.isPanicked) return;
 

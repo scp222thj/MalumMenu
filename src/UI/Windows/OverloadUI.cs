@@ -145,8 +145,17 @@ public class OverloadUI : MonoBehaviour
         InitStyles();
 
         UIHelpers.ApplyUIColor();
+        GUIStylePreset.RefreshButtonTextColors();
+
+        Color savedBackground = GUI.backgroundColor;
+        Color savedContent = GUI.contentColor;
+        Color savedColor = GUI.color;
 
         windowRect = GUI.Window((int)WindowId.OverloadUI, windowRect, (GUI.WindowFunction)OverloadWindow, "Overload");
+
+        GUI.backgroundColor = savedBackground;
+        GUI.contentColor = savedContent;
+        GUI.color = savedColor;
     }
 
     private void OverloadWindow(int windowID)

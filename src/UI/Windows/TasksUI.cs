@@ -36,8 +36,17 @@ public class TasksUI : MonoBehaviour
         };
 
         UIHelpers.ApplyUIColor();
+        GUIStylePreset.RefreshButtonTextColors();
+
+        Color savedBackground = GUI.backgroundColor;
+        Color savedContent = GUI.contentColor;
+        Color savedColor = GUI.color;
 
         windowRect = GUI.Window((int)WindowId.TasksUI, windowRect, (GUI.WindowFunction)TasksWindow, "Tasks");
+
+        GUI.backgroundColor = savedBackground;
+        GUI.contentColor = savedContent;
+        GUI.color = savedColor;
     }
 
     private void TasksWindow(int windowID)

@@ -46,6 +46,11 @@ public static class OutfitPreset
         HatId = "hat_wigJudge",
     };
 
+    public static NetworkedPlayerInfo.PlayerOutfit SpiritGuide = new()
+    {
+        ColorId = 10
+    };
+
     public static NetworkedPlayerInfo.PlayerOutfit Noisemaker = new()
     {
         ColorId = 10,
