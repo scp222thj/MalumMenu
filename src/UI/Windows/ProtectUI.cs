@@ -29,8 +29,17 @@ public class ProtectUI : MonoBehaviour
         if (!CheatToggles.showProtectMenu || !(MenuUI.isGUIActive || MalumMenu.menuKeepSubwindowsOpen.Value) || MalumMenu.isPanicked) return;
 
         UIHelpers.ApplyUIColor();
+        GUIStylePreset.RefreshButtonTextColors();
+
+        Color savedBackground = GUI.backgroundColor;
+        Color savedContent = GUI.contentColor;
+        Color savedColor = GUI.color;
 
         windowRect = GUI.Window((int)WindowId.ProtectUI, windowRect, (GUI.WindowFunction)ProtectWindow, "Protect Players");
+
+        GUI.backgroundColor = savedBackground;
+        GUI.contentColor = savedContent;
+        GUI.color = savedColor;
     }
 
     private void ProtectWindow(int windowID)

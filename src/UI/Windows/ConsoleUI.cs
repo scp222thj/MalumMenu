@@ -36,8 +36,17 @@ public class ConsoleUI : MonoBehaviour
         };
 
         UIHelpers.ApplyUIColor();
+        GUIStylePreset.RefreshButtonTextColors();
+
+        Color savedBackground = GUI.backgroundColor;
+        Color savedContent = GUI.contentColor;
+        Color savedColor = GUI.color;
 
         windowRect = GUI.Window((int)WindowId.ConsoleUI, windowRect, (GUI.WindowFunction)ConsoleWindow, "Console");
+
+        GUI.backgroundColor = savedBackground;
+        GUI.contentColor = savedContent;
+        GUI.color = savedColor;
     }
 
     private void ConsoleWindow(int windowID)

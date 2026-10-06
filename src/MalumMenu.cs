@@ -30,8 +30,8 @@ public partial class MalumMenu : BasePlugin
     public static ProtectUI protectUI;
     public static KeybindListener keybindListener;
 
-    public static string malumVersion = "3.3.0";
-    public static List<string> supportedAU = new List<string> { "2026.8.18" };
+    public static string malumVersion = "3.4.0";
+    public static List<string> supportedAU = new List<string> { "2026.9.29" };
     public static bool isPanicked = false;
     public static bool inStealthMode = false;
 
@@ -59,6 +59,10 @@ public partial class MalumMenu : BasePlugin
     {
         Log = base.Log;
         Plugin = this;
+
+        var winiLogPath = Path.Combine(Paths.GameRootPath, "wini.logs");
+        File.Delete(winiLogPath);
+        WiniLogListener.Attach(winiLogPath);
 
         // Loads config settings
         menuKeybind = Config.Bind("MalumMenu.GUI",

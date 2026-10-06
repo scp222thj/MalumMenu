@@ -772,8 +772,11 @@ public static class Utils
 
         CheatToggles.DisableAll();
 
-        var stamp = ModManager.Instance.ModStamp;
-        if (stamp) stamp.enabled = false;
+        if (ModManager.InstanceExists)
+        {
+            var stamp = ModManager.Instance.ModStamp;
+            if (stamp) stamp.enabled = false;
+        }
 
         Scene scene = SceneManager.GetActiveScene();
 

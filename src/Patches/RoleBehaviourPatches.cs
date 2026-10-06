@@ -4,6 +4,19 @@ using Sentry.Internal.Extensions;
 
 namespace MalumMenu;
 
+[HarmonyPatch(typeof(SpiritGuideRole), nameof(SpiritGuideRole.FixedUpdate))]
+public static class SpiritGuideRole_FixedUpdate
+{
+    public static bool Prefix(SpiritGuideRole __instance)
+    {
+        // The game's update accesses the camera animator before validating Player.
+        // Role initialization and round teardown can leave these objects unavailable.
+        var player = __instance.Player;
+        var camera = __instance.spiritGuideCamera;
+        return player && player.Data && camera && camera.animator;
+    }
+}
+
 [HarmonyPatch(typeof(EngineerRole), nameof(EngineerRole.FixedUpdate))]
 public static class EngineerRole_FixedUpdate
 {
