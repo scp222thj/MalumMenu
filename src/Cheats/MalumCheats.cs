@@ -89,7 +89,7 @@ public static class MalumCheats
         {
             foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
-                Utils.CompleteTask(task);
+                PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
             }
 
             CheatToggles.completeMyTasks = false;
