@@ -185,11 +185,6 @@ public static class Utils
         }
     }
 
-    public static void CompleteTask(PlayerTask task)
-    {
-        PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
-    }
-
     // Opens Chat UI
     public static void OpenChat()
     {
