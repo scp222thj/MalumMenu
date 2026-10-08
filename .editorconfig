@@ -1,0 +1,13 @@
+# top-most EditorConfig file
+root = true
+
+[*]
+
+resharper_csharp_naming_rule.public_fields = aaBb
+resharper_csharp_naming_rule.property = aaBb
+
+# For Harmony patch classes and parameters
+resharper_inconsistent_naming_highlighting = hint
+
+insert_final_newline = true
+trim_trailing_whitespace = true

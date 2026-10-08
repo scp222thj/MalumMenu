@@ -20,7 +20,7 @@ namespace MalumMenu;
 public static class Utils
 {
     public static bool isPastingInput;
-    public static ReferenceDataManager ReferenceDataManager = DestroyableSingleton<ReferenceDataManager>.Instance; // Useful for getting full lists of all the Among Us cosmetics IDs
+    public static ReferenceDataManager ReferenceDataManager = ReferenceDataManager.Instance; // Useful for getting full lists of all the Among Us cosmetics IDs
     public static SabotageSystemType SabotageSystem => ShipStatus.Instance.Systems[SystemTypes.Sabotage].Cast<SabotageSystemType>();
     public static bool isShip => ShipStatus.Instance;
     public static bool isClient => AmongUsClient.Instance;
@@ -185,41 +185,21 @@ public static class Utils
         }
     }
 
-    public static void CompleteTask(PlayerTask task)
-    {
-        if (isFreePlay)
-        {
-            PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
-            return;
-        }
-
-        var hostData = AmongUsClient.Instance.GetHost();
-        if (hostData == null || hostData.Character.Data.Disconnected) return;
-
-        if (task.IsComplete) return;
-        foreach (var item in PlayerControl.AllPlayerControls)
-        {
-            var messageWriter = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)RpcCalls.CompleteTask, SendOption.Reliable, AmongUsClient.Instance.GetClientIdFromCharacter(item));
-            messageWriter.WritePacked(task.Id);
-            AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
-        }
-    }
-
     // Opens Chat UI
     public static void OpenChat()
     {
-        if (!DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        if (!HudManager.Instance.Chat.IsOpenOrOpening)
         {
-            DestroyableSingleton<HudManager>.Instance.Chat.chatScreen.SetActive(true);
+            HudManager.Instance.Chat.chatScreen.SetActive(true);
             PlayerControl.LocalPlayer.NetTransform.Halt();
-            DestroyableSingleton<HudManager>.Instance.Chat.StartCoroutine(DestroyableSingleton<HudManager>.Instance.Chat.CoOpen());
-            if (DestroyableSingleton<FriendsListManager>.InstanceExists)
+            HudManager.Instance.Chat.StartCoroutine(HudManager.Instance.Chat.CoOpen());
+            if (FriendsListManager.InstanceExists)
             {
-                DestroyableSingleton<FriendsListManager>.Instance.SetFriendButtonColor(true);
+                FriendsListManager.Instance.SetFriendButtonColor(true);
             }
-            if (DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.gameObject.activeSelf)
+            if (HudManager.Instance.Chat.chatNotification.gameObject.activeSelf)
 			{
-				DestroyableSingleton<HudManager>.Instance.Chat.chatNotification.Close();
+				HudManager.Instance.Chat.chatNotification.Close();
 			}
         }
 
@@ -239,7 +219,7 @@ public static class Utils
         lineRenderer.SetWidth(0.02F, 0.02F);
 
         // I just picked an already existing material from the game
-        Material material = DestroyableSingleton<HatManager>.Instance.PlayerMaterial;
+        Material material = HatManager.Instance.PlayerMaterial;
 
         lineRenderer.material = material;
         lineRenderer.SetColors(color, color);
@@ -351,9 +331,9 @@ public static class Utils
     // Closes Chat UI
     public static void CloseChat()
     {
-        if (DestroyableSingleton<HudManager>.Instance.Chat.IsOpenOrOpening)
+        if (HudManager.Instance.Chat.IsOpenOrOpening)
         {
-            DestroyableSingleton<HudManager>.Instance.Chat.ForceClosed();
+            HudManager.Instance.Chat.ForceClosed();
         }
     }
 
@@ -508,10 +488,10 @@ public static class Utils
     // Strings are automatically translated
     public static string GetRoleName(NetworkedPlayerInfo playerData)
     {
-        var translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+        var translatedRole = TranslationController.Instance.GetString(playerData.Role.StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         if (translatedRole != "STRMISS") return translatedRole;
 
-        translatedRole = DestroyableSingleton<TranslationController>.Instance.GetString(GetBehaviourByTeamType(playerData.Role.TeamType).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
+        translatedRole = TranslationController.Instance.GetString(GetBehaviourByTeamType(playerData.Role.TeamType).StringName, Il2CppSystem.Array.Empty<Il2CppSystem.Object>());
         return translatedRole;
     }
 
@@ -664,7 +644,7 @@ public static class Utils
 
     public static void ShowNewPopup(string text)
     {
-        DestroyableSingleton<DisconnectPopup>.Instance.ShowCustom(text);
+        DisconnectPopup.Instance.ShowCustom(text);
     }
 
     // Loads sprites from manifest resources

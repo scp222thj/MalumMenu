@@ -110,7 +110,7 @@ public class TasksUI : MonoBehaviour
                         {
                             if (GUILayout.Button("Complete", GUIStylePreset.NormalButton))
                             {
-                                Utils.CompleteTask(task);
+                                PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
                             }
                         }
                     }
