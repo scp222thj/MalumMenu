@@ -4,13 +4,16 @@
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
-| NoClip     | Allows you to walk through walls like a ghost | Toggle | Off
-| Boost Speed | Doubles your player's speed | Toggle | Off |
+| NoClip     | Allows you to walk through walls like a ghost | Toggle | Off |
+| Invert Controls | Inverts your player's controls | Toggle | Off |
+| Current speed | Changes your player's movement speed | Slider |
+
 
 #### Murder
 
 | Cheat | Description | Type | Default|
 |------------|-------------|------|--------|
+| Telekill Player | Select a player to kill them immediatly and teleport back | Menu |
 | Kill Player | Select a player to kill them immediatly | Menu |
 | Kill All Crewmates | Kill all crewmates immediatly | Button |
 | Kill All Impostors | Kill all impostors immediatly | Button |
@@ -34,6 +37,8 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | No Shadows | Removes all shadows, allowing you to see during blackouts and even through walls<br>Also, lets you see through spore clouds in the Fungle Jungle | Toggle | Off |
 | Reveal Votes | Reveals votes as they are being cast rather than at the end of the meeting<br>Also, lets you see colored votes even if votes are set to anonymous | Toggle | Off |
 | Always Chat | Keeps the chat icon always enabled, allowing you to chat at any time (even while not in a meeting or the lobby) | Toggle | Off |
+| Task Arrow | Adds arrows pointing at your tasks | Toggle | Off |
+| Lobby Info | Allows you to see info of a lobby in "Find Game" | Toggle | Off |
 
 #### Camera
     
@@ -67,6 +72,8 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
 | Set Fake Role | Change your current role to any role you want<br>(Shapeshifter & Phantom are disabled by default to prevent getting detected by the anticheat) | Menu |
+| Set Fake Alive | Change the state of aliveness of your player | Menu |
+
 
 #### Impostor
 
@@ -75,6 +82,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Kill Anyone | Allows you to kill anyone, regardless if they are protected, impostors, crawling in a vent, or a ghost | Toggle | Off |
 | No Kill Cooldown | Removes the cooldown period after kills, allowing you to spam-kill as much as you please | Toggle | Off |
 | Kill Reach | Allows you to kill players regardless of how far they are on the map | Toggle | Off |
+| Protection Menu | Allows you to protect any player | Menu |
 
 #### Phantom
 
@@ -102,6 +110,7 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Endless Tracking | Allows you to track another player forever | Toggle | Off |
 | No Track Delay | Removes the short delay between the tracked player and their icon on your tracker map | Toggle | Off |
 | No Track Cooldown | Removes the cooldown period after tracking someone | Toggle | Off |
+| Track Reach | Allows you to track someone ignoring distance | Toggle | Off |
 
 #### Engineer
 
@@ -122,8 +131,10 @@ MalumMenu's ESP cheats are completely client-side, and thus undetectable by anti
 | Cheat | Description | Type | Default |
 |------------|-------------|------|----|
 | Unfixable Lights | Disables lights completely (they cannot be fixed manually by players)<br>You can enable them again by clicking the button | Toggle | Off |
-| Report Body | Report any player as a dead body to start a meeting | Button |
+| Autoreport Body | Autoreports any dead body to start a meeting | Toggle | Off |
 | Close Meeting | Forcefully closes the meeting window (only for you), allowing you to move and interact with the game during meetings | Button |
+| Call Meeting | Forcefully starts a meeting (Cant do it if you're already inside one) | Button |
+| Autopen Door On Use | Auto-opens doors that can be open on use | Toggle | Off |
 
 #### Sabotage
 
@@ -133,12 +144,15 @@ Moreover, different sabotages can be enabled at the same time, and they even wor
 
 | Cheat | Description | Type | 
 |------------|-------------|------|
-| Reactor | Allows you to enable/disable Reactor sabotage | Toggle | Off |
-| Oxygen | Allows you to enable/disable Oxygen sabotage | Toggle | Off |
-| Lights | Allows you to enable/disable Lights sabotage | Toggle | Off |
-| Comms | Allows you to enable/disable Communications sabotage | Toggle | Off |
+| Reactor | Allows you to enable/disable Reactor sabotage | Button |
+| Oxygen | Allows you to enable/disable Oxygen sabotage | Button |
+| Lights | Allows you to enable/disable Lights sabotage | Button |
+| Comms | Allows you to enable/disable Communications sabotage | Button |
 | Doors | Immediatly locks all doors on the ship | Button |
 | MushroomMixup | Induces Mushroom Mixup sabotage on Fungle map | Button |
+| Doors menu | Allows to close a door individually | Menu |
+| Open Sabotage map | Opens sabotage map even if you're crewmate | Map |
+| Trigger Spores | Triggers spores in the map "Fungle" | Button |
 
 #### Vents
 
@@ -157,6 +171,8 @@ These cheats are constantly running in the background and **cannot be disabled t
 | Free Cosmetics | Gives you access to all of the game's cosmetics for free, including:<br><br>- Hats<br>- Visors<br>- Skins<br>- Pets<br>- Nameplates<br>- Bundles<br>- Cosmicubes | Toggle | On |
 | Avoid Penalties | Removes the penalty you receive when disconnecting from games early | Toggle | On |
 | Unlock Extra Features | Unlocks many of the game's special features automatically, including:<br><br>- Freechat<br>- Friend list<br>- Custom name<br>- Online gameplay | Toggle | On |
+| Spoof Date To April Fools | Spoofs game date to april fools | Toggle | Off |
+| Copy Lobby Code On Disconect | Copies lobby code on disconect | Toggle | Off |
 
 ## 📃 Config
 
@@ -171,9 +187,8 @@ You can change all of the following settings in `BepInEx/config/MalumMenu.cfg`
 | Privacy.HideDeviceId | When enabled, it will hide your unique deviceId from Among Us<br><br>Could **potentially** help bypass hardware bans in the future | Boolean | true |
 | Privacy.NoTelemetry | When enabled, it will stop Among Us from collecting analytics of your games using Unity Analytics and sending them to Innersloth | Boolean | true |
 | Spoofing.Level | Sets a custom player level to display to others in online games, masking your real level<br><br>**IMPORTANT**: Only integers between 0 and 4294967295 are valid. Decimal values are not accepted | String | |
-| Spoofing.Platform | Sets a different gaming platform in online lobbies to disguise your actual platform<br><br>**IMPORTANT**: You may only use platform names from this [list](https://skeld.js.org/enums/constant.Platform.html) | String | |
+| Spoofing.Platform | Sets a different gaming platform in online lobbies to disguise your actual platform<br><br>**IMPORTANT**: You may only use platform names from this [list]([](https://skeld.js.org/enums/_skeldjs_constant.Platform.html) | String | |
 
 ## Other relevant features of MalumMenu:
 
 - MalumMenu has a simple **GUI** that is easy to navigate and can be toggled using the **DELETE** key on your keyboard
-- [**TEMPORARILY BROKEN**] MalumMenu comes with **custom announcements** that it will automatically fetch online at launch.
