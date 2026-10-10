@@ -1,4 +1,4 @@
-namespace MalumMenu;
+namespace MalumMenu.Utilities;
 
 public static class OutfitPreset
 {

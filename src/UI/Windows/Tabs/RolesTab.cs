@@ -1,6 +1,9 @@
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
+using MalumMenu.UI.Utilities.Structures;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows.Tabs;
 
 public class RolesTab : ITab
 {

@@ -1,6 +1,7 @@
+using MalumMenu.UI.Elements;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.Components;
 
 public class KeybindListener : MonoBehaviour
 {

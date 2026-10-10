@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
+
 public static class MinimapHandler
 {
     public static bool minimapActive;

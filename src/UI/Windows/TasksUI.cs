@@ -1,7 +1,10 @@
 using System.Linq;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
+using MalumMenu.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows;
 
 public class TasksUI : MonoBehaviour
 {

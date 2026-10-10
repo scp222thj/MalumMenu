@@ -2,8 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Windows;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
+
 public static class OverloadHandler
 {
     public static float cooldown;

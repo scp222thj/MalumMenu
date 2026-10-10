@@ -1,6 +1,8 @@
 using HarmonyLib;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 // Found here: https://github.com/astra1dev/AUnlocker/blob/main/src/OptionsPatches.cs
 

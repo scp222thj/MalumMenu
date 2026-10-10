@@ -1,3 +1,5 @@
+namespace MalumMenu.UI.Utilities;
+
 public enum WindowId
 {
     MenuUI = 0,

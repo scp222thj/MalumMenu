@@ -2,8 +2,9 @@ using HarmonyLib;
 using System;
 using UnityEngine;
 using System.Text.RegularExpressions;
+using MalumMenu.UI.Elements;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
 public static class ChatController_AddChat

@@ -14,8 +14,9 @@ using Sentry.Internal.Extensions;
 using System.Runtime.CompilerServices;
 using AmongUs.InnerNet.GameDataMessages;
 using Il2CppInterop.Runtime.Injection;
+using MalumMenu.UI.Elements;
 
-namespace MalumMenu;
+namespace MalumMenu.Utilities;
 
 public static class Utils
 {

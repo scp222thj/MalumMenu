@@ -1,8 +1,11 @@
 using HarmonyLib;
 using System.Linq;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 using Sentry.Internal.Extensions;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(EngineerRole), nameof(EngineerRole.FixedUpdate))]
 public static class EngineerRole_FixedUpdate

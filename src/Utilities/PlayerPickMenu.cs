@@ -2,7 +2,8 @@ using UnityEngine;
 using Il2CppSystem.Collections.Generic;
 using Sentry.Internal.Extensions;
 
-namespace MalumMenu;
+namespace MalumMenu.Utilities;
+
 public static class PlayerPickMenu
 {
     public static ShapeshifterMinigame playerpickMenu;

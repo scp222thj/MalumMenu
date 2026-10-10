@@ -6,8 +6,12 @@ using System;
 using System.Security.Cryptography;
 using InnerNet;
 using System.Collections.Generic;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Windows;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(Constants), nameof(Constants.GetPlatformData))]
 public static class Constants_GetPlatformData

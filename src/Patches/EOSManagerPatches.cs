@@ -1,7 +1,8 @@
 using System;
 using HarmonyLib;
+using MalumMenu.UI.Elements;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 // GuestMode cheats are commented out as they are broken in latest updates
 

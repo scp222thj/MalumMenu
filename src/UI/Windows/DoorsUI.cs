@@ -1,7 +1,11 @@
 using UnityEngine;
 using Il2CppSystem.Collections.Generic;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows;
 
 public class DoorsUI : MonoBehaviour
 {

@@ -1,6 +1,9 @@
 using HarmonyLib;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Windows;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.Update))]
 public static class AmongUsClient_Update

@@ -1,6 +1,7 @@
 using HarmonyLib;
+using MalumMenu.UI.Elements;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(LogicOptions), nameof(LogicOptions.GetAnonymousVotes))]
 public static class LogicOptions_GetAnonymousVotes

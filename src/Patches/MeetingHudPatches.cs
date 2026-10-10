@@ -1,9 +1,11 @@
 using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
 using Object = UnityEngine.Object;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 public static class MeetingHud_Update

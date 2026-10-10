@@ -1,7 +1,8 @@
 using HarmonyLib;
+using MalumMenu.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(MatchInfoGuide), nameof(MatchInfoGuide.Open))]
 public static class MatchInfoGuide_Open

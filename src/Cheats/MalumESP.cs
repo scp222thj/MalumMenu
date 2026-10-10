@@ -1,7 +1,10 @@
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 using UnityEngine;
 using Sentry.Internal.Extensions;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
+
 public static class MalumESP
 {
     private static bool _freecamActive;

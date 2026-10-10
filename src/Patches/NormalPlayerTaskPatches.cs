@@ -1,6 +1,9 @@
 using HarmonyLib;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(NormalPlayerTask), nameof(NormalPlayerTask.Initialize))]
 public static class NormalPlayerTask_Initialize
