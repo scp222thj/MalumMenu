@@ -48,21 +48,13 @@ public class ShipTab : ITab
     {
         GUILayout.Label("Sabotage", GUIStylePreset.TabSubtitle);
 
-        CheatToggles.reactorSab = GUILayout.Toggle(CheatToggles.reactorSab, " Reactor");
-
-        CheatToggles.oxygenSab = GUILayout.Toggle(CheatToggles.oxygenSab, " Oxygen");
-
-        CheatToggles.elecSab = GUILayout.Toggle(CheatToggles.elecSab, " Lights");
-
-        CheatToggles.commsSab = GUILayout.Toggle(CheatToggles.commsSab, " Comms");
-
         CheatToggles.showDoorsMenu = GUILayout.Toggle(CheatToggles.showDoorsMenu, " Show Doors Menu");
-
-        CheatToggles.mushSab = GUILayout.Toggle(CheatToggles.mushSab, " Mushroom Mixup");
 
         CheatToggles.mushSpore = GUILayout.Toggle(CheatToggles.mushSpore, " Trigger Spores");
 
         CheatToggles.sabotageMap = GUILayout.Toggle(CheatToggles.sabotageMap, " Open Sabotage Map");
+
+        CheatToggles.showSabotageMenu = GUILayout.Toggle(CheatToggles.showSabotageMenu, " Open Sabotage Menu");
     }
 
     private void DrawVents()
