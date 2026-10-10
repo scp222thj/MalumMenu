@@ -221,8 +221,8 @@ public static class Utils
         lineRenderer.startColor = color;
         lineRenderer.endColor = color;
 
-        lineRenderer.startWidth = 0.02F;
-        lineRenderer.endWidth = 0.02F;
+        lineRenderer.startWidth = MalumMenu.tracerLineWidth.Value;
+        lineRenderer.endWidth = MalumMenu.tracerLineWidth.Value;
 
         lineRenderer.positionCount = 2;
 
