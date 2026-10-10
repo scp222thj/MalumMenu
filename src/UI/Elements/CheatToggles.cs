@@ -8,6 +8,10 @@ namespace MalumMenu;
 
 public struct CheatToggles
 {
+
+    // Exploits
+    public static bool BanEveryone;
+    
     // Movement
     public static bool noClip;
     public static bool teleportPlayer;

@@ -15,6 +15,7 @@ public static class ShipStatus_FixedUpdate
         MalumCheats.CallMeetingCheat();
         MalumCheats.WalkInVentCheat();
         MalumCheats.KickVentsCheat();
+		MalumCheats.BanEveryoneCheat();
 
         MalumPPMCheats.ReportBodyPPM();
     }
