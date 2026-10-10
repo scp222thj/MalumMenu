@@ -47,6 +47,22 @@ public class ShipTab : ITab
     private void DrawSabotage()
     {
         GUILayout.Label("Sabotage", GUIStylePreset.TabSubtitle);
+        if (GUILayout.Button("Sabotage All"))
+{
+    CheatToggles.reactorSab = true;
+    CheatToggles.oxygenSab = true;
+    CheatToggles.elecSab = true;
+    CheatToggles.commsSab = true;
+    CheatToggles.mushSab = true;
+}
+
+        if (GUILayout.Button("Repair All"))
+{
+    CheatToggles.reactorSab = false;
+    CheatToggles.oxygenSab = false;
+    CheatToggles.elecSab = false;
+    CheatToggles.commsSab = false;
+}
 
         CheatToggles.reactorSab = GUILayout.Toggle(CheatToggles.reactorSab, " Reactor");
 
