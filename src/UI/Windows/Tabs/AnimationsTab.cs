@@ -14,6 +14,10 @@ public class AnimationsTab : ITab
 
         GUILayout.Space(15);
 
+        DrawSkipAnimations();
+
+        GUILayout.Space(15);
+
         DrawClientSided();
 
         GUILayout.EndVertical();
@@ -33,6 +37,17 @@ public class AnimationsTab : ITab
 
         // CheatToggles.animPet = GUILayout.Toggle(CheatToggles.animPet, " Pet");
     }
+
+   private void DrawSkipAnimations()
+ {
+     GUILayout.Label("Skip Animations", GUIStylePreset.TabSubtitle);
+     CheatToggles.SkipSeekerAnimation = GUILayout.Toggle(CheatToggles.SkipSeekerAnimation, " Skip Seeker Animations");
+
+     CheatToggles.NoShhScreenAnimation = GUILayout.Toggle(CheatToggles.NoShhScreenAnimation, " Skip Shhh Screen");
+
+     CheatToggles.SkipKillAnimation = GUILayout.Toggle(CheatToggles.SkipKillAnimation, " Skip Kill Animations");
+
+ }
 
     private void DrawClientSided()
     {
