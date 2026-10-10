@@ -34,6 +34,15 @@ public class DoorsUI : MonoBehaviour
 
     private void DoorsWindow(int windowID)
     {
+        var buttonSize = new Vector2(40f, 15f);
+        var buttonPos = new Vector2(windowWidth - buttonSize.x, 2f);
+        var buttonRect = new Rect(buttonPos, buttonSize);
+        if (GUI.Button(buttonRect, "✕", GUIStylePreset.FlatButton))
+        {
+            CheatToggles.showDoorsMenu = false;
+        }
+
+
         if (!Utils.isShip)
         {
             GUI.DragWindow();
