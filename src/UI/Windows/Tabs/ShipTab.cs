@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class ShipTab : ITab
 {
     public string name => "Ship";
+    public Texture2D icon => Assets.TabIcons.Ship;
 
     public void Draw()
     {

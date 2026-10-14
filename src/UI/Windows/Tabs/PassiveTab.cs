@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class PassiveTab : ITab
 {
     public string name => "Passive";
+    public Texture2D icon => Assets.TabIcons.Passive;
 
     public void Draw()
     {

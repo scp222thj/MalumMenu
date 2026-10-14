@@ -92,6 +92,7 @@ public static class GUIStylePreset
                 {
                     fontSize = 17,
                     fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleLeft,
                 };
             }
 

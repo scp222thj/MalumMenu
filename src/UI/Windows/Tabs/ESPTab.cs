@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class ESPTab : ITab
 {
     public string name => "ESP";
+    public Texture2D icon => Assets.TabIcons.ESP;
 
     public void Draw()
     {

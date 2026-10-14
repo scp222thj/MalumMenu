@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class RolesTab : ITab
 {
     public string name => "Roles";
+    public Texture2D icon => Assets.TabIcons.Roles;
 
     public void Draw()
     {

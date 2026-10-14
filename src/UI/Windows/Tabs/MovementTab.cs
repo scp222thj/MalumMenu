@@ -6,6 +6,7 @@ namespace MalumMenu;
 public class MovementTab : ITab
 {
     public string name => "Movement";
+    public Texture2D icon => Assets.TabIcons.Movement;
 
     public void Draw()
     {
