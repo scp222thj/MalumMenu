@@ -13,23 +13,23 @@ public static class MeetingHud_Update
     // Prefix patch of MeetingHud.Update to constantly bloop new vote icons for each new vote being cast during the meeting
     public static void Prefix(MeetingHud __instance)
     {
-        if (__instance.state < MeetingHud.VoteStates.Results)
+        if (__instance.state < MeetingHud.MeetingStates.Results)
         {
             foreach (var playerVoteArea in __instance.playerStates)
             {
                 if (!playerVoteArea) continue;
 
-                var playerData = GameData.Instance.GetPlayerById(playerVoteArea.TargetPlayerId);
+                var playerData = GameData.Instance.GetPlayerById(playerVoteArea.PlayerId);
 
-                if (playerData != null && !playerData.Disconnected && playerVoteArea.VotedFor != PlayerVoteArea.HasNotVoted && playerVoteArea.VotedFor != PlayerVoteArea.MissedVote && playerVoteArea.VotedFor != PlayerVoteArea.DeadVote && !votedPlayers.Contains(playerVoteArea.TargetPlayerId))
+                if (playerData != null && !playerData.Disconnected && playerVoteArea.VotedForId != PlayerVoteArea.HasNotVoted && playerVoteArea.VotedForId != PlayerVoteArea.MissedVote && playerVoteArea.VotedForId != PlayerVoteArea.DeadVote && !votedPlayers.Contains(playerVoteArea.PlayerId))
                 {
-                    votedPlayers.Add(playerVoteArea.TargetPlayerId);
+                    votedPlayers.Add(playerVoteArea.PlayerId);
 
-                    if (playerVoteArea.VotedFor != PlayerVoteArea.SkippedVote)
+                    if (playerVoteArea.VotedForId != PlayerVoteArea.SkippedVote)
                     {
                         foreach (var votedForArea in __instance.playerStates)
                         {
-                            if (votedForArea.TargetPlayerId == playerVoteArea.VotedFor)
+                            if (votedForArea.PlayerId == playerVoteArea.VotedForId)
                             {
                                 __instance.BloopAVoteIcon(playerData, 0, votedForArea.transform);
                                 break;
@@ -126,6 +126,27 @@ public static class MeetingHud_CheckForEndVoting
         var max = __instance.CalculateVotes().MaxPair(out var tie);
         var exiled = GameData.Instance.AllPlayers.ToArray().FirstOrDefault(v => !tie && v.PlayerId == max.Key);
 
+        bool wasOverruled = false;
+        ushort overruleNonce = 0;
+        JudgeOverrule judgeOverrule;
+        NetworkedPlayerInfo networkedPlayerInfo;
+        NetworkedPlayerInfo networkedPlayerInfo2;
+
+        if (__instance.TryGetWinningOverrule(out judgeOverrule, out networkedPlayerInfo, out networkedPlayerInfo2))
+        {
+            wasOverruled = true;
+            overruleNonce = judgeOverrule.OverruleNonce;
+
+            if (networkedPlayerInfo2.Role.TeamType == RoleTeamTypes.Impostor)
+            {
+                exiled = GameData.Instance.GetPlayerById(judgeOverrule.OverruledPlayerId);
+            }
+            else
+            {
+                exiled = networkedPlayerInfo;
+            }
+        }
+
         // This is the only change from the original method - make sure local player is not exiled
         if (exiled != null && exiled == PlayerControl.LocalPlayer.Data)
         {
@@ -139,12 +160,12 @@ public static class MeetingHud_CheckForEndVoting
             var playerState = __instance.playerStates[index];
             states[index] = new MeetingHud.VoterState
             {
-                VoterId = playerState.TargetPlayerId,
-                VotedForId = playerState.VotedFor
+                VoterId = playerState.PlayerId,
+                VotedForId = playerState.VotedForId
             };
         }
 
-        __instance.RpcVotingComplete(states, exiled, tie);
+        __instance.RpcVotingComplete(states, exiled, tie, wasOverruled, overruleNonce);
 
         return false;
     }

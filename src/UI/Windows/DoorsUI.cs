@@ -7,7 +7,7 @@ public class DoorsUI : MonoBehaviour
 {
     public static int windowHeight = 270;
     public static int windowWidth = 480;
-    private Rect _windowRect;
+    public static Rect windowRect;
 
     private List<SystemTypes> _doorsToSpamOpen = new();
     private List<SystemTypes> _doorsToSpamClose = new();
@@ -15,7 +15,7 @@ public class DoorsUI : MonoBehaviour
     private void Start()
     {
         // Instantiate 2D area of DoorsUI
-        _windowRect = new(
+        windowRect = new(
             Screen.width / 2f - windowWidth / 2f,
             Screen.height / 2f - windowHeight / 2f,
             windowWidth,
@@ -29,7 +29,7 @@ public class DoorsUI : MonoBehaviour
 
         UIHelpers.ApplyUIColor();
 
-        _windowRect = GUI.Window((int)WindowId.DoorsUI, _windowRect, (GUI.WindowFunction)DoorsWindow, "Doors");
+        windowRect = GUI.Window((int)WindowId.DoorsUI, windowRect, (GUI.WindowFunction)DoorsWindow, "Doors");
     }
 
     private void DoorsWindow(int windowID)
