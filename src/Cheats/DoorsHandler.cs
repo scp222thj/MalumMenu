@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
 
 public static class DoorsHandler
 {

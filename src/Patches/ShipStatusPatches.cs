@@ -1,6 +1,7 @@
 using HarmonyLib;
+using MalumMenu.Cheats;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.FixedUpdate))]
 public static class ShipStatus_FixedUpdate

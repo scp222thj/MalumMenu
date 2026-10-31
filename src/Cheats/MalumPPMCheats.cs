@@ -3,9 +3,12 @@ using BepInEx.Unity.IL2CPP.Utils;
 using System;
 using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
+
 public static class MalumPPMCheats
 {
     private static bool _telekillPlayerActive;

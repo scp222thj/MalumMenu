@@ -2,8 +2,10 @@ using AmongUs.Data;
 using HarmonyLib;
 using UnityEngine;
 using Il2CppSystem.Collections.Generic;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(ShapeshifterMinigame), nameof(ShapeshifterMinigame.Begin))]
 public static class ShapeshifterMinigame_Begin

@@ -1,4 +1,4 @@
-namespace MalumMenu;
+namespace MalumMenu.UI.Utilities.Structures;
 
 public interface ITab
 {

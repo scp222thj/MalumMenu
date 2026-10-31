@@ -1,8 +1,10 @@
 using Il2CppSystem;
 using UnityEngine;
 using System.Collections.Generic;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows;
 
 public class ConsoleUI : MonoBehaviour
 {

@@ -1,6 +1,8 @@
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Windows;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Utilities;
 
 public static class UIHelpers
 {

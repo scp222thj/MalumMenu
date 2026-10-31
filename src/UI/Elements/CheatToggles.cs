@@ -4,7 +4,7 @@ using System.Reflection;
 using AmongUs.GameOptions;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Elements;
 
 public struct CheatToggles
 {

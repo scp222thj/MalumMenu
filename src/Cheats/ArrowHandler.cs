@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Linq;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
 
 public static class ArrowHandler
 {

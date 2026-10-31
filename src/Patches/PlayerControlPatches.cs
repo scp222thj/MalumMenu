@@ -1,8 +1,11 @@
 using HarmonyLib;
 using Il2CppSystem;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Windows;
+using MalumMenu.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.SetKillTimer))]
 public static class PlayerControl_SetKillTimer

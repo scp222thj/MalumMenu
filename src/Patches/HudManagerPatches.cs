@@ -1,7 +1,10 @@
 using HarmonyLib;
 using System;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
 public static class HudManager_Start

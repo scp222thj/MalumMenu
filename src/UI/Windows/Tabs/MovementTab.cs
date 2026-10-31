@@ -1,7 +1,11 @@
 using UnityEngine;
 using System;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
+using MalumMenu.UI.Utilities.Structures;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows.Tabs;
 
 public class MovementTab : ITab
 {

@@ -1,6 +1,7 @@
 using AmongUs.Data;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
+
 public static class MalumSpoof
 {
     public static void SpoofLevel()

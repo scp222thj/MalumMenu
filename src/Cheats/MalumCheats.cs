@@ -3,8 +3,12 @@ using AmongUs.GameOptions;
 using AmongUs.InnerNet.GameDataMessages;
 using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Windows;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.Cheats;
+
 public static class MalumCheats
 {
     private static bool _isScanAnimActive;

@@ -1,6 +1,8 @@
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows;
 
 public class RolesUI : MonoBehaviour
 {

@@ -1,7 +1,12 @@
 using System;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
+using MalumMenu.UI.Utilities.Structures;
+using MalumMenu.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows.Tabs;
 
 public class OverloadTab : ITab
 {

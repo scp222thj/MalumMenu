@@ -1,8 +1,11 @@
 using System;
 using HarmonyLib;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.Patches;
 
 [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.LateUpdate))]
 public static class PlayerPhysics_LateUpdate

@@ -1,8 +1,12 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
+using MalumMenu.Utilities;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows;
 
 public class OverloadUI : MonoBehaviour
 {

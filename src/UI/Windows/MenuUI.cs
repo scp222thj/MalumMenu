@@ -1,8 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
+using MalumMenu.Cheats;
+using MalumMenu.UI.Elements;
+using MalumMenu.UI.Utilities;
+using MalumMenu.UI.Utilities.Structures;
+using MalumMenu.UI.Windows.Tabs;
+using MalumMenu.Utilities;
 using UnityEngine.SceneManagement;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Windows;
 
 public class MenuUI : MonoBehaviour
 {

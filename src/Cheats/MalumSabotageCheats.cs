@@ -1,4 +1,7 @@
-namespace MalumMenu;
+using MalumMenu.UI.Elements;
+using MalumMenu.Utilities;
+
+namespace MalumMenu.Cheats;
 
 public static class MalumSabotageCheats
 {

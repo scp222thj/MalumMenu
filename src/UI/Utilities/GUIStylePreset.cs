@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MalumMenu;
+namespace MalumMenu.UI.Utilities;
 
 public static class GUIStylePreset
 {
