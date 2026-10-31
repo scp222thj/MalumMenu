@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class ModesTab : ITab
 {
     public string name => "Modes";
+    public Texture2D icon => Assets.TabIcons.Modes;
 
     public void Draw()
     {

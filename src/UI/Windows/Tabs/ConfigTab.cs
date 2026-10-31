@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class ConfigTab : ITab
 {
     public string name => "Config";
+    public Texture2D icon => Assets.TabIcons.Config;
 
     public void Draw()
     {

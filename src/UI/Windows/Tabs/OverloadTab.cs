@@ -6,6 +6,7 @@ namespace MalumMenu;
 public class OverloadTab : ITab
 {
     public string name => "Overload";
+    public Texture2D icon => Assets.TabIcons.Overload;
 
     private GUIStyle _sliderSubtitle;
     private int _maxStrength = 100000;

@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class HostOnlyTab : ITab
 {
     public string name => "Host-Only";
+    public Texture2D icon => Assets.TabIcons.HostOnly;
 
     public void Draw()
     {

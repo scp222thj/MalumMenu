@@ -206,7 +206,7 @@ public class MenuUI : MonoBehaviour
                 GUI.backgroundColor = new Color(0.2f, 0.2f, 0.2f);
             }
 
-            if (GUILayout.Button(_tabs[i].name, GUIStylePreset.TabButton, GUILayout.Height(35)))
+            if (GUILayout.Button(new GUIContent($" {_tabs[i].name}", _tabs[i].icon, null), GUIStylePreset.TabButton, GUILayout.Height(35)))
                 _selectedTab = i;
 
             GUI.backgroundColor = standardColor;

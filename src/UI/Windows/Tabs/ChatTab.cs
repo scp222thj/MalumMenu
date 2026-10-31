@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class ChatTab : ITab
 {
     public string name => "Chat";
+    public Texture2D icon => Assets.TabIcons.Chat;
 
     public void Draw()
     {

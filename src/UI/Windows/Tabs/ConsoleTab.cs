@@ -5,6 +5,7 @@ namespace MalumMenu;
 public class ConsoleTab : ITab
 {
     public string name => "Console";
+    public Texture2D icon => Assets.TabIcons.Console;
 
     public void Draw()
     {
