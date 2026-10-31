@@ -215,17 +215,18 @@ public static class Utils
             lineRenderer = sourceObject.AddComponent<LineRenderer>();
         }
 
-        lineRenderer.SetVertexCount(2);
-        lineRenderer.SetWidth(0.02F, 0.02F);
-
         // I just picked an already existing material from the game
-        Material material = HatManager.Instance.PlayerMaterial;
+        lineRenderer.material = HatManager.Instance.PlayerMaterial;
 
-        lineRenderer.material = material;
-        lineRenderer.SetColors(color, color);
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
 
-        lineRenderer.SetPosition(0, sourceObject.transform.position);
-        lineRenderer.SetPosition(1, targetObject.transform.position);
+        lineRenderer.startWidth = MalumMenu.tracerLineWidth.Value;
+        lineRenderer.endWidth = MalumMenu.tracerLineWidth.Value;
+
+        lineRenderer.positionCount = 2;
+
+        lineRenderer.SetPositions(new Vector3[] { sourceObject.transform.position, targetObject.transform.position });
     }
 
     // Returns whether the ChatUI should be active or not

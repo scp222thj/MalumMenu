@@ -54,6 +54,7 @@ public partial class MalumMenu : BasePlugin
     public static ConfigEntry<int> defaultStrength;
     public static ConfigEntry<float> defaultCooldown;
     public static ConfigEntry<int> killSwitchLvl;
+    public static ConfigEntry<float> tracerLineWidth;
 
     public override void Load()
     {
@@ -172,6 +173,11 @@ public partial class MalumMenu : BasePlugin
         //                             "Default level used by kill switch. Each level adds 500 ms to the max allowed ping before overload stops. Helps avoid lagging / disconnects. IMPORTANT: Only goes from level 1 (500 ms) to 6 (3000 ms)",
         //                             new AcceptableValueRange<int>(1, 6)
         //                         ));
+
+        tracerLineWidth = Config.Bind("MalumMenu.ESP",
+                                "TracerLineWidth",
+                                0.02F,
+                                "The width of the tracers drawn by MalumMenu");
 
         // Enabled by default
         CheatToggles.unlockFeatures = true;

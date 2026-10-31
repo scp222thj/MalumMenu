@@ -7,6 +7,8 @@ public static class TracersHandler
     // Draws a tracer from LocalPlayer to another player.
     public static void DrawPlayerTracer(PlayerPhysics playerPhysics)
     {
+        if (playerPhysics.myPlayer == PlayerControl.LocalPlayer) return; // Don't draw a tracer to ourselves
+
         try
         {
             var color = Color.clear; // All tracers are invisible by default
