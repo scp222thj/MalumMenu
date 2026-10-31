@@ -46,6 +46,15 @@ public class ESPTab : ITab
         CheatToggles.taskArrows = GUILayout.Toggle(CheatToggles.taskArrows, " Task Arrows");
 
         CheatToggles.revealVotes = GUILayout.Toggle(CheatToggles.revealVotes, " Reveal Votes");
+    }
+
+    private static void DrawMinimapToggle(ref bool toggleValue, string label)
+    {
+        var newValue = GUILayout.Toggle(toggleValue, label);
+        if (newValue == toggleValue) return;
+
+        toggleValue = newValue;
+        MinimapHandler.RefreshHerePoints();
 
         CheatToggles.seeLobbyInfo = GUILayout.Toggle(CheatToggles.seeLobbyInfo, " See Lobby Info");
     }
@@ -81,6 +90,8 @@ public class ESPTab : ITab
     private void DrawMinimap()
     {
         GUILayout.Label("Minimap", GUIStylePreset.TabSubtitle);
+
+        CheatToggles.mapSabotage = GUILayout.Toggle(CheatToggles.mapSabotage, " Show in Sabotage Map");
 
         CheatToggles.mapCrew = GUILayout.Toggle(CheatToggles.mapCrew, " Crewmates");
 
