@@ -77,6 +77,7 @@ public struct CheatToggles
 
     // Ship
     public static bool closeMeeting;
+    public static bool openMeeting;
     public static bool autoOpenDoorsOnUse;
     public static bool unfixableLights;
     public static bool callMeeting;
