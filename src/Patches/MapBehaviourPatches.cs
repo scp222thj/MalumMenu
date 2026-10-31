@@ -44,6 +44,7 @@ public static class MapBehaviour_ShowNormalMap
     }
 }
 
+
 [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.FixedUpdate))]
 public static class MapBehaviour_FixedUpdate
 {
