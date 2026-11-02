@@ -58,6 +58,7 @@ public struct CheatToggles
     public static bool mapImps;
     public static bool mapGhosts;
     public static bool colorBasedMap;
+    public static bool mapSabotage;
 
     // Tracers
     public static bool tracersImps;

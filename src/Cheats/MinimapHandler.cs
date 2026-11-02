@@ -5,12 +5,85 @@ namespace MalumMenu;
 public static class MinimapHandler
 {
     public static bool minimapActive;
+    public static bool sabotageMapActive;
     public static List<HerePoint> herePoints = new List<HerePoint>();
     public static List<HerePoint> herePointsToRemove = new List<HerePoint>();
 
     public static bool IsCheatEnabled()
     {
-        return CheatToggles.mapCrew || CheatToggles.mapGhosts || CheatToggles.mapImps;
+        return (CheatToggles.mapCrew || CheatToggles.mapGhosts || CheatToggles.mapImps) && (!sabotageMapActive || CheatToggles.mapSabotage);
+    }
+
+    public static void RefreshHerePoints()
+    {
+        try
+        {
+            if (!MapBehaviour.Instance || !MapBehaviour.Instance.gameObject.activeInHierarchy)
+            {
+                DestroyHerePoints();
+                minimapActive = false;
+                return;
+            }
+
+            var cheatEnabled = IsCheatEnabled();
+            minimapActive = cheatEnabled;
+
+            if (!cheatEnabled)
+            {
+                DestroyHerePoints();
+                return;
+            }
+
+            if (herePoints.Count == 0)
+            {
+                SpawnHerePoints(MapBehaviour.Instance);
+            }
+
+            foreach (var herePoint in herePoints)
+            {
+                HandleHerePoint(herePoint);
+            }
+
+            foreach (var herePoint in herePointsToRemove)
+            {
+                herePoints.Remove(herePoint);
+            }
+
+            herePointsToRemove.Clear();
+        }
+        catch { }
+    }
+
+    public static void DestroyHerePoints()
+    {
+        try
+        {
+            herePoints.ForEach(x => UnityEngine.Object.Destroy(x.sprite.gameObject));
+            herePoints.Clear();
+            herePointsToRemove.Clear();
+        }
+        catch { }
+    }
+
+    public static void SpawnHerePoints(MapBehaviour mapBehaviour)
+    {
+        try
+        {
+            DestroyHerePoints();
+
+            var temp = new List<HerePoint>();
+            foreach (var player in PlayerControl.AllPlayerControls)
+            {
+                if (!player.AmOwner)
+                {
+                    var herePoint = UnityEngine.Object.Instantiate(mapBehaviour.HerePoint, mapBehaviour.HerePoint.transform.parent);
+                    temp.Add(new HerePoint(player, herePoint));
+                }
+            }
+
+            herePoints = temp;
+        }
+        catch { }
     }
 
     public static void HandleHerePoint(HerePoint herePoint)
@@ -85,7 +158,7 @@ public static class MinimapHandler
         catch
         {
             // Remove icons that are causing problems
-            Object.Destroy(herePoint.sprite.gameObject);
+            UnityEngine.Object.Destroy(herePoint.sprite.gameObject);
             herePointsToRemove.Add(herePoint);
         }
     }
