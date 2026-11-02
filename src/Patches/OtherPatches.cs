@@ -360,11 +360,11 @@ public static class IntroCutscene_CoBegin
             break;
         }
 
-        DestroyableSingleton<RoleManager>.Instance.SetRole(PlayerControl.LocalPlayer, forcedRole);
+        RoleManager.Instance.SetRole(PlayerControl.LocalPlayer, forcedRole);
 
         if (roleSwapTarget != null)
         {
-            DestroyableSingleton<RoleManager>.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
+            RoleManager.Instance.SetRole(roleSwapTarget, PlayerControl.LocalPlayer.Data.RoleType);
         }
     }
 }
