@@ -22,7 +22,7 @@ public static class MalumSpoof
         string friendCode = MalumMenu.guestFriendCode.Value;
         if (string.IsNullOrWhiteSpace(friendCode))
         {
-            friendCode = DestroyableSingleton<AccountManager>.Instance.GetRandomName();
+            friendCode = AccountManager.Instance.GetRandomName();
         }
         return friendCode;
     }
