@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Globalization;
 using System.Reflection;
 using AmongUs.GameOptions;
 using UnityEngine;
@@ -43,8 +44,10 @@ public struct CheatToggles
     public static bool seeGhosts;
     public static bool seeRoles;
     public static bool seePlayerInfo;
-    public static bool seeDisguises;
     public static bool taskArrows;
+    public static float ventPlayerOpacity;
+    public static bool trackImps;
+    public static bool trackGhosts;
     public static bool revealVotes;
     public static bool seeLobbyInfo;
 
@@ -222,6 +225,8 @@ public struct CheatToggles
         {
             field.SetValue(null, false);
         }
+
+        ventPlayerOpacity = 0f;
     }
 
     // Saves cheat toggles and their keybinds to MalumProfile.txt
@@ -235,6 +240,7 @@ public struct CheatToggles
         writer.WriteLine("# - List of supported keycodes: https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html");
         writer.WriteLine("# - Setting a keybind is optional. Use KeyCode.None to not set a keybind");
         writer.WriteLine("# - Multiple toggles may have the same key, but multiple keys per toggle are NOT supported");
+        writer.WriteLine("# - Slider values are saved separately as decimal percentages when needed");
         writer.WriteLine("# - Keybinds are only applied after loading this profile by pressing 'Load from Profile' in the Config menu");
         writer.WriteLine();
 
@@ -243,6 +249,8 @@ public struct CheatToggles
             Keybinds.TryGetValue(field.Name, out var key);  // If no key is set then write KeyCode.None
             writer.WriteLine($"{field.Name} = {field.GetValue(null)} = KeyCode.{key}");
         }
+
+        writer.WriteLine($"ventPlayerOpacity = {ventPlayerOpacity.ToString(CultureInfo.InvariantCulture)}");
     }
 
     // Loads cheat toggles and their keybinds from MalumProfile.txt if the file is present
@@ -261,6 +269,18 @@ public struct CheatToggles
             // Skips lines that are commented out
             line = line.Trim();
             if (line.StartsWith("#")) continue;
+
+
+            if (line.StartsWith("ventPlayerOpacity", System.StringComparison.OrdinalIgnoreCase))
+            {
+                var opacityParts = line.Split('=', 3);
+                if (opacityParts.Length >= 2 && float.TryParse(opacityParts[1].Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out var opacity))
+                {
+                    ventPlayerOpacity = opacity;
+                }
+
+                continue;
+            }
 
             // Extracts the three relevant config values for each remaining line
             var parts = line.Split('=', 3);
