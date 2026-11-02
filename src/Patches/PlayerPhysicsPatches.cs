@@ -23,6 +23,13 @@ public static class PlayerPhysics_LateUpdate
         MalumCheats.PlayAnimationCheat();
         MalumCheats.PlayScannerCheat();
 
+        // Before any new match ...
+        if (Utils.isLobby || Utils.isFreePlay)
+        {
+            // Clear the original cached role that is used by fakeRole
+            MalumPPMCheats.ClearFakeRoleCache();
+        }
+
         MalumPPMCheats.EjectPlayerPPM();
         MalumPPMCheats.SpectatePPM();
         MalumPPMCheats.KillPlayerPPM();
