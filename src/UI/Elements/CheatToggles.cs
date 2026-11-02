@@ -151,6 +151,10 @@ public struct CheatToggles
     public static bool forceStartGame;
     public static bool noGameEnd;
     public static bool showProtectMenu;
+    public static bool showColorsMenu;
+    public static bool colorRandomizePlayer;
+    public static bool colorSetPlayer;
+    public static byte colorSetPlayerId = 0; // Stores the selected color ID
     public static bool noOptionsLimits;
     public static bool ejectPlayer;
     public static bool killPlayer;
@@ -208,11 +212,13 @@ public struct CheatToggles
         setFakeAlive = variableToKeep == "setFakeAlive" && setFakeAlive;
         forceRole = variableToKeep == "forceRole" && forceRole;
         teleportPlayer = variableToKeep == "teleportPlayer" && teleportPlayer;
+        colorRandomizePlayer = variableToKeep == "colorRandomizePlayer" && colorRandomizePlayer;
+        colorSetPlayer = variableToKeep == "colorSetPlayer" && colorSetPlayer;
     }
 
     public static bool ShouldPPMClose()
     {
-        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer;
+        return !setFakeRole && !setFakeAlive && !forceRole && !ejectPlayer && !reportBody && !telekillPlayer && !killPlayer && !spectate && !teleportPlayer && !colorRandomizePlayer && !colorSetPlayer;
     }
 
     // Disables all cheat toggles by setting all to false using the cached ToggleFields

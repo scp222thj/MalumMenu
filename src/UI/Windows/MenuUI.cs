@@ -168,8 +168,11 @@ public class MenuUI : MonoBehaviour
             CheatToggles.voteImmune = false;
             CheatToggles.noGameEnd = false;
             CheatToggles.showProtectMenu = false;
+            CheatToggles.showColorsMenu = false;
             CheatToggles.showRolesMenu = false;
             CheatToggles.noOptionsLimits = false;
+            CheatToggles.colorRandomizePlayer = false;
+            CheatToggles.colorSetPlayer = false;
         }
 
         // Some cheats only work if in a meeting, so they are turned off if it does not
@@ -199,6 +202,7 @@ public class MenuUI : MonoBehaviour
         GUILayout.BeginVertical(GUILayout.Width(windowWidth * 0.15f));
         for (var i = 0; i < _tabs.Count; i++)
         {
+
             Color standardColor = GUI.backgroundColor;
 
             if (_selectedTab == i)
