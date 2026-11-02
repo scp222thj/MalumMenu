@@ -5,6 +5,24 @@ using Object = UnityEngine.Object;
 
 namespace MalumMenu;
 
+[HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+public static class MeetingHud_Start
+{
+    public static void Postfix(MeetingHud __instance)
+    {
+        MalumCheats.isServerInMeeting = true;
+    }
+}
+
+[HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
+public static class ExileController_WrapUp
+{
+    public static void Postfix()
+    {
+        MalumCheats.isServerInMeeting = false;
+    }
+}
+
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 public static class MeetingHud_Update
 {

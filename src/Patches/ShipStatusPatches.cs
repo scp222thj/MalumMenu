@@ -11,6 +11,7 @@ public static class ShipStatus_FixedUpdate
         MalumCheats.OpenSabotageMapCheat();
 
         MalumCheats.CloseMeetingCheat();
+        MalumCheats.OpenMeetingCheat();
         MalumCheats.SkipMeetingCheat();
         MalumCheats.CallMeetingCheat();
         MalumCheats.WalkInVentCheat();
