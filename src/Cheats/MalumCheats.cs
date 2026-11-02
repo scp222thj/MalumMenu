@@ -42,12 +42,12 @@ public static class MalumCheats
             MeetingHud.Instance = null;
 
             // Gameplay must be reenabled
-            DestroyableSingleton<HudManager>.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoFadeFullScreen(Color.black, Color.clear, 0.2f, false));
+            HudManager.Instance.StartCoroutine(HudManager.Instance.CoFadeFullScreen(Color.black, Color.clear, 0.2f, false));
             PlayerControl.LocalPlayer.SetKillTimer(GameManager.Instance.LogicOptions.GetKillCooldown());
             ShipStatus.Instance.EmergencyCooldown = GameManager.Instance.LogicOptions.GetEmergencyCooldown();
             Camera.main.GetComponent<FollowerCamera>().Locked = false;
-            DestroyableSingleton<HudManager>.Instance.SetMapAndInfoButtonsEnabled(true);
-            DestroyableSingleton<HudManager>.Instance.SetHudActive(true);
+            HudManager.Instance.SetMapAndInfoButtonsEnabled(true);
+            HudManager.Instance.SetHudActive(true);
             ControllerManager.Instance.CloseAndResetAll();
 
         }
@@ -80,7 +80,7 @@ public static class MalumCheats
         {
             // Same as PlayerControl.ReportDeadBody but without additional checks
             MeetingRoomManager.Instance.AssignSelf(PlayerControl.LocalPlayer, null);
-            DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
+            HudManager.Instance.OpenMeetingRoom(PlayerControl.LocalPlayer);
             PlayerControl.LocalPlayer.RpcStartMeeting(null);
         }
         else
@@ -109,7 +109,7 @@ public static class MalumCheats
         {
             foreach (var task in PlayerControl.LocalPlayer.myTasks)
             {
-                Utils.CompleteTask(task);
+                PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
             }
 
             CheatToggles.completeMyTasks = false;
@@ -120,7 +120,7 @@ public static class MalumCheats
     {
         if (!CheatToggles.sabotageMap) return;
 
-        DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions
+        HudManager.Instance.ToggleMapVisible(new MapOptions
         {
             Mode = MapOptions.Modes.Sabotage
         });
@@ -147,8 +147,8 @@ public static class MalumCheats
             {
                 engineerRole.cooldownSecondsRemaining = 0f;
 
-                DestroyableSingleton<HudManager>.Instance.AbilityButton.ResetCoolDown();
-                DestroyableSingleton<HudManager>.Instance.AbilityButton.SetCooldownFill(0f);
+                HudManager.Instance.AbilityButton.ResetCoolDown();
+                HudManager.Instance.AbilityButton.SetCooldownFill(0f);
             }
         }
     }
@@ -194,8 +194,8 @@ public static class MalumCheats
             trackerRole.cooldownSecondsRemaining = 0f;
             trackerRole.delaySecondsRemaining = 0f;
 
-            DestroyableSingleton<HudManager>.Instance.AbilityButton.ResetCoolDown();
-            DestroyableSingleton<HudManager>.Instance.AbilityButton.SetCooldownFill(0f);
+            HudManager.Instance.AbilityButton.ResetCoolDown();
+            HudManager.Instance.AbilityButton.SetCooldownFill(0f);
         }
 
         if (CheatToggles.noTrackingDelay && MapBehaviour.Instance != null)
