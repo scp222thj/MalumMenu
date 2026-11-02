@@ -177,6 +177,36 @@ public struct CheatToggles
     public static bool loadProfile;
     public static bool saveProfile;
 
+    private static bool _autoLoadConfig = PlayerPrefs.GetInt("Malum_AutoLoadConfig", 0) == 1;
+    public static bool autoLoadConfig
+    {
+        get => _autoLoadConfig;
+        set
+        {
+            if (_autoLoadConfig != value)
+            {
+                _autoLoadConfig = value;
+                PlayerPrefs.SetInt("Malum_AutoLoadConfig", value ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
+    private static int _autoLoadSlotIndex = PlayerPrefs.GetInt("Malum_AutoLoadSlot", 0);
+    public static int autoLoadSlotIndex
+    {
+        get => _autoLoadSlotIndex;
+        set
+        {
+            if (_autoLoadSlotIndex != value)
+            {
+                _autoLoadSlotIndex = value;
+                PlayerPrefs.SetInt("Malum_AutoLoadSlot", value);
+                PlayerPrefs.Save();
+            }
+        }
+    }
+
     // Keybind Map: Toggle Name -> KeyCode (KeyCode.None == No Key)
     public static readonly Dictionary<string, KeyCode> Keybinds = new();
 
@@ -226,11 +256,36 @@ public struct CheatToggles
 
     // Saves cheat toggles and their keybinds to MalumProfile.txt
     // Format per line: ToggleName = True/False = KeyCode.KEY
+    private static string GetCustomProfilePath(string profileName)
+    {
+        string directory = Path.GetDirectoryName(MalumMenu.ProfilePath);
+        if (string.IsNullOrWhiteSpace(directory))
+        {
+            directory = Directory.GetCurrentDirectory();
+        }
+
+        if (profileName == "1" || profileName == "Default" || string.IsNullOrWhiteSpace(profileName))
+        {
+            return Path.Combine(directory, "MalumProfile.txt");
+        }
+
+        return Path.Combine(directory, $"MalumProfile{profileName}.txt");
+    }
+
+    // Explicit overload to catch parameterless calls from MalumMenu.cs or MenuUI.cs securely.
     public static void SaveTogglesToProfile()
     {
-        using var writer = new StreamWriter(MalumMenu.ProfilePath);
+        SaveTogglesToProfile("Default");
+    }
 
-        writer.WriteLine("# MalumProfile");
+    // Profile serialization containing full execution blocks.
+    public static void SaveTogglesToProfile(string profileName)
+    {
+        string profilePath = GetCustomProfilePath(profileName);
+
+        using var writer = new StreamWriter(profilePath);
+
+        writer.WriteLine($"# MalumProfile - Slot {profileName}");
         writer.WriteLine("# Format: ToggleName = True/False = KeyCode.KEY");
         writer.WriteLine("# - List of supported keycodes: https://docs.unity3d.com/Packages/com.unity.tiny@0.16/api/Unity.Tiny.Input.KeyCode.html");
         writer.WriteLine("# - Setting a keybind is optional. Use KeyCode.None to not set a keybind");
@@ -249,9 +304,17 @@ public struct CheatToggles
     // Format per line: ToggleName = True/False = KeyCode.KEY
     public static void LoadTogglesFromProfile()
     {
-        if (!File.Exists(MalumMenu.ProfilePath)) return;
+        LoadTogglesFromProfile("Default");
+    }
 
-        using var reader = new StreamReader(MalumMenu.ProfilePath);
+    // Profile deserialization containing full execution blocks.
+    public static void LoadTogglesFromProfile(string profileName)
+    {
+        string profilePath = GetCustomProfilePath(profileName);
+
+        if (!File.Exists(profilePath)) return;
+
+        using var reader = new StreamReader(profilePath);
 
         while (reader.ReadLine() is { } line)
         {
@@ -293,6 +356,17 @@ public struct CheatToggles
             }
 
             Keybinds[name] = key;
+        }
+    }
+
+    //execute the auto load on startup
+    public static void ExecuteAutoLoad()
+    {
+        if (autoLoadConfig)
+        {
+            string[] profileSlots = { "1", "2", "3" };
+            int safeIndex = Mathf.Clamp(autoLoadSlotIndex, 0, profileSlots.Length - 1);
+            LoadTogglesFromProfile(profileSlots[safeIndex]);
         }
     }
 }
